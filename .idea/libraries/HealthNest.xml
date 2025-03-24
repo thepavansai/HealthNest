@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="HealthNest">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/HealthNest.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
