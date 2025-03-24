@@ -1,4 +1,4 @@
-package com.healthnest.entity.enums;
+package com.healthnest.dto.enums;
 
 public enum Gender {
     MALE,

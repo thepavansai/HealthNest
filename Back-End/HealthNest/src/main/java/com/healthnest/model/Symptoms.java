@@ -1,6 +1,6 @@
-package com.healthnest.entity;
+package com.healthnest.model;
 
-import com.healthnest.entity.enums.Gender;
+import com.healthnest.model.enums.Gender;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,20 +13,30 @@ public class Symptoms {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long symptomId;
+    @NotNull
     private String symptomName;
+    @NotNull
     private String symptomDescription;
+    @NotNull
     private String location;
+    @NotNull
     private Gender gender;
+    @NotNull
     private Integer age;
+    @NotNull
     private Double duration;
+    @NotNull
     private Double weight;
+    @NotNull
     private Double temperature;
 
     public void setSymptomId(Long symptomId) {
+
         this.symptomId = symptomId;
     }
 
     public Long getSymptomId() {
+
         return symptomId;
     }
 
