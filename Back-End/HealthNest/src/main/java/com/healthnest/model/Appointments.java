@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 @Entity(name="Appointments")
-public class Appointment {
+public class Appointments {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer appointmentId;
@@ -22,10 +22,10 @@ public class Appointment {
     @NotNull
     private String appointmentStatus;
 
-    public Appointment() {
+    public Appointments() {
     }
 
-    public Appointment(String appointmentDate, String appointmentStatus, String appointmentTime, Integer doctorId, Integer userId) {
+    public Appointments(String appointmentDate, String appointmentStatus, String appointmentTime, Integer doctorId, Integer userId) {
         this.appointmentDate = appointmentDate;
         this.appointmentStatus = appointmentStatus;
         this.appointmentTime = appointmentTime;
