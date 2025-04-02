@@ -35,3 +35,4 @@ build/
 
 ### VS Code ###
 .vscode/
+Back-End/HealthNest/src/main/resources/application.properties
