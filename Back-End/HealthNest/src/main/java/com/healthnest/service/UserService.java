@@ -1,5 +1,7 @@
 package com.healthnest.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +17,13 @@ public class UserService {
 	
 	public void createUser(User user)
 	{
-		userRepository.save(user);	
-	}
-//
-//	public void createUser(User user) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
-}
+		if (isUserAlreadyRegistered(user.getEmail())) {
+            throw new RuntimeException("User already exists!");
+        }
+        userRepository.save(user);	
+	}	
+	public boolean isUserAlreadyRegistered(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        return user.isPresent();
+    }
+    }
