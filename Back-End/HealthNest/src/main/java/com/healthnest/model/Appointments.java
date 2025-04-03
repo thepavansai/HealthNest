@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Entity(name="Appointments")
+@Entity
 @Data
 public class Appointments {
     @Id
@@ -23,4 +23,6 @@ public class Appointments {
     private String appointmentTime;
     @NotNull
     private String appointmentStatus;
+    @NotNull
+    private String description;
 }

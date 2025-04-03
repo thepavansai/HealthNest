@@ -10,4 +10,5 @@ public class AppointmentsDTO {
     private String appointmentDate;
     private String appointmentTime;
     private String appointmentStatus;
+    private String description;
 }

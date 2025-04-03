@@ -1,10 +1,10 @@
 package com.healthnest.model;
 
+import com.healthnest.dto.enums.Gender;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -15,12 +15,16 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long doctorId;
     private String doctorName;
+    private Gender gender;
+    private String emailId;
+    private String password;
     private String specialization;
     private Integer experience;
     private String docPhnNo;
+    private Double consultationFee;
+    private Integer rating;
     private String availability;
     private String hospitalName;
-    private Double consultationFee;
     private Integer status;
 
 }

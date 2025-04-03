@@ -1,14 +1,12 @@
 package com.healthnest.service;
 
-import java.util.Optional;
-
+import com.healthnest.Repository.UserRepository;
+import com.healthnest.model.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.healthnest.Repository.UserRepository;
-import com.healthnest.model.User;
-
-import jakarta.transaction.Transactional;
+import java.util.Optional;
 @Service
 @Transactional
 public class UserService {

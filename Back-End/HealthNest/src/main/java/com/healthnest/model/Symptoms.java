@@ -8,10 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Entity(name="Symptoms")
+@Entity
 @Data
 public class Symptoms {
-
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long symptomId;

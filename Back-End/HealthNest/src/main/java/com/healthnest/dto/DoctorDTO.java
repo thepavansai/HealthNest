@@ -1,11 +1,16 @@
 package com.healthnest.dto;
 
+import com.healthnest.dto.enums.Gender;
+
 import lombok.Data;
 
 @Data
 public class DoctorDTO {
 	private Long doctorId;
     private String doctorName;
+    private Gender gender;
+    private String emailId;
+    private String password;
     private String specialization;
     private Integer experience;
     private String docPhnNo;
@@ -13,4 +18,5 @@ public class DoctorDTO {
     private Integer rating;
     private String availability;
     private String HospitalName;
+    private Integer status;
 }

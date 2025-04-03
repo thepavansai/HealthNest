@@ -1,9 +1,9 @@
 package com.healthnest.dto;
 
-import java.util.Date;
-
 import com.healthnest.model.User;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class HistoryTableDTO {

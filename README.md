@@ -1,3 +1,3 @@
 # HealthNest
 
-Health Checkup at your fingertipsss
+Health Checkup at your fingertips

@@ -1,10 +1,8 @@
 package com.healthnest.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.healthnest.dto.enums.Gender;
+
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Table(name="User")
@@ -17,7 +15,7 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer userId;
 	private String name;
-	private String gender;
+	private Gender gender;
 	private String password;
 	private String email;
 	private String dateOfBirth;
