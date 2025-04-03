@@ -33,6 +33,6 @@ public class UserService {
     }
     public List<UserDTO> getAllUsers() {
         List<User> users= (List<User>) userRepository.findAll();
-        return users.stream().map(user->modelMapper,map(user,UserDTO.class)).collect(Collectors.toList());
+        return users.stream().map(user->modelMapper.map(user,UserDTO.class)).collect(Collectors.toList());
     }
     }
