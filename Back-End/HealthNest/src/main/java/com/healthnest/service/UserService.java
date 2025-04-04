@@ -39,4 +39,20 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(email);
         return user.isPresent();
     }
+	public User editProfile(User user) {
+		User userafter=userRepository.findById(user.getUserId()).get();
+		userafter.setName(user.getName());
+		userafter.setPhoneNo(user.getPhoneNo());
+		userafter.setEmail(user.getEmail());
+		userafter.setDateOfBirth(user.getDateOfBirth());
+		userafter.setGender(user.getGender());
+		return userafter;
+		
+		
+		
+		return null;
+	}
+	
+	
+	
     }
