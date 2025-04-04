@@ -1,8 +1,9 @@
 package com.healthnest.service;
 
-import com.healthnest.dto.DoctorDTO;
 import com.healthnest.model.Doctor;
 import com.healthnest.Repository.DoctorRepository;
+import com.healthnest.dto.DoctorDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
