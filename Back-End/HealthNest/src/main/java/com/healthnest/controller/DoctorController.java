@@ -2,6 +2,7 @@ package com.healthnest.controller;
 
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.service.DoctorService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,22 +12,25 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     // View Doctor Profile
     @GetMapping("/profile/{id}")
     public DoctorDTO getDoctorProfile(@PathVariable Long id) {
-        return doctorService.getDoctorProfile(id);
+
+        return modelMapper.map(doctorService.getDoctorProfile(id),DoctorDTO.class);
     }
 
     // Update Doctor Profile
     @PutMapping("/profile/{id}")
-    public DoctorDTO updateDoctorProfile(@PathVariable Long id, @RequestBody DoctorDTO doctorDTO) {
+    public String updateDoctorProfile(@PathVariable Long id, @RequestBody DoctorDTO doctorDTO) {
         return doctorService.updateDoctorProfile(id, doctorDTO);
     }
 
     // Update Availability
     @PutMapping("/{id}/availability")
-    public String updateDoctorAvailability(@PathVariable Long id, @RequestParam boolean availability) {
+    public String updateDoctorAvailability(@PathVariable Long id, @RequestParam String availability) {
         return doctorService.updateDoctorAvailability(id, availability);
     }
 
