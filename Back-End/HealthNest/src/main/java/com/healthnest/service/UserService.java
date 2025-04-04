@@ -1,21 +1,16 @@
 package com.healthnest.service;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.healthnest.Repository.UserRepository;
-import com.healthnest.dto.UserDTO;
 import com.healthnest.model.User;
 
 import jakarta.transaction.Transactional;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -47,10 +42,11 @@ public class UserService {
 		userafter.setDateOfBirth(user.getDateOfBirth());
 		userafter.setGender(user.getGender());
 		return userafter;
-		
-		
-		
-		return null;
+	}
+	
+	public List<User> getAllUsers()
+	{
+		 return (List<User>) userRepository.findAll();
 	}
 	
 	

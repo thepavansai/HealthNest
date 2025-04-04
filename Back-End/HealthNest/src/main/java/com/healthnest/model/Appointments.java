@@ -17,7 +17,7 @@ public class Appointments {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer appointmentId;
-    
+        
     @NotNull
     private String appointmentDate;
     @NotNull
@@ -32,8 +32,8 @@ public class Appointments {
     private User user;
     
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private Doctor doctor;
+    @JoinColumn(name = "doctor_id", nullable = false)
+    private Doctor doctor;        
     
     
     

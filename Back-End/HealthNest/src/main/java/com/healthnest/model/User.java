@@ -24,6 +24,6 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Appointments> appointments;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<HistoryTable> history;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<HistoryTable> history;
 }
