@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.healthnest.model.Appointments;
+import com.healthnest.model.Appointment;
 
 @Repository
-public interface AppointmentsRepository extends CrudRepository<Appointments, Integer> {
+public interface AppointmentsRepository extends CrudRepository<Appointment, Integer> {
 
-	List<Appointments> findByUserUserId(Integer userId);
+	List<Appointment> findByUserUserId(Integer userId);
 
 	 
 }

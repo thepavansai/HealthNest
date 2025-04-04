@@ -18,7 +18,6 @@ public class DoctorController {
     // View Doctor Profile
     @GetMapping("/profile/{id}")
     public DoctorDTO getDoctorProfile(@PathVariable Long id) {
-
         return modelMapper.map(doctorService.getDoctorProfile(id),DoctorDTO.class);
     }
 
@@ -36,13 +35,15 @@ public class DoctorController {
 
     // Update Consultation Fee
     @PutMapping("/{id}/consultation-fee")
+
     public String updateConsultationFee(@PathVariable Long id, @RequestParam Double fee) {
         return doctorService.updateConsultationFee(id, fee);
     }
 
     // View Ratings & Feedback
-    @GetMapping("/{id}/reviews")
-    public String getDoctorReviews(@PathVariable Long id) {
-        return doctorService.getDoctorReviews(id);
+    @GetMapping("/{id}/rating")
+    public Float
+    getDoctorReviews(@PathVariable Long id) {
+        return doctorService.getDoctorRating(id);
     }
 }
