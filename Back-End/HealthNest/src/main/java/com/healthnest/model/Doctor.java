@@ -2,9 +2,8 @@ package com.healthnest.model;
 
 import java.util.List;
 
-import com.healthnest.dto.enums.Gender;
+import com.healthnest.model.enums.Gender;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+@Entity
 @Table(name = "Doctor")
 @Data
 public class Doctor {
