@@ -7,6 +7,7 @@ import com.healthnest.dto.DoctorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,5 +58,15 @@ public class DoctorService {
     public Float getDoctorRating(Long doctorId) {
         return doctorRepository.findById(doctorId).get().getRating();
 
+    }
+    public List<Doctor> findDoctorsBySpecialization(String specialization) {
+        return doctorRepository.findBySpecializationContaining(specialization);
+    }
+
+    public Doctor addSpecialization(Long doctorId, String newSpecialization) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found"));
+        String updatedSpecialization = doctor.getSpecialization() + ", " + newSpecialization;
+        doctor.setSpecialization(updatedSpecialization);
+        return doctorRepository.save(doctor);
     }
 }

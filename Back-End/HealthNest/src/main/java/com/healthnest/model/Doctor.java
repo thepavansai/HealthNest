@@ -18,7 +18,7 @@ import lombok.Data;
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long doctorId;
+    private Integer doctorId;
     private String doctorName;
     private Gender gender;
     private String emailId;

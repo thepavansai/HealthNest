@@ -47,13 +47,13 @@ public class UserController {
 		
 	}
 	@GetMapping("/getcompletedappointments/{id}")
-	public List<Map<String, Object>> getcompletedAppointments(@PathVariable Integer id)
+	public List<Map<String, Object>> getCompletedAppointments(@PathVariable Integer id)
 	{
 		return appointmentservice.getCompletedAppointments(id);
 		
 	}
 	@GetMapping("/getcanceledappointments/{id}")
-	public List<Map<String, Object>> getcanceledAppointments(@PathVariable Integer id)
+	public List<Map<String, Object>> getCanceledAppointments(@PathVariable Integer id)
 	{
 		return appointmentservice.getCancelledAppointments(id);
 		

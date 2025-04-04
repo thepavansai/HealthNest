@@ -48,9 +48,13 @@
 package com.healthnest.service;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import com.healthnest.dto.AppointmentDTO;
+import com.healthnest.dto.AppointmentShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.healthnest.Repository.AppointmentsRepository;
+import com.healthnest.Repository.AppointmentRepository;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.Doctor;
 import jakarta.transaction.Transactional;
@@ -60,7 +64,7 @@ import jakarta.transaction.Transactional;
 public class AppointmentService {
 
     @Autowired
-    AppointmentsRepository appointmentsRepository;
+    AppointmentRepository appointmentRepository;
 
     private Map<String, Object> mapAppointment(Appointment a) {
         Doctor d = a.getDoctor();
@@ -81,7 +85,7 @@ public class AppointmentService {
     }
 
     public List<Map<String, Object>> getUpcomingAppointments(Integer userId) {
-        List<Appointment> appointments = appointmentsRepository.findByUserUserId(userId);
+        List<Appointment> appointments = appointmentRepository.findByUserUserId(userId);
         List<Map<String, Object>> result1 = new ArrayList<>();
 
         for (Appointment a : appointments) {
@@ -94,7 +98,7 @@ public class AppointmentService {
     }
 
     public List<Map<String, Object>> getCompletedAppointments(Integer userId) {
-        List<Appointment> appointments = appointmentsRepository.findByUserUserId(userId);
+        List<Appointment> appointments = appointmentRepository.findByUserUserId(userId);
         List<Map<String, Object>> result2 = new ArrayList<>();
 
         for (Appointment a : appointments) {
@@ -107,7 +111,7 @@ public class AppointmentService {
     }
 
     public List<Map<String, Object>> getCancelledAppointments(Integer userId) {
-        List<Appointment> appointments = appointmentsRepository.findByUserUserId(userId);
+        List<Appointment> appointments = appointmentRepository.findByUserUserId(userId);
         List<Map<String, Object>> result3 = new ArrayList<>();
 
         for (Appointment a : appointments) {
@@ -118,5 +122,30 @@ public class AppointmentService {
 
         return result3;
     }
+	public Appointment acceptAppointment(Integer appointmentId, Integer doctorId) {
+		Appointment appointment = appointmentRepository.findById(appointmentId)
+				.orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+		if (!appointment.getDoctor().getDoctorId().equals(doctorId)) {
+			throw new RuntimeException("You are not authorized to accept this appointment");
+		}
+
+		appointment.setAppointmentStatus("Accepted");
+		return appointmentRepository.save(appointment);
+	}
+
+	public Appointment rejectAppointment(Integer appointmentId, Integer doctorId) {
+		Appointment appointment = appointmentRepository.findById(appointmentId)
+				.orElseThrow(() -> new RuntimeException("Appointment not found"));
+		if (!appointment.getDoctor().getDoctorId().equals(doctorId)) {
+			throw new RuntimeException("You are not authorized to reject this appointment");
+		}
+
+		appointment.setAppointmentStatus("Rejected");
+		return appointmentRepository.save(appointment);
+	}
+	public List<AppointmentShowDTO> getAppointments(Integer doctorId) {
+		return appointmentRepository.findByDoctorIdWithUserName(doctorId);
+	}
 }
 

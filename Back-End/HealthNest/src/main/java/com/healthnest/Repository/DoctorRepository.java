@@ -9,14 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
-
-    
-    List<Doctor> findByAvailabilityIgnoreCase(String availability);
-
-    
-    List<Doctor> findByRatingGreaterThanEqual(Integer rating);
-
-   
-    Optional<Doctor> findByEmailId(String emailId);
+    List<Doctor> findBySpecializationContaining(String specialization);
 }
 
