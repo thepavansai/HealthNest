@@ -49,6 +49,11 @@ public class UserService {
 		 return (List<User>) userRepository.findAll();
 	}
 	
+	public void cancleAppointment(Integer appointmentId)
+	{
+		
+	}
+	
 	
 	
     }

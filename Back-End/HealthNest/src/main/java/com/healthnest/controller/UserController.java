@@ -40,10 +40,22 @@ public class UserController {
         return ResponseEntity.ok("User registered successfully!");
 		}
 	
-	@GetMapping("/getappointments/{id}")
-	public List<Map<String, Object>> getAllAppointments(@PathVariable Integer id)
+	@GetMapping("/getupcomingappointments/{id}")
+	public List<Map<String, Object>> getupcomingAppointments1(@PathVariable Integer id)
 	{
-		return appointmentservice.getAppointmentsForUser(id);
+		return appointmentservice.getUpcomingAppointments(id);
+		
+	}
+	@GetMapping("/getcompletedappointments/{id}")
+	public List<Map<String, Object>> getcompletedAppointments(@PathVariable Integer id)
+	{
+		return appointmentservice.getCompletedAppointments(id);
+		
+	}
+	@GetMapping("/getcanceledappointments/{id}")
+	public List<Map<String, Object>> getcanceledAppointments(@PathVariable Integer id)
+	{
+		return appointmentservice.getCancelledAppointments(id);
 		
 	}
 

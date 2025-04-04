@@ -1,5 +1,4 @@
 package com.healthnest.model;
-
 import java.util.List;
 
 import com.healthnest.model.enums.Gender;

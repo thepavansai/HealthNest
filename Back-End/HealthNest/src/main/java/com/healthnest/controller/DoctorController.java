@@ -49,8 +49,7 @@ public class DoctorController {
 
     // View Ratings & Feedback
     @GetMapping("/{id}/rating")
-    public Float
-    getDoctorReviews(@PathVariable Long id) {
+    public Float getDoctorReviews(@PathVariable Long id) {
         return doctorService.getDoctorRating(id);
     }
 }
