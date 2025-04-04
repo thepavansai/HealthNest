@@ -14,31 +14,27 @@ public class DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    // View Doctor Profile
-    public DoctorDTO getDoctorProfile(Long doctorId) {
-        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
-        return doctor.map(this::convertToDTO).orElse(null);
+    public Doctor getDoctorProfile(Long doctorId) {
+        return doctorRepository.findById(doctorId).get();
     }
-
-    // Update Doctor Profile
-    public DoctorDTO updateDoctorProfile(Long doctorId, DoctorDTO doctorDTO) {
+    public String updateDoctorProfile(Long doctorId, DoctorDTO doctorDTO) {
         Optional<Doctor> existingDoctor = doctorRepository.findById(doctorId);
         if (existingDoctor.isPresent()) {
             Doctor doctor = existingDoctor.get();
             doctor.setDoctorName(doctorDTO.getDoctorName());
-//            doctor.setEmailId(doctorDTO.getEmailId()); // getEmailId() is missing
+            doctor.setEmailId(doctorDTO.getEmailId()); // getEmailId() is missing
             doctor.setSpecialization(doctorDTO.getSpecialization());
             doctor.setDocPhnNo(doctorDTO.getDocPhnNo());
 //            doctor.setHospitalName(doctorDTO.getHospitalName()); //getHospitalName is missing
             doctor.setExperience(doctorDTO.getExperience());
             doctorRepository.save(doctor);
-            return convertToDTO(doctor);
+            return "Updated Doctor Profile";
         }
         return null;
     }
 
     // Update Availability
-    public String updateDoctorAvailability(Long doctorId, boolean isAvailable) {
+    public String updateDoctorAvailability(Long doctorId, String isAvailable) {
         Optional<Doctor> doctor = doctorRepository.findById(doctorId);
         if (doctor.isPresent()) {
             doctor.get().setAvailability(isAvailable);
@@ -65,19 +61,5 @@ public class DoctorService {
     }
 
     // Convert Doctor Entity to DoctorDTO
-    private DoctorDTO convertToDTO(Doctor doctor) {
 
-        DoctorDTO dto = new DoctorDTO();
-        dto.setDoctorId(doctor.getDoctorId());
-        dto.setDoctorName(doctor.getDoctorName());
-        dto.setSpecialization(doctor.getSpecialization());
-//        dto.setEmailId(doctor.getEmailId());  // getEmailId() is missing
-        dto.setDocPhnNo(doctor.getDocPhnNo());
-//        dto.setHospitalId(doctor.getHospital().hospitalId); //Function in Hospital Class are missing
-        dto.setExperience(doctor.getExperience());
-        dto.setConsultationFee(doctor.getConsultationFee());
-        dto.setAvailability(doctor.isAvailability());
-        dto.setRating(doctor.getRating());
-        return dto;
-    }
 }

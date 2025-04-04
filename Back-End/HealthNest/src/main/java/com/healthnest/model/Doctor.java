@@ -1,9 +1,7 @@
 package com.healthnest.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.healthnest.model.enums.Gender;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity

@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserService {
 	
-	@Autowired UserRepository userRepository;
+	@Autowired
+    UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
 
