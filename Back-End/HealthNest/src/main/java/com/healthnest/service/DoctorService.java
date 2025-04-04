@@ -32,7 +32,6 @@ public class DoctorService {
 
         return "Doctor not found";
     }
-
     // Update Availability
     public String updateDoctorAvailability(Long doctorId, String isAvailable) {
         Optional<Doctor> doctor = doctorRepository.findById(doctorId);
@@ -54,8 +53,7 @@ public class DoctorService {
         }
         return "Doctor not found";
     }
-
-    // View Doctor Reviews (Dummy Data since no review entity was given)
+    // View Doctor Ratings
     public Float getDoctorRating(Long doctorId) {
         return doctorRepository.findById(doctorId).get().getRating();
 

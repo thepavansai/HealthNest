@@ -3,7 +3,7 @@ package com.healthnest.dto;
 import lombok.Data;
 
 @Data
-public class AppointmentsDTO {
+public class AppointmentDTO {
     private int appointmentId;
     private Integer userId;
     private Integer doctorId;
