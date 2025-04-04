@@ -1,10 +1,14 @@
 package com.healthnest.model;
 
+import java.util.List;
+
 import com.healthnest.dto.enums.Gender;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -14,6 +18,7 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long doctorId;
+    
     private String doctorName;
     private Gender gender;
     private String emailId;
@@ -26,5 +31,8 @@ public class Doctor {
     private String availability;
     private String hospitalName;
     private Integer status;
+    
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    private List<Appointments> appointments;
 
 }
