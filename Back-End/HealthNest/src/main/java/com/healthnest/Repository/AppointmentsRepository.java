@@ -12,6 +12,10 @@ import com.healthnest.model.Appointment;
 public interface AppointmentsRepository extends CrudRepository<Appointment, Integer> {
 
 	List<Appointment> findByUserUserId(Integer userId);
+	 List<Appointment> findByDoctorDoctorId(Long doctorId);
+	  List<Appointment> findByDoctorDoctorIdAndAppointmentStatusIgnoreCase(Long doctorId, String status);
+	  List<Appointment> findByDoctorDoctorIdAndUserUserId(Long doctorId, Integer userId);
+	
 
 	 
 }

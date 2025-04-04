@@ -47,12 +47,19 @@
 //}
 package com.healthnest.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.healthnest.Repository.AppointmentsRepository;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.Doctor;
+import com.healthnest.model.User;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -77,6 +84,18 @@ public class AppointmentService {
         m.put("appointmentStatus", a.getAppointmentStatus());
         m.put("description", a.getDescription());
 
+        return m;
+    }
+    private Map<String, Object> mapAppointmentWithUserInfo(Appointment a) {
+        User u = a.getUser();
+        Map<String, Object> m = new HashMap<>();
+        m.put("userName", u.getName());
+        m.put("userEmail", u.getEmail());
+        m.put("userPhone", u.getPhoneNo());
+        m.put("appointmentDate", a.getAppointmentDate());
+        m.put("appointmentTime", a.getAppointmentTime());
+        m.put("appointmentStatus", a.getAppointmentStatus());
+        m.put("description", a.getDescription());
         return m;
     }
 
@@ -118,5 +137,21 @@ public class AppointmentService {
 
         return result3;
     }
+    
+    public List<Map<String, Object>> getAppointmentsForDoctor(Long doctorId) {
+        List<Appointment> appointments = appointmentsRepository.findByDoctorDoctorId(doctorId);
+        return appointments.stream().map(this::mapAppointmentWithUserInfo).toList();
+    }
+
+    public List<Map<String, Object>> getAppointmentsForDoctorByStatus(Long doctorId, String status) {
+        List<Appointment> appointments = appointmentsRepository.findByDoctorDoctorIdAndAppointmentStatusIgnoreCase(doctorId, status);
+        return appointments.stream().map(this::mapAppointmentWithUserInfo).toList();
+    }
+
+    public List<Map<String, Object>> getAppointmentsForDoctorByUser(Long doctorId, Integer userId) {
+        List<Appointment> appointments = appointmentsRepository.findByDoctorDoctorIdAndUserUserId(doctorId, userId);
+        return appointments.stream().map(this::mapAppointmentWithUserInfo).toList();
+    }
+
 }
 
