@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.healthnest.Repository.AppointmentsRepository;
-import com.healthnest.model.Appointments;
+import com.healthnest.model.Appointment;
 import com.healthnest.model.Doctor;
 
 import jakarta.transaction.Transactional;
@@ -20,10 +20,10 @@ public class AppointmentService {
 	@Autowired AppointmentsRepository appointmentsRepository;
 
 	public List<Map<String, Object>> getAppointmentsForUser(Integer userId) {
-	    List<Appointments> appointments = appointmentsRepository.findByUserUserId(userId);
+	    List<Appointment> appointments = appointmentsRepository.findByUserUserId(userId);
 
 	    List<Map<String, Object>> result = new ArrayList<>();
-	    for (Appointments a : appointments) {
+	    for (Appointment a : appointments) {
 	        Doctor d = a.getDoctor();
 	        Map<String, Object> m = new HashMap<>();
 	        m.put("doctorName", d.getDoctorName());

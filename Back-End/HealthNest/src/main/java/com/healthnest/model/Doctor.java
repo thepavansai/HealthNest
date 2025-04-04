@@ -20,7 +20,6 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long doctorId;
-    
     private String doctorName;
     private Gender gender;
     private String emailId;
@@ -29,12 +28,11 @@ public class Doctor {
     private Integer experience;
     private String docPhnNo;
     private Double consultationFee;
-    private Integer rating;
+    private Float rating;
     private String availability;
     private String hospitalName;
     private Integer status;
-    
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
-    private List<Appointments> appointments;
+    private List<Appointment> appointments;
 
 }

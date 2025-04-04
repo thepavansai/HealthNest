@@ -39,18 +39,6 @@ public class UserController {
         userService.createUser(user);
         return ResponseEntity.ok("User registered successfully!");
 		}
-	@PatchMapping("/editprofile")
-	public ResponseEntity<User> editprofile(@RequestBody User user)
-	{
-		User userafter=userService.editProfile( user);
-		return ResponseEntity.ok(userafter);
-		
-	}
-//	
-//	@GetMapping("/getappointments/{id}")
-//	public List<Map<String, Object>> getAllAppointments(@PathVariable Integer id) {
-//	    return appointmentservice.getAppointmentsForUser(id);
-//	}
 	
 	@GetMapping("/getappointments/{id}")
 	public List<Map<String, Object>> getAllAppointments(@PathVariable Integer id)

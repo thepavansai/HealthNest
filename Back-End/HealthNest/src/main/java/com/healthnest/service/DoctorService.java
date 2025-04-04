@@ -19,19 +19,18 @@ public class DoctorService {
         return doctorRepository.findById(doctorId).get();
     }
     public String updateDoctorProfile(Long doctorId, DoctorDTO doctorDTO) {
-        Optional<Doctor> existingDoctor = doctorRepository.findById(doctorId);
-        if (existingDoctor.isPresent()) {
-            Doctor doctor = existingDoctor.get();
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
+
+        if (optionalDoctor.isPresent()) {
+            Doctor doctor = optionalDoctor.get();
             doctor.setDoctorName(doctorDTO.getDoctorName());
-            doctor.setEmailId(doctorDTO.getEmailId()); // getEmailId() is missing
-            doctor.setSpecialization(doctorDTO.getSpecialization());
-            doctor.setDocPhnNo(doctorDTO.getDocPhnNo());
-//            doctor.setHospitalName(doctorDTO.getHospitalName()); //getHospitalName is missing
+            doctor.setHospitalName(doctorDTO.getHospitalName());
             doctor.setExperience(doctorDTO.getExperience());
             doctorRepository.save(doctor);
             return "Updated Doctor Profile";
         }
-        return null;
+
+        return "Doctor not found";
     }
 
     // Update Availability
@@ -57,10 +56,8 @@ public class DoctorService {
     }
 
     // View Doctor Reviews (Dummy Data since no review entity was given)
-    public String getDoctorReviews(Long doctorId) {
-        return "Doctor ratings and feedback fetched successfully.";
+    public Float getDoctorRating(Long doctorId) {
+        return doctorRepository.findById(doctorId).get().getRating();
+
     }
-
-    // Convert Doctor Entity to DoctorDTO
-
 }
