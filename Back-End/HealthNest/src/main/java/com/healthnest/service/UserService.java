@@ -16,30 +16,30 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-//@RequiredArgsConstructor
 public class UserService {
-	
-	@Autowired
-    UserRepository userRepository;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    AppointmentRepository appointmentRepository;
 
-    public void createUser(User user)
-	{
+	@Autowired
+	UserRepository userRepository;
+	@Autowired
+	private ModelMapper modelMapper;
+	@Autowired
+	AppointmentRepository appointmentRepository;
+
+	public void createUser(User user) {
 		if (isUserAlreadyRegistered(user.getEmail())) {
-            throw new RuntimeException("User already exists!");
-        }
-        userRepository.save(user);	
-        
-	}	
+			throw new RuntimeException("User already exists!");
+		}
+		userRepository.save(user);
+
+	}
+
 	public boolean isUserAlreadyRegistered(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user.isPresent();
-    }
+		Optional<User> user = userRepository.findByEmail(email);
+		return user.isPresent();
+	}
+
 	public boolean editProfile(User user) {
-		User userafter=userRepository.findById(user.getUserId()).get();
+		User userafter = userRepository.findById(user.getUserId()).get();
 		userafter.setName(user.getName());
 		userafter.setPhoneNo(user.getPhoneNo());
 		userafter.setEmail(user.getEmail());
@@ -48,39 +48,30 @@ public class UserService {
 		userRepository.save(userafter);
 		return true;
 	}
-	
-	public List<User> getAllUsers()
-	{
-		 return (List<User>) userRepository.findAll();
+
+	public List<User> getAllUsers() {
+		return (List<User>) userRepository.findAll();
 	}
-	
-	public void cancleAppointment(Integer appointmentId)
-	{
-		Appointment appointment=appointmentRepository.findById(appointmentId).get();
-		appointment.setAppointmentStatus("Cancelled");	
+
+	public void cancleAppointment(Integer appointmentId) {
+		Appointment appointment = appointmentRepository.findById(appointmentId).get();
+		appointment.setAppointmentStatus("Cancelled");
 	}
-	
-	public boolean changePassword(Integer userId,String before_password1,String Changed_password)
-	{
-	User user=userRepository.findById(userId).get();
-	if(user.getPassword().equals(before_password1))
-	{
-		user.setPassword(Changed_password);
-		return true;
+
+	public boolean changePassword(Integer userId, String before_password1, String Changed_password) {
+		User user = userRepository.findById(userId).get();
+		if (user.getPassword().equals(before_password1)) {
+			user.setPassword(Changed_password);
+			return true;
+		} else {
+			return false;
+
+		}
+
 	}
-	else
-	{
-		return false;
-		
-	}
-		
-	}
-	
-	public void deleteAccount(Integer userId)
-	{
+
+	public void deleteAccount(Integer userId) {
 		userRepository.deleteById(userId);
 	}
-	
-	
-	
-    }
+
+}
