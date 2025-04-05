@@ -7,7 +7,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.healthnest.Repository.AppointmentRepository;
 import com.healthnest.Repository.UserRepository;
+import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
 
 import jakarta.transaction.Transactional;
@@ -21,6 +23,8 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    AppointmentRepository appointmentRepository;
 
     public void createUser(User user)
 	{
@@ -34,14 +38,15 @@ public class UserService {
         Optional<User> user = userRepository.findByEmail(email);
         return user.isPresent();
     }
-	public User editProfile(User user) {
+	public boolean editProfile(User user) {
 		User userafter=userRepository.findById(user.getUserId()).get();
 		userafter.setName(user.getName());
 		userafter.setPhoneNo(user.getPhoneNo());
 		userafter.setEmail(user.getEmail());
 		userafter.setDateOfBirth(user.getDateOfBirth());
 		userafter.setGender(user.getGender());
-		return userafter;
+		userRepository.save(userafter);
+		return true;
 	}
 	
 	public List<User> getAllUsers()
@@ -51,7 +56,29 @@ public class UserService {
 	
 	public void cancleAppointment(Integer appointmentId)
 	{
+		Appointment appointment=appointmentRepository.findById(appointmentId).get();
+		appointment.setAppointmentStatus("Cancelled");	
+	}
+	
+	public boolean changePassword(Integer userId,String before_password1,String Changed_password)
+	{
+	User user=userRepository.findById(userId).get();
+	if(user.getPassword().equals(before_password1))
+	{
+		user.setPassword(Changed_password);
+		return true;
+	}
+	else
+	{
+		return false;
 		
+	}
+		
+	}
+	
+	public void deleteAccount(Integer userId)
+	{
+		userRepository.deleteById(userId);
 	}
 	
 	

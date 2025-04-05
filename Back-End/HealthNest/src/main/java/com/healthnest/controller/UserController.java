@@ -6,6 +6,7 @@ import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +40,16 @@ public class UserController {
         userService.createUser(user);
         return ResponseEntity.ok("User registered successfully!");
 		}
-	
+	@PatchMapping("/editprofile")
+	public ResponseEntity<String> editProfile(@RequestBody User user) {
+	    boolean updated = userService.editProfile(user);
+	    if (updated) {
+	        return ResponseEntity.ok("Profile successfully edited");
+	    } else {
+	        return ResponseEntity.status(404).body("User not found. Failed to edit profile.");
+	    }
+	}
+
 	@GetMapping("/getupcomingappointments/{id}")
 	public List<Map<String, Object>> getupcomingAppointments1(@PathVariable Integer id)
 	{
@@ -58,7 +68,34 @@ public class UserController {
 		return appointmentservice.getCancelledAppointments(id);
 		
 	}
+	
+	@PatchMapping("/cancelappointment/{appointmentId}")
+	public ResponseEntity<String> cancelAppointment(@PathVariable Integer appointmentId)
+	{
+		userService.cancleAppointment(appointmentId);
+		return ResponseEntity.ok("sucessfully cancelled Appointment");
+	}
 
+	@PatchMapping("/changepassword/{userid}/{beforepassword}/{changepassword}")
+	public ResponseEntity<String> changepassword(@PathVariable Integer userid,@PathVariable String beforepassword,@PathVariable String changepassword)
+	{
+		if(userService.changePassword(userid, beforepassword, changepassword))
+		{
+			return ResponseEntity.ok("sucessfully changed");
+		}
+		else
+		{
+			return ResponseEntity.ok("unsucessfull");
+		}
+		
+	}
+	
+	@DeleteMapping("/deleteuser/{userId}")
+	public ResponseEntity<String> deleteAccount(@PathVariable Integer userId)
+	{
+		userService.deleteAccount(userId);
+		return ResponseEntity.ok("Sucessfully deleted user");
+	}
 	
 	
 		
