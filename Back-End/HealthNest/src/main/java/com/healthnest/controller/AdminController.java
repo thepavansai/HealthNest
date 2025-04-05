@@ -1,24 +1,35 @@
 package com.healthnest.controller;
 
-import com.healthnest.dto.DoctorDTO;
-import com.healthnest.dto.UserDTO;
-import com.healthnest.service.UserService;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.healthnest.dto.DoctorDTO;
+import com.healthnest.dto.UserDTO;
+import com.healthnest.model.User;
+import com.healthnest.service.UserService;
 
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private ModelMapper modelMapper;
+
     @GetMapping("/users")
-    public List<UserDTO> getAllUsers(){
-        return userService.getAllUsers();
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return users.stream()
+                    .map(user -> modelMapper.map(user, UserDTO.class))
+                    .collect(Collectors.toList());
     }
+
     @GetMapping("/doctors")
     public List<DoctorDTO> getAllDoctors(){
         return null;

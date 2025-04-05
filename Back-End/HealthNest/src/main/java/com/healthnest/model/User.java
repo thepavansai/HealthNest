@@ -22,8 +22,5 @@ public class User {
 	private String phoneNo;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Appointments> appointments;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<HistoryTable> history;
+    private List<Appointment> appointments;
 }

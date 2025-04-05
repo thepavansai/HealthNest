@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class DoctorDTO {
-	private Long doctorId;
+	private Integer doctorId;
     private String doctorName;
     private Gender gender;
     private String emailId;

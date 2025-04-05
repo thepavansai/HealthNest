@@ -1,11 +1,13 @@
 package com.healthnest.service;
 
-import com.healthnest.dto.DoctorDTO;
 import com.healthnest.model.Doctor;
 import com.healthnest.Repository.DoctorRepository;
+import com.healthnest.dto.DoctorDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,24 +21,20 @@ public class DoctorService {
         Optional<Doctor> doctor = doctorRepository.findById(doctorId);
         return doctor.map(this::convertToDTO).orElse(null);
     }
+    public String updateDoctorProfile(Long doctorId, DoctorDTO doctorDTO) {
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
 
-    // Update Doctor Profile
-    public DoctorDTO updateDoctorProfile(Long doctorId, DoctorDTO doctorDTO) {
-        Optional<Doctor> existingDoctor = doctorRepository.findById(doctorId);
-        if (existingDoctor.isPresent()) {
-            Doctor doctor = existingDoctor.get();
+        if (optionalDoctor.isPresent()) {
+            Doctor doctor = optionalDoctor.get();
             doctor.setDoctorName(doctorDTO.getDoctorName());
-//            doctor.setEmailId(doctorDTO.getEmailId()); // getEmailId() is missing
-            doctor.setSpecialization(doctorDTO.getSpecialization());
-            doctor.setDocPhnNo(doctorDTO.getDocPhnNo());
-//            doctor.setHospitalName(doctorDTO.getHospitalName()); //getHospitalName is missing
+            doctor.setHospitalName(doctorDTO.getHospitalName());
             doctor.setExperience(doctorDTO.getExperience());
             doctorRepository.save(doctor);
             return convertToDTO(doctor);
         }
-        return null;
-    }
 
+        return "Doctor not found";
+    }
     // Update Availability
     public String updateDoctorAvailability(Long doctorId, boolean isAvailable) {
         Optional<Doctor> doctor = doctorRepository.findById(doctorId);
@@ -58,26 +56,19 @@ public class DoctorService {
         }
         return "Doctor not found";
     }
+    // View Doctor Ratings
+    public Float getDoctorRating(Long doctorId) {
+        return doctorRepository.findById(doctorId).get().getRating();
 
-    // View Doctor Reviews (Dummy Data since no review entity was given)
-    public String getDoctorReviews(Long doctorId) {
-        return "Doctor ratings and feedback fetched successfully.";
+    }
+    public List<Doctor> findDoctorsBySpecialization(String specialization) {
+        return doctorRepository.findBySpecializationContaining(specialization);
     }
 
-    // Convert Doctor Entity to DoctorDTO
-    private DoctorDTO convertToDTO(Doctor doctor) {
-
-        DoctorDTO dto = new DoctorDTO();
-        dto.setDoctorId(doctor.getDoctorId());
-        dto.setDoctorName(doctor.getDoctorName());
-        dto.setSpecialization(doctor.getSpecialization());
-//        dto.setEmailId(doctor.getEmailId());  // getEmailId() is missing
-        dto.setDocPhnNo(doctor.getDocPhnNo());
-//        dto.setHospitalId(doctor.getHospital().hospitalId); //Function in Hospital Class are missing
-        dto.setExperience(doctor.getExperience());
-        dto.setConsultationFee(doctor.getConsultationFee());
-        dto.setAvailability(doctor.isAvailability());
-        dto.setRating(doctor.getRating());
-        return dto;
+    public Doctor addSpecialization(Long doctorId, String newSpecialization) {
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found"));
+        String updatedSpecialization = doctor.getSpecialization() + ", " + newSpecialization;
+        doctor.setSpecialization(updatedSpecialization);
+        return doctorRepository.save(doctor);
     }
 }

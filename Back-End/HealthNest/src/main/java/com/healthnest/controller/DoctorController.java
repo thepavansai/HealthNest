@@ -1,9 +1,15 @@
 package com.healthnest.controller;
 
 import com.healthnest.dto.DoctorDTO;
+import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/doctor")
@@ -12,33 +18,48 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    // View Doctor Profile
+    @Autowired
+    private ModelMapper modelMapper;
+
     @GetMapping("/profile/{id}")
     public DoctorDTO getDoctorProfile(@PathVariable Long id) {
-        return doctorService.getDoctorProfile(id);
+        return modelMapper.map(doctorService.getDoctorProfile(id), DoctorDTO.class);
     }
 
-    // Update Doctor Profile
     @PutMapping("/profile/{id}")
-    public DoctorDTO updateDoctorProfile(@PathVariable Long id, @RequestBody DoctorDTO doctorDTO) {
+    public String updateDoctorProfile(@PathVariable Long id, @RequestBody DoctorDTO doctorDTO) {
         return doctorService.updateDoctorProfile(id, doctorDTO);
     }
 
-    // Update Availability
-    @PutMapping("/{id}/availability")
-    public String updateDoctorAvailability(@PathVariable Long id, @RequestParam boolean availability) {
+    @PatchMapping("/{id}/availability")
+    public String updateDoctorAvailability(@PathVariable Long id, @RequestParam String availability) {
         return doctorService.updateDoctorAvailability(id, availability);
     }
 
-    // Update Consultation Fee
-    @PutMapping("/{id}/consultation-fee")
+    @PatchMapping("/{id}/consultation-fee")
     public String updateConsultationFee(@PathVariable Long id, @RequestParam Double fee) {
         return doctorService.updateConsultationFee(id, fee);
     }
 
-    // View Ratings & Feedback
-    @GetMapping("/{id}/reviews")
-    public String getDoctorReviews(@PathVariable Long id) {
-        return doctorService.getDoctorReviews(id);
+    @GetMapping("/{id}/rating")
+    public Float getDoctorReviews(@PathVariable Long id) {
+        return doctorService.getDoctorRating(id);
     }
+
+    @GetMapping("/specialization")
+    public ResponseEntity<List<DoctorDTO>> getDoctorsBySpecialization(@RequestParam String specialization) {
+        List<Doctor> doctors = doctorService.findDoctorsBySpecialization(specialization);
+        List<DoctorDTO> doctorDTOs = doctors.stream()
+                .map(doctor -> modelMapper.map(doctor, DoctorDTO.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(doctorDTOs);
+    }
+
+    @PutMapping("/{doctorId}/specialization")
+    public ResponseEntity<DoctorDTO> addSpecialization(@PathVariable Long doctorId, @RequestParam String newSpecialization) {
+        Doctor updatedDoctor = doctorService.addSpecialization(doctorId, newSpecialization);
+        DoctorDTO updatedDoctorDTO = modelMapper.map(updatedDoctor, DoctorDTO.class);
+        return ResponseEntity.ok(updatedDoctorDTO);
+    }
+
 }

@@ -8,16 +8,18 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
+@Table(name = "Appointments")
 @Data
-public class Appointments {
+public class Appointment {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer appointmentId;
-    
+        
     @NotNull
     private String appointmentDate;
     @NotNull
@@ -32,8 +34,8 @@ public class Appointments {
     private User user;
     
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private Doctor doctor;
+    @JoinColumn(name = "doctor_id", nullable = false)
+    private Doctor doctor;        
     
     
     
