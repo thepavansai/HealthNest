@@ -76,4 +76,8 @@ public class DoctorService {
         doctor.setSpecialization(updatedSpecialization);
         return doctorRepository.save(doctor);
     }
+
+    public List<Doctor> getAllDoctors() {
+        return doctorRepository.findAll();
+    }
 }

@@ -21,8 +21,6 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
-	private ModelMapper modelMapper;
-	@Autowired
 	AppointmentRepository appointmentRepository;
 
 	public void createUser(User user) {
