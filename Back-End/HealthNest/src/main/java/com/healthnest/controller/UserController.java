@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthnest.dto.UserDTO;
+import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
 import com.healthnest.service.AppointmentService;
 import com.healthnest.service.UserService;
@@ -90,5 +91,18 @@ public class UserController {
 		userService.deleteAccount(userId);
 		return ResponseEntity.ok("Sucessfully deleted user");
 	}
-
+	
+	@PostMapping("/bookappointment")
+	public ResponseEntity<String> bookAppointment(@RequestBody Appointment appointment)
+	{
+		if(userService.bookAppointment(appointment))
+		{
+			return ResponseEntity.ok("your appointment is Sucessfully booked");
+		}
+		else
+		{
+			return ResponseEntity.ok("your appointment is not booked try again");
+			
+		}
+	}
 }

@@ -71,5 +71,19 @@ public class UserService {
 	public void deleteAccount(Integer userId) {
 		userRepository.deleteById(userId);
 	}
+	
+	public boolean bookAppointment(Appointment appointment)
+	{
+		if(appointmentRepository.save(appointment)!=null)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
 
 }
