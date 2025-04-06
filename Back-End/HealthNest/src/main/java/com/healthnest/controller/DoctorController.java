@@ -20,7 +20,12 @@ public class DoctorController {
 
     @Autowired
     private ModelMapper modelMapper;
-
+    
+    @PostMapping("/signup")
+    public String singUpDoctor(@RequestBody DoctorDTO doctordto) {
+    	return doctorService.saveDoctor(modelMapper.map(doctordto, Doctor.class));
+    }
+    
     @GetMapping("/profile/{id}")
     public DoctorDTO getDoctorProfile(@PathVariable Long id) {
         return modelMapper.map(doctorService.getDoctorProfile(id), DoctorDTO.class);

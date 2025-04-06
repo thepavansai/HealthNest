@@ -15,7 +15,14 @@ public class DoctorService {
 
     @Autowired
     private DoctorRepository doctorRepository;
-
+    
+    public String saveDoctor(Doctor doctor) {
+        if (doctorRepository.existsByDoctorNameAndSpecialization(doctor.getDoctorName(), doctor.getSpecialization())) {
+            return "Doctor with the same name and specialization already exists.";
+        }
+        doctorRepository.save(doctor);
+        return "Saved Successfully";
+    }
     public Doctor getDoctorProfile(Long doctorId) {
         return doctorRepository.findById(doctorId).get();
     }
