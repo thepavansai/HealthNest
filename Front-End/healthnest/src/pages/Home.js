@@ -1,6 +1,10 @@
 import Footer from "../components/Footer";
 import HealthCheck from "../components/HealthCheck"
 import Header from "../components/Header"
+import DoctorProfile from "./DoctorProfile";
+import ChangePassword from "./ChangePassword";
+import ManageAppointments from "./ManageAppointments";
+import DeleteAccount from "./DeleteAccount";
 
 const Home = () => {
     const names = ["Health Checkup", "View Appointments", "Join Our Team"];
@@ -9,7 +13,9 @@ const Home = () => {
       "View and manage your upcoming appointments.",
       "If you're a doctor interested in joining us"
     ];
-  
+    // return (
+    //   <DeleteAccount/>
+    // )
     return (
       <div>
         
