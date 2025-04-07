@@ -1,69 +1,101 @@
 /* AdminDashboard.css */
 
-/* General Layout */
-.dashboard-container {
-    background: linear-gradient(to right, #f4f6f9, #e9eff5);
-    padding: 2rem;
-    min-height: 100vh;
+/* Global Styles */
+body {
+    background-color: #e3f2fd; /* Light Blue */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  /* Profile Card */
-  .profile-card {
-    background-color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profile-card h5 {
-    font-weight: 600;
     color: #333;
+    margin: 0;
+    padding: 0;
   }
   
-  .profile-card p {
-    margin-bottom: 0.5rem;
-    color: #555;
+  /* Container Setup */
+  .container {
+    padding-top: 30px;
   }
   
-  .logout-btn {
-    background-color: #dc3545;
-    transition: background-color 0.3s ease;
+  /* Card Styling */
+  .card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
   }
   
-  .logout-btn:hover {
-    background-color: #c82333;
+  .card:hover {
+    transform: translateY(-5px);
   }
   
-  /* Action Buttons */
-  .action-section {
-    margin-top: 50px;
+  .card-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #0d47a1;
+    border-bottom: 2px solid #90caf9;
+    padding-bottom: 10px;
+    text-align: center;
   }
   
-  .action-btn {
-    font-size: 1.2rem;
-    padding: 15px 25px;
-    margin-bottom: 20px;
+  /* Profile Text */
+  .card p {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  /* Buttons General */
+  .btn {
+    font-size: 16px;
+    padding: 12px;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
   }
   
-  .action-btn-primary {
-    background-color: #007bff;
-    color: white;
+  /* Primary Button - Add Symptom */
+  .btn-primary {
+    background: linear-gradient(to right, #42a5f5, #1e88e5);
+    border: none;
+    color: #fff;
   }
   
-  .action-btn-primary:hover {
-    background-color: #0056b3;
+  .btn-primary:hover {
+    background: linear-gradient(to right, #1e88e5, #1565c0);
   }
   
-  .action-btn-success {
-    background-color: #28a745;
-    color: white;
+  /* Success Button - Manage Doctors */
+  .btn-success {
+    background: linear-gradient(to right, #66bb6a, #43a047);
+    border: none;
+    color: #fff;
   }
   
-  .action-btn-success:hover {
-    background-color: #1e7e34;
+  .btn-success:hover {
+    background: linear-gradient(to right, #43a047, #2e7d32);
+  }
+  
+  /* Danger Button - Logout */
+  .btn-danger {
+    background: linear-gradient(to right, #ef5350, #e53935);
+    border: none;
+    color: #fff;
+  }
+  
+  .btn-danger:hover {
+    background: linear-gradient(to right, #e53935, #b71c1c);
+  }
+  
+  /* Responsive Behavior */
+  @media (max-width: 768px) {
+    .card {
+      margin-top: 20px;
+    }
+  
+    .col-md-4, .col-md-3 {
+      width: 100%;
+    }
+  
+    .btn {
+      font-size: 14px;
+    }
   }
   
