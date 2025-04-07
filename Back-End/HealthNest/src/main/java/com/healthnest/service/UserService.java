@@ -35,6 +35,8 @@ public class UserService {
 		userRepository.save(user);
 
 	}
+	
+	
 
 	public boolean isUserAlreadyRegistered(String email) {
 		Optional<User> user = userRepository.findByEmail(email);

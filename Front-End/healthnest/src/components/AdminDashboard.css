@@ -1,0 +1,101 @@
+/* AdminDashboard.css */
+
+/* Global Styles */
+body {
+    background-color: #e3f2fd; /* Light Blue */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Container Setup */
+  .container {
+    padding-top: 30px;
+  }
+  
+  /* Card Styling */
+  .card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #0d47a1;
+    border-bottom: 2px solid #90caf9;
+    padding-bottom: 10px;
+    text-align: center;
+  }
+  
+  /* Profile Text */
+  .card p {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  /* Buttons General */
+  .btn {
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  /* Primary Button - Add Symptom */
+  .btn-primary {
+    background: linear-gradient(to right, #42a5f5, #1e88e5);
+    border: none;
+    color: #fff;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(to right, #1e88e5, #1565c0);
+  }
+  
+  /* Success Button - Manage Doctors */
+  .btn-success {
+    background: linear-gradient(to right, #66bb6a, #43a047);
+    border: none;
+    color: #fff;
+  }
+  
+  .btn-success:hover {
+    background: linear-gradient(to right, #43a047, #2e7d32);
+  }
+  
+  /* Danger Button - Logout */
+  .btn-danger {
+    background: linear-gradient(to right, #ef5350, #e53935);
+    border: none;
+    color: #fff;
+  }
+  
+  .btn-danger:hover {
+    background: linear-gradient(to right, #e53935, #b71c1c);
+  }
+  
+  /* Responsive Behavior */
+  @media (max-width: 768px) {
+    .card {
+      margin-top: 20px;
+    }
+  
+    .col-md-4, .col-md-3 {
+      width: 100%;
+    }
+  
+    .btn {
+      font-size: 14px;
+    }
+  }
+  
