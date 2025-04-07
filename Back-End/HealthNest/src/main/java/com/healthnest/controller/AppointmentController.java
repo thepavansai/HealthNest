@@ -21,25 +21,21 @@ public class AppointmentController {
         List<AppointmentShowDTO> appointments = appointmentService.getAppointments(doctorId);
         return ResponseEntity.ok(appointments);
     }
-    @PostMapping("/{appointmentId}/status/{doctorId}/{status}")
-    public ResponseEntity<Appointment> updateAppointmentStatus(
+    @PostMapping("/{appointmentId}/accept/{doctorId}")
+    public ResponseEntity<Appointment> acceptAppointment(
             @PathVariable Integer appointmentId,
-            @PathVariable Integer doctorId,
-            @PathVariable String status) {
+            @PathVariable Integer doctorId) {
 
-        Appointment updatedAppointment;
+        Appointment updatedAppointment = appointmentService.acceptAppointment(appointmentId, doctorId);
+        return ResponseEntity.ok(updatedAppointment);
+    }
 
-        switch (status.toLowerCase()) {
-            case "accepted":
-                updatedAppointment = appointmentService.acceptAppointment(appointmentId, doctorId);
-                break;
-            case "rejected":
-                updatedAppointment = appointmentService.rejectAppointment(appointmentId, doctorId);
-                break;
-            default:
-                return ResponseEntity.badRequest().body(null); // Invalid status
-        }
+    @PostMapping("/{appointmentId}/reject/{doctorId}")
+    public ResponseEntity<Appointment> rejectAppointment(
+            @PathVariable Integer appointmentId,
+            @PathVariable Integer doctorId) {
 
+        Appointment updatedAppointment = appointmentService.rejectAppointment(appointmentId, doctorId);
         return ResponseEntity.ok(updatedAppointment);
     }
 }

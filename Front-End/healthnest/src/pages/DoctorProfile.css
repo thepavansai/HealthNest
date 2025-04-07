@@ -1,0 +1,109 @@
+.profile-header {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+.profile-image-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-name {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.specialization {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #3498db;
+}
+
+.rating-container {
+  margin-top: 1rem;
+}
+
+.rating {
+  color: #f1c40f;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.reviews {
+  color: #7f8c8d;
+  margin-left: 0.5rem;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card-title {
+  color: #2c3e50;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.language-tags .badge {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  border-color: #3498db;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+}
+
+.btn-outline-primary {
+  color: #3498db;
+  border-color: #3498db;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+  background-color: #3498db;
+  color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-header {
+    text-align: center;
+  }
+  
+  .doctor-name {
+    font-size: 1.75rem;
+  }
+  
+  .specialization {
+    font-size: 1.1rem;
+  }
+} 
