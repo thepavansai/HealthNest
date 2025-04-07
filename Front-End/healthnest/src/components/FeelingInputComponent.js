@@ -12,7 +12,7 @@ const FeelingInputComponent = () => {
         {
           model: "llama3-8b-8192",
           messages: [
-            { role: "system", content: "You are a helpful medical assistant suggesting doctors based on symptoms. You are supposed to return only the Specialist Doctor he can Consult." },
+            { role: "system", content: "The user will give his current health condition suggest him a specailist doctor or general based on user's input in one word only" },
             { role: "user", content: `I am having ${text}. Suggest me the respective  doctor specialist regarding to the disease given. just the doctor specialist is enough. be generalize for  head ache, fever, body pains it must give genersl physician,  [example : i have fever and head ache body pains, it should return General physician in one.]` },
           ],
           temperature: 0.7,

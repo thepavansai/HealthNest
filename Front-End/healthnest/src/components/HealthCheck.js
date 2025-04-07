@@ -17,7 +17,7 @@ const HealthCheck = ({ name, description }) => {
 
     switch (name) {
       case "Health Checkup":
-        navigate("/checkhealth");
+        navigate("/feeling-input");
         break;
       case "View Appointments":
         navigate("/appointments");
