@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.UserDTO;
-
+import com.healthnest.model.Doctor;
 import com.healthnest.model.User;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.UserService;
