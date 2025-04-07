@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 public class AppointmentShowDTO {
     private String doctorName;
     private String userName;
+    private String userPhoneNo;
     private String appointmentStatus;
+    private String description;
     private String appointmentDate;
     private String appointmentTime;
-    private String description;
-    private Integer phoneNo;
 }
