@@ -10,6 +10,7 @@ import ManageAppointments from './pages/ManageAppointments';
 import AdminDashboard from './components/AdminDashboard';
 import Dashboard from './pages/Dashboard';
 import CheckHealth from './pages/CheckHealth';
+import DoctorDashboard from './pages/DoctorDashboard';
 
 //import NotFound from './pages/NotFound'; // optional 404 page
 
@@ -29,6 +30,7 @@ function App() {
 
           <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/checkhealth" element={<CheckHealth/>}/>
+          <Route path="/doctordashboard" element={<DoctorDashboard/>}/>
           
         </Routes>
       </div>
