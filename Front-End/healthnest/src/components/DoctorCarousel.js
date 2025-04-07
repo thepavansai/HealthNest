@@ -7,7 +7,7 @@ const DoctorCarousel = () => {
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/admin/doctors')
+    axios.get('http://localhost:8000/admin/doctors')
       .then(res => {
         const availableDoctors = res.data.filter(doc => doc.availability === "Available");
         setDoctors(availableDoctors);
