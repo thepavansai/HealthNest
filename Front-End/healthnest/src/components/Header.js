@@ -60,7 +60,7 @@ const Header = () => {
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end">
                       <li>
-                        <button className="dropdown-item" onClick={() => handleNavigate("/edit-profile")}>
+                        <button className="dropdown-item" onClick={() => handleNavigate("/editprofile")}>
                           Edit Profile
                         </button>
                       </li>

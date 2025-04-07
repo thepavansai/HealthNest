@@ -62,7 +62,10 @@ public class UserController {
 	    }
 	}
 
-
+	@GetMapping("/userdetails/{userId}")
+	public User getUserDetails(@PathVariable Integer userId) {
+	    return userService.getUserDetails(userId);
+	}
 
 	
 
