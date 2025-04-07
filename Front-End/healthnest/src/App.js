@@ -12,6 +12,9 @@ import Dashboard from './pages/Dashboard';
 import CheckHealth from './pages/CheckHealth';
 import DoctorDashboard from './pages/DoctorDashboard';
 import FeelingInputComponent from './components/FeelingInputComponent';
+import UserDashboard from './pages/UserDashboard';
+import UserEditProfile from './pages/UserEditProfile';
+
 
 //import NotFound from './pages/NotFound'; // optional 404 page
 
@@ -28,11 +31,13 @@ function App() {
           <Route path="/doctorprofile" element={<DoctorProfile/>} />
           <Route path="/manageappointments" element={<ManageAppointments/>} />
           <Route path="/admin"element={<AdminDashboard/>}/>
+          <Route path="/user"element={<UserDashboard/>}/>
 
           <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/checkhealth" element={<CheckHealth/>}/>
           <Route path="/doctordashboard" element={<DoctorDashboard/>}/>
           <Route path="/feeling-input" element={<FeelingInputComponent />} />
+          <Route path="/editprofile" element={<UserEditProfile/>}/>
 
           
         </Routes>

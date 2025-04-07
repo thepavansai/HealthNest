@@ -1,0 +1,104 @@
+/* UserDashboard.css */
+
+/* General container styles */
+.user-dashboard {
+  background: #f0f8ff; /* Light Alice Blue background */
+  min-height: 100vh;
+  padding-bottom: 60px; /* Space for footer */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Hero Banner */
+.hero-banner {
+  background: linear-gradient(to right, #87cefa, #b0e6be); /* Soft blue gradient */
+  height: 250px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-banner .overlay {
+  color: #fff;
+  text-align: center;
+}
+
+.hero-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.hero-subtext {
+  font-size: 1.1rem;
+  margin-top: 10px;
+  color: #000000;
+}
+
+/* Card Styling */
+.card-custom {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s;
+}
+
+.card-custom:hover {
+  transform: translateY(-5px);
+}
+
+/* Profile Avatar */
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 3px solid #87cefa;
+}
+
+/* Appointment/Stats */
+.stat-card {
+  background: #f9fbfd;
+  border-left: 6px solid #87cefa;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+/* Quick Actions */
+.btn-outline-primary,
+.btn-outline-success,
+.btn-outline-warning,
+.btn-outline-danger {
+  min-width: 180px;
+  margin: 5px;
+  font-weight: 500;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: #87cefa;
+  color: white;
+}
+
+.btn-outline-success:hover {
+  background-color: #32cd32;
+  color: white;
+}
+
+.btn-outline-warning:hover {
+  background-color: #ffc107;
+  color: white;
+}
+
+.btn-outline-danger:hover {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+/* Footer override if needed */
+footer {
+  margin-top: auto;
+}
