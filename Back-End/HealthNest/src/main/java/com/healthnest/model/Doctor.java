@@ -1,14 +1,11 @@
 package com.healthnest.model;
-import java.util.List;
 
 import com.healthnest.model.enums.Gender;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -31,7 +28,6 @@ public class Doctor {
     private String availability;
     private String hospitalName;
     private Integer status;
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
-    private List<Appointment> appointments;
+
 
 }

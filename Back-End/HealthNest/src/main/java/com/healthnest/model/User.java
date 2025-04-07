@@ -1,7 +1,5 @@
 package com.healthnest.model;
 
-import java.util.List;
-
 import com.healthnest.dto.enums.Gender;
 
 import jakarta.persistence.*;
@@ -20,7 +18,4 @@ public class User {
 	private String email;
 	private String dateOfBirth;
 	private String phoneNo;
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Appointment> appointments;
 }

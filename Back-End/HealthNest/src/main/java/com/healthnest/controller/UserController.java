@@ -99,17 +99,17 @@ public class UserController {
 
 	@PatchMapping("/cancelappointment/{appointmentId}")
 	public ResponseEntity<String> cancelAppointment(@PathVariable Integer appointmentId) {
-		userService.cancleAppointment(appointmentId);
-		return ResponseEntity.ok("sucessfully cancelled Appointment");
+		userService.cancelAppointment(appointmentId);
+		return ResponseEntity.ok("successfully cancelled Appointment");
 	}
 
 	@PatchMapping("/changepassword/{userid}/{beforepassword}/{changepassword}")
 	public ResponseEntity<String> changepassword(@PathVariable Integer userid, @PathVariable String beforepassword,
 			@PathVariable String changepassword) {
 		if (userService.changePassword(userid, beforepassword, changepassword)) {
-			return ResponseEntity.ok("sucessfully changed");
+			return ResponseEntity.ok("successfully changed");
 		} else {
-			return ResponseEntity.ok("unsucessfull");
+			return ResponseEntity.ok("unsuccessful");
 		}
 
 	}
@@ -117,7 +117,7 @@ public class UserController {
 	@DeleteMapping("/deleteuser/{userId}")
 	public ResponseEntity<String> deleteAccount(@PathVariable Integer userId) {
 		userService.deleteAccount(userId);
-		return ResponseEntity.ok("Sucessfully deleted user");
+		return ResponseEntity.ok("Successfully deleted user");
 	}
 	
 	@PostMapping("/bookappointment")
@@ -125,7 +125,7 @@ public class UserController {
 	{
 		if(userService.bookAppointment(appointment))
 		{
-			return ResponseEntity.ok("your appointment is Sucessfully booked");
+			return ResponseEntity.ok("your appointment is Successfully booked");
 		}
 		else
 		{
