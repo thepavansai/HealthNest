@@ -80,4 +80,9 @@ public class DoctorService {
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
     }
+
+    public String deleteAllDoctors() {
+        doctorRepository.deleteAll();
+        return "All doctors deleted";
+    }
 }

@@ -115,6 +115,9 @@ public String getUserName(String email) {
 	return userRepository.findByEmail(email).get().getName();
 	
 }
-	
+public String deleteAllUsers() {
+		userRepository.deleteAll();
+		return "All users deleted";
+}
 
 }

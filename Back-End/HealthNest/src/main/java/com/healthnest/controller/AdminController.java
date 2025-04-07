@@ -5,10 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.UserDTO;
@@ -40,5 +37,13 @@ public class AdminController {
     public List<DoctorDTO> getAllDoctors(){
         List<Doctor> doctors = doctorService.getAllDoctors();
         return doctors.stream().map(doctor -> modelMapper.map(doctor, DoctorDTO.class)).collect(Collectors.toList());
+    }
+    @DeleteMapping("/users/delete")
+    public String deleteAllUsers() {
+        return  userService.deleteAllUsers();
+    }
+    @DeleteMapping("/doctors/delete")
+    public String deleteAllDoctors() {
+        return doctorService.deleteAllDoctors();
     }
 }
