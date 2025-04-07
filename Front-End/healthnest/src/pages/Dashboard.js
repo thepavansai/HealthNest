@@ -1,21 +1,17 @@
-import Footer from "../components/Footer";
-import HealthCheck from "../components/HealthCheck"
 import Header from "../components/Header"
+import HealthCheck from "../components/HealthCheck";
 import DoctorCarousel from "../components/DoctorCarousel";
+import Footer from "../components/Footer";
 
-const Home = () => {
+const Dashboard=()=>{
     const names = ["Health Checkup", "View Appointments", "Join Our Team"];
     const description = [
       "Consult a specialized doctor based on your condition.",
       "View and manage your upcoming appointments.",
       "If you're a doctor interested in joining us"
     ];
-  
-    return (
-      <div>
-        
-        <Header/>
-        
+    return(<div>
+        <Header></Header>
         <div className="container mt-5 pt-4"> {/* Increased top spacing */}
       <div className="row justify-content-center gap-3 mt-4">
         <div className="col-md-3">
@@ -34,11 +30,7 @@ const Home = () => {
     </div>
     <Footer></Footer>
     
-      </div>
-    );
-  };
-  
-  export default Home;
-  
+    </div>);
+}
 
-
+export default Dashboard;

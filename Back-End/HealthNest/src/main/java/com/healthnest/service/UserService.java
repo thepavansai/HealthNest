@@ -1,14 +1,19 @@
 package com.healthnest.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.healthnest.Repository.AppointmentRepository;
 import com.healthnest.Repository.UserRepository;
+import com.healthnest.dto.UserDTO;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
 
@@ -84,6 +89,32 @@ public class UserService {
 		}
 		
 	}
+
+	
+	public String login(String email, String password) {
+	    Optional<User> userOpt = userRepository.findByEmail(email);
+
+	    if (userOpt.isEmpty()) {
+	        return "User doesn't exist";
+	    }
+
+	    User user = userOpt.get();
+	    if (!user.getPassword().equals(password)) {
+	        return "Invalid Password";
+	    }
+
+	    return "Login successful";
+	}
+
+ public Integer getUserId(String email)
+ {
+	 return userRepository.findByEmail(email).get().getUserId();	 
+ }
+
+public String getUserName(String email) {
+	return userRepository.findByEmail(email).get().getName();
+	
+}
 	
 
 }

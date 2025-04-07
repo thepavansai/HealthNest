@@ -1,11 +1,14 @@
 package com.healthnest.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,7 +23,7 @@ import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
 import com.healthnest.service.AppointmentService;
 import com.healthnest.service.UserService;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -40,6 +43,28 @@ public class UserController {
 		userService.createUser(user);
 		return ResponseEntity.ok("User registered successfully!");
 	}
+	@PostMapping("/login")
+	public ResponseEntity<HashMap<String, String>> login(@RequestBody User user) {
+	    HashMap<String, String> response = new HashMap<>();
+
+	    String loginResult = userService.login(user.getEmail(), user.getPassword());
+
+	    response.put("message", loginResult);
+
+	    if ("Login successful".equals(loginResult)) {
+	        String id = userService.getUserId(user.getEmail()).toString();
+	        String name=userService.getUserName(user.getEmail());
+	        response.put("userId", id);
+	        response.put("name", name);
+	        return ResponseEntity.ok(response);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+	    }
+	}
+
+
+
+	
 
 	@PatchMapping("/editprofile")
 	public ResponseEntity<String> editProfile(@RequestBody User user) {

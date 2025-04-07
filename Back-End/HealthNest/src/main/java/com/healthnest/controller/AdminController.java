@@ -3,18 +3,20 @@ package com.healthnest.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.healthnest.model.Doctor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.UserDTO;
+
 import com.healthnest.model.User;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.UserService;
+
 
 @RestController
 @RequestMapping("/admin")

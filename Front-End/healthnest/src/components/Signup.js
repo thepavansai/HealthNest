@@ -1,9 +1,10 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     gender: '',
@@ -15,6 +16,7 @@ const SignUp = () => {
   });
 
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -23,24 +25,39 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
+      setSuccess('');
       return;
     }
 
-    setError('');
-    console.log("User Registered:", formData);
-    navigate("/login");
-    // TODO: Send formData to backend via axios/fetch
+    try {
+      const response = await axios.post('http://localhost:8080/users/Signup', {
+        name: formData.name,
+        gender: formData.gender,
+        password: formData.password,
+        email: formData.email,
+        dateOfBirth: formData.dateOfBirth,
+        phoneNo: formData.phoneNo
+      });
+
+      setSuccess(response.data);
+      setError('');
+      navigate("/login");
+    } catch (err) {
+      setError(err.response?.data || "Registration failed.");
+      setSuccess('');
+    }
   };
 
   return (
     <div className="container mt-5" style={{ maxWidth: '500px' }}>
       <h3 className="mb-4">Sign Up</h3>
       {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">{success}</Alert>}
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Name</Form.Label>
