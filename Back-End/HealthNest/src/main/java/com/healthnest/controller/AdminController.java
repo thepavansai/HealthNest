@@ -3,14 +3,18 @@ package com.healthnest.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.healthnest.dto.AppointmentShowDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.UserDTO;
+
 import com.healthnest.model.Doctor;
 import com.healthnest.model.User;
+import com.healthnest.service.AppointmentService;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.UserService;
 
@@ -22,6 +26,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    AppointmentService appointmentService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -45,5 +51,17 @@ public class AdminController {
     @DeleteMapping("/doctors/delete")
     public String deleteAllDoctors() {
         return doctorService.deleteAllDoctors();
+    }
+    @GetMapping("/appointments")
+    public List<AppointmentShowDTO> getAllAppointments(){
+        return appointmentService.getAllAppointments();
+    }
+    @DeleteMapping("/appointments/delete")
+    public String deleteAppointment() {
+        return appointmentService.deleteAllAppointments();
+    }
+    @DeleteMapping("/appointments/{id}")
+    public String deleteAppointment(@PathVariable("id") Integer appointmentId) {
+        return appointmentService.deleteAppointment(appointmentId);
     }
 }

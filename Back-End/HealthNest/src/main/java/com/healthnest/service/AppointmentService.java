@@ -48,9 +48,7 @@
 package com.healthnest.service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import com.healthnest.dto.AppointmentDTO;
 import com.healthnest.dto.AppointmentShowDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -147,5 +145,21 @@ public class AppointmentService {
 	public List<AppointmentShowDTO> getAppointments(Integer doctorId) {
 		return appointmentRepository.findByDoctorIdWithUserName(doctorId);
 	}
+	public List<AppointmentShowDTO> getAllAppointments(){
+
+        return appointmentRepository.findAllAppointments();
+	}
+	public String deleteAllAppointments(){
+        appointmentRepository.deleteAll();
+        return "All appointments deleted";
+    }
+    public String deleteAppointment(Integer appointmentId) {
+        if (appointmentRepository.existsById(appointmentId)) {
+            appointmentRepository.deleteById(appointmentId);
+            return "Appointment with ID " + appointmentId + " has been successfully deleted.";
+        } else {
+            return "Appointment with ID " + appointmentId + " does not exist.";
+        }
+    }
 }
 

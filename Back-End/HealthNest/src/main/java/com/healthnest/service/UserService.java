@@ -36,7 +36,11 @@ public class UserService {
 
 	}
 	
-	
+	public User getUserDetails(Integer userId) {
+	    return userRepository.findById(userId)
+	            .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+	}
+
 
 	public boolean isUserAlreadyRegistered(String email) {
 		Optional<User> user = userRepository.findByEmail(email);
