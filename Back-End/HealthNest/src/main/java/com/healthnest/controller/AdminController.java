@@ -17,7 +17,7 @@ import com.healthnest.model.User;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.UserService;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
