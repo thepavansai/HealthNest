@@ -130,7 +130,7 @@ public class AppointmentService {
 			throw new RuntimeException("You are not authorized to accept this appointment");
 		}
 
-		appointment.setAppointmentStatus("Accepted");
+		appointment.setAppointmentStatus("Upcoming");
 		return appointmentRepository.save(appointment);
 	}
 
@@ -141,7 +141,7 @@ public class AppointmentService {
 			throw new RuntimeException("You are not authorized to reject this appointment");
 		}
 
-		appointment.setAppointmentStatus("Rejected");
+		appointment.setAppointmentStatus("Cancelled");
 		return appointmentRepository.save(appointment);
 	}
 	public List<AppointmentShowDTO> getAppointments(Integer doctorId) {
