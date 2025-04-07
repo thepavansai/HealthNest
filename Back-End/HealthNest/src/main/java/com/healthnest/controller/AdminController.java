@@ -56,6 +56,10 @@ public class AdminController {
     public List<AppointmentShowDTO> getAllAppointments(){
         return appointmentService.getAllAppointments();
     }
+    @DeleteMapping("/appointments/delete")
+    public String deleteAppointment() {
+        return appointmentService.deleteAllAppointments();
+    }
     @DeleteMapping("/appointments/{id}")
     public String deleteAppointment(@PathVariable("id") Integer appointmentId) {
         return appointmentService.deleteAppointment(appointmentId);
