@@ -7,7 +7,7 @@ import ChangePassword from './pages/ChangePassword';
 import DeleteAccount from './pages/DeleteAccount';
 import DoctorProfile from './pages/DoctorProfile';
 import ManageAppointments from './pages/ManageAppointments';
-
+import AdminDashboard from './components/AdminDashboard';
 import Dashboard from './pages/Dashboard';
 import CheckHealth from './pages/CheckHealth';
 
@@ -25,6 +25,7 @@ function App() {
           <Route path="/deleteaccount" element={<DeleteAccount/>} />
           <Route path="/doctorprofile" element={<DoctorProfile/>} />
           <Route path="/manageappointments" element={<ManageAppointments/>} />
+          <Route path="/admin"element={<AdminDashboard/>}/>
 
           <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/checkhealth" element={<CheckHealth/>}/>
