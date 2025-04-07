@@ -1,6 +1,5 @@
 package com.healthnest.model;
 
-import org.hibernate.annotations.ManyToAny;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,9 +16,9 @@ import lombok.Data;
 @Data
 public class Appointment {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer appointmentId;
-        
+
     @NotNull
     private String appointmentDate;
     @NotNull
@@ -28,15 +27,13 @@ public class Appointment {
     private String appointmentStatus;
     @NotNull
     private String description;
-    
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    
+
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
-    private Doctor doctor;        
-    
-    
-    
+    private Doctor doctor;
+
 }

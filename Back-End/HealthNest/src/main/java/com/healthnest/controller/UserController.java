@@ -2,7 +2,6 @@ package com.healthnest.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.dto.UserDTO;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
@@ -32,7 +32,7 @@ public class UserController {
 	@Autowired
 	private ModelMapper modelMapper;
 	@Autowired
-	AppointmentService appointmentservice;
+	AppointmentService appointmentService;
 
 	@PostMapping("/Signup")
 	public ResponseEntity<String> createAccount(@RequestBody UserDTO userdto) {
@@ -79,37 +79,37 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/getupcomingappointments/{id}")
-	public List<Map<String, Object>> getupcomingAppointments1(@PathVariable Integer id) {
-		return appointmentservice.getUpcomingAppointments(id);
+	@GetMapping("/upcoming/{userId}")
+    public ResponseEntity<List<AppointmentSummaryDTO>> getUpcomingAppointments(@PathVariable Integer userId) {
+        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId, "Upcoming");
+        return ResponseEntity.ok(result);
+    }
 
-	}
+    @GetMapping("/completed/{userId}")
+    public ResponseEntity<List<AppointmentSummaryDTO>> getCompletedAppointments(@PathVariable Integer userId) {
+        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId, "Completed");
+        return ResponseEntity.ok(result);
+    }
 
-	@GetMapping("/getcompletedappointments/{id}")
-	public List<Map<String, Object>> getCompletedAppointments(@PathVariable Integer id) {
-		return appointmentservice.getCompletedAppointments(id);
-
-	}
-
-	@GetMapping("/getcanceledappointments/{id}")
-	public List<Map<String, Object>> getCanceledAppointments(@PathVariable Integer id) {
-		return appointmentservice.getCancelledAppointments(id);
-
-	}
+    @GetMapping("/cancelled/{userId}")
+    public ResponseEntity<List<AppointmentSummaryDTO>> getCancelledAppointments(@PathVariable Integer userId) {
+        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId, "Cancelled");
+        return ResponseEntity.ok(result);
+    }
 
 	@PatchMapping("/cancelappointment/{appointmentId}")
 	public ResponseEntity<String> cancelAppointment(@PathVariable Integer appointmentId) {
-		userService.cancleAppointment(appointmentId);
-		return ResponseEntity.ok("sucessfully cancelled Appointment");
+		userService.cancelAppointment(appointmentId);
+		return ResponseEntity.ok("successfully cancelled Appointment");
 	}
 
 	@PatchMapping("/changepassword/{userid}/{beforepassword}/{changepassword}")
 	public ResponseEntity<String> changepassword(@PathVariable Integer userid, @PathVariable String beforepassword,
 			@PathVariable String changepassword) {
 		if (userService.changePassword(userid, beforepassword, changepassword)) {
-			return ResponseEntity.ok("sucessfully changed");
+			return ResponseEntity.ok("successfully changed");
 		} else {
-			return ResponseEntity.ok("unsucessfull");
+			return ResponseEntity.ok("unsuccessful");
 		}
 
 	}
@@ -117,7 +117,7 @@ public class UserController {
 	@DeleteMapping("/deleteuser/{userId}")
 	public ResponseEntity<String> deleteAccount(@PathVariable Integer userId) {
 		userService.deleteAccount(userId);
-		return ResponseEntity.ok("Sucessfully deleted user");
+		return ResponseEntity.ok("Successfully deleted user");
 	}
 	
 	@PostMapping("/bookappointment")
@@ -125,7 +125,7 @@ public class UserController {
 	{
 		if(userService.bookAppointment(appointment))
 		{
-			return ResponseEntity.ok("your appointment is Sucessfully booked");
+			return ResponseEntity.ok("your appointment is Successfully booked");
 		}
 		else
 		{
