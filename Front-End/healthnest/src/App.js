@@ -7,7 +7,7 @@ import ChangePassword from './pages/ChangePassword';
 import DeleteAccount from './pages/DeleteAccount';
 import DoctorProfile from './pages/DoctorProfile';
 import ManageAppointments from './pages/ManageAppointments';
-import AdminDashboard from './components/AdminDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import Dashboard from './pages/Dashboard';
 import CheckHealth from './pages/CheckHealth';
 import DoctorDashboard from './pages/DoctorDashboard';

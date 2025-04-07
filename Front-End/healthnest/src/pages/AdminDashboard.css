@@ -1,11 +1,13 @@
-.user-dashboard {
+/* AdminDashboard.css */
+
+.admin-dashboard {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f3f8fc;
   min-height: 100vh;
 }
 
 .hero-banner {
-  background: linear-gradient(to right, #c2e9fb, #a1c4fd);
+  background: linear-gradient(to right, #e0c3fc, #8ec5fc);
   padding: 60px 20px;
   text-align: center;
   color: #000;
@@ -41,40 +43,6 @@
 .card-title {
   font-size: 1.25rem;
   font-weight: 600;
-}
-
-.btn-group.quick-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
-  gap: 20px;
-}
-
-.btn-group.quick-actions .btn {
-  border-radius: 8px;
-  padding: 12px 20px;
-  font-weight: 600;
-  width: 150px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.btn-outline-primary {
-  border: 2px solid #007bff;
-  color: #007bff;
-  background-color: #fff;
-}
-
-.btn-outline-warning {
-  border: 2px solid #ffc107;
-  color: #ffc107;
-  background-color: #fff;
-}
-
-.btn-outline-primary:hover,
-.btn-outline-warning:hover {
-  background-color: #f2f2f2;
 }
 
 .btn-group .btn {
@@ -126,11 +94,11 @@
     font-size: 1rem;
   }
 
-  .btn-group.quick-actions {
+  .btn-group {
     flex-direction: column;
   }
 
-  .btn-group.quick-actions .btn {
+  .btn-group .btn {
     width: 100%;
     margin-bottom: 10px;
   }

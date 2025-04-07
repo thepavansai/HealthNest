@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import './UserDashboard.css';
+import './AdminDashboard.css';
 
-const UserDashboard = () => {
+const AdminDashboard = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -12,16 +12,8 @@ const UserDashboard = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleHealthCheck = () => {
-    navigate('/checkhealth');
-  };
-
   const handleEditProfile = () => {
-    navigate('/editprofile');
-  };
-
-  const handleFeedback = () => {
-    navigate('/feedback');
+    navigate('/admin/editprofile');
   };
 
   const handleLogout = () => {
@@ -29,34 +21,42 @@ const UserDashboard = () => {
     navigate('/login');
   };
 
-  const handleBookAppointment = () => {
-    navigate('/bookappointment');
+  const handleManageDoctors = () => {
+    navigate('/admin/managedoctors');
+  };
+
+  const handleViewAppointments = () => {
+    navigate('/admin/viewappointments');
+  };
+
+  const handleManageUsers = () => {
+    navigate('/admin/manageusers');
   };
 
   return (
     <div>
       <Header />
-      <div className="user-dashboard">
+      <div className="admin-dashboard">
         <div className="hero-banner">
           <div className="overlay">
-            <h1 className="hero-text">Welcome back to HealthNest</h1>
-            <p className="hero-subtext">Manage your health with ease.</p>
+            <h1 className="hero-text">Welcome Admin</h1>
+            <p className="hero-subtext">Manage the system with ease.</p>
           </div>
         </div>
 
         <div className="container mt-5">
           <div className="row g-4">
-            {/* User Profile */}
+            {/* Admin Profile */}
             <div className="col-md-4">
               <div className="appointment-card profile-overview text-center p-4 position-relative">
                 <img
-                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                  alt="User Avatar"
+                  src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                  alt="Admin Avatar"
                   className="rounded-circle mb-3"
                 />
-                <h5 className="card-title mb-1">John Doe</h5>
-                <span className="badge bg-secondary">Patient</span>
-                <p className="text-muted mt-2 small">john.doe@email.com</p>
+                <h5 className="card-title mb-1">Admin Name</h5>
+                <span className="badge bg-primary">Administrator</span>
+                <p className="text-muted mt-2 small">admin@healthnest.com</p>
                 <div className="dropdown-container">
                   <button onClick={toggleDropdown} className="btn btn-outline-dark dropdown-toggle">
                     Profile
@@ -64,7 +64,6 @@ const UserDashboard = () => {
                   {dropdownOpen && (
                     <div className="dropdown-menu show">
                       <button className="dropdown-item" onClick={handleEditProfile}>Edit Profile</button>
-                      <button className="dropdown-item" onClick={handleFeedback}>Feedback</button>
                       <button className="dropdown-item text-danger" onClick={handleLogout}>Logout</button>
                     </div>
                   )}
@@ -72,18 +71,12 @@ const UserDashboard = () => {
               </div>
             </div>
 
-            {/* Appointments + Actions */}
+            {/* Admin Actions */}
             <div className="col-md-8">
               <div className="row mb-4">
-                <div className="col-sm-6 mb-3">
+                <div className="col-sm-12 mb-3">
                   <div className="appointment-card text-center py-4">
-                    <h3 className="text-primary mb-1">2</h3>
-                    <p className="mb-0">Upcoming Appointments</p>
-                  </div>
-                </div>
-                <div className="col-sm-6 mb-3">
-                  <div className="appointment-card text-center py-4">
-                    <h3 className="text-info mb-1">5</h3>
+                    <h3 className="text-info mb-1">50</h3>
                     <p className="mb-0">Total Consultations</p>
                   </div>
                 </div>
@@ -92,8 +85,9 @@ const UserDashboard = () => {
               <div className="appointment-card p-4">
                 <h5 className="mb-3 card-title">Quick Actions</h5>
                 <div className="btn-group flex-wrap">
-                  <button className="btn btn-outline-primary" onClick={handleHealthCheck}>Health Check</button>
-                  <button className="btn btn-outline-warning" onClick={handleBookAppointment}>Book Appointment</button>
+                  <button className="btn btn-outline-primary" onClick={handleManageDoctors}>Manage Doctors</button>
+                  <button className="btn btn-outline-success" onClick={handleViewAppointments}>View Appointments</button>
+                  <button className="btn btn-outline-warning" onClick={handleManageUsers}>Manage Users</button>
                 </div>
               </div>
             </div>
@@ -105,4 +99,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default AdminDashboard;
