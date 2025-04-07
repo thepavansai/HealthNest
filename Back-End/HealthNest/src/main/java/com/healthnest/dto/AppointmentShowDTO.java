@@ -13,4 +13,6 @@ public class AppointmentShowDTO {
     private String appointmentStatus;
     private String appointmentDate;
     private String appointmentTime;
+    private String description;
+    private Integer phoneNo;
 }
