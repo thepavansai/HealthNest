@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const FeelingInputComponent = () => {
+const FeelingInputComponent = ({ onSuggest }) => {
   const [text, setText] = useState('');
   const [response, setResponse] = useState('');
 
@@ -12,8 +12,14 @@ const FeelingInputComponent = () => {
         {
           model: "llama3-8b-8192",
           messages: [
-            { role: "system", content: "The user will give his current health condition suggest him a specailist doctor or general based on user's input in one word only" },
-            { role: "user", content: `I am having ${text}. Suggest me the respective  doctor specialist regarding to the disease given. just the doctor specialist is enough. be generalize for  head ache, fever, body pains it must give genersl physician,  [example : i have fever and head ache body pains, it should return General physician in one.]` },
+            {
+              role: "system",
+              content: "The user will give his current health condition. Suggest a specialist doctor or general physician based on the user's input. Respond with just one word like 'Cardiologist' or 'General physician'.",
+            },
+            {
+              role: "user",
+              content: `I am having ${text}. Suggest me the respective doctor specialist regarding to the disease given. Just return the doctor specialist in one word.`,
+            },
           ],
           temperature: 0.7,
         },
@@ -24,7 +30,14 @@ const FeelingInputComponent = () => {
           },
         }
       );
-      setResponse(res.data.choices[0].message.content);
+
+      const doctorSuggestion = res.data.choices[0].message.content.trim();
+      setResponse(doctorSuggestion);
+
+      // 🔔 Notify parent (CheckHealth.js)
+      if (onSuggest) {
+        onSuggest(doctorSuggestion);
+      }
     } catch (error) {
       setResponse("Error: " + error.message);
     }
@@ -39,7 +52,7 @@ const FeelingInputComponent = () => {
         <textarea
           className="form-control w-full h-40 p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           id="floatingTextarea"
-          placeholder="fever,headache"
+          placeholder="fever, headache"
           value={text}
           onChange={(e) => setText(e.target.value)}
         ></textarea>
