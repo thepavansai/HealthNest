@@ -3,7 +3,6 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import FeelingInputComponent from './components/FeelingInputComponent';
 import Login from './components/Login'; // make sure this file exists
 import SignUp from './components/Signup';
-import ViewAppointments from './components/ViewAppointments';
 import AdminDashboard from './pages/AdminDashboard';
 import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
@@ -14,6 +13,7 @@ import Home from './pages/Home';
 import ManageAppointments from './pages/ManageAppointments';
 import UserDashboard from './pages/UserDashboard';
 import UserEditProfile from './pages/UserEditProfile';
+import ViewAppointments from './pages/ViewAppointments';
 
 
 //import NotFound from './pages/NotFound'; // optional 404 page
