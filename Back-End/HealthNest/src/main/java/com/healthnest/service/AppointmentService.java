@@ -19,8 +19,8 @@ public class AppointmentService {
     @Autowired
     AppointmentRepository appointmentRepository;
 
-    public List<AppointmentSummaryDTO> getAppointmentSummaries(Integer userId, String status) {
-        return appointmentRepository.findAppointmentSummariesByUserIdAndStatus(userId, status);
+    public List<AppointmentSummaryDTO> getAppointmentSummaries(Integer userId) {
+        return appointmentRepository.findAppointmentSummariesByUserId(userId);
     }
 
 	public Appointment acceptAppointment(Integer appointmentId, Integer doctorId) {

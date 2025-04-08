@@ -22,15 +22,14 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Integ
 	@Query("SELECT new com.healthnest.dto.AppointmentShowDTO(a.appointmentId,d.doctorName,d.specialization, u.name, u.phoneNo, a.appointmentStatus, a.description, a.appointmentDate, a.appointmentTime) " +
 			"FROM Appointment a JOIN a.user u JOIN a.doctor d")
 	List<AppointmentShowDTO> findAllAppointments();
-	
+
 	@Query("SELECT new com.healthnest.dto.AppointmentSummaryDTO(" +
 		       "d.doctorName, d.experience, d.docPhnNo, d.consultationFee, d.rating, d.hospitalName, " +
 		       "a.appointmentDate, a.appointmentTime, a.appointmentStatus, a.description) " +
 		       "FROM Appointment a " +
 		       "JOIN a.doctor d " +
-		       "WHERE a.user.userId = :userId AND a.appointmentStatus = :status")
-		List<AppointmentSummaryDTO> findAppointmentSummariesByUserIdAndStatus(@Param("userId") Integer userId,
-		                                                                       @Param("status") String status);
+		       "WHERE a.user.userId = :userId")
+		List<AppointmentSummaryDTO> findAppointmentSummariesByUserId(@Param("userId") Integer userId);
 
-	 
+
 }
