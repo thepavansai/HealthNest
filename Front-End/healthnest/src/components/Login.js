@@ -13,11 +13,14 @@ const Login = ({ name }) => {
     e.preventDefault();
     setMessage("");
 
+    // Dynamically select endpoint based on user type
+    const loginUrl =
+      name === "doctor"
+        ? "http://localhost:8080/doctor-login"
+        : "http://localhost:8080/users/login";
+
     try {
-      const res = await axios.post("http://localhost:8080/users/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(loginUrl, { email, password });
 
       if (res.data.message === "Login successful") {
         setIsError(false);
@@ -25,7 +28,9 @@ const Login = ({ name }) => {
         localStorage.setItem("userId", res.data.userId);
         localStorage.setItem("userName", res.data.name);
 
-        setTimeout(() => navigate("/dashboard"), 500);
+        // Navigate to appropriate dashboard
+        const dashboardRoute = name === "doctor" ? "/doctordashboard" : "/dashboard";
+        setTimeout(() => navigate(dashboardRoute), 500);
       } else {
         setIsError(true);
         setMessage(res.data.message);
@@ -40,7 +45,6 @@ const Login = ({ name }) => {
     }
   };
 
-  // 🔁 Set signup path based on user type
   const getSignupPath = () => {
     if (name === "doctor") return "/doctor/signup";
     if (name === "admin") return "/admin/signup";
