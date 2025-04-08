@@ -8,7 +8,7 @@ const ViewAppointments = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
-  
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -21,53 +21,48 @@ const ViewAppointments = () => {
         setLoading(false);
       }
     };
-    
+
     fetchAppointments();
   }, []);
-  
+
   const completedAppointments = appointments.filter(
     appointment => appointment.appointmentStatus.toLowerCase() === 'completed'
   );
-  
+
   const upcomingAppointments = appointments.filter(
     appointment => appointment.appointmentStatus.toLowerCase() === 'upcoming'
   );
-  
+
   const cancelledAppointments = appointments.filter(
-    appointment => appointment.appointmentStatus.toLowerCase() === 'cancelled'  
+    appointment => appointment.appointmentStatus.toLowerCase() === 'cancelled'
   );
-  
+
   const filteredAppointments = appointments.filter(appointment => {
-    const matchesSearch = 
+    const matchesSearch =
       appointment.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       appointment.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     if (filterStatus === 'all') return matchesSearch;
     return matchesSearch && appointment.appointmentStatus.toLowerCase() === filterStatus.toLowerCase();
   });
-  
+
 
   const cancelAppointment = async (appointmentId, appointmentDate, appointmentTime) => {
-    // Combine appointment date and time into a single Date object
+
     const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
     const currentTime = new Date();
 
-    // Check if the appointment has already passed
     if (appointmentDateTime < currentTime) {
-        alert('You cannot cancel an appointment that has already passed.');
-        return;
+      alert('You cannot cancel an appointment that has already passed.');
+      return;
     }
-
-    // Calculate the difference in milliseconds
     const timeDifferenceInMilliseconds = appointmentDateTime - currentTime;
 
-    // Convert milliseconds to hours
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 3600);
 
-    // Check if the appointment is less than 3 hours away
     if (timeDifferenceInHours < 3) {
-        alert('You cannot cancel an appointment less than 3 hours before it starts.');
-        return;
+      alert('You cannot cancel an appointment less than 3 hours before it starts.');
+      return;
     }
     try {
       const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
@@ -88,16 +83,16 @@ const ViewAppointments = () => {
       alert('Error cancelling appointment. Please try again later.');
     }
   };
-  
+
   const getStatusClass = (status) => {
-    switch(status) {
+    switch (status) {
       case 'Completed': return 'status-completed';
       case 'Upcoming': return 'status-upcoming';
       case 'Cancelled': return 'status-cancelled';
       default: return '';
     }
   };
-  
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -106,7 +101,7 @@ const ViewAppointments = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="view-appointments-container">
       <div className="appointments-header">
@@ -121,7 +116,7 @@ const ViewAppointments = () => {
               <p>Total Appointments</p>
             </div>
           </div>
-          
+
           <div className="summary-card">
             <div className="summary-icon pending-icon">
               <FaCalendarAlt />
@@ -131,7 +126,7 @@ const ViewAppointments = () => {
               <p>Upcoming Appointments</p>
             </div>
           </div>
-          
+
           <div className="summary-card">
             <div className="summary-icon completed-icon">
               <FaCalendarCheck />
@@ -141,7 +136,7 @@ const ViewAppointments = () => {
               <p>Completed Appointments</p>
             </div>
           </div>
-          
+
           <div className="summary-card">
             <div className="summary-icon cancelled-icon">
               <FaCalendarAlt />
@@ -153,46 +148,46 @@ const ViewAppointments = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="appointments-filter">
         <div className="search-container">
           <FaSearch className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search by doctor or description" 
+          <input
+            type="text"
+            placeholder="Search by doctor or description"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        
+
         <div className="filter-buttons">
-          <button 
-            className={filterStatus === 'all' ? 'active' : ''} 
+          <button
+            className={filterStatus === 'all' ? 'active' : ''}
             onClick={() => setFilterStatus('all')}
           >
             All
           </button>
-          <button 
-            className={filterStatus === 'upcoming' ? 'active' : ''} 
+          <button
+            className={filterStatus === 'upcoming' ? 'active' : ''}
             onClick={() => setFilterStatus('upcoming')}
           >
             Upcoming
           </button>
-          <button 
-            className={filterStatus === 'completed' ? 'active' : ''} 
+          <button
+            className={filterStatus === 'completed' ? 'active' : ''}
             onClick={() => setFilterStatus('completed')}
           >
             Completed
           </button>
-          <button 
-            className={filterStatus === 'cancelled' ? 'active' : ''} 
+          <button
+            className={filterStatus === 'cancelled' ? 'active' : ''}
             onClick={() => setFilterStatus('cancelled')}
           >
             Cancelled
           </button>
         </div>
       </div>
-      
+
       <div className="appointments-section">
         <h2>All Appointments</h2>
         {filteredAppointments.length === 0 ? (
@@ -234,8 +229,8 @@ const ViewAppointments = () => {
                     <td>
                       <div className="action-buttons">
                         {appointment.appointmentStatus.toLowerCase() === 'upcoming' && (
-                          <button 
-                            className="cancel-btn" 
+                          <button
+                            className="cancel-btn"
                             onClick={() => cancelAppointment(appointment.appointmentId, appointment.appointmentDate, appointment.appointmentTime)}
                           >
                             Cancel
@@ -250,7 +245,7 @@ const ViewAppointments = () => {
           </div>
         )}
       </div>
-      
+
       <div className="appointments-section completed-section">
         <h2>Recently Completed Appointments</h2>
         {completedAppointments.length === 0 ? (
