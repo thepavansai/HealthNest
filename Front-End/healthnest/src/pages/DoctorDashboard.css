@@ -1,107 +1,151 @@
-.doctor-dashboard {
-  background-color: #f4f6f9;
-  min-height: 100vh;
-  padding-bottom: 40px;
+/* Main Container */
+.doctor-dashboard-container {
+  padding: 20px;
+  background-color: #f6f9fc;
 }
 
-.hero-banner {
-  background: linear-gradient(to right, #0000ff, #4a00e0);
-  color: #ffffff;
-  text-align: center;
-  padding: 60px 20px;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+/* Welcome Bar */
+.welcome-bar {
+  background: linear-gradient(to right, #cce5ff, #b3d7ff);
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
 }
 
-.hero-text {
-  font-size: 2.7rem;
-  font-weight: 700;
-  margin-bottom: 10px;
+.welcome-bar h2 {
+  margin: 0 0 5px;
+  color: #2c3e50;
+  font-weight: 600;
 }
 
-.hero-subtext {
-  font-size: 1.1rem;
-  font-weight: 300;
-  color: #e0e0e0;
+.welcome-bar p {
+  margin: 0;
+  color: #555;
 }
 
-.dashboard-content {
-  max-width: 1200px;
-  margin: 40px auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  padding: 0 20px;
-  justify-items: center;
+/* Sidebar Profile Card */
+.doctor-profile-card {
+  border-radius: 15px;
+  overflow: hidden;
 }
 
-.dashboard-card {
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  padding: 30px 25px;
-  width: 100%;
-  max-width: 350px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-.profile-image {
-  width: 110px;
-  height: 110px;
+.doctor-avatar {
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 50%;
-  border: 3px solid #3498db;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border: 4px solid #3498db;
 }
 
-.badge {
-  display: inline-block;
-  padding: 0.35em 0.65em;
-  font-size: 0.75em;
-  border-radius: 0.35rem;
+.doctor-name {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #2c3e50;
 }
 
-.appointments-list {
-  list-style: none;
+/* Quick Actions */
+.quick-actions ul {
   padding-left: 0;
-  text-align: left;
+  list-style: none;
 }
 
-.appointments-list li {
-  padding: 6px 0;
-  border-bottom: 1px solid #eee;
+.quick-actions .list-group-item {
+  padding: 12px 15px;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: 500;
+  transition: background-color 0.2s;
 }
 
-.tags {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 10px;
+.quick-actions .list-group-item a {
+  color: #3498db;
+  text-decoration: none;
 }
 
-.tag {
-  padding: 4px 10px;
-  font-size: 0.75rem;
-  border-radius: 12px;
+.quick-actions .list-group-item:hover {
+  background-color: #f9f9f9;
+}
+
+/* Stats Cards Section */
+.stats-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+}
+
+.stats-card h3 {
+  font-size: 2rem;
+  color: #3498db;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.stats-card p {
+  margin: 0;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Upcoming Patients Card */
+.upcoming-patients-card {
+  border-radius: 15px;
+}
+
+.upcoming-patients-card .card-body {
+  padding: 25px;
+}
+
+.upcoming-patients-card h4 {
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.upcoming-patients-card .list-group-item {
+  border: none;
+  padding: 15px 20px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+}
+
+.upcoming-patients-card .list-group-item:hover {
+  background-color: #e9f3fc;
+}
+
+.upcoming-patients-card .badge {
+  background-color: #3498db;
   color: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
 }
 
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-  .hero-text {
-    font-size: 2.2rem;
+  .doctor-dashboard-container {
+    padding: 10px;
   }
 
-  .dashboard-content {
-    grid-template-columns: 1fr;
+  .doctor-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .stats-card {
+    padding: 20px 10px;
+  }
+
+  .upcoming-patients-card .card-body {
+    padding: 15px;
   }
 }
-

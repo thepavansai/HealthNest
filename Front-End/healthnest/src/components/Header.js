@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ name }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    const name = localStorage.getItem("userName");
-    if (userId && name) {
+    const storedName = localStorage.getItem("userName");
+    if (userId && storedName) {
       setIsLoggedIn(true);
-      setUserName(name);
+      setUserName(storedName);
     }
   }, []);
 
@@ -20,6 +20,18 @@ const Header = () => {
     localStorage.removeItem("userName");
     setIsLoggedIn(false);
     navigate("/");
+  };
+
+  const getLoginPath = () => {
+    if (name === "doctor") return "/doctor/login";
+    if (name === "admin") return "/admin/login";
+    return "/login"; // default user login
+  };
+
+  const getSignupPath = () => {
+    if (name === "doctor") return "/doctor/signup";
+    if (name === "admin") return "/admin/signup";
+    return "/signup"; // default user signup
   };
 
   return (

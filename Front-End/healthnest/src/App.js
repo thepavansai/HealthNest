@@ -4,6 +4,9 @@ import FeelingInputComponent from './components/FeelingInputComponent';
 import Login from './components/Login'; // make sure this file exists
 import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
+import ManageDoctors from './pages/Admin/ManageDoctors';
+import ManageUsers from './pages/Admin/ManageUsers.js';
+import View from './pages/Admin/View.js';
 import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
 import DeleteAccount from './pages/DeleteAccount';
@@ -14,6 +17,9 @@ import ManageAppointments from './pages/ManageAppointments';
 import UserDashboard from './pages/UserDashboard';
 import UserEditProfile from './pages/UserEditProfile';
 import ViewAppointments from './pages/ViewAppointments';
+import DoctorLogin from './pages/DoctorLogin';
+import DoctorSignup from './pages/DoctorSignUp';
+
 
 
 //import NotFound from './pages/NotFound'; // optional 404 page
@@ -38,8 +44,9 @@ function App() {
           <Route path="/feeling-input" element={<FeelingInputComponent />} />
           <Route path="/editprofile" element={<UserEditProfile/>}/>
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
-
-          
+          <Route path="/admin/managedoctors" element={<ManageDoctors/>}/>
+          <Route path="/admin/manageusers" element={<ManageUsers/>}/>
+          <Route path="/admin/viewappointmets" element={<View/>} />
         </Routes>
       </div>
     </Router>

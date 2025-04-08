@@ -5,7 +5,6 @@ import Header from "../components/Header";
 import './ManageAppointments.css';
 
 const ManageAppointments = () => {
-  // Sample appointment data - would be fetched from API in a real application
   const [appointments, setAppointments] = useState([
     {
       id: 1,
@@ -14,7 +13,6 @@ const ManageAppointments = () => {
       date: "2023-06-15",
       time: "10:00 AM",
       status: "upcoming",
-      type: "In-person"
     },
     {
       id: 2,
@@ -23,7 +21,6 @@ const ManageAppointments = () => {
       date: "2023-06-10",
       time: "2:30 PM",
       status: "completed",
-      type: "Virtual"
     },
     {
       id: 3,
@@ -32,7 +29,6 @@ const ManageAppointments = () => {
       date: "2023-06-20",
       time: "11:15 AM",
       status: "upcoming",
-      type: "In-person"
     },
     {
       id: 4,
@@ -41,7 +37,6 @@ const ManageAppointments = () => {
       date: "2023-05-28",
       time: "3:45 PM",
       status: "cancelled",
-      type: "In-person"
     }
   ]);
 
@@ -51,47 +46,40 @@ const ManageAppointments = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Filter appointments based on status and search term
   const filteredAppointments = appointments.filter(appointment => {
     const matchesFilter = filter === 'all' || appointment.status === filter;
-    const matchesSearch = appointment.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          appointment.specialization.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      appointment.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      appointment.specialization.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
-  // Handle appointment cancellation
   const handleCancelAppointment = (appointment) => {
     setSelectedAppointment(appointment);
     setShowCancelModal(true);
   };
 
-  // Confirm cancellation
   const confirmCancellation = () => {
     setIsLoading(true);
-    
-    // Simulate API call
     setTimeout(() => {
-      const updatedAppointments = appointments.map(appointment => 
-        appointment.id === selectedAppointment.id 
-          ? { ...appointment, status: 'cancelled' } 
+      const updatedAppointments = appointments.map(appointment =>
+        appointment.id === selectedAppointment.id
+          ? { ...appointment, status: 'cancelled' }
           : appointment
       );
-      
       setAppointments(updatedAppointments);
       setShowCancelModal(false);
       setIsLoading(false);
     }, 1000);
   };
 
-  // Format date for display
   const formatDate = (dateString) => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // Get status badge class
   const getStatusBadgeClass = (status) => {
-    switch(status) {
+    switch (status) {
       case 'upcoming':
         return 'bg-primary';
       case 'completed':
@@ -110,41 +98,21 @@ const ManageAppointments = () => {
         <div className="row">
           <div className="col-12">
             <h1 className="mb-4">Manage Appointments</h1>
-            
-            {/* Filters and Search */}
             <div className="card mb-4">
               <div className="card-body">
                 <div className="row align-items-center">
                   <div className="col-md-6 mb-3 mb-md-0">
                     <div className="btn-group" role="group">
-                      <button 
-                        type="button" 
-                        className={`btn ${filter === 'all' ? 'btn-primary' : 'btn-outline-primary'}`}
-                        onClick={() => setFilter('all')}
-                      >
-                        All
-                      </button>
-                      <button 
-                        type="button" 
-                        className={`btn ${filter === 'upcoming' ? 'btn-primary' : 'btn-outline-primary'}`}
-                        onClick={() => setFilter('upcoming')}
-                      >
-                        Upcoming
-                      </button>
-                      <button 
-                        type="button" 
-                        className={`btn ${filter === 'completed' ? 'btn-primary' : 'btn-outline-primary'}`}
-                        onClick={() => setFilter('completed')}
-                      >
-                        Completed
-                      </button>
-                      <button 
-                        type="button" 
-                        className={`btn ${filter === 'cancelled' ? 'btn-primary' : 'btn-outline-primary'}`}
-                        onClick={() => setFilter('cancelled')}
-                      >
-                        Cancelled
-                      </button>
+                      {['all', 'upcoming', 'completed', 'cancelled'].map(type => (
+                        <button
+                          key={type}
+                          type="button"
+                          className={`btn ${filter === type ? 'btn-primary' : 'btn-outline-primary'}`}
+                          onClick={() => setFilter(type)}
+                        >
+                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </button>
+                      ))}
                     </div>
                   </div>
                   <div className="col-md-6">
@@ -164,8 +132,7 @@ const ManageAppointments = () => {
                 </div>
               </div>
             </div>
-            
-            {/* Appointments List */}
+
             {filteredAppointments.length > 0 ? (
               <div className="row">
                 {filteredAppointments.map(appointment => (
@@ -181,7 +148,7 @@ const ManageAppointments = () => {
                             {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
                           </span>
                         </div>
-                        
+
                         <div className="appointment-details">
                           <div className="detail-item">
                             <i className="far fa-calendar-alt"></i>
@@ -191,29 +158,15 @@ const ManageAppointments = () => {
                             <i className="far fa-clock"></i>
                             <span>{appointment.time}</span>
                           </div>
-                          <div className="detail-item">
-                            <i className="fas fa-video"></i>
-                            <span>{appointment.type}</span>
-                          </div>
                         </div>
-                        
+
                         <div className="mt-3 d-flex justify-content-between">
                           {appointment.status === 'upcoming' && (
-                            <button 
+                            <button
                               className="btn btn-outline-danger btn-sm"
                               onClick={() => handleCancelAppointment(appointment)}
                             >
                               Cancel Appointment
-                            </button>
-                          )}
-                          {appointment.status === 'upcoming' && (
-                            <button className="btn btn-outline-primary btn-sm">
-                              Reschedule
-                            </button>
-                          )}
-                          {appointment.status === 'completed' && (
-                            <button className="btn btn-outline-success btn-sm">
-                              View Report
                             </button>
                           )}
                           {appointment.status === 'cancelled' && (
@@ -237,28 +190,19 @@ const ManageAppointments = () => {
                 </button>
               </div>
             )}
-            
-            {/* Book New Appointment Button */}
-            <div className="text-center mt-4">
-              <button className="btn btn-primary btn-lg">
-                <i className="fas fa-plus-circle me-2"></i>
-                Book New Appointment
-              </button>
-            </div>
           </div>
         </div>
       </div>
-      
-      {/* Cancel Appointment Modal */}
+
       {showCancelModal && (
         <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Cancel Appointment</h5>
-                <button 
-                  type="button" 
-                  className="btn-close" 
+                <button
+                  type="button"
+                  className="btn-close"
                   onClick={() => setShowCancelModal(false)}
                 ></button>
               </div>
@@ -267,16 +211,16 @@ const ManageAppointments = () => {
                 <p className="text-danger">This action cannot be undone.</p>
               </div>
               <div className="modal-footer">
-                <button 
-                  type="button" 
-                  className="btn btn-secondary" 
+                <button
+                  type="button"
+                  className="btn btn-secondary"
                   onClick={() => setShowCancelModal(false)}
                 >
                   No, Keep Appointment
                 </button>
-                <button 
-                  type="button" 
-                  className="btn btn-danger" 
+                <button
+                  type="button"
+                  className="btn btn-danger"
                   onClick={confirmCancellation}
                   disabled={isLoading}
                 >
@@ -295,10 +239,10 @@ const ManageAppointments = () => {
           <div className="modal-backdrop fade show"></div>
         </div>
       )}
-      
+
       <Footer />
     </div>
   );
 };
 
-export default ManageAppointments;  
+export default ManageAppointments;

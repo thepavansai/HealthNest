@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Login = () => {
+const Login = ({ name }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -13,19 +13,25 @@ const Login = () => {
     e.preventDefault();
     setMessage("");
 
+    // Dynamically select endpoint based on user type
+    const loginUrl =
+      name === "doctor"
+        ? "http://localhost:8080/doctor-login"
+        : "http://localhost:8080/users/login";
+
     try {
-      const res = await axios.post("http://localhost:8080/users/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(loginUrl, { email, password });
 
       if (res.data.message === "Login successful") {
         setIsError(false);
         setMessage("Login successful! Redirecting...");
-        localStorage.setItem("userId", res.data.userId); 
+        localStorage.setItem("userId", res.data.userId);
         localStorage.setItem("userName", res.data.name);
 
         setTimeout(() => navigate("/user"), 500);
+        // Navigate to appropriate dashboard
+        const dashboardRoute = name === "doctor" ? "/doctordashboard" : "/dashboard";
+        setTimeout(() => navigate(dashboardRoute), 500);
       } else {
         setIsError(true);
         setMessage(res.data.message);
@@ -38,6 +44,12 @@ const Login = () => {
         setMessage("An error occurred during login.");
       }
     }
+  };
+
+  const getSignupPath = () => {
+    if (name === "doctor") return "/doctor/signup";
+    if (name === "admin") return "/admin/signup";
+    return "/signup";
   };
 
   return (
@@ -83,7 +95,7 @@ const Login = () => {
 
           <div className="text-center mt-3">
             <small>
-              Don't have an account? <a href="/signup">Register</a>
+              Don't have an account? <a href={getSignupPath()}>Register</a>
             </small>
           </div>
         </form>
