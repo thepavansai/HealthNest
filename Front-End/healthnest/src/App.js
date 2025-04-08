@@ -8,7 +8,7 @@ import DeleteAccount from './pages/DeleteAccount';
 import DoctorProfile from './pages/DoctorProfile';
 import ManageAppointments from './pages/ManageAppointments';
 import AdminDashboard from './pages/AdminDashboard';
-import Dashboard from './pages/Dashboard';
+//import Dashboard from './pages/Dashboard';
 import CheckHealth from './pages/CheckHealth';
 import DoctorDashboard from './pages/DoctorDashboard';
 import FeelingInputComponent from './components/FeelingInputComponent';
@@ -32,7 +32,7 @@ function App() {
           <Route path="/manageappointments" element={<ManageAppointments/>} />
           <Route path="/admin"element={<AdminDashboard/>}/>
           <Route path="/user"element={<UserDashboard/>}/>
-          <Route path="/dashboard" element={<Dashboard/>} />
+          <Route path="/dashboard" element={<UserDashboard/>} />
           <Route path="/checkhealth" element={<CheckHealth/>}/>
           <Route path="/doctordashboard" element={<DoctorDashboard/>}/>
           <Route path="/feeling-input" element={<FeelingInputComponent />} />

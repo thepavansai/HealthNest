@@ -1,73 +1,51 @@
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
-
+import 'bootstrap-icons/font/bootstrap-icons.css';
 const Footer = () => {
-  return (
-    <footer className="bg-gray-900 text-gray-300 pt-12 pb-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-2xl font-bold text-white mb-4">HealthNest</h3>
-            <p className="text-gray-400 leading-relaxed">
-              Your trusted health partner, connecting you with expert doctors anytime, anywhere.
-              We're committed to making healthcare accessible and convenient for everyone.
-            </p>
-          </div>
+return (
+<footer className="bg-dark text-light pt-5 pb-4 mt-5">
+<div className="container">
+<div className="row">
 
-          <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li><a href="/faq" className="hover:text-blue-400 transition-colors">FAQs</a></li>
-              <li><a href="/contact" className="hover:text-blue-400 transition-colors">Contact Us</a></li>
-              <li><a href="/about" className="hover:text-blue-400 transition-colors">About Us</a></li>
-              <li><a href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
-            </ul>
-          </div>
 
-          <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Contact</h4>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2">
-                <Phone className="h-5 w-5 text-blue-400" />
-                <span>+91 98765 43210</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="h-5 w-5 text-blue-400" />
-                <span>support@healthnest.com</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="h-5 w-5 text-blue-400" />
-                <span>123 Health Street, Hyderabad, India</span>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Follow Us</h4>
-            <div className="flex space-x-4">
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                <Facebook className="h-6 w-6" />
-              </a>
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                <Twitter className="h-6 w-6" />
-              </a>
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                <Instagram className="h-6 w-6" />
-              </a>
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                <Linkedin className="h-6 w-6" />
-              </a>
-            </div>
-          </div>
+        {/* Company Info */}
+        <div className="col-md-3 mb-4">
+          <h5 className="text-uppercase mb-3">HealthNest</h5>
+          <p>Your trusted health partner, connecting you with expert doctors anytime, anywhere.</p>
         </div>
 
-        <hr className="border-gray-800 my-8" />
-        
-        <div className="text-center text-gray-400">
-          <p>© 2025 HealthNest. All rights reserved.</p>
+        {/* Quick Links */}
+        <div className="col-md-3 mb-4">
+          <h5 className="text-uppercase mb-3">Quick Links</h5>
+          <ul className="list-unstyled">
+            <li><a href="/faq" className="text-light text-decoration-none">FAQs</a></li>
+            <li><a href="/contact" className="text-light text-decoration-none">Contact Us</a></li>
+            <li><a href="/about" className="text-light text-decoration-none">About Us</a></li>
+            <li><a href="/terms" className="text-light text-decoration-none">Terms of Service</a></li>
+          </ul>
+        </div>
+
+        {/* Contact Info */}
+        <div className="col-md-3 mb-4">
+          <h5 className="text-uppercase mb-3">Contact</h5>
+          <p><strong>Phone:</strong> +91 98765 43210</p>
+          <p><strong>Email:</strong> support@mediconnect.com</p>
+          <p><strong>Address:</strong> 123 Health Street, Hyderabad, India</p>
+        </div>
+
+        {/* Social Media */}
+        <div className="col-md-3 mb-4">
+          <h5 className="text-uppercase mb-3">Follow Us</h5>
+          <a href="#" className="text-light me-3 fs-5"><i className="bi bi-facebook"></i></a>
+          <a href="#" className="text-light me-3 fs-5"><i className="bi bi-twitter"></i></a>
+          <a href="#" className="text-light me-3 fs-5"><i className="bi bi-instagram"></i></a>
+          <a href="#" className="text-light fs-5"><i className="bi bi-linkedin"></i></a>
         </div>
       </div>
-    </footer>
-  );
+
+      <hr className="bg-secondary" />
+      <p className="text-center mb-0">© 2025 HealthNest. All rights reserved.</p>
+    </div>
+  </footer>
+);
 };
 
 export default Footer;
