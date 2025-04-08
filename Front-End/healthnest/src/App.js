@@ -3,7 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import FeelingInputComponent from './components/FeelingInputComponent';
 import Login from './components/Login'; // make sure this file exists
 import SignUp from './components/Signup';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboard from './pages/Admin/AdminDashboard';
 import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
 import DeleteAccount from './pages/DeleteAccount';
@@ -26,6 +26,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/viewappointments" element={<ViewAppointments />} />
           <Route path="/changepassword" element={<ChangePassword/>} />
           <Route path="/deleteaccount" element={<DeleteAccount/>} />
           <Route path="/doctorprofile" element={<DoctorProfile/>} />
