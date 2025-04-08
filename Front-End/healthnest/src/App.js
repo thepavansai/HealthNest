@@ -3,7 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import FeelingInputComponent from './components/FeelingInputComponent';
 import Login from './components/Login'; // make sure this file exists
 import SignUp from './components/Signup';
-import ViewAppointments from './components/ViewAppointments';
+import ViewAppointments from './pages/ViewAppointments';
 import AdminDashboard from './pages/AdminDashboard';
 import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
@@ -32,7 +32,6 @@ function App() {
           <Route path="/manageappointments" element={<ManageAppointments/>} />
           <Route path="/admin"element={<AdminDashboard/>}/>
           <Route path="/user"element={<UserDashboard/>}/>
-          <Route path="/dashboard" element={<UserDashboard/>} />
           <Route path="/checkhealth" element={<CheckHealth/>}/>
           <Route path="/doctordashboard" element={<DoctorDashboard/>}/>
           <Route path="/feeling-input" element={<FeelingInputComponent />} />
