@@ -28,6 +28,7 @@ const Login = ({ name }) => {
         localStorage.setItem("userId", res.data.userId);
         localStorage.setItem("userName", res.data.name);
 
+        setTimeout(() => navigate("/user"), 500);
         // Navigate to appropriate dashboard
         const dashboardRoute = name === "doctor" ? "/doctordashboard" : "/dashboard";
         setTimeout(() => navigate(dashboardRoute), 500);

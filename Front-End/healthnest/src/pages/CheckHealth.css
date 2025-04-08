@@ -1,0 +1,309 @@
+.check-health-container {
+    padding: 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f8fa;
+  }
+  
+  /* Suggestion Box - Adjust spacing */
+  .suggestion-box {
+    margin-bottom: 10px !important;
+  }
+  
+  /* Title - Suggested Specialists */
+  .suggested-doctors-carousel-container {
+    margin-top: 20px !important;
+  }
+  
+  .suggested-doctors-carousel-container h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #222;
+    margin-bottom: 30px;
+  }
+  
+  /* Carousel Container */
+  .suggested-doctors-carousel {
+    position: relative;
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  /* Inner Carousel */
+  .carousel-wrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  /* Individual Doctor Cards */
+  .doctor-card-carousel {
+    flex: 0 0 300px;
+    margin: 0 15px;
+    padding: 20px;
+    border-radius: 16px;
+    background-color: #fff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .doctor-card-carousel:hover {
+    transform: translateY(-5px);
+  }
+  
+  .doctor-card-carousel img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 12px;
+  }
+  
+  .doctor-card-carousel h4 {
+    font-size: 20px;
+    margin: 0;
+    color: #333;
+  }
+  
+  .doctor-card-carousel p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .doctor-card-carousel button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+  
+  .doctor-card-carousel button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Carousel Buttons */
+  .carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #555;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+  }
+  
+  .carousel-button.prev {
+    left: -10px;
+  }
+  
+  .carousel-button.next {
+    right: -10px;
+  }
+  
+  /* Selected Doctor Details */
+  .selected-doctor-details {
+    max-width: 700px;
+    margin: 40px auto;
+    background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .selected-doctor-details h3 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    text-align: center;
+  }
+  
+  .selected-doctor-details p {
+    margin: 6px 0;
+    font-size: 16px;
+    color: #444;
+  }
+  
+  .selected-doctor-details strong {
+    color: #2e86de;
+  }
+  
+  .selected-doctor-details .calendar {
+    margin-top: 25px;
+  }
+  
+  .selected-doctor-details .day-slot {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  .selected-doctor-details .slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .selected-doctor-details .slot-button {
+    padding: 10px 16px;
+    border: 1px solid #a0d6ff;
+    background-color: #e6f4ff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: #006bb3;
+  }
+  
+  .selected-doctor-details .slot-button:hover {
+    background-color: #cceaff;
+  }
+  
+  .selected-doctor-details .slot-button.selected {
+    background-color: #2e86de;
+    color: white;
+    border-color: #2e86de;
+  }
+  
+  /* Calendar Styles */
+  .calendar {
+    margin-top: 20px;
+  }
+  
+  .day-slot {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .slots {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .slot-button {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f2f2f2;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .slot-button:hover {
+    background: #e6e6e6;
+  }
+  
+  .slot-button.selected {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+  }
+  
+  /* Payment Section */
+.payment-section {
+    margin-top: 30px;
+    background: linear-gradient(135deg, #f0f8ff, #e0f2f7); /* Light blue gradient */
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Limit width for payment section */
+    text-align: center; /* Center content within payment section */
+    
+
+  }
+  
+  .payment-section h4 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center; /* Center form elements horizontally */
+  }
+  
+  .payment-form > div {
+    text-align: left; /* Align labels to the left within the form */
+    width: 100%; /* Make form elements take full width of the form */
+  }
+  
+  .payment-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: bold;
+  }
+  
+  .payment-form input[type="text"],
+  .payment-form input[type="password"] {
+    padding: 12px;
+    border: 1px solid #a8dadc; /* Light teal border */
+    border-radius: 8px;
+    font-size: 16px;
+    width: calc(100% - 24px); /* Adjust width for padding */
+    box-sizing: border-box;
+    background-color: #f8f9fa; /* Light background */
+  }
+  
+  .payment-form input[type="text"]:focus,
+  .payment-form input[type="password"]:focus {
+    border-color: #45a247; /* Green focus border */
+    outline: none;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3); /* Green focus shadow */
+  }
+  
+  .payment-form .form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    text-align: left;
+    width: 100%; /* Make form-check take full width */
+  }
+  
+  .payment-form .form-check input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .payment-form button[type="submit"] {
+    padding: 14px 20px;
+    background-color: #4CAF50; /* Green submit button */
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Make submit button take full width */
+  }
+  
+  .payment-form button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  /* Success Message */
+  .success-message {
+    color: #28a745;
+    font-weight: 600;
+    margin-top: 20px;
+    font-size: 18px;
+    background-color: #e6ffe9; /* Light green background */
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #b3e6b3; /* Light green border */
+    text-align: center; /* Center success message text */
+  }

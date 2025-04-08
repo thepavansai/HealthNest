@@ -52,7 +52,7 @@ const UserEditProfile = () => {
       .patch("http://localhost:8080/users/editprofile", updatedUser)
       .then(() => {
         toast.success("Profile updated successfully!", {
-          onClose: () => navigate("/dashboard"),
+          onClose: () => navigate("/user"),
           autoClose: 1500,
         });
       })
