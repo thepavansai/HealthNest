@@ -1,17 +1,18 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import FeelingInputComponent from './components/FeelingInputComponent';
 import Login from './components/Login'; // make sure this file exists
 import SignUp from './components/Signup';
-import ChangePassword from './pages/ChangePassword';
-import DeleteAccount from './pages/DeleteAccount';
-import DoctorProfile from './pages/DoctorProfile';
-import ManageAppointments from './pages/ManageAppointments';
+import ViewAppointments from './components/ViewAppointments';
 import AdminDashboard from './pages/AdminDashboard';
-import Dashboard from './pages/Dashboard';
+import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
+import Dashboard from './pages/Dashboard';
+import DeleteAccount from './pages/DeleteAccount';
 import DoctorDashboard from './pages/DoctorDashboard';
-import FeelingInputComponent from './components/FeelingInputComponent';
+import DoctorProfile from './pages/DoctorProfile';
+import Home from './pages/Home';
+import ManageAppointments from './pages/ManageAppointments';
 import UserDashboard from './pages/UserDashboard';
 import UserEditProfile from './pages/UserEditProfile';
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/doctordashboard" element={<DoctorDashboard/>}/>
           <Route path="/feeling-input" element={<FeelingInputComponent />} />
           <Route path="/editprofile" element={<UserEditProfile/>}/>
+          <Route path="/admin/viewappointments" element={<ViewAppointments />} />
 
           
         </Routes>

@@ -1,0 +1,36 @@
+.view-appointments {
+    padding: 30px;
+    background-color: #f4f6f9;
+    min-height: 100vh;
+  }
+  
+  .view-appointments h2 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  .appointment-section {
+    background: #ffffff;
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+  }
+  
+  .appointment-section h3 {
+    color: #34495e;
+    margin-bottom: 15px;
+  }
+  
+  .appointment-section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .appointment-section li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ececec;
+    font-size: 0.95rem;
+  }
+  

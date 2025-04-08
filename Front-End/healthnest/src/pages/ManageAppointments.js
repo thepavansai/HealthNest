@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState } from 'react';
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 import './ManageAppointments.css';
 
 const ManageAppointments = () => {
@@ -301,4 +301,4 @@ const ManageAppointments = () => {
   );
 };
 
-export default ManageAppointments; 
+export default ManageAppointments;  
