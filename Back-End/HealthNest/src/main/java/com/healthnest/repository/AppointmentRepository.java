@@ -1,5 +1,5 @@
 
-package com.healthnest.Repository;
+package com.healthnest.repository;
 
 import java.util.List;
 

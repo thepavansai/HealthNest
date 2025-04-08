@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.healthnest.Repository.AppointmentRepository;
+import com.healthnest.repository.AppointmentRepository;
 import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.model.Appointment;

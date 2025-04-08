@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.healthnest.dto.AppointmentShowDTO;
+import com.healthnest.dto.FeedBackDTO;
+import com.healthnest.service.FeedBackService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,8 @@ public class AdminController {
     AppointmentService appointmentService;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private FeedBackService feedBackService;
 
     @GetMapping("/users")
     public List<UserDTO> getAllUsers() {
@@ -63,5 +67,9 @@ public class AdminController {
     @DeleteMapping("/appointments/{id}")
     public String deleteAppointment(@PathVariable("id") Integer appointmentId) {
         return appointmentService.deleteAppointment(appointmentId);
+    }
+    @GetMapping("/feedbacks")
+    public List<FeedBackDTO> getAllFeedBacks(){
+        return feedBackService.getAllFeedBack();
     }
 }
