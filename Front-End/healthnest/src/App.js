@@ -37,7 +37,7 @@ function App() {
           <Route path="/doctordashboard" element={<DoctorDashboard/>}/>
           <Route path="/feeling-input" element={<FeelingInputComponent />} />
           <Route path="/editprofile" element={<UserEditProfile/>}/>
-          <Route path="/admin/viewappointments" element={<ViewAppointments />} />
+          <Route path="/user/viewappointments" element={<ViewAppointments />} />
 
           
         </Routes>
