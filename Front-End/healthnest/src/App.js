@@ -19,6 +19,7 @@ import UserEditProfile from './pages/UserEditProfile';
 import ViewAppointments from './pages/ViewAppointments';
 import DoctorLogin from './pages/DoctorLogin';
 import DoctorSignup from './pages/DoctorSignUp';
+import UserLogin from './pages/UserLogin.js';
 
 
 
@@ -30,7 +31,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<UserLogin/>} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/viewappointments" element={<ViewAppointments />} />
           <Route path="/changepassword" element={<ChangePassword/>} />
@@ -47,6 +48,8 @@ function App() {
           <Route path="/admin/managedoctors" element={<ManageDoctors/>}/>
           <Route path="/admin/manageusers" element={<ManageUsers/>}/>
           <Route path="/admin/viewappointmets" element={<View/>} />
+          <Route path="/doctor/login" element={<DoctorLogin/>}/>
+          <Route path="/doctor/signup" element={<DoctorSignup/>}/>
         </Routes>
       </div>
     </Router>
