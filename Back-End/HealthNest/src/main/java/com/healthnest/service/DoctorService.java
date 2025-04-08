@@ -16,9 +16,9 @@ public class DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
     
-    public String saveDoctor(Doctor doctor) {
-        if (doctorRepository.existsByDoctorNameAndSpecialization(doctor.getDoctorName(), doctor.getSpecialization())) {
-            return "Doctor with the same name and specialization already exists.";
+    public String addDoctor(Doctor doctor) {
+        if (doctorRepository.existsByDoctorNameAndEmailId(doctor.getDoctorName(), doctor.getEmailId())) {
+            return "Doctor with the same name and email already exists.";
         }
         doctorRepository.save(doctor);
         return "Saved Successfully";
@@ -41,6 +41,7 @@ public class DoctorService {
         return "Doctor not found";
     }
     // Update Availability
+   
     public String updateDoctorAvailability(Long doctorId, String isAvailable) {
         Optional<Doctor> doctor = doctorRepository.findById(doctorId);
         if (doctor.isPresent()) {
@@ -84,5 +85,9 @@ public class DoctorService {
     public String deleteAllDoctors() {
         doctorRepository.deleteAll();
         return "All doctors deleted";
+    }
+    public String getDoctorPasswordHashByEmailId(String emailId) {
+        Optional<Doctor> doctor = doctorRepository.findByEmailId(emailId);
+        return doctor.map(Doctor::getPassword).orElse(null);
     }
 }
