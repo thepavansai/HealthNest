@@ -1,12 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import './UserDashboard.css';
+import axios from 'axios';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+  });
+
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    if (userId) {
+      axios.get(`http://localhost:8080/users/userdetails/${userId}`)
+        .then((res) => {
+          setUserData(res.data);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch user details", err);
+        });
+    }
+  }, [userId]);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -54,9 +73,9 @@ const UserDashboard = () => {
                   alt="User Avatar"
                   className="rounded-circle mb-3"
                 />
-                <h5 className="card-title mb-1">John Doe</h5>
+                <h5 className="card-title mb-1">{userData.name}</h5>
                 <span className="badge bg-secondary">Patient</span>
-                <p className="text-muted mt-2 small">john.doe@email.com</p>
+                <p className="text-muted mt-2 small">{userData.email}</p>
                 <div className="dropdown-container">
                   <button onClick={toggleDropdown} className="btn btn-outline-dark dropdown-toggle">
                     Profile
