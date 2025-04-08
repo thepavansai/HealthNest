@@ -26,14 +26,15 @@ const ViewAppointments = () => {
   }, []);
   
   const completedAppointments = appointments.filter(
-    appointment => appointment.appointmentStatus === 'Completed'
+    appointment => appointment.appointmentStatus.toLowerCase() === 'completed'
   );
   
   const upcomingAppointments = appointments.filter(
-    appointment => appointment.appointmentStatus === 'Upcoming'
+    appointment => appointment.appointmentStatus.toLowerCase() === 'upcoming'
   );
+  
   const cancelledAppointments = appointments.filter(
-    appointment => appointment.appointmentStatus === 'Cancelled'  
+    appointment => appointment.appointmentStatus.toLowerCase() === 'cancelled'  
   );
   
   const filteredAppointments = appointments.filter(appointment => {
@@ -42,19 +43,42 @@ const ViewAppointments = () => {
       appointment.description.toLowerCase().includes(searchTerm.toLowerCase());
     
     if (filterStatus === 'all') return matchesSearch;
-    return matchesSearch && appointment.appointmentStatus === filterStatus;
+    return matchesSearch && appointment.appointmentStatus.toLowerCase() === filterStatus.toLowerCase();
   });
-  const cancelAppoint = async (appointmentId) => {  
+  
+
+  const cancelAppointment = async (appointmentId, appointmentDate, appointmentTime) => {
+    // Combine appointment date and time into a single Date object
+    const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
+    const currentTime = new Date();
+
+    // Check if the appointment has already passed
+    if (appointmentDateTime < currentTime) {
+        alert('You cannot cancel an appointment that has already passed.');
+        return;
+    }
+
+    // Calculate the difference in milliseconds
+    const timeDifferenceInMilliseconds = appointmentDateTime - currentTime;
+
+    // Convert milliseconds to hours
+    const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 3600);
+
+    // Check if the appointment is less than 3 hours away
+    if (timeDifferenceInHours < 3) {
+        alert('You cannot cancel an appointment less than 3 hours before it starts.');
+        return;
+    }
     try {
-      const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);  
-      if (response.status === 200) {      
+      const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
+      if (response.status === 200) {
         setAppointments(prevAppointments =>
           prevAppointments.map(appointment =>
             appointment.appointmentId === appointmentId
               ? { ...appointment, appointmentStatus: 'Cancelled' }
-              : appointment 
+              : appointment
           )
-        );    
+        );
         alert('Appointment cancelled successfully!');
       } else {
         alert('Failed to cancel appointment. Please try again.');
@@ -67,9 +91,9 @@ const ViewAppointments = () => {
   
   const getStatusClass = (status) => {
     switch(status) {
-      case 'completed': return 'status-completed';
-      case 'pending': return 'status-pending';
-      case 'cancelled': return 'status-cancelled';
+      case 'Completed': return 'status-completed';
+      case 'Upcoming': return 'status-upcoming';
+      case 'Cancelled': return 'status-cancelled';
       default: return '';
     }
   };
@@ -104,7 +128,7 @@ const ViewAppointments = () => {
             </div>
             <div className="summary-details">
               <h3>{upcomingAppointments.length}</h3>
-              <p>Upcominging Appointments</p>
+              <p>Upcoming Appointments</p>
             </div>
           </div>
           
@@ -117,13 +141,14 @@ const ViewAppointments = () => {
               <p>Completed Appointments</p>
             </div>
           </div>
+          
           <div className="summary-card">
-            <div className="summary-icon pending-icon">
+            <div className="summary-icon cancelled-icon">
               <FaCalendarAlt />
             </div>
             <div className="summary-details">
               <h3>{cancelledAppointments.length}</h3>
-              <p>Upcominging Appointments</p>
+              <p>Cancelled Appointments</p>
             </div>
           </div>
         </div>
@@ -148,20 +173,20 @@ const ViewAppointments = () => {
             All
           </button>
           <button 
-            className={filterStatus === 'pending' ? 'active' : ''} 
-            onClick={() => setFilterStatus('Upcoming')}
+            className={filterStatus === 'upcoming' ? 'active' : ''} 
+            onClick={() => setFilterStatus('upcoming')}
           >
-            Pending
+            Upcoming
           </button>
           <button 
             className={filterStatus === 'completed' ? 'active' : ''} 
-            onClick={() => setFilterStatus('Completed')}
+            onClick={() => setFilterStatus('completed')}
           >
             Completed
           </button>
           <button 
             className={filterStatus === 'cancelled' ? 'active' : ''} 
-            onClick={() => setFilterStatus('Cancelled')}
+            onClick={() => setFilterStatus('cancelled')}
           >
             Cancelled
           </button>
@@ -190,7 +215,7 @@ const ViewAppointments = () => {
               </thead>
               <tbody>
                 {filteredAppointments.map(appointment => (
-                     <tr key={appointment.appointmentId}>
+                  <tr key={appointment.appointmentId}>
                     <td>{appointment.appointmentId}</td>
                     <td>Dr. {appointment.doctorName}</td>
                     <td>{appointment.hospitalName}</td>
@@ -208,10 +233,13 @@ const ViewAppointments = () => {
                     </td>
                     <td>
                       <div className="action-buttons">
-                        {appointment.appointmentStatus === 'Upcoming' && (
-                          <>
-                           <button className="cancel-btn" onClick={() => cancelAppoint(appointment.appointmentId)}>Cancel</button>
-                          </>
+                        {appointment.appointmentStatus.toLowerCase() === 'upcoming' && (
+                          <button 
+                            className="cancel-btn" 
+                            onClick={() => cancelAppointment(appointment.appointmentId, appointment.appointmentDate, appointment.appointmentTime)}
+                          >
+                            Cancel
+                          </button>
                         )}
                       </div>
                     </td>
@@ -240,8 +268,7 @@ const ViewAppointments = () => {
                   </div>
                 </div>
                 <div className="completed-details">
-                <h4>#{appointment.appointmentId} -{appointment.doctorName} </h4>
-                  <p></p>
+                  <h4>#{appointment.appointmentId} - {appointment.doctorName}</h4>
                   <p>Hospital: {appointment.hospitalName}</p>
                   <p>Fee: ₹{appointment.consultationFee}</p>
                 </div>

@@ -1,5 +1,8 @@
 package com.healthnest.dto;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +18,6 @@ public class AppointmentShowDTO {
     private String userPhoneNo;
     private String appointmentStatus;
     private String description;
-    private String appointmentDate;
-    private String appointmentTime;
+    private LocalDate appointmentDate;
+    private LocalTime appointmentTime;
 }

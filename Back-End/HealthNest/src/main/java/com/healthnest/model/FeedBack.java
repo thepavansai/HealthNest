@@ -19,6 +19,7 @@ public class FeedBack {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Integer id;
     private String feedback;
+    private String emailId;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
