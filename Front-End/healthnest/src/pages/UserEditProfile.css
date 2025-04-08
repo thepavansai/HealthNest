@@ -1,0 +1,23 @@
+.edit-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    background: #f0f8ff; /* light blue background */
+  }
+  
+  .edit-profile-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .edit-profile-card h3 {
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+  }
+  

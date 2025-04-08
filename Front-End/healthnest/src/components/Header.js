@@ -8,7 +8,7 @@ const Header = () => {
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    const name = localStorage.getItem("userName"); // you must store this during login
+    const name = localStorage.getItem("userName");
     if (userId && name) {
       setIsLoggedIn(true);
       setUserName(name);
@@ -22,6 +22,10 @@ const Header = () => {
     navigate("/");
   };
 
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "blue" }}>
@@ -32,6 +36,7 @@ const Header = () => {
             aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
+
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
@@ -40,15 +45,11 @@ const Header = () => {
               <li className="nav-item">
                 <a className="nav-link text-white" href="/about">About Us</a>
               </li>
+
               {isLoggedIn ? (
                 <>
                   <li className="nav-item">
-                    <span className="nav-link text-white">Welcome, {userName}</span>
-                  </li>
-                  <li className="nav-item">
-                    <button className="btn btn-danger ms-2" onClick={handleLogout}>
-                      Logout
-                    </button>
+                    <a className="nav-link text-white" href="#">Welcome, {userName}</a>
                   </li>
                 </>
               ) : (

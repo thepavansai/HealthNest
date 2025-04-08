@@ -1,19 +1,13 @@
 package com.healthnest.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.healthnest.Repository.AppointmentRepository;
-import com.healthnest.Repository.UserRepository;
-import com.healthnest.dto.UserDTO;
+import com.healthnest.repository.AppointmentRepository;
+import com.healthnest.repository.UserRepository;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
 
@@ -35,6 +29,12 @@ public class UserService {
 		userRepository.save(user);
 
 	}
+	
+	public User getUserDetails(Integer userId) {
+	    return userRepository.findById(userId)
+	            .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+	}
+
 
 	public boolean isUserAlreadyRegistered(String email) {
 		Optional<User> user = userRepository.findByEmail(email);
@@ -56,7 +56,7 @@ public class UserService {
 		return (List<User>) userRepository.findAll();
 	}
 
-	public void cancleAppointment(Integer appointmentId) {
+	public void cancelAppointment(Integer appointmentId) {
 		Appointment appointment = appointmentRepository.findById(appointmentId).get();
 		appointment.setAppointmentStatus("Cancelled");
 	}
@@ -79,14 +79,8 @@ public class UserService {
 	
 	public boolean bookAppointment(Appointment appointment)
 	{
-		if(appointmentRepository.save(appointment)!=null)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+        appointmentRepository.save(appointment);
+        return true;
 		
 	}
 
@@ -115,6 +109,9 @@ public String getUserName(String email) {
 	return userRepository.findByEmail(email).get().getName();
 	
 }
-	
+public String deleteAllUsers() {
+		userRepository.deleteAll();
+		return "All users deleted";
+}
 
 }

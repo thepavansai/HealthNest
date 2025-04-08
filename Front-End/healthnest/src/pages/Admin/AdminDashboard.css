@@ -1,0 +1,105 @@
+/* AdminDashboard.css */
+
+.admin-dashboard {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f3f8fc;
+  min-height: 100vh;
+}
+
+.hero-banner {
+  background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+  padding: 60px 20px;
+  text-align: center;
+  color: #000;
+  position: relative;
+}
+
+.hero-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.hero-subtext {
+  font-size: 1.2rem;
+  color: #000;
+}
+
+.appointment-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.appointment-card:hover {
+  transform: translateY(-5px);
+}
+
+.profile-overview img {
+  width: 90px;
+  height: 90px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.btn-group .btn {
+  margin: 5px;
+}
+
+.dropdown-container {
+  margin-top: 15px;
+  position: relative;
+}
+
+.dropdown-menu {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu .dropdown-item {
+  display: block;
+  padding: 10px;
+  color: #333;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 767px) {
+  .hero-text {
+    font-size: 1.75rem;
+  }
+
+  .hero-subtext {
+    font-size: 1rem;
+  }
+
+  .btn-group {
+    flex-direction: column;
+  }
+
+  .btn-group .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}

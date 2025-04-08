@@ -14,9 +14,6 @@ const Home = () => {
       "View and manage your upcoming appointments.",
       "If you're a doctor interested in joining us"
     ];
-    // return (
-    //   <DeleteAccount/>
-    // )
     return (
       <div>
         

@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppointmentShowDTO {
+    private Integer appointmentId;
     private String doctorName;
+    private String doctorSpecialization;
     private String userName;
     private String userPhoneNo;
     private String appointmentStatus;

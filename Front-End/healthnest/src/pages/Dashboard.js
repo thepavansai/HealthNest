@@ -4,7 +4,7 @@ import DoctorCarousel from "../components/DoctorCarousel";
 import Footer from "../components/Footer";
 
 const Dashboard=()=>{
-    const names = ["Health Checkup", "View Appointments", "Join Our Team"];
+    const names = ["Health Suggestion", "View Appointments", "Join Our Team"];
     const description = [
       "Consult a specialized doctor based on your condition.",
       "View and manage your upcoming appointments.",
