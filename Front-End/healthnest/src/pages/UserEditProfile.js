@@ -1,37 +1,69 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./UserEditProfile.css";
 
 const UserEditProfile = () => {
   const navigate = useNavigate();
 
-  // Dummy default values — these can be loaded from API/localStorage
+  const [userId, setUserId] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [gender, setGender] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
 
   useEffect(() => {
-    // Load initial data (this is placeholder logic)
-    const storedName = localStorage.getItem("userName") || "John Doe";
-    const storedEmail = localStorage.getItem("userEmail") || "john@example.com";
-    const storedPhone = localStorage.getItem("userPhone") || "9876543210";
+    const storedUserId = localStorage.getItem("userId");
+    setUserId(storedUserId);
 
-    setName(storedName);
-    setEmail(storedEmail);
-    setPhone(storedPhone);
+    if (storedUserId) {
+      axios
+        .get(`http://localhost:8080/users/userdetails/${storedUserId}`)
+        .then((res) => {
+          const data = res.data;
+          setName(data.name || "");
+          setEmail(data.email || "");
+          setPhoneNo(data.phoneNo || "");
+          setGender(data.gender || "");
+          setDateOfBirth(data.dateOfBirth || "");
+        })
+        .catch(() => {
+          toast.error("Failed to fetch user details.");
+        });
+    }
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can send updated data to your backend here
-    alert("Profile updated successfully!");
-    localStorage.setItem("userName", name);
-    localStorage.setItem("userEmail", email);
-    localStorage.setItem("userPhone", phone);
+
+    const updatedUser = {
+      userId,
+      name,
+      email,
+      phoneNo,
+      gender,
+      dateOfBirth,
+    };
+
+    axios
+      .patch("http://localhost:8080/users/editprofile", updatedUser)
+      .then(() => {
+        toast.success("Profile updated successfully!", {
+          onClose: () => navigate("/dashboard"),
+          autoClose: 1500,
+        });
+      })
+      .catch(() => {
+        toast.error("Failed to update profile.");
+      });
   };
 
   return (
     <div className="edit-profile-container">
+      <ToastContainer position="top-right" />
       <div className="edit-profile-card">
         <h3 className="mb-4">Edit Profile</h3>
         <form onSubmit={handleSubmit}>
@@ -62,8 +94,35 @@ const UserEditProfile = () => {
             <input
               type="tel"
               className="form-control"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={phoneNo}
+              onChange={(e) => setPhoneNo(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group mb-3">
+            <label>Gender</label>
+            <select
+              className="form-control"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              required
+            >
+              <option value="">Select Gender</option>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+
+          <div className="form-group mb-3">
+            <label>Date of Birth</label>
+            <input
+              type="text"
+              className="form-control"
+              value={dateOfBirth}
+              onChange={(e) => setDateOfBirth(e.target.value)}
+              placeholder="DD-MM-YYYY"
               required
             />
           </div>

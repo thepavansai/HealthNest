@@ -48,59 +48,8 @@ const Header = () => {
 
               {isLoggedIn ? (
                 <>
-                  <li className="nav-item dropdown">
-                    <a
-                      className="nav-link dropdown-toggle text-white"
-                      href="#"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      Welcome, {userName}
-                    </a>
-                    <ul className="dropdown-menu dropdown-menu-end">
-                      <li>
-                        <button className="dropdown-item" onClick={() => handleNavigate("/editprofile")}>
-                          Edit Profile
-                        </button>
-                      </li>
-                      <li>
-                        <button className="dropdown-item" onClick={() => handleNavigate("/change-password")}>
-                          Change Password
-                        </button>
-                      </li>
-                      <li>
-                        <button className="dropdown-item" onClick={() => handleNavigate("/appointments")}>
-                          My Appointments
-                        </button>
-                      </li>
-                      <li>
-                        <button className="dropdown-item" onClick={() => handleNavigate("/health-reports")}>
-                          My Health Reports
-                        </button>
-                      </li>
-                      <li>
-                        <button className="dropdown-item" onClick={() => handleNavigate("/recommendations")}>
-                          Doctor Recommendations
-                        </button>
-                      </li>
-                      <li>
-                        <button className="dropdown-item" onClick={() => handleNavigate("/settings")}>
-                          Settings
-                        </button>
-                      </li>
-                      <li>
-                        <button className="dropdown-item text-danger" onClick={() => handleNavigate("/delete-account")}>
-                          Delete Account
-                        </button>
-                      </li>
-                      <li><hr className="dropdown-divider" /></li>
-                      <li>
-                        <button className="dropdown-item" onClick={handleLogout}>
-                          Logout
-                        </button>
-                      </li>
-                    </ul>
+                  <li className="nav-item">
+                    <a className="nav-link text-white" href="#">Welcome, {userName}</a>
                   </li>
                 </>
               ) : (
