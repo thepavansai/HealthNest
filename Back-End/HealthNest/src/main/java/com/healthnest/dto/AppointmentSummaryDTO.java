@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AppointmentSummaryDTO {
+		private Integer appointmentId;
 	 	private String doctorName;
 	    private Integer experience;
 	    private String docPhnNo;

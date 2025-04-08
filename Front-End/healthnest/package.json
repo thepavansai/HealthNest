@@ -10,11 +10,7 @@
     "axios": "^1.8.4",
     "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.11.3",
-<<<<<<< HEAD
-    "chart.js": "^4.4.8",
-=======
     "lucide-react": "^0.487.0",
->>>>>>> 522a6720de3af0925f5bb07185eb188adff5e7a7
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.9",
     "react-chartjs-2": "^5.3.0",
