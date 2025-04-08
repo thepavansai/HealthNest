@@ -90,21 +90,9 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/upcoming/{userId}")
+	@GetMapping("/appointments/{userId}")
     public ResponseEntity<List<AppointmentSummaryDTO>> getUpcomingAppointments(@PathVariable Integer userId) {
-        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId, "Upcoming");
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/completed/{userId}")
-    public ResponseEntity<List<AppointmentSummaryDTO>> getCompletedAppointments(@PathVariable Integer userId) {
-        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId, "Completed");
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/cancelled/{userId}")
-    public ResponseEntity<List<AppointmentSummaryDTO>> getCancelledAppointments(@PathVariable Integer userId) {
-        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId, "Cancelled");
+        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId);
         return ResponseEntity.ok(result);
     }
 

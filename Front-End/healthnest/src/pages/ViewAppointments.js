@@ -13,8 +13,7 @@ const ViewAppointments = () => {
     const fetchAppointments = async () => {
       try {
         setLoading(true);
-        // Replace with your actual API endpoint
-        const response = await axios.get('/api/appointments');
+        const response = await axios.get(`http://localhost:8080/users/appointments/${localStorage.getItem('userId')}`);
         setAppointments(response.data);
         setLoading(false);
       } catch (error) {
@@ -27,22 +26,44 @@ const ViewAppointments = () => {
   }, []);
   
   const completedAppointments = appointments.filter(
-    appointment => appointment.status === 'completed'
+    appointment => appointment.appointmentStatus === 'Completed'
   );
   
-  const pendingAppointments = appointments.filter(
-    appointment => appointment.status === 'pending'
+  const upcomingAppointments = appointments.filter(
+    appointment => appointment.appointmentStatus === 'Upcoming'
+  );
+  const cancelledAppointments = appointments.filter(
+    appointment => appointment.appointmentStatus === 'Cancelled'  
   );
   
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch = 
-      appointment.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       appointment.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      appointment.appointmentId.toString().includes(searchTerm);
+      appointment.description.toLowerCase().includes(searchTerm.toLowerCase());
     
     if (filterStatus === 'all') return matchesSearch;
-    return matchesSearch && appointment.status === filterStatus;
+    return matchesSearch && appointment.appointmentStatus === filterStatus;
   });
+  const cancelAppoint = async (appointmentId) => {  
+    try {
+      const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);  
+      if (response.status === 200) {      
+        setAppointments(prevAppointments =>
+          prevAppointments.map(appointment =>
+            appointment.appointmentId === appointmentId
+              ? { ...appointment, appointmentStatus: 'Cancelled' }
+              : appointment 
+          )
+        );    
+        alert('Appointment cancelled successfully!');
+      } else {
+        alert('Failed to cancel appointment. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error cancelling appointment:', error);
+      alert('Error cancelling appointment. Please try again later.');
+    }
+  };
   
   const getStatusClass = (status) => {
     switch(status) {
@@ -82,8 +103,8 @@ const ViewAppointments = () => {
               <FaCalendarAlt />
             </div>
             <div className="summary-details">
-              <h3>{pendingAppointments.length}</h3>
-              <p>Pending Appointments</p>
+              <h3>{upcomingAppointments.length}</h3>
+              <p>Upcominging Appointments</p>
             </div>
           </div>
           
@@ -96,6 +117,15 @@ const ViewAppointments = () => {
               <p>Completed Appointments</p>
             </div>
           </div>
+          <div className="summary-card">
+            <div className="summary-icon pending-icon">
+              <FaCalendarAlt />
+            </div>
+            <div className="summary-details">
+              <h3>{cancelledAppointments.length}</h3>
+              <p>Upcominging Appointments</p>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -104,7 +134,7 @@ const ViewAppointments = () => {
           <FaSearch className="search-icon" />
           <input 
             type="text" 
-            placeholder="Search by patient, doctor or ID" 
+            placeholder="Search by doctor or description" 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -119,19 +149,19 @@ const ViewAppointments = () => {
           </button>
           <button 
             className={filterStatus === 'pending' ? 'active' : ''} 
-            onClick={() => setFilterStatus('pending')}
+            onClick={() => setFilterStatus('Upcoming')}
           >
             Pending
           </button>
           <button 
             className={filterStatus === 'completed' ? 'active' : ''} 
-            onClick={() => setFilterStatus('completed')}
+            onClick={() => setFilterStatus('Completed')}
           >
             Completed
           </button>
           <button 
             className={filterStatus === 'cancelled' ? 'active' : ''} 
-            onClick={() => setFilterStatus('cancelled')}
+            onClick={() => setFilterStatus('Cancelled')}
           >
             Cancelled
           </button>
@@ -150,44 +180,37 @@ const ViewAppointments = () => {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Patient Name</th>
                   <th>Doctor</th>
+                  <th>Hospital</th>
                   <th>Date & Time</th>
-                  <th>Service</th>
+                  <th>Fee</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredAppointments.map(appointment => (
-                  <tr key={appointment.appointmentId}>
-                    <td>#{appointment.appointmentId}</td>
-                    <td>
-                      <div className="patient-info">
-                        {appointment.patientName}
-                        <span className="patient-email">{appointment.patientEmail}</span>
-                      </div>
-                    </td>
+                     <tr key={appointment.appointmentId}>
+                    <td>{appointment.appointmentId}</td>
                     <td>Dr. {appointment.doctorName}</td>
+                    <td>{appointment.hospitalName}</td>
                     <td>
                       <div className="appointment-time">
-                        <div>{new Date(appointment.date).toLocaleDateString()}</div>
-                        <span>{appointment.timeSlot}</span>
+                        <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
+                        <span>{appointment.appointmentTime}</span>
                       </div>
                     </td>
-                    <td>{appointment.service}</td>
+                    <td>₹{appointment.consultationFee}</td>
                     <td>
-                      <span className={`status-badge ${getStatusClass(appointment.status)}`}>
-                        {appointment.status}
+                      <span className={`status-badge ${getStatusClass(appointment.appointmentStatus)}`}>
+                        {appointment.appointmentStatus}
                       </span>
                     </td>
                     <td>
                       <div className="action-buttons">
-                        <button className="view-btn">View</button>
-                        {appointment.status === 'pending' && (
+                        {appointment.appointmentStatus === 'Upcoming' && (
                           <>
-                            <button className="complete-btn">Complete</button>
-                            <button className="cancel-btn">Cancel</button>
+                           <button className="cancel-btn" onClick={() => cancelAppoint(appointment.appointmentId)}>Cancel</button>
                           </>
                         )}
                       </div>
@@ -213,14 +236,14 @@ const ViewAppointments = () => {
                 <div className="completed-header">
                   <FaCheckCircle className="completed-icon" />
                   <div className="completed-date">
-                    {new Date(appointment.date).toLocaleDateString()} | {appointment.timeSlot}
+                    {new Date(appointment.appointmentDate).toLocaleDateString()} | {appointment.appointmentTime}
                   </div>
                 </div>
                 <div className="completed-details">
-                  <h4>#{appointment.appointmentId} - {appointment.patientName}</h4>
-                  <p>Doctor: Dr. {appointment.doctorName}</p>
-                  <p>Service: {appointment.service}</p>
-                  <p>Fee: ${appointment.fee}</p>
+                <h4>#{appointment.appointmentId} -{appointment.doctorName} </h4>
+                  <p></p>
+                  <p>Hospital: {appointment.hospitalName}</p>
+                  <p>Fee: ₹{appointment.consultationFee}</p>
                 </div>
               </div>
             ))}

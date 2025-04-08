@@ -4,6 +4,7 @@ import FeelingInputComponent from './components/FeelingInputComponent';
 import Login from './components/Login'; // make sure this file exists
 import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
+import ManageDoctors from './pages/Admin/ManageDoctors';
 import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
 import DeleteAccount from './pages/DeleteAccount';
@@ -36,12 +37,12 @@ function App() {
           <Route path="/manageappointments" element={<ManageAppointments/>} />
           <Route path="/admin"element={<AdminDashboard/>}/>
           <Route path="/user"element={<UserDashboard/>}/>
-          <Route path="/dashboard" element={<UserDashboard/>} />
           <Route path="/checkhealth" element={<CheckHealth/>}/>
           <Route path="/doctordashboard" element={<DoctorDashboard/>}/>
           <Route path="/feeling-input" element={<FeelingInputComponent />} />
           <Route path="/editprofile" element={<UserEditProfile/>}/>
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
+          <Route path="/admin/managedoctors" element={<ManageDoctors/>}/>
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup/>} />
 
