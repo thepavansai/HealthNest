@@ -5,6 +5,8 @@ import Login from './components/Login'; // make sure this file exists
 import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import ManageDoctors from './pages/Admin/ManageDoctors';
+import ManageUsers from './pages/Admin/ManageUsers.js';
+import View from './pages/Admin/View.js';
 import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
 import DeleteAccount from './pages/DeleteAccount';
@@ -43,11 +45,8 @@ function App() {
           <Route path="/editprofile" element={<UserEditProfile/>}/>
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
           <Route path="/admin/managedoctors" element={<ManageDoctors/>}/>
-          <Route path="/doctor/login" element={<DoctorLogin />} />
-          <Route path="/doctor/signup" element={<DoctorSignup/>} />
-
-
-          
+          <Route path="/admin/manageusers" element={<ManageUsers/>}/>
+          <Route path="/admin/viewappointmets" element={<View/>} />
         </Routes>
       </div>
     </Router>
