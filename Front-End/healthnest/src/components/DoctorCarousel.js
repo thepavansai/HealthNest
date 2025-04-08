@@ -7,7 +7,7 @@ const DoctorCarousel = () => {
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/admin/doctors')
+    axios.get('http://localhost:8080/admin/doctors')
       .then(res => {
         const availableDoctors = res.data.filter(doc => doc.availability === "Available");
         setDoctors(availableDoctors);
@@ -60,7 +60,7 @@ const DoctorCarousel = () => {
             <p className="text-sm text-gray-700 mt-1">{doctor.specialization}</p>
             <p className="text-sm text-gray-500">{doctor.hospitalName}</p>
             <p className="text-sm text-yellow-600 mt-1">⭐ {doctor.rating}</p>
-            <p className="text-sm font-semibold text-green-700 mt-1">₹{doctor.consultationFee}</p>
+
           </div>
         ))}
       </Carousel>

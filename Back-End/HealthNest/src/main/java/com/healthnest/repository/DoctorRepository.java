@@ -1,4 +1,4 @@
-package com.healthnest.Repository;
+package com.healthnest.repository;
 
 import com.healthnest.model.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;

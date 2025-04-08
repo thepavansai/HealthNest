@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.healthnest.Repository.AppointmentRepository;
-import com.healthnest.Repository.UserRepository;
+import com.healthnest.repository.AppointmentRepository;
+import com.healthnest.repository.UserRepository;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
 

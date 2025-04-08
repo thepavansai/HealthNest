@@ -1,7 +1,7 @@
 package com.healthnest.service;
 
 import com.healthnest.model.Doctor;
-import com.healthnest.Repository.DoctorRepository;
+import com.healthnest.repository.DoctorRepository;
 import com.healthnest.dto.DoctorDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.healthnest.Repository.AppointmentRepository;
+import com.healthnest.repository.AppointmentRepository;
 import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.model.Appointment;
@@ -19,8 +19,8 @@ public class AppointmentService {
     @Autowired
     AppointmentRepository appointmentRepository;
 
-    public List<AppointmentSummaryDTO> getAppointmentSummaries(Integer userId, String status) {
-        return appointmentRepository.findAppointmentSummariesByUserIdAndStatus(userId, status);
+    public List<AppointmentSummaryDTO> getAppointmentSummaries(Integer userId) {
+        return appointmentRepository.findAppointmentSummariesByUserId(userId);
     }
 
 	public Appointment acceptAppointment(Integer appointmentId, Integer doctorId) {

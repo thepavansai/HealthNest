@@ -3,6 +3,9 @@ package com.healthnest.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import com.healthnest.model.FeedBack;
+import com.healthnest.repository.FeedBackRepository;
+import com.healthnest.service.FeedBackService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +36,10 @@ public class UserController {
 	private ModelMapper modelMapper;
 	@Autowired
 	AppointmentService appointmentService;
+    @Autowired
+    private FeedBackRepository feedBackRepository;
+    @Autowired
+    private FeedBackService feedBackService;
 
 	@PostMapping("/Signup")
 	public ResponseEntity<String> createAccount(@RequestBody UserDTO userdto) {
@@ -67,6 +74,10 @@ public class UserController {
 	    return userService.getUserDetails(userId);
 	}
 
+	@PostMapping("/feeback")
+	public String submitFeedback(@RequestBody FeedBack feedBack) {
+		return feedBackService.addFeedBack(feedBack);
+	}
 	
 
 	@PatchMapping("/editprofile")
@@ -79,21 +90,9 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/upcoming/{userId}")
+	@GetMapping("/appointments/{userId}")
     public ResponseEntity<List<AppointmentSummaryDTO>> getUpcomingAppointments(@PathVariable Integer userId) {
-        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId, "Upcoming");
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/completed/{userId}")
-    public ResponseEntity<List<AppointmentSummaryDTO>> getCompletedAppointments(@PathVariable Integer userId) {
-        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId, "Completed");
-        return ResponseEntity.ok(result);
-    }
-
-    @GetMapping("/cancelled/{userId}")
-    public ResponseEntity<List<AppointmentSummaryDTO>> getCancelledAppointments(@PathVariable Integer userId) {
-        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId, "Cancelled");
+        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId);
         return ResponseEntity.ok(result);
     }
 

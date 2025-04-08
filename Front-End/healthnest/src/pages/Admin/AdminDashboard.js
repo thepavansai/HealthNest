@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -12,11 +12,9 @@ const AdminDashboard = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleEditProfile = () => {
-    navigate('/admin/editprofile');
-  };
+ 
 
-  const handleLogout = () => {
+   const handleLogout = () => {
     localStorage.clear();
     navigate('/login');
   };
@@ -35,7 +33,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <Header />
+      <Header/>
       <div className="admin-dashboard">
         <div className="hero-banner">
           <div className="overlay">
@@ -63,7 +61,7 @@ const AdminDashboard = () => {
                   </button>
                   {dropdownOpen && (
                     <div className="dropdown-menu show">
-                      <button className="dropdown-item" onClick={handleEditProfile}>Edit Profile</button>
+                      
                       <button className="dropdown-item text-danger" onClick={handleLogout}>Logout</button>
                     </div>
                   )}
