@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaCalendarCheck, FaCalendarTimes, FaCheckCircle, FaSearch } from 'react-icons/fa';
-import './ViewAppointments.css';
+import './View.css';
 
-const ViewAppointments = () => {
+const View = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -264,4 +264,4 @@ const ViewAppointments = () => {
   );
 };
 
-export default ViewAppointments;
+export default View;

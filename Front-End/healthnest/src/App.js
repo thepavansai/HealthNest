@@ -6,6 +6,7 @@ import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import ManageDoctors from './pages/Admin/ManageDoctors';
 import ManageUsers from './pages/Admin/ManageUsers.js';
+import View from './pages/Admin/View.js';
 import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
 import DeleteAccount from './pages/DeleteAccount';
@@ -42,7 +43,7 @@ function App() {
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
           <Route path="/admin/managedoctors" element={<ManageDoctors/>}/>
           <Route path="/admin/manageusers" element={<ManageUsers/>}/>
-          <Route path="/admin/viewappointmets" element={<ViewAppointments/>} />
+          <Route path="/admin/viewappointmets" element={<View/>} />
         </Routes>
       </div>
     </Router>
