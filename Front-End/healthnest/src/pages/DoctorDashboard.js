@@ -1,119 +1,100 @@
-
-
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import './DoctorDashboard.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import './DoctorDashboard.css';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DoctorDashboard = () => {
-  const navigate = useNavigate();
-
-  const pieData = {
-    labels: ['New Patients', 'Old Patients', 'Total Patients'],
-    datasets: [
-      {
-        label: 'Patient Summary',
-        data: [40, 60, 100],
-        backgroundColor: ['#2980b9', '#f39c12', '#8e44ad'],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const appointments = [
-    { name: 'M.J. Mical', diagnosis: 'Health Checkup', time: 'On Going' },
-    { name: 'Sanath Deo', diagnosis: 'Health Checkup', time: '12:30 PM' },
-    { name: 'Loeara Phanj', diagnosis: 'Report', time: '01:00 PM' },
-    { name: 'Komola Haris', diagnosis: 'Common Cold', time: '01:30 PM' },
+  const upcomingPatients = [
+    { id: 1, name: 'Alice Smith', time: '10:00 AM', date: '2025-04-09' },
+    { id: 2, name: 'Bob Johnson', time: '11:30 AM', date: '2025-04-09' },
   ];
 
+  const totalConsultations = 5;
+  const names="doctor";
+
   return (
+    
     <div>
-      <Header />
-      <div className="doctor-dashboard">
-        <div className="hero-banner">
-          <h1 className="hero-text">Welcome back, Dr. Alex Parker</h1>
-          <p className="hero-subtext">Your personalized dashboard at a glance</p>
+      <Header name={names}/>
+      <div className="container mt-4 doctor-dashboard-container">
+        {/* Welcome Bar */}
+        <div className="welcome-bar mb-4">
+          <h2>Welcome, Dr. John Doe 👋</h2>
+          <p>Here’s what’s on your schedule today.</p>
         </div>
 
-        <div className="dashboard-content">
-          {/* Profile */}
-          <div className="dashboard-card text-center">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/3870/3870822.png"
-              alt="Doctor Avatar"
-              className="profile-image"
-            />
-            <h5 className="mt-2">Dr. Alex Parker</h5>
-            <span className="badge bg-primary">Cardiologist</span>
-            <p className="text-muted small">alex.parker@healthcare.com</p>
-          </div>
-
-          {/* Summary Cards */}
-          <div className="dashboard-card">
-            <h3 className="text-primary">068</h3>
-            <p>Today Patients</p>
-          </div>
-          <div className="dashboard-card">
-            <h3 className="text-success">085</h3>
-            <p>Today Appointments</p>
-          </div>
-
-          {/* Pie Chart */}
-          <div className="dashboard-card">
-            <h5>Patient Summary</h5>
-            <Pie data={pieData} />
-          </div>
-
-          {/* Today's Appointments */}
-          <div className="dashboard-card">
-            <h5 className="mb-3">Today Appointments</h5>
-            <ul className="appointments-list">
-              {appointments.map((a, idx) => (
-                <li key={idx}>
-                  <strong>{a.name}</strong> - {a.diagnosis}
-                  <span className="float-end text-muted">{a.time}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Next Patient Details */}
-          <div className="dashboard-card">
-            <h5>Next Patient</h5>
-            <p><strong>Sanath Deo</strong></p>
-            <small>ID: 029000220005</small>
-            <p>DOB: 15 Jan 1989</p>
-            <p>Sex: Male | Height: 172 cm</p>
-            <p>Last Visit: 15 Dec 2021</p>
-            <div className="tags">
-              <span className="tag bg-warning">Asthma</span>
-              <span className="tag bg-info">Hypertension</span>
-              <span className="tag bg-danger">Fever</span>
+        <div className="row">
+          {/* Sidebar */}
+          <div className="col-md-4">
+            <div className="card shadow-sm doctor-profile-card">
+              <div className="card-body text-center">
+                <img
+                  src="https://images.unsplash.com/photo-1607746882042-944635dfe10e"
+                  alt="Doctor"
+                  className="rounded-circle mb-3 doctor-avatar"
+                />
+                <h4 className="doctor-name">Dr. John Doe</h4>
+                <p className="text-muted">Cardiologist</p>
+              </div>
+              <hr />
+              <div className="quick-actions p-3">
+                <h5 className="mb-3">Quick Actions</h5>
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item">
+                    <a href="/changepassword">🔒 Change Password</a>
+                  </li>
+                  <li className="list-group-item">
+                    <a href="/deleteaccount">🗑️ Delete Account</a>
+                  </li>
+                  <li className="list-group-item">
+                    <a href="/manageappointments">📅 Manage Appointments</a>
+                  </li>
+                  <li className="list-group-item">
+                    <a href="/doctorprofile">🧑‍⚕️ Edit Profile</a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div className="dashboard-card">
-            <h5>Quick Actions</h5>
-            <div className="btn-group flex-wrap mt-2">
-              <button className="btn btn-outline-primary" onClick={() => navigate('/manageappointments')}>
-                Manage Appointments
-              </button>
-              <button className="btn btn-outline-primary" onClick={() => navigate('/doctorprofile')}>
-                View Profile
-              </button>
-              <button className="btn btn-outline-success" onClick={() => navigate('/changepassword')}>
-                Change Password
-              </button>
-              <button className="btn btn-outline-danger" onClick={() => navigate('/deleteaccount')}>
-                Delete Account
-              </button>
+          {/* Main Content */}
+          <div className="col-md-8">
+            {/* Stats Cards */}
+            <div className="row g-4 mb-4">
+              <div className="col-md-6">
+                <div className="stats-card">
+                  <h3>{upcomingPatients.length}</h3>
+                  <p>Upcoming Appointments</p>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="stats-card">
+                  <h3>{totalConsultations}</h3>
+                  <p>Total Consultations</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Upcoming Patients */}
+            <div className="card shadow-sm upcoming-patients-card">
+              <div className="card-body">
+                <h4 className="mb-4">View Appointments</h4>
+                {upcomingPatients.length > 0 ? (
+                  <ul className="list-group">
+                    {upcomingPatients.map((patient) => (
+                      <li key={patient.id} className="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 className="mb-0">{patient.name}</h6>
+                          <small className="text-muted">{patient.date} • {patient.time}</small>
+                        </div>
+                        <span className="badge bg-primary">Scheduled</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted">No upcoming appointments.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -14,6 +14,9 @@ import ManageAppointments from './pages/ManageAppointments';
 import UserDashboard from './pages/UserDashboard';
 import UserEditProfile from './pages/UserEditProfile';
 import ViewAppointments from './pages/ViewAppointments';
+import DoctorLogin from './pages/DoctorLogin';
+import DoctorSignup from './pages/DoctorSignUp';
+
 
 
 //import NotFound from './pages/NotFound'; // optional 404 page
@@ -39,6 +42,9 @@ function App() {
           <Route path="/feeling-input" element={<FeelingInputComponent />} />
           <Route path="/editprofile" element={<UserEditProfile/>}/>
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
+          <Route path="/doctor/login" element={<DoctorLogin />} />
+          <Route path="/doctor/signup" element={<DoctorSignup/>} />
+
 
           
         </Routes>

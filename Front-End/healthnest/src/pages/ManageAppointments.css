@@ -1,3 +1,4 @@
+/* Same ManageAppointments.css you provided */
 .appointment-card {
   border-radius: 10px;
   border: none;
@@ -34,84 +35,10 @@
   margin-bottom: 10px;
 }
 
-.detail-item:last-child {
-  margin-bottom: 0;
-}
-
 .detail-item i {
   width: 24px;
   color: #3498db;
   margin-right: 10px;
-}
-
-.btn-group .btn {
-  border-radius: 20px;
-  margin-right: 5px;
-}
-
-.btn-group .btn:last-child {
-  margin-right: 0;
-}
-
-.input-group {
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.input-group .form-control {
-  border-radius: 20px 0 0 20px;
-  border: 1px solid #e0e0e0;
-  padding: 10px 15px;
-}
-
-.input-group .btn {
-  border-radius: 0 20px 20px 0;
-  padding: 10px 15px;
-}
-
-.btn-primary {
-  background-color: #3498db;
-  border-color: #3498db;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-weight: 500;
-  transition: all 0.3s;
-}
-
-.btn-primary:hover {
-  background-color: #2980b9;
-  border-color: #2980b9;
-  transform: translateY(-2px);
-}
-
-.btn-outline-primary {
-  color: #3498db;
-  border-color: #3498db;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-weight: 500;
-  transition: all 0.3s;
-}
-
-.btn-outline-primary:hover {
-  background-color: #3498db;
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-.btn-outline-danger {
-  color: #e74c3c;
-  border-color: #e74c3c;
-  border-radius: 20px;
-  padding: 8px 15px;
-  font-weight: 500;
-  transition: all 0.3s;
-}
-
-.btn-outline-danger:hover {
-  background-color: #e74c3c;
-  color: #ffffff;
-  transform: translateY(-2px);
 }
 
 .btn-outline-success {
@@ -128,40 +55,3 @@
   color: #ffffff;
   transform: translateY(-2px);
 }
-
-.modal-content {
-  border-radius: 10px;
-  border: none;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.modal-header {
-  border-bottom: 1px solid #e0e0e0;
-  padding: 15px 20px;
-}
-
-.modal-body {
-  padding: 20px;
-}
-
-.modal-footer {
-  border-top: 1px solid #e0e0e0;
-  padding: 15px 20px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .btn-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .btn-group .btn {
-    margin-bottom: 5px;
-  }
-  
-  .appointment-details {
-    padding: 10px;
-  }
-} 

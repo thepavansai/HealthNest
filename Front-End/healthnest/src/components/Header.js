@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ name }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    const name = localStorage.getItem("userName");
-    if (userId && name) {
+    const storedName = localStorage.getItem("userName");
+    if (userId && storedName) {
       setIsLoggedIn(true);
-      setUserName(name);
+      setUserName(storedName);
     }
   }, []);
 
@@ -22,8 +22,16 @@ const Header = () => {
     navigate("/");
   };
 
-  const handleNavigate = (path) => {
-    navigate(path);
+  const getLoginPath = () => {
+    if (name === "doctor") return "/doctor/login";
+    if (name === "admin") return "/admin/login";
+    return "/login"; // default user login
+  };
+
+  const getSignupPath = () => {
+    if (name === "doctor") return "/doctor/signup";
+    if (name === "admin") return "/admin/signup";
+    return "/signup"; // default user signup
   };
 
   return (
@@ -51,14 +59,19 @@ const Header = () => {
                   <li className="nav-item">
                     <a className="nav-link text-white" href="#">Welcome, {userName}</a>
                   </li>
+                  <li className="nav-item">
+                    <button className="btn btn-link nav-link text-white" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </li>
                 </>
               ) : (
                 <>
                   <li className="nav-item">
-                    <a className="nav-link text-white" href="/login">Login</a>
+                    <a className="nav-link text-white" href={getLoginPath()}>Login</a>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link text-white" href="/signup">Create Account</a>
+                    <a className="nav-link text-white" href={getSignupPath()}>Create Account</a>
                   </li>
                 </>
               )}

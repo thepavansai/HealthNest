@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Login = () => {
+const Login = ({ name }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -22,7 +22,7 @@ const Login = () => {
       if (res.data.message === "Login successful") {
         setIsError(false);
         setMessage("Login successful! Redirecting...");
-        localStorage.setItem("userId", res.data.userId); 
+        localStorage.setItem("userId", res.data.userId);
         localStorage.setItem("userName", res.data.name);
 
         setTimeout(() => navigate("/dashboard"), 500);
@@ -38,6 +38,13 @@ const Login = () => {
         setMessage("An error occurred during login.");
       }
     }
+  };
+
+  // 🔁 Set signup path based on user type
+  const getSignupPath = () => {
+    if (name === "doctor") return "/doctor/signup";
+    if (name === "admin") return "/admin/signup";
+    return "/signup";
   };
 
   return (
@@ -83,7 +90,7 @@ const Login = () => {
 
           <div className="text-center mt-3">
             <small>
-              Don't have an account? <a href="/signup">Register</a>
+              Don't have an account? <a href={getSignupPath()}>Register</a>
             </small>
           </div>
         </form>
