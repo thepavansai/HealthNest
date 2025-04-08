@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.healthnest.model.FeedBack;
-import com.healthnest.repository.FeedBackRepository;
 import com.healthnest.service.FeedBackService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,6 @@ public class UserController {
 	private ModelMapper modelMapper;
 	@Autowired
 	AppointmentService appointmentService;
-    @Autowired
-    private FeedBackRepository feedBackRepository;
     @Autowired
     private FeedBackService feedBackService;
 
