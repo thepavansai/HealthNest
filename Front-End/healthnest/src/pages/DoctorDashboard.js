@@ -1,122 +1,210 @@
-import React, { useEffect, useState, useRef } from 'react';
-import './DoctorDashboard.css';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import {
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  Avatar,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Badge,
+  useTheme,
+  Container,
+} from '@mui/material';
+import {
+  CalendarToday,
+  LocalHospital,
+  HealthAndSafety,
+  Edit,
+  Feedback,
+  Logout,
+  Person,
+  EventNote,
+  MedicalServices,
+  ArrowForward,
+} from '@mui/icons-material';
+import axios from 'axios';
+import './UserDashboard.css';
 
-const DoctorDashboard = () => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef(null);
+const UserDashboard = () => {
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+  });
 
-  const upcomingPatients = [
-    { id: 1, name: 'Alice Smith', time: '10:00 AM', date: '2025-04-09' },
-    { id: 2, name: 'Bob Johnson', time: '11:30 AM', date: '2025-04-09' },
-  ];
-
-  const totalConsultations = 5;
-  const names = "doctor";
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
+    if (userId) {
+      axios.get(`http://localhost:8080/users/userdetails/${userId}`)
+        .then((res) => {
+          setUserData(res.data);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch user details", err);
+        });
+    }
+  }, [userId]);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleHealthCheck = () => {
+    navigate('/checkhealth');
+  };
+
+  const handleEditProfile = () => {
+    navigate('/editprofile');
+    handleMenuClose();
+  };
+
+  const handleFeedback = () => {
+    navigate('/feedback');
+    handleMenuClose();
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+  };
+
+  const handleBookAppointment = () => {
+    navigate('/bookappointment');
+  };
+
+  const handleViewAppointments = () => {
+    navigate('/viewappointments');
+  };
 
   return (
-    <div>
-      <Header name={names} />
-      <div className="container mt-4 doctor-dashboard-container">
-        {/* Welcome Bar */}
-        <div className="welcome-bar mb-4">
-          <h2>Welcome, Dr. John Doe 👋</h2>
-          <p>Here’s what’s on your schedule today.</p>
-        </div>
+    <Box className="dashboard-wrapper">
+      <Header />
+      <Box className="hero-section">
+        <Container maxWidth="lg">
+          <Box className="hero-content">
+            <Typography variant="h2" className="hero-text">
+              Welcome back, {userData.name}
+            </Typography>
+            <Typography variant="h5" className="hero-subtext">
+              Your health is our priority
+            </Typography>
+            <Box className="hero-image">
+              <img 
+                src="https://img.freepik.com/free-vector/medical-healthcare-blue-color_1017-26807.jpg" 
+                alt="Healthcare" 
+                className="hero-bg-image"
+              />
+            </Box>
+          </Box>
+        </Container>
+      </Box>
 
-        <div className="row">
-          {/* Sidebar */}
-          <div className="col-md-4">
-            <div className="card shadow-sm doctor-profile-card">
-              <div className="card-body text-center">
-                <img
-                  src="https://images.unsplash.com/photo-1607746882042-944635dfe10e"
-                  alt="Doctor"
-                  className="rounded-circle mb-3 doctor-avatar"
-                />
-                <h4 className="doctor-name">Dr. John Doe</h4>
-                <p className="text-muted">Cardiologist</p>
-                <p className="text-muted">john.doe@healthnest.com</p>
+      <Container maxWidth="lg" className="dashboard-container">
+        <Grid container spacing={4} className="dashboard-content">
+          <Grid item xs={12} md={4}>
+            <Card className="profile-card">
+              <CardContent>
+                <Box className="profile-content">
+                  <Avatar
+                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                    className="large-avatar"
+                  />
+                  <Typography variant="h5" className="profile-name">
+                    {userData.name}
+                  </Typography>
+                  <Badge badgeContent="Patient" color="primary" className="profile-badge" />
+                  <Typography variant="body1" className="profile-email">
+                    {userData.email}
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-                {/* Profile Dropdown */}
-                <div className="dropdown mt-3" ref={dropdownRef}>
-                  <button
-                    className="btn btn-outline-secondary dropdown-toggle"
-                    type="button"
-                    onClick={() => setShowDropdown(!showDropdown)}
+          <Grid item xs={12} md={4}>
+            <Card className="dashboard-card appointment-card" onClick={handleViewAppointments}>
+              <CardContent>
+                <Box className="card-content">
+                  <EventNote className="large-icon" />
+                  <Typography variant="h2" className="card-number">
+                    2
+                  </Typography>
+                  <Typography variant="h6" className="card-title">
+                    Upcoming Appointments
+                  </Typography>
+                  <Button 
+                    endIcon={<ArrowForward />}
+                    className="view-button"
                   >
-                    Profile
-                  </button>
-                  {showDropdown && (
-                    <ul className="dropdown-menu show" style={{ position: 'absolute', display: 'block' }}>
-                      <li><a className="dropdown-item" href="/doctor/editprofile">Edit Profile</a></li>
-                      <li><a className="dropdown-item" href="/changepassword">Change Password</a></li>
-                    </ul>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+                    View Details
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          {/* Main Content */}
-          <div className="col-md-8">
-            {/* Stats Cards */}
-            <div className="row g-4 mb-4">
-              <div className="col-md-6">
-                <div className="stats-card">
-                  <h3>{upcomingPatients.length}</h3>
-                  <p>View Appointments</p>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="stats-card">
-                  <h3>{totalConsultations}</h3>
-                  <p>Total Consultations</p>
-                </div>
-              </div>
-            </div>
+          <Grid item xs={12} md={4}>
+            <Card className="dashboard-card consultation-card">
+              <CardContent>
+                <Box className="card-content">
+                  <MedicalServices className="large-icon" />
+                  <Typography variant="h2" className="card-number">
+                    5
+                  </Typography>
+                  <Typography variant="h6" className="card-title">
+                    Total Consultations
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-            {/* Upcoming Patients */}
-            <div className="card shadow-sm upcoming-patients-card">
-              <div className="card-body">
-                <h4 className="mb-4">View Appointments</h4>
-                {upcomingPatients.length > 0 ? (
-                  <ul className="list-group">
-                    {upcomingPatients.map((patient) => (
-                      <li key={patient.id} className="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                          <h6 className="mb-0">{patient.name}</h6>
-                          <small className="text-muted">{patient.date} • {patient.time}</small>
-                        </div>
-                        <span className="badge bg-primary">Scheduled</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-muted">No upcoming appointments.</p>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          <Grid item xs={12}>
+            <Card className="quick-actions-card">
+              <CardContent>
+                <Typography variant="h4" className="section-title">
+                  Quick Actions
+                </Typography>
+                <Box className="action-buttons">
+                  <Button
+                    variant="contained"
+                    startIcon={<HealthAndSafety />}
+                    onClick={handleHealthCheck}
+                    className="action-button health-check"
+                  >
+                    Health Check
+                  </Button>
+                  <Button
+                    variant="contained"
+                    startIcon={<LocalHospital />}
+                    onClick={handleBookAppointment}
+                    className="action-button book-appointment"
+                  >
+                    Book Appointment
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
       <Footer />
-    </div>
+    </Box>
   );
 };
 
-export default DoctorDashboard;
+export default UserDashboard;
