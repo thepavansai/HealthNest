@@ -1,3 +1,14 @@
+/* Add these new styles at the top of the file */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
 .app-header {
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -19,6 +30,8 @@
     display: flex;
     align-items: center;
     gap: 2rem;
+    width: 100%;
+    justify-content: space-between;
   }
   
   .brand {
@@ -112,19 +125,31 @@
   
   .user-info {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 0.5rem;
+    max-width: 250px;
+    padding: 0.5rem 0.75rem;
+    background-color: rgba(79, 70, 229, 0.05);
+    border-radius: 6px;
+    overflow: hidden;
   }
   
   .user-greeting {
     color: #6b7280;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   
   .user-name {
     color: #1f2937;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+    line-height: 1.2;
   }
   
   .logout-button {
@@ -210,67 +235,53 @@
   .auth-buttons {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
   }
-  
+
   .btn-login, .btn-signup {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    padding: 0.625rem 1.25rem;
-    border-radius: 10px;
+    padding: 0.5rem 1.25rem;
+    height: 36px;
+    border-radius: 8px;
     font-weight: 600;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;  /* Removes underline */
+    font-size: 0.9375rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
   }
-  
+
   .btn-login {
+    background-color: rgba(79, 70, 229, 0.08);
     color: #4f46e5;
-    background-color: #f5f5ff;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
+    min-width: 120px;
   }
-  
+
   .btn-login:hover {
-    background-color: #ededff;
+    background-color: rgba(79, 70, 229, 0.12);
     transform: translateY(-1px);
   }
-  
-  .btn-login:active {
-    transform: translateY(0);
-  }
-  
-  .btn-login .btn-icon {
-    font-size: 1.1rem;
-    line-height: 1;
-  }
-  
+
   .btn-signup {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.1);
+    min-width: 130px;
   }
-  
+
   .btn-signup:hover {
-    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 4px 8px rgba(79, 70, 229, 0.2);
     transform: translateY(-1px);
   }
-  
-  .btn-signup:active {
-    transform: translateY(0);
+
+  .btn-login .btn-icon,
+  .btn-signup .btn-icon {
+    font-size: 1.1rem;
   }
-  
-  .btn-signup .btn-arrow {
-    font-size: 1.2rem;
-    transition: transform 0.2s ease;
-  }
-  
-  .btn-signup:hover .btn-arrow {
-    transform: translateX(4px);
-  }
-  
+
   /* Add ripple effect */
   .btn-login::after, .btn-signup::after {
     content: '';
@@ -303,23 +314,68 @@
     .search-bar {
       width: 250px;
     }
+
+    .header-container {
+      padding: 0.75rem 1rem;
+    }
+
+    .brand-name {
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      gap: 1.5rem;
+    }
   }
   
   @media (max-width: 768px) {
-    .header-container {
-      padding: 1rem;
-    }
-    
     .search-bar {
       display: none;
     }
     
-    .nav-links {
-      display: none;
+    .header-container {
+      padding: 1rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
     }
     
+    .mobile-menu-btn {
+      display: block;
+    }
+
+    .header-right {
+      display: none;
+    }
+
+    .header-right.mobile-menu-open {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .nav-link {
+      padding: 0.75rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    .user-info {
+      max-width: 200px;
+      padding: 0.5rem;
+    }
+
     .user-name {
-      font-size: 0.9rem;
+      max-width: 130px;
     }
     
     .user-name-display {
@@ -335,12 +391,12 @@
     }
     
     .auth-buttons {
-      gap: 0.75rem;
+      gap: 0.5rem;
     }
-  
+
     .btn-login, .btn-signup {
+      min-width: 110px;
       padding: 0.5rem 1rem;
-      font-size: 0.9rem;
     }
     
     .user-greeting {
@@ -349,16 +405,30 @@
     
     .user-controls {
       gap: 1rem;
+      width: 100%;
+      justify-content: center;
     }
   }
   
   @media (max-width: 480px) {
     .brand-name {
+      display: block;
+      font-size: 1.25rem;
+    }
+    
+    .user-info {
+      max-width: 150px;
+      padding: 0.375rem;
+      background: none;
+    }
+    
+    .user-greeting {
       display: none;
     }
     
     .user-name {
-      display: none;
+      max-width: 120px;
+      font-size: 0.875rem;
     }
     
     .user-name-display {
@@ -382,6 +452,9 @@
     
     .btn-login {
       padding: 0.5rem;
+      min-width: 42px;
+      width: 42px;
+      justify-content: center;
     }
   
     .btn-login .btn-text {
@@ -394,6 +467,51 @@
     }
   
     .btn-signup {
-      padding: 0.5rem 0.875rem;
+      padding: 0.5rem;
+      min-width: 42px;
+      width: 42px;
+      justify-content: center;
+    }
+
+    .btn-signup .btn-text {
+      display: none;
+    }
+
+    .btn-signup .btn-icon {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .auth-buttons {
+      justify-content: center;
+      width: auto;
+    }
+
+    .user-controls {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    .user-info {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .brand-name {
+      font-size: 1.1rem;
+    }
+    
+    .header-container {
+      padding: 0.5rem;
+    }
+    
+    .user-info {
+      max-width: 120px;
+    }
+    
+    .user-name {
+      max-width: 100px;
     }
   }

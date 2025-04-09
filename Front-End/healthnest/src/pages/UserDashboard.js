@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import './UserDashboard.css';
 import axios from 'axios';
-import { FaCalendarCheck, FaUserEdit, FaComment, FaSignOutAlt, FaHeartbeat, FaClipboardList } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaCalendarCheck, FaClipboardList, FaComment, FaHeartbeat, FaSignOutAlt, FaUserEdit } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
+import Header from '../components/Header';
+import './UserDashboard.css';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ const UserDashboard = () => {
 
   const handleHealthCheck = () => navigate('/checkhealth');
   const handleEditProfile = () => navigate('/editprofile');
-  const handleFeedback = () => navigate('/feedback');
+  const handleFeedback = () => navigate('/user/feedback');
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
@@ -114,29 +114,6 @@ const UserDashboard = () => {
         
         {/* Dashboard Grid */}
         <div className="dashboard-grid">
-          {/* User Info Card */}
-          <div className="dashboard-card profile-card">
-            <div className="card-header">
-              <h3>Personal Information</h3>
-            </div>
-            <div className="card-content">
-              <div className="profile-details">
-                <img
-                  src={userData.profileImage || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
-                  alt="Profile"
-                  className="profile-image"
-                />
-                <div className="user-details">
-                  <h4>{userData.name}</h4>
-                  <p>{userData.email}</p>
-                  <button className="btn-outline" onClick={handleEditProfile}>
-                    <FaUserEdit /> Edit Profile
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
           {/* Appointments Card */}
           <div className="dashboard-card appointments-card" onClick={handleViewAppointments}>
             <div className="card-header">
@@ -163,6 +140,21 @@ const UserDashboard = () => {
               )}
             </div>
           </div>
+           {/* Book Appointment Card */}
+           <div className="dashboard-card action-card book-appointment">
+            <div className="card-header">
+              <h3>Book Appointment</h3>
+            </div>
+            <div className="card-content">
+              <div className="action-icon">
+                <FaCalendarCheck />
+              </div>
+              <p>Schedule a consultation with our healthcare professionals</p>
+              <button className="action-btn primary" onClick={handleBookAppointment}>
+                Book Now
+              </button>
+            </div>
+          </div>
           
           {/* Health Stats Card */}
           <div className="dashboard-card health-card">
@@ -181,26 +173,21 @@ const UserDashboard = () => {
             </div>
           </div>
           
-          {/* Quick Actions Card */}
-          <div className="dashboard-card actions-card">
+         
+
+          {/* Medical History Card */}
+          <div className="dashboard-card action-card medical-history">
             <div className="card-header">
-              <h3>Quick Actions</h3>
+              <h3>Medical History</h3>
             </div>
             <div className="card-content">
-              <div className="action-buttons">
-                <button className="action-btn primary" onClick={handleBookAppointment}>
-                  <FaCalendarCheck />
-                  <span>Book Appointment</span>
-                </button>
-                <button className="action-btn secondary" onClick={handleHealthCheck}>
-                  <FaHeartbeat />
-                  <span>Health Check</span>
-                </button>
-                <button className="action-btn tertiary" onClick={handleViewAppointments}>
-                  <FaClipboardList />
-                  <span>Medical History</span>
-                </button>
+              <div className="action-icon">
+                <FaClipboardList />
               </div>
+              <p>Access your complete medical records</p>
+              <button className="action-btn tertiary" onClick={handleViewAppointments}>
+                View History
+              </button>
             </div>
           </div>
         </div>

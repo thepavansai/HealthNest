@@ -4,11 +4,14 @@
 .dashboard-container {
   background-color: #f5f7fa;
   min-height: 100vh;
-  font-family: 'Plus Jakarta Sans', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #374151;
   line-height: 1.5;
+  font-size: 0.95rem;
+  font-weight: 300;
 }
 
 .user-dashboard-new {
@@ -57,11 +60,11 @@
 /* Welcome Section Typography */
 .welcome-content h1 {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 800;
+  font-size: 2.25rem;
+  font-weight: 400;
   margin: 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
   line-height: 1.2;
   background: linear-gradient(to right, #ffffff, #e2e8f0);
   -webkit-background-clip: text;
@@ -70,10 +73,10 @@
 
 .subtitle {
   font-family: 'Poppins', sans-serif;
-  font-size: 1.125rem;
-  font-weight: 400;
+  font-size: 1rem;
+  font-weight: 300;
   margin-top: 0.5rem;
-  opacity: 0.95;
+  opacity: 0.9;
   letter-spacing: -0.01em;
   line-height: 1.6;
 }
@@ -113,8 +116,10 @@
 }
 
 .profile-name {
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 300;
   margin-right: 0.5rem;
+  letter-spacing: 0.01em;
 }
 
 .profile-arrow {
@@ -132,18 +137,6 @@
   width: 200px;
   z-index: 100;
   overflow: hidden;
-  animation: slideDown 0.2s ease forwards;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .profile-dropdown-menu button {
@@ -154,7 +147,8 @@
   border: none;
   background: none;
   text-align: left;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-weight: 300;
   color: #4b5563;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -173,6 +167,7 @@
 .profile-dropdown-menu .logout-btn {
   border-top: 1px solid #e5e7eb;
   color: #ef4444;
+  font-weight: 300;
 }
 
 .profile-dropdown-menu .logout-btn:hover {
@@ -183,8 +178,9 @@
 /* Dashboard Cards */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
+  margin-top: 2rem;
 }
 
 .dashboard-card {
@@ -192,15 +188,25 @@
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  transition: all 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
+  opacity: 1;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dashboard-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.15);
+}
+
+.profile-card,
+.appointments-card,
+.health-card,
+.book-appointment,
+.view-appointments,
+.medical-history {
+  animation: none;
 }
 
 /* Card Headers */
@@ -210,24 +216,26 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  background: white;
 }
 
 .card-header h3 {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: 1.15rem;
+  font-weight: 400;
   margin: 0;
   color: #1f2937;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1.4;
 }
 
 .view-all {
   color: #4f46e5;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 300;
   cursor: pointer;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 .card-content {
@@ -262,19 +270,20 @@
 /* Profile Details */
 .user-details h4 {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 400;
   margin: 0 0 0.5rem 0;
   color: #1f2937;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   line-height: 1.3;
 }
 
 .user-details p {
   font-family: 'Poppins', sans-serif;
-  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: #4b5563;
   margin-bottom: 1.5rem;
-  font-size: 1rem;
   letter-spacing: -0.01em;
   line-height: 1.6;
 }
@@ -305,6 +314,8 @@
 /* Appointment & Health Cards */
 .appointments-card, .health-card {
   cursor: pointer;
+  height: auto;
+  min-height: 250px;
 }
 
 .appointment-count, .health-stats {
@@ -313,37 +324,28 @@
   margin-bottom: 0.75rem;
 }
 
-.card-icon {
+.card-icon, 
+.action-icon {
   font-size: 2rem;
   margin-right: 1rem;
   color: #4f46e5;
+  transition: transform 0.2s ease;
 }
 
-.pulse {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+.dashboard-card:hover .action-icon,
+.dashboard-card:hover .card-icon {
+  transform: translateY(-2px);
 }
 
 /* Stats and Numbers */
 .appointment-count h2, 
 .health-stats h2 {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 2.75rem;
-  font-weight: 800;
+  font-size: 2rem;
+  font-weight: 400;
   margin: 0;
   color: #1f2937;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   line-height: 1.1;
 }
 
@@ -357,21 +359,26 @@
 
 .appointment-date {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-weight: 300;
   letter-spacing: -0.01em;
   line-height: 1.5;
+  color: #374151;
 }
 
 .appointment-doctor {
   font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  font-weight: 300;
   letter-spacing: -0.01em;
   line-height: 1.5;
+  color: #4b5563;
 }
 
 .no-appointments {
-  color: #9ca3af;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: #6b7280;
   font-style: italic;
   margin-top: 1rem;
 }
@@ -385,8 +392,8 @@
 
 .action-btn {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-weight: 300;
   letter-spacing: -0.01em;
   line-height: 1.4;
   display: flex;
@@ -396,12 +403,18 @@
   padding: 1.25rem 0.75rem;
   border: none;
   border-radius: 12px;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
 }
 
 .action-btn svg {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin-bottom: 0.5rem;
 }
 
@@ -443,12 +456,19 @@
   border-radius: 8px;
   background: none;
   color: #4f46e5;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 300;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-outline:hover {
+  transform: translateY(-2px);
 }
 
 .btn-outline svg {
@@ -466,20 +486,118 @@
   border-radius: 8px;
   background-color: #4f46e5;
   color: white;
-  font-weight: 500;
+  font-size: 0.9rem;
+  font-weight: 300;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
   margin-top: auto;
+  letter-spacing: 0.01em;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary:hover {
+  transform: translateY(-2px);
   background-color: #4338ca;
+}
+
+/* Action Cards */
+.action-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  background: white;
+  height: auto;
+  min-height: 220px;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.action-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #4f46e5;
+  display: flex;
+  justify-content: center;
+}
+
+.book-appointment .action-icon {
+  color: #4f46e5;
+}
+
+.view-appointments .action-icon {
+  color: #10b981;
+}
+
+.medical-history .action-icon {
+  color: #6b7280;
+}
+
+.action-card .card-content {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.action-card p {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.action-card .action-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.action-card .action-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-card,
+  .action-btn,
+  .btn-primary,
+  .btn-outline,
+  .card-header,
+  .action-icon,
+  .card-icon {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .dashboard-card:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+  }
+  
+  .action-icon:hover,
+  .card-icon:hover {
+    transform: none;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .action-card {
+    margin-bottom: 1rem;
+  }
+  
+  .action-card .card-content {
+    padding: 1.5rem 1rem;
+  }
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
   .dashboard-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: 1fr;
   }
 }
 
