@@ -5,7 +5,7 @@ const HealthCheck = ({ name, description }) => {
 
   const handleClick = () => {
     if (name === "Join Our Team") {
-      navigate("/doctor/register");
+      navigate("/doctor/signup");
       return;
     }
 
@@ -17,13 +17,13 @@ const HealthCheck = ({ name, description }) => {
 
     switch (name) {
       case "Health Checkup":
-        navigate("/feeling-input");
+        navigate("/suggestions");
         break;
       case "View Appointments":
-        navigate("/appointments");
+        navigate("/login");
         break;
       default:
-        navigate("/");
+        navigate("/aboutus");
     }
   };
 
