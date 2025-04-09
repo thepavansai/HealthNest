@@ -1,5 +1,8 @@
 package com.healthnest.dto;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import com.healthnest.model.Doctor;
 import lombok.Data;
 
@@ -8,8 +11,8 @@ public class AppointmentDTO {
     private int appointmentId;
     private Integer userId;
     private Doctor doctor;
-    private String appointmentDate;
-    private String appointmentTime;
+    private LocalDate appointmentDate;
+    private LocalTime appointmentTime;
     private String appointmentStatus;
     private String description;
 }

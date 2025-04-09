@@ -1,0 +1,114 @@
+/* Doctor Signup Container */
+.doctor-signup-container {
+    max-width: 480px;
+    margin: 60px auto;
+    padding: 35px 30px;
+    background-color: #f9fcff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Form Title */
+  .signup-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  
+  /* Input Fields */
+  .doctor-signup-form input[type="text"],
+  .doctor-signup-form input[type="email"],
+  .doctor-signup-form input[type="tel"],
+  .doctor-signup-form input[type="number"],
+  .doctor-signup-form input[type="password"] {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border 0.2s ease;
+  }
+  
+  .doctor-signup-form input:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  
+  /* Availability Section */
+  .availability-section {
+    margin: 15px 0;
+  }
+  
+  .availability-section label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #2c3e50;
+  }
+  
+  .availability-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 5px;
+  }
+  
+  .availability-checkboxes label {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  /* Signup Button */
+  .signup-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  .signup-btn:hover {
+    background-color: #2980b9;
+    cursor: pointer;
+  }
+  
+  /* Login Redirect */
+  .login-redirect {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .login-redirect a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .login-redirect a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Styling */
+  @media (max-width: 520px) {
+    .doctor-signup-container {
+      padding: 25px 20px;
+    }
+  
+    .availability-checkboxes {
+      gap: 8px;
+    }
+  }
+  

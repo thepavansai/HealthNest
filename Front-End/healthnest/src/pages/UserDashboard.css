@@ -1,137 +1,130 @@
-.user-dashboard {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f3f8fc;
+/* UserDashboard.css */
+
+.user-dashboard-new {
+  padding: 20px;
+  background-color: #f8f9fa;
   min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .hero-banner {
-  background: linear-gradient(to right, #c2e9fb, #a1c4fd);
-  padding: 60px 20px;
-  text-align: center;
-  color: #000;
+  background-color: #4f46e5;
+  color: white;
+  padding: 40px 20px;
+  border-radius: 12px;
   position: relative;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .hero-text {
   font-size: 2.5rem;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .hero-subtext {
   font-size: 1.2rem;
-  color: #000;
+  font-weight: 300;
 }
 
-.appointment-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
-}
-
-.appointment-card:hover {
-  transform: translateY(-5px);
-}
-
-.profile-overview img {
-  width: 90px;
-  height: 90px;
-}
-
-.card-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.btn-group.quick-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
-  gap: 20px;
-}
-
-.btn-group.quick-actions .btn {
-  border-radius: 8px;
-  padding: 12px 20px;
-  font-weight: 600;
-  width: 150px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.btn-outline-primary {
-  border: 2px solid #007bff;
-  color: #007bff;
-  background-color: #fff;
-}
-
-.btn-outline-warning {
-  border: 2px solid #ffc107;
-  color: #ffc107;
-  background-color: #fff;
-}
-
-.btn-outline-primary:hover,
-.btn-outline-warning:hover {
-  background-color: #f2f2f2;
-}
-
-.btn-group .btn {
-  margin: 5px;
-}
-
-.dropdown-container {
-  margin-top: 15px;
-  position: relative;
-}
-
-.dropdown-menu {
-  display: block;
+.profile-dropdown {
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  min-width: 180px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.dropdown-menu .dropdown-item {
-  display: block;
-  padding: 10px;
-  color: #333;
-  text-align: left;
-  background-color: transparent;
-  border: none;
-  width: 100%;
-  text-decoration: none;
+  top: 20px;
+  right: 20px;
   cursor: pointer;
 }
 
-.dropdown-menu .dropdown-item:hover {
-  background-color: #f0f0f0;
+.small-profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
 }
 
-@media (max-width: 767px) {
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-item {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.dashboard-card.clickable:hover {
+  transform: translateY(-5px);
+  cursor: pointer;
+}
+
+.profile-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 3px solid #dee2e6;
+}
+
+.btn-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+@media (max-width: 576px) {
   .hero-text {
-    font-size: 1.75rem;
+    font-size: 1.8rem;
   }
 
   .hero-subtext {
     font-size: 1rem;
   }
 
-  .btn-group.quick-actions {
-    flex-direction: column;
+  .dashboard-content {
+    grid-template-columns: 1fr;
   }
 
-  .btn-group.quick-actions .btn {
-    width: 100%;
-    margin-bottom: 10px;
+  .profile-dropdown {
+    top: 15px;
+    right: 15px;
   }
 }

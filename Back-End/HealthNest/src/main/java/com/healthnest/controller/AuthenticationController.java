@@ -1,5 +1,7 @@
 package com.healthnest.controller;
 
+import java.util.Map;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,28 +39,32 @@ public class AuthenticationController {
     }
 
     @PostMapping("/doctor-login")
-    public ResponseEntity<String> doctorLogin(@RequestBody DoctorDTO doctor) {
+    public ResponseEntity<Object> doctorLogin(@RequestBody DoctorDTO doctor) {
         if (doctor.getEmailId() == null || doctor.getPassword() == null) {
-            return ResponseEntity.badRequest().body("Email and password must not be empty");
+            return ResponseEntity.badRequest().body(Map.of("message", "Email and password must not be empty"));
         }
 
         try {
             String storedHashedPassword = doctorService.getDoctorPasswordHashByEmailId(doctor.getEmailId());
             if (storedHashedPassword == null) {
-                return ResponseEntity.badRequest().body("Invalid email or password");
+                return ResponseEntity.badRequest().body(Map.of("message", "Invalid email or password"));
             }
 
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if (passwordEncoder.matches(doctor.getPassword(), storedHashedPassword)) {
-                return ResponseEntity.ok("Login successful");
+                return ResponseEntity.ok(Map.of(
+                    "message", "Login successful",
+                    "userId", doctorService.getDoctorIdByEmail(doctor.getEmailId()).getDoctorId(),
+                    "name", doctorService.getDoctorNameByEmail(doctor.getEmailId()).getDoctorName()
+                ));
             } else {
-                return ResponseEntity.badRequest().body("Invalid email or password");
+                return ResponseEntity.badRequest().body(Map.of("message", "Invalid email or password"));
             }
         } catch (Exception e) {
-            // Log the exception (consider using a logger)
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "An error occurred during login"));
         }
     }
+
 
     private String hashPassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

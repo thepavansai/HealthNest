@@ -1,72 +1,73 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { FaHome, FaInfoCircle, FaSignOutAlt } from 'react-icons/fa';
+import './Header.css';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const name = localStorage.getItem("userName");
-    if (userId && name) {
+    const storedUsername = localStorage.getItem('userName');
+    const userId = localStorage.getItem('userId');
+    if (storedUsername && userId) {
       setIsLoggedIn(true);
-      setUserName(name);
+      setUsername(storedUsername);
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userName");
+    localStorage.removeItem('username');
     setIsLoggedIn(false);
-    navigate("/");
-  };
-
-  const handleNavigate = (path) => {
-    navigate(path);
+    setUsername('');
+    navigate('/');
   };
 
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "blue" }}>
-        <div className="container-fluid">
-          <a className="navbar-brand text-white" href="#">HealthNest</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link text-white" href="/">Home</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link text-white" href="/about">About Us</a>
-              </li>
-
-              {isLoggedIn ? (
-                <>
-                  <li className="nav-item">
-                    <a className="nav-link text-white" href="#">Welcome, {userName}</a>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className="nav-item">
-                    <a className="nav-link text-white" href="/login">Login</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link text-white" href="/signup">Create Account</a>
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
+    <header className="app-header">
+      <div className="header-container">
+        <div className="header-left">
+          <Link className="brand" to="/">
+            <span className="brand-name">HealthNest</span>
+          </Link>
         </div>
-      </nav>
-    </div>
+
+        <div className="header-right">
+          <nav className="nav-links">
+            <Link to="/" className="nav-link">
+              <FaHome /> Home
+            </Link>
+            <Link to="/about" className="nav-link">
+              <FaInfoCircle /> About
+            </Link>
+          </nav>
+
+          {isLoggedIn ? (
+            <div className="user-controls">
+              <div className="user-info">
+                <span className="user-greeting">Welcome,</span>
+                <span className="user-name">{username}</span>
+              </div>
+              <button onClick={handleLogout} className="logout-button">
+                <FaSignOutAlt /> Logout
+              </button>
+            </div>
+          ) : (
+            <div className="auth-buttons">
+              <Link to="/login" className="btn-login">
+                <span className="btn-icon">👋</span>
+                <span className="btn-text">Sign In</span>
+              </Link>
+              <Link to="/signup" className="btn-signup">
+                <span className="btn-text">Get Started</span>
+                <span className="btn-arrow">→</span>
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
   );
 };
 

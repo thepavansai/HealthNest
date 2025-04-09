@@ -1,6 +1,9 @@
 package com.healthnest.model;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,9 +23,9 @@ public class Appointment {
     private Integer appointmentId;
 
     @NotNull
-    private String appointmentDate;
+    private LocalDate appointmentDate;
     @NotNull
-    private String appointmentTime;
+    private LocalTime appointmentTime;
     @NotNull
     private String appointmentStatus;
     @NotNull

@@ -90,4 +90,13 @@ public class DoctorService {
         Optional<Doctor> doctor = doctorRepository.findByEmailId(emailId);
         return doctor.map(Doctor::getPassword).orElse(null);
     }
+	public Doctor getDoctorNameByEmail(String emailId) {
+		return doctorRepository.findByEmailId(emailId).get();
+		
+	}
+	public Doctor getDoctorIdByEmail(String emailId) {
+		return doctorRepository.findByEmailId(emailId).get();
+		// TODO Auto-generated method stub
+		//return null;
+	}
 }
