@@ -96,7 +96,5 @@ public class DoctorService {
 	}
 	public Doctor getDoctorIdByEmail(String emailId) {
 		return doctorRepository.findByEmailId(emailId).get();
-		// TODO Auto-generated method stub
-		//return null;
 	}
 }
