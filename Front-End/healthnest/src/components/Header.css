@@ -1,3 +1,14 @@
+/* Add these new styles at the top of the file */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
 .app-header {
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -19,6 +30,8 @@
     display: flex;
     align-items: center;
     gap: 2rem;
+    width: 100%;
+    justify-content: space-between;
   }
   
   .brand {
@@ -303,21 +316,61 @@
     .search-bar {
       width: 250px;
     }
+
+    .header-container {
+      padding: 0.75rem 1rem;
+    }
+
+    .brand-name {
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      gap: 1.5rem;
+    }
   }
   
   @media (max-width: 768px) {
-    .header-container {
-      padding: 1rem;
-    }
-    
     .search-bar {
       display: none;
     }
     
-    .nav-links {
-      display: none;
+    .header-container {
+      padding: 1rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
     }
     
+    .mobile-menu-btn {
+      display: block;
+    }
+
+    .header-right {
+      display: none;
+    }
+
+    .header-right.mobile-menu-open {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .nav-link {
+      padding: 0.75rem;
+      width: 100%;
+      text-align: center;
+    }
+
     .user-name {
       font-size: 0.9rem;
     }
@@ -336,11 +389,14 @@
     
     .auth-buttons {
       gap: 0.75rem;
+      flex-wrap: nowrap;
+      width: 100%;
+      justify-content: center;
     }
   
     .btn-login, .btn-signup {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
     }
     
     .user-greeting {
@@ -349,12 +405,15 @@
     
     .user-controls {
       gap: 1rem;
+      width: 100%;
+      justify-content: center;
     }
   }
   
   @media (max-width: 480px) {
     .brand-name {
-      display: none;
+      display: block;
+      font-size: 1.25rem;
     }
     
     .user-name {
@@ -390,10 +449,43 @@
   
     .btn-login .btn-icon {
       margin: 0;
-      font-size: 1.25rem;
     }
   
     .btn-signup {
       padding: 0.5rem 0.875rem;
+    }
+
+    .auth-buttons {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    .user-controls {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    .user-info {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .btn-login .btn-text,
+    .btn-signup .btn-text {
+      display: none;
+    }
+
+    .btn-signup .btn-arrow {
+      display: none;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .brand-name {
+      font-size: 1.1rem;
+    }
+    
+    .header-container {
+      padding: 0.5rem;
     }
   }
