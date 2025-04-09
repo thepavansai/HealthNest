@@ -3,9 +3,12 @@ import './AboutUs.css';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Footer from './Footer';
+import Header from './Header';
 
 const AboutUs = () => {
   return (
+    <>
+    <Header/>
     <div className="about-container">
       <section className="about-header">
         <h1>Welcome to HealthNest</h1>
@@ -71,10 +74,9 @@ const AboutUs = () => {
         </p>
         <button className="join-button">Join Us</button>
       </section>
-
-      {/* Footer included here */}
-      <Footer />
     </div>
+    <Footer />
+    </>
   );
 };
 
