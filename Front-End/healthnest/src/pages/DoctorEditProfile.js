@@ -19,10 +19,12 @@ const DoctorEditProfile = () => {
 
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
+  const doctorId = localStorage.getItem("doctorId");
+  console.log(doctorId)
 
   useEffect(() => {
     // Simulating data fetch – Replace with your actual API call
-    axios.get('http://localhost:8080/doctor/profile') // replace with actual endpoint
+    axios.get(`http://localhost:8080/doctor/profile/${doctorId}`) // replace with actual endpoint
       .then(res => {
         const data = res.data;
 

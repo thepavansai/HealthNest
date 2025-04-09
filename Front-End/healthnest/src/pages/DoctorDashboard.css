@@ -1,241 +1,240 @@
-.dashboard-wrapper {
-  min-height: 100vh;
-  background-color: #f5f7fa;
+/* DoctorDashboard.css */
+
+.doctor-dashboard-container {
+  background-color: #f8fafc;
+  padding: 2rem 3rem;
+  font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
+  color: #374151;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.hero-section {
+/* Welcome Section (same styling for consistency) */
+.welcome-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #059669, #10b981);
+  border-radius: 16px;
+  padding: 2rem 3rem;
+  color: white;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.15);
+}
+
+.welcome-content h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.3;
+  background: linear-gradient(to right, #ffffff, #e2e8f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  font-weight: 400;
+  opacity: 0.95;
+  margin-top: 0.5rem;
+}
+
+/* Profile Widget (same as user dashboard) */
+.profile-widget {
   position: relative;
-  height: 60vh;
-  min-height: 500px;
-  background: linear-gradient(135deg, #75AADB 0%, #4A7FB8 100%);
-  overflow: hidden;
+}
+.profile-info {
   display: flex;
   align-items: center;
-  margin-bottom: 50px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  cursor: pointer;
 }
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  color: white;
-  max-width: 800px;
-  padding: 40px;
-}
-
-.hero-text {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  line-height: 1.2;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.hero-subtext {
-  font-size: 1.8rem;
-  opacity: 0.9;
-  margin-bottom: 30px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.hero-image {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   overflow: hidden;
+  margin-right: 0.75rem;
+  border: 2px solid white;
 }
-
-.hero-bg-image {
+.profile-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.3;
 }
-
-.dashboard-container {
-  padding: 40px 20px;
-}
-
-.dashboard-content {
-  margin-top: 40px;
-}
-
-.profile-card {
-  height: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  background: white;
-  overflow: hidden;
-}
-
-.profile-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-}
-
-.large-avatar {
-  width: 150px !important;
-  height: 150px !important;
-  margin-bottom: 20px;
-  border: 4px solid #75AADB;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
 .profile-name {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #333;
+  font-weight: 500;
 }
-
-.profile-badge {
-  margin-bottom: 15px;
+.profile-arrow {
+  font-size: 0.8rem;
+  margin-left: 0.25rem;
 }
-
-.profile-email {
-  color: #666;
-  font-size: 1.1rem;
-}
-
-.dashboard-card {
-  height: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  background: white;
+.profile-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  width: 200px;
   overflow: hidden;
+  z-index: 99;
+}
+.profile-dropdown-menu button {
+  padding: 0.85rem 1.25rem;
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 1rem;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.profile-dropdown-menu button svg {
+  margin-right: 0.75rem;
 }
 
-.dashboard-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+/* Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
 
-.card-content {
+/* Cards */
+.dashboard-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease;
+}
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+.card-header {
+  padding: 1.25rem;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 40px 20px;
-  text-align: center;
 }
-
-.large-icon {
-  font-size: 60px !important;
-  margin-bottom: 20px;
-  color: #75AADB;
-}
-
-.card-number {
-  font-size: 3.5rem;
+.card-header h3 {
+  font-size: 1.35rem;
   font-weight: 700;
-  margin-bottom: 10px;
-  color: #333;
+  margin: 0;
+}
+.view-all {
+  color: #10b981;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+.card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
 }
 
-.card-title {
-  font-size: 1.4rem;
-  color: #666;
-  margin-bottom: 20px;
+/* Icons + Stats */
+.card-icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+  color: #10b981;
+}
+.pulse {
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.appointment-count, .health-stats {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.appointment-count h2,
+.health-stats h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0;
 }
 
-.view-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  border-radius: 25px;
-  text-transform: none;
-  font-size: 1rem;
+/* Appointment Info */
+.next-appointment {
+  background-color: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-top: 1rem;
 }
-
-.quick-actions-card {
-  margin-top: 40px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  background: white;
-  padding: 40px;
-}
-
-.section-title {
-  text-align: center;
-  margin-bottom: 40px;
-  color: #333;
+.appointment-date {
   font-weight: 600;
 }
+.appointment-doctor {
+  font-size: 0.95rem;
+}
 
+/* Action Buttons */
 .action-buttons {
   display: flex;
-  gap: 20px;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 1rem;
   flex-wrap: wrap;
 }
-
-.action-button {
-  padding: 15px 30px;
-  border-radius: 25px;
-  font-size: 1.1rem;
-  text-transform: none;
-  min-width: 250px;
-  transition: transform 0.3s ease;
+.action-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.action-btn svg {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.action-btn.primary {
+  background-color: #4f46e5;
+}
+.action-btn.primary:hover {
+  background-color: #4338ca;
+}
+.action-btn.secondary {
+  background-color: #10b981;
+}
+.action-btn.secondary:hover {
+  background-color: #059669;
+}
+.action-btn.tertiary {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+.action-btn.tertiary:hover {
+  background-color: #d1d5db;
 }
 
-.action-button:hover {
-  transform: translateY(-3px);
-}
-
-.health-check {
-  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-}
-
-.book-appointment {
-  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-}
-
-@media (max-width: 900px) {
-  .hero-section {
-    height: auto;
-    min-height: 400px;
+/* Responsive */
+@media (max-width: 768px) {
+  .welcome-section {
+    flex-direction: column;
+    align-items: flex-start;
   }
-
-  .hero-text {
-    font-size: 2.5rem;
+  .dashboard-grid {
+    grid-template-columns: 1fr;
   }
-
-  .hero-subtext {
-    font-size: 1.4rem;
-  }
-
-  .hero-image {
-    display: none;
-  }
-
-  .dashboard-container {
-    padding: 20px 10px;
-  }
-
-  .large-avatar {
-    width: 120px !important;
-    height: 120px !important;
-  }
-
-  .card-number {
-    font-size: 2.5rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .hero-text {
-    font-size: 2rem;
-  }
-
-  .hero-subtext {
-    font-size: 1.2rem;
-  }
-
-  .action-button {
-    min-width: 100%;
+  .action-buttons {
+    flex-direction: column;
   }
 }
