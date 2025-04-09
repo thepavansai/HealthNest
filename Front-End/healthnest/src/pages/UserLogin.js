@@ -1,10 +1,10 @@
 import Login from "../components/Login"
 
 const UserLogin=()=>{
-    const names="user"
+    
     return(
         <div>
-            <Login name={names}></Login>
+            <Login></Login>
         </div>
     )
 }

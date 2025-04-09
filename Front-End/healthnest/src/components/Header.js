@@ -1,79 +1,106 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { FaHome, FaInfoCircle, FaSignOutAlt } from 'react-icons/fa';
+import './Header.css';
 
-const Header = ({ name }) => {
+// Custom styled components
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  background: 'linear-gradient(135deg, #75AADB 0%, #4A7FB8 100%)',
+  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+}));
+
+const LogoText = styled(Typography)(({ theme }) => ({
+  fontFamily: "'Poppins', sans-serif",
+  fontWeight: 600,
+  letterSpacing: '1px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  color: '#ffffff',
+}));
+
+const NavButton = styled(Button)(({ theme }) => ({
+  fontFamily: "'Poppins', sans-serif",
+  fontWeight: 500,
+  textTransform: 'none',
+  fontSize: '1rem',
+  color: '#ffffff',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
+}));
+
+const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const storedName = localStorage.getItem("userName");
-    if (userId && storedName) {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
       setIsLoggedIn(true);
-      setUserName(storedName);
+      setUsername(storedUsername);
     }
   }, []);
 
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userName");
+    localStorage.removeItem('username');
     setIsLoggedIn(false);
-    navigate("/");
-  };
-
-  const getLoginPath = () => {
-    if (name === "doctor") return "/doctor/login";
-    if (name === "admin") return "/admin/login";
-    return "/login"; // default user login
-  };
-
-  const getSignupPath = () => {
-    if (name === "doctor") return "/doctor/signup";
-    if (name === "admin") return "/admin/signup";
-    return "/signup"; // default user signup
+    setUsername('');
+    handleMenuClose();
+    navigate('/');
   };
 
   return (
-    <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "blue" }}>
-      <div className="container-fluid">
-        <Link className="navbar-brand text-white" to="/">HealthNest</Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
+    <header className="app-header">
+      <div className="header-container">
+        <div className="header-left">
+          <Link className="brand" to="/">
+            <span className="brand-name">HealthNest</span>
+          </Link>
+        </div>
 
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link text-white" to="/">Home</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link text-white" to="/about">About Us</Link>
-            </li>
+        <div className="header-right">
+          <nav className="nav-links">
+            <Link to="/" className="nav-link">
+              <FaHome /> Home
+            </Link>
+            <Link to="/about" className="nav-link">
+              <FaInfoCircle /> About
+            </Link>
+          </nav>
 
-            {isLoggedIn ? (
-              <>
-                <li className="nav-item">
-                  <span className="nav-link text-white">Welcome, {userName}</span>
-                </li>
-                
-              </>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link text-white" to="/login">Login</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link text-white" to="/signup">Create Account</Link>
-                </li>
-              </>
-            )}
-          </ul>
+          {isLoggedIn ? (
+            <div className="user-controls">
+              <span className="user-name">Hi, {userName}</span>
+              <button onClick={handleLogout} className="logout-button">
+                <FaSignOutAlt /> Logout
+              </button>
+            </div>
+          ) : (
+            <div className="auth-buttons">
+              <Link to="/login" className="btn-login">
+                <span className="btn-icon">👋</span>
+                <span className="btn-text">Sign In</span>
+              </Link>
+              <Link to="/signup" className="btn-signup">
+                <span className="btn-text">Get Started</span>
+                <span className="btn-arrow">→</span>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
-    </nav>
+    </header>
   );
 };
 

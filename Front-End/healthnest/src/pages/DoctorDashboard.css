@@ -1,151 +1,241 @@
-/* Main Container */
-.doctor-dashboard-container {
-  padding: 20px;
-  background-color: #f6f9fc;
+.dashboard-wrapper {
+  min-height: 100vh;
+  background-color: #f5f7fa;
 }
 
-/* Welcome Bar */
-.welcome-bar {
-  background: linear-gradient(to right, #cce5ff, #b3d7ff);
-  padding: 20px 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+.hero-section {
+  position: relative;
+  height: 60vh;
+  min-height: 500px;
+  background: linear-gradient(135deg, #75AADB 0%, #4A7FB8 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  margin-bottom: 50px;
 }
 
-.welcome-bar h2 {
-  margin: 0 0 5px;
-  color: #2c3e50;
-  font-weight: 600;
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  max-width: 800px;
+  padding: 40px;
 }
 
-.welcome-bar p {
-  margin: 0;
-  color: #555;
+.hero-text {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Sidebar Profile Card */
-.doctor-profile-card {
-  border-radius: 15px;
+.hero-subtext {
+  font-size: 1.8rem;
+  opacity: 0.9;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
   overflow: hidden;
 }
 
-.doctor-avatar {
-  width: 100px;
-  height: 100px;
+.hero-bg-image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 50%;
-  border: 4px solid #3498db;
+  opacity: 0.3;
 }
 
-.doctor-name {
-  margin-bottom: 5px;
+.dashboard-container {
+  padding: 40px 20px;
+}
+
+.dashboard-content {
+  margin-top: 40px;
+}
+
+.profile-card {
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: white;
+  overflow: hidden;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+
+.large-avatar {
+  width: 150px !important;
+  height: 150px !important;
+  margin-bottom: 20px;
+  border: 4px solid #75AADB;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.profile-name {
+  font-size: 1.8rem;
   font-weight: 600;
-  color: #2c3e50;
-}
-
-/* Quick Actions */
-.quick-actions ul {
-  padding-left: 0;
-  list-style: none;
-}
-
-.quick-actions .list-group-item {
-  padding: 12px 15px;
-  border: none;
-  border-bottom: 1px solid #f0f0f0;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.quick-actions .list-group-item a {
-  color: #3498db;
-  text-decoration: none;
-}
-
-.quick-actions .list-group-item:hover {
-  background-color: #f9f9f9;
-}
-
-/* Stats Cards Section */
-.stats-card {
-  background: #fff;
-  border-radius: 15px;
-  padding: 30px 20px;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
-
-.stats-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
-}
-
-.stats-card h3 {
-  font-size: 2rem;
-  color: #3498db;
   margin-bottom: 10px;
-  font-weight: 700;
-}
-
-.stats-card p {
-  margin: 0;
-  font-weight: 500;
   color: #333;
 }
 
-/* Upcoming Patients Card */
-.upcoming-patients-card {
-  border-radius: 15px;
+.profile-badge {
+  margin-bottom: 15px;
 }
 
-.upcoming-patients-card .card-body {
-  padding: 25px;
+.profile-email {
+  color: #666;
+  font-size: 1.1rem;
 }
 
-.upcoming-patients-card h4 {
-  font-weight: 600;
+.dashboard-card {
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  background: white;
+  overflow: hidden;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.large-icon {
+  font-size: 60px !important;
   margin-bottom: 20px;
-  color: #2c3e50;
+  color: #75AADB;
 }
 
-.upcoming-patients-card .list-group-item {
-  border: none;
-  padding: 15px 20px;
-  border-radius: 8px;
-  background-color: #f8f9fa;
+.card-number {
+  font-size: 3.5rem;
+  font-weight: 700;
   margin-bottom: 10px;
-  transition: all 0.2s ease;
+  color: #333;
 }
 
-.upcoming-patients-card .list-group-item:hover {
-  background-color: #e9f3fc;
+.card-title {
+  font-size: 1.4rem;
+  color: #666;
+  margin-bottom: 20px;
 }
 
-.upcoming-patients-card .badge {
-  background-color: #3498db;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
+.view-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-transform: none;
+  font-size: 1rem;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .doctor-dashboard-container {
-    padding: 10px;
+.quick-actions-card {
+  margin-top: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: white;
+  padding: 40px;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #333;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  text-transform: none;
+  min-width: 250px;
+  transition: transform 0.3s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-3px);
+}
+
+.health-check {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+}
+
+.book-appointment {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+}
+
+@media (max-width: 900px) {
+  .hero-section {
+    height: auto;
+    min-height: 400px;
   }
 
-  .doctor-avatar {
-    width: 80px;
-    height: 80px;
+  .hero-text {
+    font-size: 2.5rem;
   }
 
-  .stats-card {
+  .hero-subtext {
+    font-size: 1.4rem;
+  }
+
+  .hero-image {
+    display: none;
+  }
+
+  .dashboard-container {
     padding: 20px 10px;
   }
 
-  .upcoming-patients-card .card-body {
-    padding: 15px;
+  .large-avatar {
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  .card-number {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-text {
+    font-size: 2rem;
+  }
+
+  .hero-subtext {
+    font-size: 1.2rem;
+  }
+
+  .action-button {
+    min-width: 100%;
   }
 }
