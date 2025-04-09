@@ -20,7 +20,7 @@ const AdminDashboard = () => {
   };
 
   const handleFeedback = () => {
-    navigate('admin/viewfeedbacks')
+    navigate('/admin/viewfeedbacks')
   }
 
   const handleManageDoctors = () => {
