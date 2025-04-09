@@ -46,7 +46,9 @@ function App() {
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
           <Route path="/admin/managedoctors" element={<ManageDoctors />} />
           <Route path="/admin/manageusers" element={<ManageUsers />} />
-          <Route path="/admin/viewappointmets" element={<View />} />
+          <Route path="/admin/viewappointments" element={<View />} />  // ✅ Corrected route
+
+
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
           <Route path="/user/feedback" element={<UserFeedback/>}/>
