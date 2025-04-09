@@ -22,10 +22,9 @@ import UserEditProfile from './pages/UserEditProfile';
 import UserFeedback from './pages/UserFeedback.js';
 import UserLogin from './pages/UserLogin.js';
 import ViewAppointments from './pages/ViewAppointments';
-import UserFeedback from './pages/UserFeedback.js';
 
-// ✅ NEWLY ADDED DOCTOR EDIT PROFILE
-import DoctorEditProfile from './pages/DoctorEditProfile';
+
+
 
 function App() {
   return (
