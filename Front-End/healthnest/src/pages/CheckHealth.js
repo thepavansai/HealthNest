@@ -218,7 +218,7 @@ const doctors = [
               }}
             >
               <div className="form-check">
-                <input type="radio" name="paymentMethod" checked readOnly /> UPI/Card
+                <input type="radio" name="paymentMethod" checked readOnly />Card
               </div>
               <input type="text" placeholder="Card Number" required />
               <input type="text" placeholder="Expires" required />
