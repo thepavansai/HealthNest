@@ -22,7 +22,7 @@ import UserEditProfile from './pages/UserEditProfile';
 import UserFeedback from './pages/UserFeedback.js';
 import UserLogin from './pages/UserLogin.js';
 import ViewAppointments from './pages/ViewAppointments';
-
+import AboutUs from './components/AboutUs.js';
 
 
 
@@ -60,6 +60,7 @@ function App() {
 
           {/* ✅ NEW ROUTE FOR DOCTOR EDIT PROFILE */}
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
+          <Route path="/aboutus" element={<AboutUs/>}/>
         </Routes>
       </div>
     </Router>
