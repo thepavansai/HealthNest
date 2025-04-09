@@ -10,7 +10,7 @@ import DoctorCarousel from "../components/DoctorCarousel";
 const Home = () => {
     const names = ["Health Checkup", "View Appointments", "Join Our Team"];
     const description = [
-      "Consult a specialized doctor based on your condition.",
+      "Consult a specialist based on your condition.",
       "View and manage your upcoming appointments.",
       "If you're a doctor interested in joining us"
     ];
