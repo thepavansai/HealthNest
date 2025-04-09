@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000/")
 @RestController
 @RequestMapping("/doctor")
 public class DoctorController {
@@ -41,8 +41,8 @@ public class DoctorController {
         return doctorService.updateDoctorProfile(id, doctorDTO);
     }
 
-    @PatchMapping("/{id}/availability")
-    public String updateDoctorAvailability(@PathVariable Long id, @RequestParam String availability) {
+    @PatchMapping("/{id}/{availability}")
+    public String updateDoctorAvailability(@PathVariable Long id, @PathVariable String availability) {
         return doctorService.updateDoctorAvailability(id, availability);
     }
 
@@ -56,8 +56,8 @@ public class DoctorController {
         return doctorService.getDoctorRating(id);
     }
 
-    @GetMapping("/specialization")
-    public ResponseEntity<List<DoctorDTO>> getDoctorsBySpecialization(@RequestParam String specialization) {
+    @GetMapping("/{specialization}")
+    public ResponseEntity<List<DoctorDTO>> getDoctorsBySpecialization(@PathVariable String specialization) {
         List<Doctor> doctors = doctorService.findDoctorsBySpecialization(specialization);
         List<DoctorDTO> doctorDTOs = doctors.stream()
                 .map(doctor -> modelMapper.map(doctor, DoctorDTO.class))
@@ -65,8 +65,8 @@ public class DoctorController {
         return ResponseEntity.ok(doctorDTOs);
     }
 
-    @PutMapping("/{doctorId}/specialization")
-    public ResponseEntity<DoctorDTO> addSpecialization(@PathVariable Long doctorId, @RequestParam String newSpecialization) {
+    @PutMapping("/{doctorId}/{specialization}")
+    public ResponseEntity<DoctorDTO> addSpecialization(@PathVariable Long doctorId,@PathVariable String newSpecialization) {
         Doctor updatedDoctor = doctorService.addSpecialization(doctorId, newSpecialization);
         DoctorDTO updatedDoctorDTO = modelMapper.map(updatedDoctor, DoctorDTO.class);
         return ResponseEntity.ok(updatedDoctorDTO);

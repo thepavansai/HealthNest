@@ -11,7 +11,7 @@ public class DoctorDTO {
     private Gender gender;
     private String emailId;
     private String password;
-    private String specialization;
+    private String specializedrole;
     private Integer experience;
     private String docPhnNo;
     private Double consultationFee;

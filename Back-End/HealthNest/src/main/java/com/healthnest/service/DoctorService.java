@@ -68,13 +68,13 @@ public class DoctorService {
 
     }
     public List<Doctor> findDoctorsBySpecialization(String specialization) {
-        return doctorRepository.findBySpecializationContaining(specialization);
+        return doctorRepository.findBySpecializedroleContaining(specialization);
     }
 
     public Doctor addSpecialization(Long doctorId, String newSpecialization) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found"));
-        String updatedSpecialization = doctor.getSpecialization() + ", " + newSpecialization;
-        doctor.setSpecialization(updatedSpecialization);
+        String updatedSpecialization = doctor.getSpecializedrole() + ", " + newSpecialization;
+        doctor.setSpecializedrole(updatedSpecialization);
         return doctorRepository.save(doctor);
     }
 
