@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaHome, FaInfoCircle, FaSignOutAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { FaHome, FaInfoCircle, FaSignOutAlt, FaBars, FaTimes, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import './Header.css';
 
 const Header = () => {
@@ -55,21 +55,22 @@ const Header = () => {
             <div className="user-controls">
               <div className="user-info">
                 <span className="user-greeting">Welcome,</span>
-                <span className="user-name">{username}</span>
+                <span className="user-name" title={username}>{username}</span>
               </div>
               <button onClick={handleLogout} className="logout-button">
-                <FaSignOutAlt /> Logout
+                <FaSignOutAlt />
+                <span>Logout</span>
               </button>
             </div>
           ) : (
             <div className="auth-buttons">
               <Link to="/login" className="btn-login">
-                <span className="btn-icon">👋</span>
+                <FaSignInAlt className="btn-icon" />
                 <span className="btn-text">Sign In</span>
               </Link>
               <Link to="/signup" className="btn-signup">
+                <FaUserPlus className="btn-icon" />
                 <span className="btn-text">Get Started</span>
-                <span className="btn-arrow">→</span>
               </Link>
             </div>
           )}
