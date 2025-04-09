@@ -137,18 +137,6 @@
   width: 200px;
   z-index: 100;
   overflow: hidden;
-  animation: slideDown 0.2s ease forwards;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .profile-dropdown-menu button {
@@ -190,8 +178,9 @@
 /* Dashboard Cards */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
+  margin-top: 2rem;
 }
 
 .dashboard-card {
@@ -199,15 +188,25 @@
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  transition: all 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
+  opacity: 1;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dashboard-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.15);
+}
+
+.profile-card,
+.appointments-card,
+.health-card,
+.book-appointment,
+.view-appointments,
+.medical-history {
+  animation: none;
 }
 
 /* Card Headers */
@@ -217,6 +216,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  background: white;
 }
 
 .card-header h3 {
@@ -313,6 +314,8 @@
 /* Appointment & Health Cards */
 .appointments-card, .health-card {
   cursor: pointer;
+  height: auto;
+  min-height: 250px;
 }
 
 .appointment-count, .health-stats {
@@ -321,26 +324,17 @@
   margin-bottom: 0.75rem;
 }
 
-.card-icon {
+.card-icon, 
+.action-icon {
   font-size: 2rem;
   margin-right: 1rem;
   color: #4f46e5;
+  transition: transform 0.2s ease;
 }
 
-.pulse {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+.dashboard-card:hover .action-icon,
+.dashboard-card:hover .card-icon {
+  transform: translateY(-2px);
 }
 
 /* Stats and Numbers */
@@ -409,8 +403,14 @@
   padding: 1.25rem 0.75rem;
   border: none;
   border-radius: 12px;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
 }
 
 .action-btn svg {
@@ -462,7 +462,13 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-outline:hover {
+  transform: translateY(-2px);
 }
 
 .btn-outline svg {
@@ -483,19 +489,115 @@
   font-size: 0.9rem;
   font-weight: 300;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
   margin-top: auto;
   letter-spacing: 0.01em;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary:hover {
+  transform: translateY(-2px);
   background-color: #4338ca;
+}
+
+/* Action Cards */
+.action-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  background: white;
+  height: auto;
+  min-height: 220px;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.action-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #4f46e5;
+  display: flex;
+  justify-content: center;
+}
+
+.book-appointment .action-icon {
+  color: #4f46e5;
+}
+
+.view-appointments .action-icon {
+  color: #10b981;
+}
+
+.medical-history .action-icon {
+  color: #6b7280;
+}
+
+.action-card .card-content {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.action-card p {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.action-card .action-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.action-card .action-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-card,
+  .action-btn,
+  .btn-primary,
+  .btn-outline,
+  .card-header,
+  .action-icon,
+  .card-icon {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .dashboard-card:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+  }
+  
+  .action-icon:hover,
+  .card-icon:hover {
+    transform: none;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .action-card {
+    margin-bottom: 1rem;
+  }
+  
+  .action-card .card-content {
+    padding: 1.5rem 1rem;
+  }
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
   .dashboard-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1,210 +1,116 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
-import {
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Avatar,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Badge,
-  useTheme,
-  Container,
-} from '@mui/material';
-import {
-  CalendarToday,
-  LocalHospital,
-  HealthAndSafety,
-  Edit,
-  Feedback,
-  Logout,
-  Person,
-  EventNote,
-  MedicalServices,
-  ArrowForward,
-} from '@mui/icons-material';
+import './DoctorDashboard.css';
 import axios from 'axios';
-import './UserDashboard.css';
+import {
+  FaUserMd,
+  FaCalendarAlt,
+  FaStethoscope,
+  FaSignOutAlt,
+  FaKey,
+  FaTrashAlt
+} from 'react-icons/fa';
+import DoctorHeader from '../components/DoctorHeader';
 
-const UserDashboard = () => {
+const DoctorDashboard = () => {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-  });
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [doctorData, setDoctorData] = useState({ doctorName: '', emailId: '' });
+  const [loading, setLoading] = useState(true);
 
-  const userId = localStorage.getItem("userId");
+  const doctorId = localStorage.getItem("doctorId");
+  console.log(doctorId)
 
   useEffect(() => {
-    if (userId) {
-      axios.get(`http://localhost:8080/users/userdetails/${userId}`)
-        .then((res) => {
-          setUserData(res.data);
+    if (doctorId) {
+      axios.get(`http://localhost:8080/doctor/profile/${doctorId}`)
+        .then(res => {
+          setDoctorData(res.data || {});
+          console.log(res.data)
         })
-        .catch((err) => {
-          console.error("Failed to fetch user details", err);
-        });
+        .catch(err => {
+          console.error("Error fetching doctor profile:", err);
+        })
+        .finally(() => setLoading(false));
     }
-  }, [userId]);
+  }, [doctorId]);
 
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const toggleDropdown = () => {
+    setShowDropdown(prev => !prev);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleHealthCheck = () => {
-    navigate('/checkhealth');
-  };
-
-  const handleEditProfile = () => {
-    navigate('/editprofile');
-    handleMenuClose();
-  };
-
-  const handleFeedback = () => {
-    navigate('/feedback');
-    handleMenuClose();
-  };
-
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/');
-  };
-
-  const handleBookAppointment = () => {
-    navigate('/bookappointment');
-  };
-
-  const handleViewAppointments = () => {
-    navigate('/viewappointments');
-  };
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading your dashboard...</p>
+      </div>
+    );
+  }
 
   return (
-    <Box className="dashboard-wrapper">
-      <Header />
-      <Box className="hero-section">
-        <Container maxWidth="lg">
-          <Box className="hero-content">
-            <Typography variant="h2" className="hero-text">
-              Welcome back, {userData.name}
-            </Typography>
-            <Typography variant="h5" className="hero-subtext">
-              Your health is our priority
-            </Typography>
-            <Box className="hero-image">
-              <img 
-                src="https://img.freepik.com/free-vector/medical-healthcare-blue-color_1017-26807.jpg" 
-                alt="Healthcare" 
-                className="hero-bg-image"
-              />
-            </Box>
-          </Box>
-        </Container>
-      </Box>
+    <div className="doctor-dashboard-wrapper">
+      <DoctorHeader></DoctorHeader>
 
-      <Container maxWidth="lg" className="dashboard-container">
-        <Grid container spacing={4} className="dashboard-content">
-          <Grid item xs={12} md={4}>
-            <Card className="profile-card">
-              <CardContent>
-                <Box className="profile-content">
-                  <Avatar
-                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                    className="large-avatar"
-                  />
-                  <Typography variant="h5" className="profile-name">
-                    {userData.name}
-                  </Typography>
-                  <Badge badgeContent="Patient" color="primary" className="profile-badge" />
-                  <Typography variant="body1" className="profile-email">
-                    {userData.email}
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+      <main className="doctor-dashboard-container">
+        {/* Welcome Section */}
+        <div className="welcome-section">
+          <div className="welcome-content">
+            <h1>Welcome back, Dr. {doctorData.doctorName || 'Doctor'} 👋</h1>
+            <p className="subtitle">Here’s what’s happening with your practice today.</p>
+          </div>
 
-          <Grid item xs={12} md={4}>
-            <Card className="dashboard-card appointment-card" onClick={handleViewAppointments}>
-              <CardContent>
-                <Box className="card-content">
-                  <EventNote className="large-icon" />
-                  <Typography variant="h2" className="card-number">
-                    2
-                  </Typography>
-                  <Typography variant="h6" className="card-title">
-                    Upcoming Appointments
-                  </Typography>
-                  <Button 
-                    endIcon={<ArrowForward />}
-                    className="view-button"
-                  >
-                    View Details
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+          <div className="profile-widget">
+            <div className="profile-info" onClick={toggleDropdown}>
+              <div className="profile-avatar">
+                <img
+                  src={doctorData.profileImage || "/doctor-avatar.jpg"}
+                  alt="Doctor Avatar"
+                />
+              </div>
+              <span className="profile-name">Dr. {doctorData.name}</span>
+              <span className="profile-arrow">▼</span>
+            </div>
 
-          <Grid item xs={12} md={4}>
-            <Card className="dashboard-card consultation-card">
-              <CardContent>
-                <Box className="card-content">
-                  <MedicalServices className="large-icon" />
-                  <Typography variant="h2" className="card-number">
-                    5
-                  </Typography>
-                  <Typography variant="h6" className="card-title">
-                    Total Consultations
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+            {showDropdown && (
+              <div className="profile-dropdown-menu">
+                <button onClick={() => navigate("/doctor/editprofile")}><FaUserMd /> Edit Profile</button>
+                <button onClick={() => navigate("/changepassword")}><FaKey /> Change Password</button>
+                <button onClick={() => navigate("/deleteaccount")}><FaTrashAlt /> Delete Account</button>
+                <button onClick={() => {
+                  localStorage.clear();
+                  navigate("/");
+                }}><FaSignOutAlt /> Logout</button>
+              </div>
+            )}
+          </div>
+        </div>
 
-          <Grid item xs={12}>
-            <Card className="quick-actions-card">
-              <CardContent>
-                <Typography variant="h4" className="section-title">
-                  Quick Actions
-                </Typography>
-                <Box className="action-buttons">
-                  <Button
-                    variant="contained"
-                    startIcon={<HealthAndSafety />}
-                    onClick={handleHealthCheck}
-                    className="action-button health-check"
-                  >
-                    Health Check
-                  </Button>
-                  <Button
-                    variant="contained"
-                    startIcon={<LocalHospital />}
-                    onClick={handleBookAppointment}
-                    className="action-button book-appointment"
-                  >
-                    Book Appointment
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
+        {/* Dashboard Grid */}
+        <div className="dashboard-grid">
+          <div className="dashboard-card patient-overview-card">
+            <div className="card-header">
+              <h3>View Appointments</h3>
+              <span className="view-all">View All</span>
+            </div>
+            <div className="card-content">
+              <div className="appointment-count">
+                <FaCalendarAlt className="card-icon pulse" />
+                <h2>8</h2>
+              </div>
+              <div className="next-appointment">
+                <p className="appointment-date">Next: 10:30 AM</p>
+                <p className="appointment-doctor">John Doe - Chest Pain</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
       <Footer />
-    </Box>
+    </div>
   );
 };
 
-export default UserDashboard;
+export default DoctorDashboard;
