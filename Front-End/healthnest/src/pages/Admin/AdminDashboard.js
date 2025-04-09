@@ -90,7 +90,7 @@ const AdminDashboard = () => {
                   <button className="btn btn-outline-primary" onClick={handleManageDoctors}>Manage Doctors</button>
                   <button className="btn btn-outline-success" onClick={handleViewAppointments}>View Appointments</button>
                   <button className="btn btn-outline-warning" onClick={handleManageUsers}>Manage Users</button>
-                  <button className="btn btn-outline-warning" onClick={handleFeedback}>View Feedbacks</button>
+                  <button className="btn btn-outline-primary" onClick={handleFeedback}>View Feedbacks</button>
                 </div>
               </div>
             </div>
