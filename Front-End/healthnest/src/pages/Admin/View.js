@@ -13,7 +13,7 @@ const View = () => {
     const fetchAppointments = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8080/users/appointments/${localStorage.getItem('userId')}`);
+        const response = await axios.get(`http://localhost:8080/admmin/viewappointments/${localStorage.getItem('userId')}`);
         setAppointments(response.data);
         setLoading(false);
       } catch (error) {
