@@ -37,7 +37,7 @@ const UserFeedback = () => {
   return (
     <div className="feedback-container">
       <div className="feedback-card">
-        <h2 className="feedback-title">💬 User Feedback Form</h2>
+        <h2 className="feedback-title"> User Feedback Form</h2>
         <form onSubmit={handleSubmit} className="feedback-form">
           
           <input

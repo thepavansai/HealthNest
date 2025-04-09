@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import './UserDashboard.css';
 import axios from 'axios';
-import { FaCalendarCheck, FaUserEdit, FaComment, FaSignOutAlt, FaHeartbeat, FaClipboardList } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaCalendarCheck, FaClipboardList, FaComment, FaHeartbeat, FaSignOutAlt, FaUserEdit } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import Footer from '../components/Footer';
+import Header from '../components/Header';
+import './UserDashboard.css';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ const UserDashboard = () => {
 
   const handleHealthCheck = () => navigate('/checkhealth');
   const handleEditProfile = () => navigate('/editprofile');
-  const handleFeedback = () => navigate('/feedback');
+  const handleFeedback = () => navigate('/user/feedback');
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');

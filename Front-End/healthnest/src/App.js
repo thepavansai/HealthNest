@@ -17,9 +17,9 @@ import Home from './pages/Home';
 import ManageAppointments from './pages/ManageAppointments';
 import UserDashboard from './pages/UserDashboard';
 import UserEditProfile from './pages/UserEditProfile';
+import UserFeedback from './pages/UserFeedback.js';
 import UserLogin from './pages/UserLogin.js';
 import ViewAppointments from './pages/ViewAppointments';
-import UserFeedback from './pages/UserFeedback.js';
 
 // ✅ NEWLY ADDED DOCTOR EDIT PROFILE
 import DoctorEditProfile from './pages/DoctorEditProfile';
@@ -49,7 +49,7 @@ function App() {
           <Route path="/admin/viewappointmets" element={<View />} />
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
-          <Route path="/userfeedback" element={<UserFeedback/>}/>
+          <Route path="/user/feedback" element={<UserFeedback/>}/>
 
           {/* ✅ NEW ROUTE FOR DOCTOR EDIT PROFILE */}
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
