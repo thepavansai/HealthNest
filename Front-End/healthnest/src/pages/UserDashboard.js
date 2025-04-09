@@ -114,29 +114,6 @@ const UserDashboard = () => {
         
         {/* Dashboard Grid */}
         <div className="dashboard-grid">
-          {/* User Info Card */}
-          <div className="dashboard-card profile-card">
-            <div className="card-header">
-              <h3>Personal Information</h3>
-            </div>
-            <div className="card-content">
-              <div className="profile-details">
-                <img
-                  src={userData.profileImage || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
-                  alt="Profile"
-                  className="profile-image"
-                />
-                <div className="user-details">
-                  <h4>{userData.name}</h4>
-                  <p>{userData.email}</p>
-                  <button className="btn-outline" onClick={handleEditProfile}>
-                    <FaUserEdit /> Edit Profile
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
           {/* Appointments Card */}
           <div className="dashboard-card appointments-card" onClick={handleViewAppointments}>
             <div className="card-header">
@@ -163,6 +140,21 @@ const UserDashboard = () => {
               )}
             </div>
           </div>
+           {/* Book Appointment Card */}
+           <div className="dashboard-card action-card book-appointment">
+            <div className="card-header">
+              <h3>Book Appointment</h3>
+            </div>
+            <div className="card-content">
+              <div className="action-icon">
+                <FaCalendarCheck />
+              </div>
+              <p>Schedule a consultation with our healthcare professionals</p>
+              <button className="action-btn primary" onClick={handleBookAppointment}>
+                Book Now
+              </button>
+            </div>
+          </div>
           
           {/* Health Stats Card */}
           <div className="dashboard-card health-card">
@@ -181,26 +173,21 @@ const UserDashboard = () => {
             </div>
           </div>
           
-          {/* Quick Actions Card */}
-          <div className="dashboard-card actions-card">
+         
+
+          {/* Medical History Card */}
+          <div className="dashboard-card action-card medical-history">
             <div className="card-header">
-              <h3>Quick Actions</h3>
+              <h3>Medical History</h3>
             </div>
             <div className="card-content">
-              <div className="action-buttons">
-                <button className="action-btn primary" onClick={handleBookAppointment}>
-                  <FaCalendarCheck />
-                  <span>Book Appointment</span>
-                </button>
-                <button className="action-btn secondary" onClick={handleHealthCheck}>
-                  <FaHeartbeat />
-                  <span>Health Check</span>
-                </button>
-                <button className="action-btn tertiary" onClick={handleViewAppointments}>
-                  <FaClipboardList />
-                  <span>Medical History</span>
-                </button>
+              <div className="action-icon">
+                <FaClipboardList />
               </div>
+              <p>Access your complete medical records</p>
+              <button className="action-btn tertiary" onClick={handleViewAppointments}>
+                View History
+              </button>
             </div>
           </div>
         </div>
