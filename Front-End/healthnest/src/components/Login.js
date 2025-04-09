@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Login = ({ name }) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -13,14 +13,11 @@ const Login = ({ name }) => {
     e.preventDefault();
     setMessage("");
 
-    // Dynamically select endpoint based on user type
-    const loginUrl =
-      name === "doctor"
-        ? "http://localhost:8080/doctor-login"
-        : "http://localhost:8080/users/login";
-
     try {
-      const res = await axios.post(loginUrl, { email, password });
+      const res = await axios.post("http://localhost:8080/users/login", {
+        email,
+        password,
+      });
 
       if (res.data.message === "Login successful") {
         setIsError(false);
@@ -29,9 +26,6 @@ const Login = ({ name }) => {
         localStorage.setItem("userName", res.data.name);
 
         setTimeout(() => navigate("/user"), 500);
-        // Navigate to appropriate dashboard
-        const dashboardRoute = name === "doctor" ? "/doctordashboard" : "/dashboard";
-        setTimeout(() => navigate(dashboardRoute), 500);
       } else {
         setIsError(true);
         setMessage(res.data.message);
@@ -46,15 +40,19 @@ const Login = ({ name }) => {
     }
   };
 
-  const getSignupPath = () => {
-    if (name === "doctor") return "/doctor/signup";
-    if (name === "admin") return "/admin/signup";
-    return "/signup";
-  };
-
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="card p-4 shadow rounded" style={{ width: "25rem" }}>
+        {/* User Role Links */}
+        <div className="d-flex justify-content-between mb-3">
+          <a href="/doctor/login" className="text-decoration-none text-primary fw-bold">
+            I&apos;m a Doctor
+          </a>
+          <a href="/admin/login" className="text-decoration-none text-primary fw-bold">
+            I&apos;m an Admin
+          </a>
+        </div>
+
         <h4 className="mb-4 text-center">Login to Your Account</h4>
 
         {message && (
@@ -91,11 +89,13 @@ const Login = ({ name }) => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">Login</button>
+          <button type="submit" className="btn btn-primary w-100">
+            Login
+          </button>
 
           <div className="text-center mt-3">
             <small>
-              Don't have an account? <a href={getSignupPath()}>Register</a>
+              Don&apos;t have an account? <a href="/signup">Register</a>
             </small>
           </div>
         </form>
