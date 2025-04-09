@@ -12,7 +12,7 @@
   
   .about-header h1 {
     font-size: 3rem;
-    color: #5c67f2;
+    color: #4f46e5;
   }
   
   .about-header p {
@@ -52,7 +52,8 @@
   }
   
   .vision-mission .card {
-    background-color: #12394a;
+    background-color:#6a64e2;
+    ;
     color: white;
     text-align: center;
     border-radius: 10px;
@@ -100,7 +101,7 @@
   
   .why-choose-us h2 {
     font-size: 2rem;
-    color: #3c3e7b;
+    color: #4f46e5;
     margin-left: 410px;
     margin-bottom: 20px;
   }
@@ -133,7 +134,7 @@
   .about-doctors h2 {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: #3c3e7b;
+    color: #4f46e5;
   }
   
   .about-doctors p {
@@ -144,7 +145,7 @@
   }
   
   .join-button {
-    background-color: #5c67f2;
+    background-color: #4f46e5;
     color: white;
     border: none;
     padding: 15px 30px;
@@ -156,7 +157,7 @@
   }
   
   .join-button:hover {
-    background-color: #3e49d8;
+    background-color: #4338ca;
   }
   
   .about-footer {
@@ -165,4 +166,3 @@
     font-size: 0.9rem;
     color: #777;
   }
-  
