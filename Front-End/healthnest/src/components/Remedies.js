@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Remedies.css';
+import Header from './Header';
 
 const Remedies = ({ onSuggest }) => {
   const [text, setText] = useState('');
@@ -18,11 +19,11 @@ const Remedies = ({ onSuggest }) => {
           messages: [
             {
               role: "system",
-              content: "The user will give his current health condition. Suggest a WHO recommended Precautions and remedies for symptoms",
+              content: "The user will give his current health condition. Suggest a WHO recommended Suggestions and remedies for symptoms",
             },
             {
               role: "user",
-              content: `I am having ${text}. Donot show my disase name or speciliasit name. Just show the precautions and remedies for my symptoms`,
+              content: `I am having ${text}. Donot show my disase name or speciliasit name. Just show the Suggestions and remedies for my symptoms`,
             },
           ],
           temperature: 0.7,
@@ -124,7 +125,8 @@ const Remedies = ({ onSuggest }) => {
     return formattedSections;
   };
 
-  return (
+  return (<>
+    <Header/>
     <div className="feeling-input-component">
       <div className="feeling-container">
         <div className="feeling-card">
@@ -167,7 +169,7 @@ const Remedies = ({ onSuggest }) => {
 
           {response && (
             <div className="result-card">
-              <h3 className="result-title">Recommended Remedies</h3>
+              <h3 className="result-title">Recommended Suggestions</h3>
               <div className="remedies-content">
                 {formatResponse(response)}
               </div>
@@ -180,6 +182,7 @@ const Remedies = ({ onSuggest }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
