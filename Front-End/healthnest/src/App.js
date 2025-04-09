@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import FeelingInputComponent from './components/FeelingInputComponent';
-import Login from './components/Login'; // make sure this file exists
+import Login from './components/Login';
 import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import ManageDoctors from './pages/Admin/ManageDoctors';
@@ -21,9 +21,8 @@ import DoctorLogin from './pages/DoctorLogin';
 import DoctorSignup from './pages/DoctorSignUp';
 import UserLogin from './pages/UserLogin.js';
 
-
-
-//import NotFound from './pages/NotFound'; // optional 404 page
+// ✅ NEWLY ADDED DOCTOR EDIT PROFILE
+import DoctorEditProfile from './pages/DoctorEditProfile';
 
 function App() {
   return (
@@ -31,25 +30,28 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<UserLogin/>} />
+          <Route path="/login" element={<UserLogin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/viewappointments" element={<ViewAppointments />} />
-          <Route path="/changepassword" element={<ChangePassword/>} />
-          <Route path="/deleteaccount" element={<DeleteAccount/>} />
-          <Route path="/doctorprofile" element={<DoctorProfile/>} />
-          <Route path="/manageappointments" element={<ManageAppointments/>} />
-          <Route path="/admin"element={<AdminDashboard/>}/>
-          <Route path="/user"element={<UserDashboard/>}/>
-          <Route path="/checkhealth" element={<CheckHealth/>}/>
-          <Route path="/doctordashboard" element={<DoctorDashboard/>}/>
+          <Route path="/changepassword" element={<ChangePassword />} />
+          <Route path="/deleteaccount" element={<DeleteAccount />} />
+          <Route path="/doctorprofile" element={<DoctorProfile />} />
+          <Route path="/manageappointments" element={<ManageAppointments />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/user" element={<UserDashboard />} />
+          <Route path="/checkhealth" element={<CheckHealth />} />
+          <Route path="/doctordashboard" element={<DoctorDashboard />} />
           <Route path="/feeling-input" element={<FeelingInputComponent />} />
-          <Route path="/editprofile" element={<UserEditProfile/>}/>
+          <Route path="/editprofile" element={<UserEditProfile />} />
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
-          <Route path="/admin/managedoctors" element={<ManageDoctors/>}/>
-          <Route path="/admin/manageusers" element={<ManageUsers/>}/>
-          <Route path="/admin/viewappointmets" element={<View/>} />
-          <Route path="/doctor/login" element={<DoctorLogin/>}/>
-          <Route path="/doctor/signup" element={<DoctorSignup/>}/>
+          <Route path="/admin/managedoctors" element={<ManageDoctors />} />
+          <Route path="/admin/manageusers" element={<ManageUsers />} />
+          <Route path="/admin/viewappointmets" element={<View />} />
+          <Route path="/doctor/login" element={<DoctorLogin />} />
+          <Route path="/doctor/signup" element={<DoctorSignup />} />
+
+          {/* ✅ NEW ROUTE FOR DOCTOR EDIT PROFILE */}
+          <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
         </Routes>
       </div>
     </Router>
