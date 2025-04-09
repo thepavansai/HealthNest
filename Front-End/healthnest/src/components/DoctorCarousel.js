@@ -67,11 +67,25 @@ const DoctorCarousel = () => {
       });
   }, []);
 
-  const getDoctorImage = (doctor) => {
-    const gender = doctor.gender === "FEMALE" ? "female" : "male";
-    const randomNumber = Math.floor(Math.random() * 5) + 1; // Random number between 1 and 5
-    return `/images/${gender}model${randomNumber}.jpg`;
-  };
+  let maleCounter = 0;
+let femaleCounter = 0;
+
+const getDoctorImage = (doctor) => {
+  const gender = doctor.gender === "FEMALE" ? "female" : "male";
+  const imageCount = 5; // Total number of images per gender
+
+  let imageNumber;
+  if (gender === "female") {
+    imageNumber = (femaleCounter % imageCount) + 1;
+    femaleCounter++;
+  } else {
+    imageNumber = (maleCounter % imageCount) + 1;
+    maleCounter++;
+  }
+
+  return `/images/${gender}model${imageNumber}.jpg`;
+};
+
 
   const responsive = {
     desktop: {
