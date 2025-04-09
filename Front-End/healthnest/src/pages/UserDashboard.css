@@ -5,11 +5,13 @@
   background-color: #f5f7fa;
   min-height: 100vh;
   font-family: 'Plus Jakarta Sans', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #374151;
   line-height: 1.5;
+  font-size: 0.95rem;
+  font-weight: 300;
 }
 
 .user-dashboard-new {
@@ -58,8 +60,8 @@
 /* Welcome Section Typography */
 .welcome-content h1 {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 2.75rem;
-  font-weight: 600;
+  font-size: 2.25rem;
+  font-weight: 400;
   margin: 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   letter-spacing: -0.025em;
@@ -71,8 +73,8 @@
 
 .subtitle {
   font-family: 'Poppins', sans-serif;
-  font-size: 1.15rem;
-  font-weight: 400;
+  font-size: 1rem;
+  font-weight: 300;
   margin-top: 0.5rem;
   opacity: 0.9;
   letter-spacing: -0.01em;
@@ -114,7 +116,8 @@
 }
 
 .profile-name {
-  font-weight: 400;
+  font-size: 0.9rem;
+  font-weight: 300;
   margin-right: 0.5rem;
   letter-spacing: 0.01em;
 }
@@ -156,8 +159,8 @@
   border: none;
   background: none;
   text-align: left;
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 0.9rem;
+  font-weight: 300;
   color: #4b5563;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -176,7 +179,7 @@
 .profile-dropdown-menu .logout-btn {
   border-top: 1px solid #e5e7eb;
   color: #ef4444;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .profile-dropdown-menu .logout-btn:hover {
@@ -218,18 +221,18 @@
 
 .card-header h3 {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1.15rem;
+  font-weight: 400;
   margin: 0;
   color: #1f2937;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   line-height: 1.4;
 }
 
 .view-all {
   color: #4f46e5;
-  font-size: 0.875rem;
-  font-weight: 400;
+  font-size: 0.8rem;
+  font-weight: 300;
   cursor: pointer;
   letter-spacing: 0;
 }
@@ -266,8 +269,8 @@
 /* Profile Details */
 .user-details h4 {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.65rem;
-  font-weight: 500;
+  font-size: 1.5rem;
+  font-weight: 400;
   margin: 0 0 0.5rem 0;
   color: #1f2937;
   letter-spacing: -0.02em;
@@ -276,10 +279,10 @@
 
 .user-details p {
   font-family: 'Poppins', sans-serif;
-  font-weight: 400;
+  font-size: 0.9rem;
+  font-weight: 300;
   color: #4b5563;
   margin-bottom: 1.5rem;
-  font-size: 1rem;
   letter-spacing: -0.01em;
   line-height: 1.6;
 }
@@ -344,8 +347,8 @@
 .appointment-count h2, 
 .health-stats h2 {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 400;
   margin: 0;
   color: #1f2937;
   letter-spacing: -0.03em;
@@ -362,8 +365,8 @@
 
 .appointment-date {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 400;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-weight: 300;
   letter-spacing: -0.01em;
   line-height: 1.5;
   color: #374151;
@@ -371,18 +374,19 @@
 
 .appointment-doctor {
   font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 400;
+  font-size: 0.85rem;
+  font-weight: 300;
   letter-spacing: -0.01em;
   line-height: 1.5;
   color: #4b5563;
 }
 
 .no-appointments {
+  font-size: 0.85rem;
+  font-weight: 300;
   color: #6b7280;
   font-style: italic;
   margin-top: 1rem;
-  font-weight: 400;
 }
 
 /* Action Buttons */
@@ -394,8 +398,8 @@
 
 .action-btn {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 400;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-weight: 300;
   letter-spacing: -0.01em;
   line-height: 1.4;
   display: flex;
@@ -410,7 +414,7 @@
 }
 
 .action-btn svg {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin-bottom: 0.5rem;
 }
 
@@ -452,7 +456,8 @@
   border-radius: 8px;
   background: none;
   color: #4f46e5;
-  font-weight: 400;
+  font-size: 0.9rem;
+  font-weight: 300;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -475,7 +480,8 @@
   border-radius: 8px;
   background-color: #4f46e5;
   color: white;
-  font-weight: 400;
+  font-size: 0.9rem;
+  font-weight: 300;
   cursor: pointer;
   transition: all 0.2s ease;
   margin-top: auto;
