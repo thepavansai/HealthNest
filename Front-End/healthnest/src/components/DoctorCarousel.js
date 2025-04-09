@@ -61,7 +61,7 @@ const DoctorCarousel = () => {
   useEffect(() => {
     axios.get('http://localhost:8080/admin/doctors')
       .then(res => {
-        const availableDoctors = res.data.filter(doc => doc.availability === "Available");
+        const availableDoctors = res.data;
         setDoctors(availableDoctors);
       })
       .catch(err => {
@@ -143,8 +143,8 @@ const DoctorCarousel = () => {
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = doctor.gender === "FEMALE" 
-                    ? "https://source.unsplash.com/featured/?female+doctor"
-                    : "https://source.unsplash.com/featured/?male+doctor";
+                    ? "https://api.pexels.com/v1/search?query=doctor"
+                    : "https://api.pexels.com/v1/search?query=doctor";
                 }}
               />
               <CardContent sx={{ p: 2, textAlign: 'center' }}>
