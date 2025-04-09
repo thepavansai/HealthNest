@@ -1,0 +1,74 @@
+.doctor-edit-container {
+    max-width: 500px;
+    margin: auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  }
+  
+  .edit-title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  
+  .doctor-edit-form input,
+  .doctor-edit-form select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  .availability-section {
+    margin-bottom: 15px;
+  }
+  
+  .availability-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+  }
+  
+  .day-checkbox {
+    font-size: 0.95rem;
+  }
+  
+  .save-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #198754;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .save-btn:hover {
+    background-color: #157347;
+  }
+  
+  .alert {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    text-align: center;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  

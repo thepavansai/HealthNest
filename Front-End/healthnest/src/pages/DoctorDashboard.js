@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './DoctorDashboard.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const DoctorDashboard = () => {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
   const upcomingPatients = [
     { id: 1, name: 'Alice Smith', time: '10:00 AM', date: '2025-04-09' },
     { id: 2, name: 'Bob Johnson', time: '11:30 AM', date: '2025-04-09' },
   ];
 
   const totalConsultations = 5;
-  const names="doctor";
+  const names = "doctor";
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    
     <div>
-      <Header name={names}/>
+      <Header name={names} />
       <div className="container mt-4 doctor-dashboard-container">
         {/* Welcome Bar */}
         <div className="welcome-bar mb-4">
@@ -35,24 +50,24 @@ const DoctorDashboard = () => {
                 />
                 <h4 className="doctor-name">Dr. John Doe</h4>
                 <p className="text-muted">Cardiologist</p>
-              </div>
-              <hr />
-              <div className="quick-actions p-3">
-                <h5 className="mb-3">Quick Actions</h5>
-                <ul className="list-group list-group-flush">
-                  <li className="list-group-item">
-                    <a href="/changepassword">🔒 Change Password</a>
-                  </li>
-                  <li className="list-group-item">
-                    <a href="/deleteaccount">🗑️ Delete Account</a>
-                  </li>
-                  <li className="list-group-item">
-                    <a href="/manageappointments">📅 Manage Appointments</a>
-                  </li>
-                  <li className="list-group-item">
-                    <a href="/doctorprofile">🧑‍⚕️ Edit Profile</a>
-                  </li>
-                </ul>
+                <p className="text-muted">john.doe@healthnest.com</p>
+
+                {/* Profile Dropdown */}
+                <div className="dropdown mt-3" ref={dropdownRef}>
+                  <button
+                    className="btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    onClick={() => setShowDropdown(!showDropdown)}
+                  >
+                    Profile
+                  </button>
+                  {showDropdown && (
+                    <ul className="dropdown-menu show" style={{ position: 'absolute', display: 'block' }}>
+                      <li><a className="dropdown-item" href="/doctor/editprofile">Edit Profile</a></li>
+                      <li><a className="dropdown-item" href="/changepassword">Change Password</a></li>
+                    </ul>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -64,7 +79,7 @@ const DoctorDashboard = () => {
               <div className="col-md-6">
                 <div className="stats-card">
                   <h3>{upcomingPatients.length}</h3>
-                  <p>Upcoming Appointments</p>
+                  <p>View Appointments</p>
                 </div>
               </div>
               <div className="col-md-6">
