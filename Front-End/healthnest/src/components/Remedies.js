@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Remedies.css';
 import Header from './Header';
+import Footer from './Footer';
 
 const Remedies = ({ onSuggest }) => {
   const [text, setText] = useState('');
@@ -182,6 +183,7 @@ const Remedies = ({ onSuggest }) => {
         </div>
       </div>
     </div>
+    <Footer/>
     </>
   );
 };
