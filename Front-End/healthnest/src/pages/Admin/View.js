@@ -83,7 +83,7 @@ const View = () => {
                 <tr>
                   <th>Patient Name</th>
                   <th>Doctor</th>
-                  <th>Specialty</th>
+                  <th>Specialization</th>
                   <th>Date & Time</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -94,7 +94,7 @@ const View = () => {
                   <tr key={appointment.id}>
                     <td>{appointment.patientName}</td>
                     <td>Dr. {appointment.doctorName}</td>
-                    <td>{appointment.specialty}</td>
+                    <td>{appointment.specialization}</td>
                     <td>{formatDateTime(appointment.appointmentDateTime)}</td>
                     <td>
                     <span className={`status-badge ${appointment.status || 'unknown'}`}>
@@ -104,9 +104,7 @@ const View = () => {
                     </td>
                     <td>
                       <div className="action-buttons">
-                        <button className="action-btn view">View Details</button>
-                        <button className="action-btn edit">Edit</button>
-                        <button className="action-btn cancel">Cancel</button>
+                        <button className="action-btn cancel">Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -128,7 +126,7 @@ const View = () => {
                 <tr>
                   <th>Patient Name</th>
                   <th>Doctor</th>
-                  <th>Specialty</th>
+                  <th>Specialization</th>
                   <th>Date & Time</th>
                   <th>Payment</th>
                   <th>Actions</th>
@@ -139,7 +137,7 @@ const View = () => {
                   <tr key={appointment.id}>
                     <td>{appointment.patientName}</td>
                     <td>Dr. {appointment.doctorName}</td>
-                    <td>{appointment.specialty}</td>
+                    <td>{appointment.specialization}</td>
                     <td>{formatDateTime(appointment.appointmentDateTime)}</td>
                     <td>₹{appointment.paymentAmount}</td>
                     <td>

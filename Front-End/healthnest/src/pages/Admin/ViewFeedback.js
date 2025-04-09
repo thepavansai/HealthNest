@@ -7,7 +7,6 @@ const ViewFeedback = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeFeedback, setActiveFeedback] = useState(null);
-  const [filterStatus, setFilterStatus] = useState('all');
 
   useEffect(() => {
     const fetchFeedbacks = async () => {
@@ -32,11 +31,6 @@ const ViewFeedback = () => {
     setActiveFeedback(null);
   };
 
-  const filteredFeedbacks = () => {
-    if (filterStatus === 'all') return feedbacks;
-    return feedbacks.filter(feedback => feedback.status === filterStatus);
-  };
-
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
@@ -57,42 +51,17 @@ const ViewFeedback = () => {
         <p>Review and respond to user feedback across the platform</p>
       </header>
 
-      <div className="feedback-filters">
-        <div className="filter-group">
-          <span>Filter by status:</span>
-          <div className="filter-buttons">
-            <button 
-              className={`filter-btn ${filterStatus === 'all' ? 'active' : ''}`} 
-              onClick={() => setFilterStatus('all')}
-            >
-              All
-            </button>
-            <button 
-              className={`filter-btn ${filterStatus === 'new' ? 'active' : ''}`} 
-              onClick={() => setFilterStatus('new')}
-            >
-              New
-            </button>
-            <button 
-              className={`filter-btn ${filterStatus === 'read' ? 'active' : ''}`} 
-              onClick={() => setFilterStatus('read')}
-            >
-              Read
-            </button>
-          </div>
-        </div>
-        <div className="feedback-count">
-          Showing <strong>{filteredFeedbacks().length}</strong> of <strong>{feedbacks.length}</strong> total
-        </div>
+      <div className="feedback-count">
+        Showing <strong>{feedbacks.length}</strong> feedback entries
       </div>
 
       <div className="feedback-list">
-        {filteredFeedbacks().length === 0 ? (
+        {feedbacks.length === 0 ? (
           <div className="no-feedback-message">
-            No feedback found matching your criteria.
+            No feedback found.
           </div>
         ) : (
-          filteredFeedbacks().map(feedback => (
+          feedbacks.map(feedback => (
             <div 
               key={feedback.id} 
               className={`feedback-card ${feedback.status === 'new' ? 'new' : ''}`}
@@ -100,7 +69,7 @@ const ViewFeedback = () => {
             >
               <div className="feedback-card-header">
                 <div className="user-info">
-                  <div className="user-avatar">{feedback.username.charAt(0).toUpperCase()}</div>
+                  <div className="user-avatar">{feedback.username?.charAt(0).toUpperCase() || 'U'}</div>
                   <div>
                     <h3>{feedback.username}</h3>
                     <p className="user-email">{feedback.email}</p>
