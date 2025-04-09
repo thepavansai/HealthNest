@@ -18,7 +18,7 @@ return (
           <ul className="list-unstyled">
             <li><a href="/faq" className="text-light text-decoration-none">FAQs</a></li>
             <li><a href="/contact" className="text-light text-decoration-none">Contact Us</a></li>
-            <li><a href="/about" className="text-light text-decoration-none">About Us</a></li>
+            <li><a href="/aboutus" className="text-light text-decoration-none">About Us</a></li>
             <li><a href="/terms" className="text-light text-decoration-none">Terms of Service</a></li>
           </ul>
         </div>

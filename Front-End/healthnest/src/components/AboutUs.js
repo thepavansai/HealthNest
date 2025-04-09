@@ -2,6 +2,7 @@ import React from 'react';
 import './AboutUs.css';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Footer from './Footer';
 
 const AboutUs = () => {
   return (
@@ -32,9 +33,8 @@ const AboutUs = () => {
       <section className="vision-mission">
         <div className="card">
           <h2>Our Vision</h2>
-          
-          <p>
           <hr />
+          <p>
             Empower individuals through accessible healthcare solutions and cutting-edge technology to
             live healthier lives.
           </p>
@@ -50,15 +50,17 @@ const AboutUs = () => {
         </div>
       </section>
 
-      <section className="about-details">
-
-        <h2>Why Choose Us?</h2>
-        <ul>
-          <li> Symptom-based doctor suggestions</li>
-          <li> Easy appointment scheduling & management</li>
-          <li> Trusted & verified specialist doctors</li>
-          <li> Supportive and user-friendly experience</li>
-        </ul>
+      <section className="about-details-split">
+        <div className="left-space"></div>
+        <div className="why-choose-us">
+          <h2>Why Choose Us?</h2>
+          <ul>
+            <li> Symptom-based doctor suggestions</li>
+            <li> Easy appointment scheduling & management</li>
+            <li> Trusted & verified specialist doctors</li>
+            <li> Supportive and user-friendly experience</li>
+          </ul>
+        </div>
       </section>
 
       <section className="about-doctors">
@@ -70,9 +72,8 @@ const AboutUs = () => {
         <button className="join-button">Join Us</button>
       </section>
 
-      <section className="about-footer">
-        <p>&copy; 2025 HealthNest. All rights reserved.</p>
-      </section>
+      {/* Footer included here */}
+      <Footer />
     </div>
   );
 };
