@@ -137,6 +137,12 @@
     text-overflow: ellipsis;
     max-width: 160px;
     line-height: 1.2;
+    text-decoration: none;
+  }
+
+  .user-name:hover {
+    opacity: 0.8;
+    color: #4f46e5;
   }
   
   .logout-button {

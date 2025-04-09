@@ -2,113 +2,80 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import {
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Avatar,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Badge,
-  useTheme,
-  Container,
-} from '@mui/material';
-import {
-  CalendarToday,
-  LocalHospital,
-  HealthAndSafety,
-  Edit,
-  Feedback,
-  Logout,
-  Person,
-  EventNote,
-  MedicalServices,
-  ArrowForward,
-} from '@mui/icons-material';
-import {
-  FaUserEdit,
-  FaComment,
-  FaSignOutAlt,
-  FaCalendarCheck,
-  FaHeartbeat,
-  FaClipboardList,
-} from 'react-icons/fa';
-
-import axios from 'axios';
 import './UserDashboard.css';
-import DoctorCarousel from '../components/DoctorCarousel';
+import axios from 'axios';
+import { FaCalendarCheck, FaUserEdit, FaComment, FaSignOutAlt, FaHeartbeat, FaClipboardList } from 'react-icons/fa';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const [anchorEl, setAnchorEl] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-const [appointments, setAppointments] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({
     name: '',
     email: '',
   });
+  const [appointments, setAppointments] = useState([]);
 
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     if (userId) {
-      axios.get(`http://localhost:8080/users/userdetails/${userId}`)
-        .then((res) => {
-          setUserData(res.data);
+      setLoading(true);
+      
+      // Fetch user details
+      const getUserDetails = axios.get(`http://localhost:8080/users/userdetails/${userId}`);
+      
+      // Fetch user appointments
+      const getUserAppointments = axios.get(`http://localhost:8080/users/appointments/${userId}`);
+      
+      Promise.all([getUserDetails, getUserAppointments])
+        .then(([userRes, appointmentsRes]) => {
+          setUserData(userRes.data);
+          setAppointments(appointmentsRes.data || []);
         })
         .catch((err) => {
-          console.error("Failed to fetch user details", err);
+          console.error("Failed to fetch user data", err);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   }, [userId]);
 
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const toggleDropdown = (e) => {
+    e.stopPropagation();
+    setDropdownOpen(!dropdownOpen);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  useEffect(() => {
+    const closeDropdown = () => setDropdownOpen(false);
+    if (dropdownOpen) {
+      document.addEventListener('click', closeDropdown);
+    }
+    return () => document.removeEventListener('click', closeDropdown);
+  }, [dropdownOpen]);
 
-  const handleHealthCheck = () => {
-    navigate('/checkhealth');
-  };
-
-  const handleEditProfile = () => {
-    navigate('/editprofile');
-    handleMenuClose();
-  };
-
-  const handleFeedback = () => {
-    navigate('/feedback');
-    handleMenuClose();
-  };
-
+  const handleHealthCheck = () => navigate('/checkhealth');
+  const handleEditProfile = () => navigate('/editprofile');
+  const handleFeedback = () => navigate('/feedback');
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
   };
+  const handleBookAppointment = () => navigate('/bookappointment');
+  const handleViewAppointments = () => navigate('/viewappointments');
 
-  const handleBookAppointment = () => {
-    navigate('/bookappointment');
-  };
-
-  const handleViewAppointments = () => {
-    navigate('/viewappointments');
-  };
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev);
-  };
-  
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading your dashboard...</p>
+      </div>
+    );
+  }
 
   return (
-    <Box className="dashboard-wrapper">
+    <div className="dashboard-container">
       <Header />
       <div className="user-dashboard-new">
         {/* Welcome Section */}
@@ -173,21 +140,7 @@ const [appointments, setAppointments] = useState([]);
               )}
             </div>
           </div>
-           {/* Book Appointment Card */}
-           <div className="dashboard-card action-card book-appointment">
-            <div className="card-header">
-              <h3>Book Appointment</h3>
-            </div>
-            <div className="card-content">
-              <div className="action-icon">
-                <FaCalendarCheck />
-              </div>
-              <p>Schedule a consultation with our healthcare professionals</p>
-              <button className="action-btn primary" onClick={handleBookAppointment}>
-                Book Now
-              </button>
-            </div>
-          </div>
+          
           
           {/* Health Stats Card */}
           <div className="dashboard-card health-card">
@@ -206,7 +159,21 @@ const [appointments, setAppointments] = useState([]);
             </div>
           </div>
           
-         
+          {/* Book Appointment Card */}
+          <div className="dashboard-card action-card book-appointment">
+            <div className="card-header">
+              <h3>Book Appointment</h3>
+            </div>
+            <div className="card-content">
+              <div className="action-icon">
+                <FaCalendarCheck />
+              </div>
+              <p>Schedule a consultation with our healthcare professionals</p>
+              <button className="action-btn primary" onClick={handleBookAppointment}>
+                Book Now
+              </button>
+            </div>
+          </div>
 
           {/* Medical History Card */}
           <div className="dashboard-card action-card medical-history">
@@ -226,8 +193,8 @@ const [appointments, setAppointments] = useState([]);
         </div>
       </div>
       <Footer />
-    </Box>
+    </div>
   );
 };
 
-export default UserDashboard; 
+export default UserDashboard;
