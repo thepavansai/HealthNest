@@ -22,10 +22,9 @@ import UserEditProfile from './pages/UserEditProfile';
 import UserFeedback from './pages/UserFeedback.js';
 import UserLogin from './pages/UserLogin.js';
 import ViewAppointments from './pages/ViewAppointments';
-import UserFeedback from './pages/UserFeedback.js';
+import AboutUs from './components/AboutUs.js';
 
-// ✅ NEWLY ADDED DOCTOR EDIT PROFILE
-import DoctorEditProfile from './pages/DoctorEditProfile';
+
 
 function App() {
   return (
@@ -61,6 +60,7 @@ function App() {
 
           {/* ✅ NEW ROUTE FOR DOCTOR EDIT PROFILE */}
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
+          <Route path="/aboutus" element={<AboutUs/>}/>
         </Routes>
       </div>
     </Router>

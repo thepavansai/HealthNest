@@ -46,7 +46,7 @@ const Header = () => {
             <Link to="/" className="nav-link">
               <FaHome /> Home
             </Link>
-            <Link to="/about" className="nav-link">
+            <Link to="/aboutus" className="nav-link">
               <FaInfoCircle /> About
             </Link>
           </nav>
