@@ -77,9 +77,9 @@ public class UserController {
 	}
 	
 
-	@PatchMapping("/editprofile")
-	public ResponseEntity<String> editProfile(@RequestBody User user) {
-		boolean updated = userService.editProfile(user);
+	@PatchMapping("/editprofile/{userId}")
+	public ResponseEntity<String> editProfile(@RequestBody User user,@PathVariable Integer userId) {
+		boolean updated = userService.editProfile(user,userId);
 		if (updated) {
 			return ResponseEntity.ok("Profile successfully edited");
 		} else {
