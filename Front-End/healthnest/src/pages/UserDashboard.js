@@ -29,6 +29,15 @@ import {
   MedicalServices,
   ArrowForward,
 } from '@mui/icons-material';
+import {
+  FaUserEdit,
+  FaComment,
+  FaSignOutAlt,
+  FaCalendarCheck,
+  FaHeartbeat,
+  FaClipboardList,
+} from 'react-icons/fa';
+
 import axios from 'axios';
 import './UserDashboard.css';
 import DoctorCarousel from '../components/DoctorCarousel';
@@ -37,6 +46,9 @@ const UserDashboard = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+const [appointments, setAppointments] = useState([]);
+
   const [userData, setUserData] = useState({
     name: '',
     email: '',
@@ -90,6 +102,10 @@ const UserDashboard = () => {
   const handleViewAppointments = () => {
     navigate('/viewappointments');
   };
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+  
 
   return (
     <Box className="dashboard-wrapper">

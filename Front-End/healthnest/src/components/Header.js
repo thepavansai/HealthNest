@@ -82,7 +82,7 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaHome, FaInfoCircle, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { FaHome, FaInfoCircle, FaSignOutAlt, FaSignInAlt, FaUserPlus, FaUserCircle } from 'react-icons/fa';
 import './Header.css';
 
 const Header = () => {
@@ -131,10 +131,15 @@ const Header = () => {
                 <span className="user-greeting">Welcome,</span>
                 <span className="user-name" title={username}>{username}</span>
               </div>
-              <button onClick={handleLogout} className="logout-button">
-                <FaSignOutAlt />
-                <span>Logout</span>
-              </button>
+              <Link to="/user" className="profile-button">
+  <FaUserCircle />
+  <span>Profile</span>
+</Link>
+<button onClick={handleLogout} className="logout-button">
+  <FaSignOutAlt />
+  <span>Logout</span>
+</button>
+
             </div>
           ) : (
             <div className="auth-buttons">
