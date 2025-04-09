@@ -105,13 +105,26 @@
   .user-controls {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  
+  .user-greeting {
+    color: #6b7280;
+    font-size: 0.9rem;
   }
   
   .user-name {
     color: #1f2937;
-    font-weight: 500;
-    font-size: 0.95rem;
+    font-weight: 600;
+    font-size: 1rem;
   }
   
   .logout-button {
@@ -328,6 +341,14 @@
     .btn-login, .btn-signup {
       padding: 0.5rem 1rem;
       font-size: 0.9rem;
+    }
+    
+    .user-greeting {
+      display: none;
+    }
+    
+    .user-controls {
+      gap: 1rem;
     }
   }
   
