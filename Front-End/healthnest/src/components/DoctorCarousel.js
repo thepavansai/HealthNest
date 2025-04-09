@@ -7,7 +7,6 @@ import {
   Typography,
   Card,
   CardContent,
-  Avatar,
   Rating,
   Chip,
   useTheme,
@@ -17,7 +16,6 @@ import {
   MedicalServices,
   Star,
   LocationOn,
-  Person,
 } from '@mui/icons-material';
 import styled from '@emotion/styled';
 
@@ -37,7 +35,7 @@ const DoctorCard = styled(Card)`
   height: 100%;
   border-radius: 16px;
   transition: all 0.3s ease;
-  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  background: white;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
   
   &:hover {
@@ -61,7 +59,7 @@ const DoctorCarousel = () => {
   useEffect(() => {
     axios.get('http://localhost:8080/admin/doctors')
       .then(res => {
-        const availableDoctors = res.data.filter(doc => doc.availability === "Available");
+        const availableDoctors = res.data;
         setDoctors(availableDoctors);
       })
       .catch(err => {
@@ -70,10 +68,9 @@ const DoctorCarousel = () => {
   }, []);
 
   const getDoctorImage = (doctor) => {
-    const baseUrl = 'https://source.unsplash.com/featured/?';
-    const gender = doctor.gender === "FEMALE" ? "female+doctor" : "male+doctor";
-    const specialization = doctor.specialization.toLowerCase().replace(/\s+/g, '+');
-    return `${baseUrl}${gender},${specialization}`;
+    const gender = doctor.gender === "FEMALE" ? "female" : "male";
+    const randomNumber = Math.floor(Math.random() * 5) + 1; // Random number between 1 and 5
+    return `/images/${gender}model${randomNumber}.jpg`;
   };
 
   const responsive = {
@@ -102,7 +99,7 @@ const DoctorCarousel = () => {
   return (
     <Box sx={{
       p: 3,
-      background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
+      background: 'aliceblue',
       borderRadius: 3,
       boxShadow: 'inset 0 1px 5px rgba(0, 0, 0, 0.05)',
     }}>
@@ -143,8 +140,8 @@ const DoctorCarousel = () => {
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = doctor.gender === "FEMALE" 
-                    ? "https://source.unsplash.com/featured/?female+doctor"
-                    : "https://source.unsplash.com/featured/?male+doctor";
+                    ? "/images/femalemodel1.jpg"
+                    : "/images/malemodel1.jpg";
                 }}
               />
               <CardContent sx={{ p: 2, textAlign: 'center' }}>
