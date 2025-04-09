@@ -19,6 +19,10 @@ const AdminDashboard = () => {
     navigate('/login');
   };
 
+  const handleFeedback = () => {
+    navigate('/admin/viewfeedbacks')
+  }
+
   const handleManageDoctors = () => {
     navigate('/admin/managedoctors');
   };

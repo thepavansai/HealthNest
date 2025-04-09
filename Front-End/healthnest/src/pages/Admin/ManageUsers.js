@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { FaUser, FaSearch, FaTrash, FaUserSlash, FaUserCheck } from 'react-icons/fa';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { FaSearch, FaTrash, FaUser, FaUserCheck, FaUserSlash } from 'react-icons/fa';
 import './ManageUsers.css';
 
 const ManageUsers = () => {
@@ -13,7 +13,6 @@ const ManageUsers = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        // Replace with your actual API endpoint
         const response = await axios.get('/api/admin/users');
         setUsers(response.data);
         setLoading(false);

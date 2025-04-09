@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './FeelingInput.css';
 
 const FeelingInputComponent = ({ onSuggest }) => {
   const [text, setText] = useState('');
   const [response, setResponse] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
+    if (!text.trim()) return;
+    setIsLoading(true);
     try {
       const res = await axios.post(
         'https://api.groq.com/openai/v1/chat/completions',
@@ -38,45 +42,64 @@ const FeelingInputComponent = ({ onSuggest }) => {
       if (onSuggest) {
         onSuggest(doctorSuggestion);
       }
+      setIsLoading(false);
     } catch (error) {
       setResponse("Error: " + error.message);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div style={{ margin: "250px" }}>
-      <h2 className="text-2xl font-semibold text-center mb-4">
-        Describe how you are feeling
-      </h2>
-      <div className="form-floating">
-        <textarea
-          className="form-control w-full h-40 p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-          id="floatingTextarea"
-          placeholder="fever, headache"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        ></textarea>
-        <label htmlFor="floatingTextarea"> </label>
-      </div>
+    <div className="feeling-input-component">
+      <div className="feeling-container">
+        <div className="feeling-card">
+          <div className="header">
+            <h2>How are you feeling today?</h2>
+            <p>Describe your symptoms and we'll help you find the right specialist</p>
+          </div>
 
-      <button
-        className="text-white px-6 py-2 rounded"
-        style={{
-          backgroundColor: "#00008B",
-          position: "absolute",
-          right: "750px",
-        }}
-        onClick={handleSubmit}
-      >
-        Suggest me
-      </button>
+          <div className="input-area">
+            <textarea
+              className="symptom-textarea"
+              placeholder="I've been experiencing..."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          </div>
 
-      {response && (
-        <div className="mt-6 p-4 border rounded bg-gray-100">
-          <strong>Suggestion:</strong>
-          <p>{response}</p>
+          <button
+            className="submit-button"
+            onClick={handleSubmit}
+            disabled={isLoading || !text.trim()}
+          >
+            {isLoading ? (
+              <>
+                <svg className="loading-spinner" width="20" height="20" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                </svg>
+                <span>Analyzing...</span>
+              </>
+            ) : (
+              <>
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
+                </svg>
+                <span>Find Specialist</span>
+              </>
+            )}
+          </button>
+
+          {response && (
+            <div className="result-card">
+              <h3 className="result-title">Recommended Specialist</h3>
+              <div className="specialist-name">
+                {response}
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

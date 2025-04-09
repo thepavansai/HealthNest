@@ -7,22 +7,24 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import ManageDoctors from './pages/Admin/ManageDoctors';
 import ManageUsers from './pages/Admin/ManageUsers.js';
 import View from './pages/Admin/View.js';
+import ViewFeedback from './pages/Admin/ViewFeedback.js';
 import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
 import DeleteAccount from './pages/DeleteAccount';
 import DoctorDashboard from './pages/DoctorDashboard';
+import DoctorEditProfile from './pages/DoctorEditProfile';
 import DoctorProfile from './pages/DoctorProfile';
 import Home from './pages/Home';
 import ManageAppointments from './pages/ManageAppointments';
 import UserDashboard from './pages/UserDashboard';
 import UserEditProfile from './pages/UserEditProfile';
 import ViewAppointments from './pages/ViewAppointments';
+import AboutUs from './components/AboutUs.js';
+
 import DoctorLogin from './pages/DoctorLogin';
 import DoctorSignup from './pages/DoctorSignUp';
 import UserLogin from './pages/UserLogin.js';
 
-// ✅ NEWLY ADDED DOCTOR EDIT PROFILE
-import DoctorEditProfile from './pages/DoctorEditProfile';
 
 function App() {
   return (
@@ -44,14 +46,20 @@ function App() {
           <Route path="/feeling-input" element={<FeelingInputComponent />} />
           <Route path="/editprofile" element={<UserEditProfile />} />
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
+          
+          
           <Route path="/admin/managedoctors" element={<ManageDoctors />} />
           <Route path="/admin/manageusers" element={<ManageUsers />} />
-          <Route path="/admin/viewappointmets" element={<View />} />
+          <Route path="/admin/viewappointments" element={<View />} />
+          <Route path="/admin/viewfeedbacks" element={<ViewFeedback/>} />
+
+
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
 
           {/* ✅ NEW ROUTE FOR DOCTOR EDIT PROFILE */}
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
+          <Route path="/aboutus" element={<AboutUs/>}/>
         </Routes>
       </div>
     </Router>

@@ -94,110 +94,121 @@ const UserDashboard = () => {
   return (
     <Box className="dashboard-wrapper">
       <Header />
-      <Box className="hero-section">
-        <Container maxWidth="lg">
-          <Box className="hero-content">
-            <Typography variant="h2" className="hero-text">
-              Welcome back, {userData.name}
-            </Typography>
-            <Typography variant="h5" className="hero-subtext">
-              Your health is our priority
-            </Typography>
-           
-          </Box>
-        </Container>
-      </Box>
+      <div className="user-dashboard-new">
+        {/* Welcome Section */}
+        <div className="welcome-section">
+          <div className="welcome-content">
+            <h1>Welcome back, {userData.name || 'Patient'}</h1>
+            <p className="subtitle">Manage your healthcare journey with ease</p>
+          </div>
+          <div className="profile-widget">
+            <div className="profile-info" onClick={toggleDropdown}>
+              <div className="profile-avatar">
+                <img
+                  src={userData.profileImage || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+                  alt={userData.name}
+                />
+              </div>
+              <span className="profile-name">{userData.name}</span>
+              <span className="profile-arrow">▼</span>
+            </div>
+            
+            {dropdownOpen && (
+              <div className="profile-dropdown-menu">
+                <button onClick={handleEditProfile}>
+                  <FaUserEdit /> Edit Profile
+                </button>
+                <button onClick={handleFeedback}>
+                  <FaComment /> Send Feedback
+                </button>
+                <button className="logout-btn" onClick={handleLogout}>
+                  <FaSignOutAlt /> Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Dashboard Grid */}
+        <div className="dashboard-grid">
+          {/* Appointments Card */}
+          <div className="dashboard-card appointments-card" onClick={handleViewAppointments}>
+            <div className="card-header">
+              <h3>Appointments</h3>
+              <span className="view-all">View All →</span>
+            </div>
+            <div className="card-content">
+              <div className="appointment-count">
+                <FaCalendarCheck className="card-icon" />
+                <h2>{appointments.length || 0}</h2>
+              </div>
+              <p>Upcoming Appointments</p>
+              {appointments.length > 0 ? (
+                <div className="next-appointment">
+                  <p className="appointment-date">
+                    Next: {new Date(appointments[0].appointmentDate).toLocaleDateString()}
+                  </p>
+                  <p className="appointment-doctor">
+                    Dr. {appointments[0].doctorName}
+                  </p>
+                </div>
+              ) : (
+                <p className="no-appointments">No upcoming appointments</p>
+              )}
+            </div>
+          </div>
+           {/* Book Appointment Card */}
+           <div className="dashboard-card action-card book-appointment">
+            <div className="card-header">
+              <h3>Book Appointment</h3>
+            </div>
+            <div className="card-content">
+              <div className="action-icon">
+                <FaCalendarCheck />
+              </div>
+              <p>Schedule a consultation with our healthcare professionals</p>
+              <button className="action-btn primary" onClick={handleBookAppointment}>
+                Book Now
+              </button>
+            </div>
+          </div>
+          
+          {/* Health Stats Card */}
+          <div className="dashboard-card health-card">
+            <div className="card-header">
+              <h3>Health Status</h3>
+            </div>
+            <div className="card-content">
+              <div className="health-stats">
+                <FaHeartbeat className="card-icon pulse" />
+                <h2>{appointments.length || 0}</h2>
+              </div>
+              <p>Past Consultations</p>
+              <button className="btn-primary" onClick={handleHealthCheck}>
+                Check Your Health
+              </button>
+            </div>
+          </div>
+          
+         
 
-      <Container maxWidth="lg" className="dashboard-container">
-        <Grid container spacing={4} className="dashboard-content">
-          <Grid item xs={12} md={4}>
-            <Card className="profile-card">
-              <CardContent>
-                <Box className="profile-content">
-                  <Avatar
-                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                    className="large-avatar"
-                  />
-                  <Typography variant="h5" className="profile-name">
-                    {userData.name}
-                  </Typography>
-                  <Badge badgeContent="Patient" color="primary" className="profile-badge" />
-                  <Typography variant="body1" className="profile-email">
-                    {userData.email}
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <Card className="dashboard-card appointment-card" onClick={handleViewAppointments}>
-              <CardContent>
-                <Box className="card-content">
-                  <EventNote className="large-icon" />
-                  <Typography variant="h2" className="card-number">
-                    2
-                  </Typography>
-                  <Typography variant="h6" className="card-title">
-                    Upcoming Appointments
-                  </Typography>
-                  <Button 
-                    endIcon={<ArrowForward />}
-                    className="view-button"
-                  >
-                    View Details
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <Card className="dashboard-card consultation-card">
-              <CardContent>
-                <Box className="card-content">
-                  <MedicalServices className="large-icon" />
-                  <Typography variant="h2" className="card-number">
-                    5
-                  </Typography>
-                  <Typography variant="h6" className="card-title">
-                    Total Consultations
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Card className="quick-actions-card">
-              <CardContent>
-                <Typography variant="h4" className="section-title">
-                  Quick Actions
-                </Typography>
-                <Box className="action-buttons">
-                  <Button
-                    variant="contained"
-                    startIcon={<HealthAndSafety />}
-                    onClick={handleHealthCheck}
-                    className="action-button health-check"
-                  >
-                    Health Check
-                  </Button>
-                  <Button
-                    variant="contained"
-                    startIcon={<LocalHospital />}
-                    onClick={handleBookAppointment}
-                    className="action-button book-appointment"
-                  >
-                    Book Appointment
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-      <DoctorCarousel></DoctorCarousel>
+          {/* Medical History Card */}
+          <div className="dashboard-card action-card medical-history">
+            <div className="card-header">
+              <h3>Medical History</h3>
+            </div>
+            <div className="card-content">
+              <div className="action-icon">
+                <FaClipboardList />
+              </div>
+              <p>Access your complete medical records</p>
+              <button className="action-btn tertiary" onClick={handleViewAppointments}>
+                View History
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <Footer />
     </Box>
   );
