@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import Header from '../../components/Header';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -18,6 +18,10 @@ const AdminDashboard = () => {
     localStorage.clear();
     navigate('/login');
   };
+
+  const handleFeedback = () => {
+    navigate('admin/viewfeedbacks')
+  }
 
   const handleManageDoctors = () => {
     navigate('/admin/managedoctors');
@@ -86,6 +90,7 @@ const AdminDashboard = () => {
                   <button className="btn btn-outline-primary" onClick={handleManageDoctors}>Manage Doctors</button>
                   <button className="btn btn-outline-success" onClick={handleViewAppointments}>View Appointments</button>
                   <button className="btn btn-outline-warning" onClick={handleManageUsers}>Manage Users</button>
+                  <button className="btn btn-outline-warning" onClick={handleFeedback}>View Feedbacks</button>
                 </div>
               </div>
             </div>
