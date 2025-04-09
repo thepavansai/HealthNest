@@ -2,8 +2,60 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import {
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Avatar,
+  Rating,
+  Chip,
+  useTheme,
+} from '@mui/material';
+import {
+  LocalHospital,
+  MedicalServices,
+  Star,
+  LocationOn,
+  Person,
+} from '@mui/icons-material';
+import styled from '@emotion/styled';
+
+const StyledCarousel = styled(Carousel)`
+  .react-multi-carousel-item {
+    padding: 8px;
+  }
+  .react-multi-carousel-dot button {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 0 4px;
+  }
+`;
+
+const DoctorCard = styled(Card)`
+  height: 100%;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+  }
+`;
+
+const DoctorImage = styled('img')`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 16px 16px 0 0;
+  border-bottom: 3px solid #75AADB;
+`;
 
 const DoctorCarousel = () => {
+  const theme = useTheme();
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
@@ -17,10 +69,17 @@ const DoctorCarousel = () => {
       });
   }, []);
 
+  const getDoctorImage = (doctor) => {
+    const baseUrl = 'https://source.unsplash.com/featured/?';
+    const gender = doctor.gender === "FEMALE" ? "female+doctor" : "male+doctor";
+    const specialization = doctor.specialization.toLowerCase().replace(/\s+/g, '+');
+    return `${baseUrl}${gender},${specialization}`;
+  };
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 3,
+      items: 4,
     },
     tablet: {
       breakpoint: { max: 1024, min: 600 },
@@ -33,38 +92,142 @@ const DoctorCarousel = () => {
   };
 
   if (doctors.length === 0) {
-    return <div className="text-center text-gray-600 mt-4">No doctors are available</div>;
+    return (
+      <Box sx={{ textAlign: 'center', mt: 4, color: 'text.secondary' }}>
+        <Typography variant="h6">No doctors are available at the moment</Typography>
+      </Box>
+    );
   }
 
   return (
-    <div className="p-6 bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-inner">
-      <h2 className="text-3xl font-bold mb-6 text-center text-blue-700">Available Doctors</h2>
-      <Carousel responsive={responsive} infinite autoPlay autoPlaySpeed={4000} showDots={true}>
+    <Box sx={{
+      p: 3,
+      background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)',
+      borderRadius: 3,
+      boxShadow: 'inset 0 1px 5px rgba(0, 0, 0, 0.05)',
+    }}>
+      <Typography
+        variant="h5"
+        sx={{
+          textAlign: 'center',
+          mb: 3,
+          color: '#1976d2',
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 1,
+        }}
+      >
+        <MedicalServices sx={{ fontSize: 28 }} />
+        Available Doctors
+      </Typography>
+
+      <StyledCarousel
+        responsive={responsive}
+        infinite
+        autoPlay
+        autoPlaySpeed={4000}
+        showDots={true}
+        customDot={<CustomDot />}
+        containerClass="carousel-container"
+        dotListClass="custom-dot-list-style"
+        itemClass="carousel-item-padding-40-px"
+      >
         {doctors.map(doctor => (
-          <div
-            key={doctor.doctorId}
-            className="bg-white rounded-2xl shadow-md p-6 m-3 flex flex-col items-center text-center transition-transform hover:scale-105 duration-300"
-          >
-            <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-blue-400 shadow-sm mb-4">
-              <img
-                src={`https://randomuser.me/api/portraits/${doctor.gender === "FEMALE" ? "women" : "men"}/${doctor.doctorId + 10}.jpg`}
-                alt="Doctor"
-                className="w-full h-full object-cover"
+          <Box key={doctor.doctorId} sx={{ p: 1 }}>
+            <DoctorCard>
+              <DoctorImage
+                src={getDoctorImage(doctor)}
+                alt={doctor.doctorName}
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = "/default-doctor.png";
+                  e.target.src = doctor.gender === "FEMALE" 
+                    ? "https://source.unsplash.com/featured/?female+doctor"
+                    : "https://source.unsplash.com/featured/?male+doctor";
                 }}
               />
-            </div>
-            <h3 className="font-semibold text-lg text-blue-900">{doctor.doctorName}</h3>
-            <p className="text-sm text-gray-700 mt-1">{doctor.specialization}</p>
-            <p className="text-sm text-gray-500">{doctor.hospitalName}</p>
-            <p className="text-sm text-yellow-600 mt-1">⭐ {doctor.rating}</p>
+              <CardContent sx={{ p: 2, textAlign: 'center' }}>
+                <Typography variant="h6" sx={{ mb: 1, color: '#1976d2', fontWeight: 500 }}>
+                  Dr. {doctor.doctorName}
+                </Typography>
 
-          </div>
+                <Chip
+                  icon={<MedicalServices sx={{ fontSize: 16 }} />}
+                  label={doctor.specialization}
+                  size="small"
+                  sx={{
+                    mb: 1.5,
+                    bgcolor: '#1976d2',
+                    color: 'white',
+                    '& .MuiChip-icon': { color: 'white' },
+                    fontSize: '0.8rem',
+                  }}
+                />
+
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.5, gap: 0.5 }}>
+                  <LocalHospital sx={{ color: '#1976d2', fontSize: 18 }} />
+                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
+                    {doctor.hospitalName}
+                  </Typography>
+                </Box>
+
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                  <Rating
+                    value={doctor.rating}
+                    precision={0.5}
+                    readOnly
+                    size="small"
+                    icon={<Star sx={{ color: '#FFD700', fontSize: 18 }} />}
+                    emptyIcon={<Star sx={{ color: '#E0E0E0', fontSize: 18 }} />}
+                  />
+                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
+                    ({doctor.rating})
+                  </Typography>
+                </Box>
+
+                <Chip
+                  icon={<LocationOn sx={{ fontSize: 16 }} />}
+                  label="Available"
+                  size="small"
+                  sx={{
+                    mt: 1.5,
+                    bgcolor: '#4CAF50',
+                    color: 'white',
+                    '& .MuiChip-icon': { color: 'white' },
+                    fontSize: '0.8rem',
+                  }}
+                />
+              </CardContent>
+            </DoctorCard>
+          </Box>
         ))}
-      </Carousel>
-    </div>
+      </StyledCarousel>
+    </Box>
+  );
+};
+
+const CustomDot = ({ onClick, ...rest }) => {
+  const {
+    active,
+    carouselState: { currentSlide, deviceType }
+  } = rest;
+  
+  return (
+    <button
+      className={active ? "active" : "inactive"}
+      onClick={() => onClick()}
+      style={{
+        background: active ? '#1976d2' : '#E0E0E0',
+        width: '8px',
+        height: '8px',
+        borderRadius: '50%',
+        margin: '0 4px',
+        border: 'none',
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+      }}
+    />
   );
 };
 

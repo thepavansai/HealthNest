@@ -3,25 +3,61 @@ import { useNavigate, Link } from "react-router-dom";
 import { FaHome, FaInfoCircle, FaSignOutAlt } from 'react-icons/fa';
 import './Header.css';
 
-const Header = ({ name }) => {
+// Custom styled components
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  background: 'linear-gradient(135deg, #75AADB 0%, #4A7FB8 100%)',
+  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+}));
+
+const LogoText = styled(Typography)(({ theme }) => ({
+  fontFamily: "'Poppins', sans-serif",
+  fontWeight: 600,
+  letterSpacing: '1px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  color: '#ffffff',
+}));
+
+const NavButton = styled(Button)(({ theme }) => ({
+  fontFamily: "'Poppins', sans-serif",
+  fontWeight: 500,
+  textTransform: 'none',
+  fontSize: '1rem',
+  color: '#ffffff',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
+}));
+
+const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const storedName = localStorage.getItem("userName");
-    if (userId && storedName) {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
       setIsLoggedIn(true);
-      setUserName(storedName);
+      setUsername(storedUsername);
     }
   }, []);
 
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userName");
+    localStorage.removeItem('username');
     setIsLoggedIn(false);
-    navigate("/");
+    setUsername('');
+    handleMenuClose();
+    navigate('/');
   };
 
   return (
