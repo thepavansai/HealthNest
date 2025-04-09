@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FeedBackDTO {
     private Integer feedBackId;
-    private Integer doctorId;
-    private String doctorName;
     private Integer userId;
     private String userName;
     private String userEmail;
