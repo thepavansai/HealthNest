@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import FeelingInputComponent from './components/FeelingInputComponent';
 import Login from './components/Login';
 import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -24,6 +23,7 @@ import AboutUs from './components/AboutUs.js';
 import DoctorLogin from './pages/DoctorLogin';
 import DoctorSignup from './pages/DoctorSignUp';
 import UserLogin from './pages/UserLogin.js';
+import Remedies from './components/Remedies.js';
 
 
 function App() {
@@ -43,7 +43,7 @@ function App() {
           <Route path="/user" element={<UserDashboard />} />
           <Route path="/checkhealth" element={<CheckHealth />} />
           <Route path="/doctordashboard" element={<DoctorDashboard />} />
-          <Route path="/feeling-input" element={<FeelingInputComponent />} />
+          <Route path="/suggestions" element={<Remedies />} />
           <Route path="/editprofile" element={<UserEditProfile />} />
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
           
@@ -57,7 +57,6 @@ function App() {
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
 
-          {/* ✅ NEW ROUTE FOR DOCTOR EDIT PROFILE */}
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
           <Route path="/aboutus" element={<AboutUs/>}/>
         </Routes>

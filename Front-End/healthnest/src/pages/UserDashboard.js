@@ -55,14 +55,14 @@ const UserDashboard = () => {
     return () => document.removeEventListener('click', closeDropdown);
   }, [dropdownOpen]);
 
-  const handleHealthCheck = () => navigate('/checkhealth');
+  const handleHealthCheck = () => navigate('/suggestions');
   const handleEditProfile = () => navigate('/editprofile');
   const handleFeedback = () => navigate('/feedback');
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
   };
-  const handleBookAppointment = () => navigate('/bookappointment');
+  const handleBookAppointment = () => navigate('/checkhealth');
   const handleViewAppointments = () => navigate('/viewappointments');
 
   if (loading) {
