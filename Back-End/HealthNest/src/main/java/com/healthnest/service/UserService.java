@@ -41,8 +41,8 @@ public class UserService {
 		return user.isPresent();
 	}
 
-	public boolean editProfile(User user) {
-		User userafter = userRepository.findById(user.getUserId()).get();
+	public boolean editProfile(User user,Integer userId) {
+		User userafter = userRepository.findById(userId).get();
 		userafter.setName(user.getName());
 		userafter.setPhoneNo(user.getPhoneNo());
 		userafter.setEmail(user.getEmail());

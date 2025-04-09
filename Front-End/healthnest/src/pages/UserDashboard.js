@@ -1,81 +1,98 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaCalendarCheck, FaClipboardList, FaComment, FaHeartbeat, FaSignOutAlt, FaUserEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/Footer';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
+import {
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  Avatar,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Badge,
+  useTheme,
+  Container,
+} from '@mui/material';
+import {
+  CalendarToday,
+  LocalHospital,
+  HealthAndSafety,
+  Edit,
+  Feedback,
+  Logout,
+  Person,
+  EventNote,
+  MedicalServices,
+  ArrowForward,
+} from '@mui/icons-material';
+import axios from 'axios';
 import './UserDashboard.css';
+import DoctorCarousel from '../components/DoctorCarousel';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState(null);
   const [userData, setUserData] = useState({
     name: '',
     email: '',
   });
-  const [appointments, setAppointments] = useState([]);
 
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     if (userId) {
-      setLoading(true);
-      
-      // Fetch user details
-      const getUserDetails = axios.get(`http://localhost:8080/users/userdetails/${userId}`);
-      
-      // Fetch user appointments
-      const getUserAppointments = axios.get(`http://localhost:8080/users/appointments/${userId}`);
-      
-      Promise.all([getUserDetails, getUserAppointments])
-        .then(([userRes, appointmentsRes]) => {
-          setUserData(userRes.data);
-          setAppointments(appointmentsRes.data || []);
+      axios.get(`http://localhost:8080/users/userdetails/${userId}`)
+        .then((res) => {
+          setUserData(res.data);
         })
         .catch((err) => {
-          console.error("Failed to fetch user data", err);
-        })
-        .finally(() => {
-          setLoading(false);
+          console.error("Failed to fetch user details", err);
         });
     }
   }, [userId]);
 
-  const toggleDropdown = (e) => {
-    e.stopPropagation();
-    setDropdownOpen(!dropdownOpen);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  useEffect(() => {
-    const closeDropdown = () => setDropdownOpen(false);
-    if (dropdownOpen) {
-      document.addEventListener('click', closeDropdown);
-    }
-    return () => document.removeEventListener('click', closeDropdown);
-  }, [dropdownOpen]);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
-  const handleHealthCheck = () => navigate('/checkhealth');
-  const handleEditProfile = () => navigate('/editprofile');
-  const handleFeedback = () => navigate('/user/feedback');
+  const handleHealthCheck = () => {
+    navigate('/checkhealth');
+  };
+
+  const handleEditProfile = () => {
+    navigate('/editprofile');
+    handleMenuClose();
+  };
+
+  const handleFeedback = () => {
+    navigate('/feedback');
+    handleMenuClose();
+  };
+
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
   };
-  const handleBookAppointment = () => navigate('/bookappointment');
-  const handleViewAppointments = () => navigate('/viewappointments');
 
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <p>Loading your dashboard...</p>
-      </div>
-    );
-  }
+  const handleBookAppointment = () => {
+    navigate('/bookappointment');
+  };
+
+  const handleViewAppointments = () => {
+    navigate('/viewappointments');
+  };
 
   return (
-    <div className="dashboard-container">
+    <Box className="dashboard-wrapper">
       <Header />
       <div className="user-dashboard-new">
         {/* Welcome Section */}
@@ -193,8 +210,8 @@ const UserDashboard = () => {
         </div>
       </div>
       <Footer />
-    </div>
+    </Box>
   );
 };
 
-export default UserDashboard;
+export default UserDashboard; 
