@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import FeelingInputComponent from './components/FeelingInputComponent';
-import Login from './components/Login';
 import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import ManageDoctors from './pages/Admin/ManageDoctors';
@@ -11,15 +10,15 @@ import ChangePassword from './pages/ChangePassword';
 import CheckHealth from './pages/CheckHealth';
 import DeleteAccount from './pages/DeleteAccount';
 import DoctorDashboard from './pages/DoctorDashboard';
+import DoctorLogin from './pages/DoctorLogin';
 import DoctorProfile from './pages/DoctorProfile';
+import DoctorSignup from './pages/DoctorSignUp';
 import Home from './pages/Home';
 import ManageAppointments from './pages/ManageAppointments';
 import UserDashboard from './pages/UserDashboard';
 import UserEditProfile from './pages/UserEditProfile';
-import ViewAppointments from './pages/ViewAppointments';
-import DoctorLogin from './pages/DoctorLogin';
-import DoctorSignup from './pages/DoctorSignUp';
 import UserLogin from './pages/UserLogin.js';
+import ViewAppointments from './pages/ViewAppointments';
 
 // ✅ NEWLY ADDED DOCTOR EDIT PROFILE
 import DoctorEditProfile from './pages/DoctorEditProfile';
@@ -49,8 +48,6 @@ function App() {
           <Route path="/admin/viewappointmets" element={<View />} />
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
-
-          {/* ✅ NEW ROUTE FOR DOCTOR EDIT PROFILE */}
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
         </Routes>
       </div>
