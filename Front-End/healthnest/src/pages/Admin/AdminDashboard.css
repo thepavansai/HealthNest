@@ -1,105 +1,174 @@
-/* AdminDashboard.css */
-
 .admin-dashboard {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f3f8fc;
   min-height: 100vh;
+  padding: 20px;
 }
 
-.hero-banner {
+.admin-hero {
   background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+  border-radius: 12px;
   padding: 60px 20px;
+  margin-bottom: 30px;
   text-align: center;
-  color: #000;
-  position: relative;
 }
 
-.hero-text {
+.admin-hero-title {
   font-size: 2.5rem;
   font-weight: bold;
+  color: #000;
+  margin: 0 0 10px 0;
 }
 
-.hero-subtext {
+.admin-hero-subtitle {
   font-size: 1.2rem;
   color: #000;
+  margin: 0;
 }
 
-.appointment-card {
+.admin-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+}
+
+.admin-card {
   background-color: #ffffff;
   border-radius: 12px;
+  padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
   transition: transform 0.3s ease;
 }
 
-.appointment-card:hover {
+.admin-card:hover {
   transform: translateY(-5px);
 }
 
-.profile-overview img {
+.admin-avatar {
   width: 90px;
   height: 90px;
+  border-radius: 50%;
+  margin-bottom: 15px;
 }
 
-.card-title {
+.admin-name {
   font-size: 1.25rem;
   font-weight: 600;
+  margin: 0 0 10px 0;
 }
 
-.btn-group .btn {
-  margin: 5px;
+.admin-badge {
+  background-color: #2196F3;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.875rem;
 }
 
-.dropdown-container {
-  margin-top: 15px;
+.admin-email {
+  color: #666;
+  margin: 15px 0;
+}
+
+.admin-button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.admin-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.admin-button-primary {
+  background-color: #2196F3;
+  color: white;
+}
+
+.admin-button-success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.admin-button-warning {
+  background-color: #FFC107;
+  color: #000;
+}
+
+.admin-stats {
+  margin-bottom: 20px;
+}
+
+.admin-stats-number {
+  font-size: 2rem;
+  color: #2196F3;
+  margin: 0 0 5px 0;
+}
+
+.admin-stats-text {
+  color: #666;
+  margin: 0;
+}
+
+.admin-dropdown {
   position: relative;
+  display: inline-block;
 }
 
-.dropdown-menu {
-  display: block;
+.admin-dropdown-menu {
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
+  background: white;
   border-radius: 8px;
-  padding: 10px;
-  min-width: 180px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  min-width: 150px;
+  z-index: 1000;
 }
 
-.dropdown-menu .dropdown-item {
+.admin-dropdown-item {
   display: block;
-  padding: 10px;
-  color: #333;
-  text-align: left;
-  background-color: transparent;
-  border: none;
   width: 100%;
-  text-decoration: none;
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  text-align: left;
   cursor: pointer;
 }
 
-.dropdown-menu .dropdown-item:hover {
-  background-color: #f0f0f0;
+.admin-logout {
+  color: #dc3545;
 }
 
-@media (max-width: 767px) {
-  .hero-text {
+@media (max-width: 768px) {
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-hero-title {
     font-size: 1.75rem;
   }
 
-  .hero-subtext {
-    font-size: 1rem;
-  }
-
-  .btn-group {
+  .admin-button-group {
     flex-direction: column;
   }
 
-  .btn-group .btn {
+  .admin-button {
     width: 100%;
-    margin-bottom: 10px;
   }
 }

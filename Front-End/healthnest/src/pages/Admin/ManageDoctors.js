@@ -6,6 +6,7 @@ import './ManageDoctors.css';
 const ManageDoctors = () => {
   const [doctors, setDoctors] = useState([]);
   const [pendingDoctors, setPendingDoctors] = useState([]);
+  const[rejectedDoctors, setRejectedDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -19,8 +20,9 @@ const ManageDoctors = () => {
         const response = await axios.get('/api/admin/doctors');
         
         // Separate active and pending doctors
-        const active = response.data.filter(doctor => doctor.status === 'active');
-        const pending = response.data.filter(doctor => doctor.status === 'pending');
+        const active = response.data.filter(doctor => doctor.status === 0);
+        const pending = response.data.filter(doctor => doctor.status === 1);
+        const rejected = response.data.filter(doctor => doctor.status === -1);
         
         setDoctors(active);
         setPendingDoctors(pending);
