@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Rating,
-  Chip,
-  useTheme,
-} from '@mui/material';
+import styled from '@emotion/styled';
 import {
   LocalHospital,
+  LocationOn,
   MedicalServices,
   Star,
-  LocationOn,
 } from '@mui/icons-material';
-import styled from '@emotion/styled';
+import {
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Rating,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 const StyledCarousel = styled(Carousel)`
   .react-multi-carousel-item {
@@ -160,7 +160,7 @@ const getDoctorImage = (doctor) => {
               />
               <CardContent sx={{ p: 2, textAlign: 'center' }}>
                 <Typography variant="h6" sx={{ mb: 1, color: '#1976d2', fontWeight: 500 }}>
-                  Dr. {doctor.doctorName}
+                  {doctor.doctorName}
                 </Typography>
 
                 <Chip

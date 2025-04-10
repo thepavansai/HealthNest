@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import {
+  FaCalendarAlt,
+  FaKey,
+  FaSignOutAlt,
+  FaTrashAlt,
+  FaUserMd
+} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import DoctorHeader from '../components/DoctorHeader';
 import Footer from '../components/Footer';
 import './DoctorDashboard.css';
-import axios from 'axios';
-import {
-  FaUserMd,
-  FaCalendarAlt,
-  FaStethoscope,
-  FaSignOutAlt,
-  FaKey,
-  FaTrashAlt
-} from 'react-icons/fa';
-import DoctorHeader from '../components/DoctorHeader';
 
 const DoctorDashboard = () => {
   const navigate = useNavigate();
@@ -57,7 +56,7 @@ const DoctorDashboard = () => {
         {/* Welcome Section */}
         <div className="welcome-section">
           <div className="welcome-content">
-            <h1>Welcome back, Dr. {doctorData.doctorName || 'Doctor'} 👋</h1>
+            <h1>Welcome back, {doctorData.doctorName || 'Doctor'} 👋</h1>
             <p className="subtitle">Here’s what’s happening with your practice today.</p>
           </div>
 
