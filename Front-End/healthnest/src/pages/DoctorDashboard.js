@@ -63,7 +63,7 @@ const DoctorDashboard = () => {
           <div className="profile-widget">
             <div className="profile-info" onClick={toggleDropdown}>
               <div className="profile-avatar">
-                   <FontAwesomeIcon icon="fal fa-user-md" />
+                  
                   alt="Doctor Avatar"
                 
               </div>
