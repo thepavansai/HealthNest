@@ -3,49 +3,89 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+
 import "./CheckHealth.css";
 
-const doctors = [
-    {
-      id: 1,
-      name: "Dr. Priya Sharma",
-      specialization: "Cardiologist",
-      experience: "10 years",
-      fee: "₹800",
-      description: "Expert in heart-related issues with a decade of experience.",
-      availability: {
-        Mon: ["11:00 - 12:00", "5:00 - 6:00"],
-        Tue: ["2:00 - 3:00"],
-        Wed: ["9:00 - 10:00"],
-      },
-    },
-    {
-      id: 2,
-      name: "Dr. Rajesh Kumar",
-      specialization: "Dermatologist",
-      experience: "8 years",
-      fee: "₹700",
-      description: "Specializes in skin conditions and dermatological treatments.",
-      availability: {
-        Tue: ["10:00 - 11:00", "4:00 - 5:00"],
-        Thu: ["1:00 - 2:00"],
-        Fri: ["10:00 - 11:00", "6:00 - 7:00"],
-      },
-    },
-    {
-      id: 3,
-      name: "Dr. Sunita Verma",
-      specialization: "Pediatrician",
-      experience: "12 years",
-      fee: "₹900",
-      description: "Dedicated to the health and well-being of children.",
-      availability: {
-        Mon: ["9:00 - 10:00", "3:00 - 4:00"],
-        Wed: ["11:00 - 12:00"],
-        Fri: ["2:00 - 3:00"],
-      },
-    },
-  ];
+// Update the helper functions at the top
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const TIME_SLOTS = [
+  '9:00 AM', 
+  '11:00 AM',
+  '2:00 PM',
+  '4:00 PM'
+];
+
+const getAvailableDays = (availability) => {
+  const availabilityString = availability.toString(2).padStart(7, '0');
+  return DAYS.filter((_, index) => {
+    // Read directly from index position (no need to reverse with 6-index)
+    return availabilityString.charAt(index) === '1';
+  });
+};
+
+const getNextDays = (availability) => {
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1); // Start from tomorrow
+  const nextDays = [];
+  
+  // Get next 7 days starting from tomorrow
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(tomorrow);
+    date.setDate(tomorrow.getDate() + i);
+    
+    const dayIndex = date.getDay(); // 0 for Sunday, 1 for Monday, etc.
+    // Reverse the bit position since our bitmap has Sunday as rightmost bit
+    const reversedIndex = 6 - dayIndex; // Convert 0->6, 1->5, 2->4, etc.
+    if ((availability & (1 << reversedIndex)) !== 0) {
+      nextDays.push({
+        day: DAYS[dayIndex],
+        date: date.toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'short'
+        })
+      });
+    }
+  }
+  
+  return nextDays;
+};
+
+const formatDate = (day, date) => {
+  const [dayNum, monthStr] = date.split(' ');
+  const currentYear = new Date().getFullYear();
+  
+  // Map month abbreviations to month numbers
+  const monthMap = {
+    'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04',
+    'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08',
+    'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
+  };
+  
+  // Get month number from the map
+  const monthNum = monthMap[monthStr];
+  
+  // Pad day number with leading zero if needed
+  const paddedDay = dayNum.padStart(2, '0');
+  
+  // Return in YYYY-MM-DD format
+  return `${currentYear}-${monthNum}-${paddedDay}`;
+};
+
+const formatTime = (timeStr) => {
+  const [time, meridiem] = timeStr.split(' ');
+  const [hours, minutes] = time.split(':');
+  let hour = parseInt(hours);
+  
+  if (meridiem === 'PM' && hour !== 12) {
+    hour += 12;
+  } else if (meridiem === 'AM' && hour === 12) {
+    hour = 0;
+  }
+  
+  // Return time in HH:mm:ss format
+  return `${hour.toString().padStart(2, '0')}:${minutes}:00`;
+};
 
 const CheckHealth = () => {
   const [text, setText] = useState('');
@@ -53,11 +93,14 @@ const CheckHealth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [paymentInitiated, setPaymentInitiated] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [doctors, setDoctors] = useState([]);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const suggestionsRef = useRef(null);
   const doctorRef = useRef(null);
@@ -96,6 +139,14 @@ const CheckHealth = () => {
       const doctorSuggestion = res.data.choices[0].message.content.trim();
       setAiResponse(doctorSuggestion);
       setShowSuggestions(true);
+      try {
+        const doctorsResponse = await axios.get(`http://localhost:8080/doctor/${doctorSuggestion}`);
+        const doctors = doctorsResponse.data;
+        setDoctors(doctors);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+        setDoctors([]);
+      }
       setTimeout(() => {
         suggestionsRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 100);
@@ -113,23 +164,52 @@ const CheckHealth = () => {
     }, 100);
   };
 
-  const handleSlotSelect = (day, slot) => {
+  const handleSlotSelect = (day, date, slot) => {
     setSelectedDay(day);
+    setSelectedDate(date);
     setSelectedSlot(slot);
   };
 
-  const handleMakePayment = () => {
-    setPaymentInitiated(true);
-    setTimeout(() => {
-      paymentRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  };
+  const handleBookAppointment = async () => {
+    try {
+      const userId = parseInt(localStorage.getItem('userId'));
+      
+      if (!userId) {
+        console.error('No valid user ID found');
+        navigate('/login');
+        return;
+      }
 
-  const handleSubmitPayment = () => {
-    setPaymentSuccess(true);
-    setTimeout(() => {
-      navigate('/user');
-    }, 1500);
+      const appointmentData = {
+        appointmentDate: formatDate(selectedDay, selectedDate),
+        appointmentTime: formatTime(selectedSlot),
+        appointmentStatus: "PENDING", // Changed to PENDING
+        description: text,
+        user: {
+          userId: userId
+        },
+        doctor: {
+          doctorId: selectedDoctor.doctorId
+        }
+      };
+
+      const response = await axios.post(
+        'http://localhost:8080/users/bookappointment',
+        appointmentData,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (response.status === 200) {
+        setShowSuccessPopup(true); // Show success popup instead of alert
+      }
+    } catch (error) {
+      console.error('Error booking appointment:', error);
+      alert('Failed to book appointment. Please try again.');
+    }
   };
 
   const goToPrevious = () => {
@@ -211,11 +291,16 @@ const CheckHealth = () => {
             <div className="suggested-doctors-carousel">
               <div className="carousel-wrapper" ref={carouselRef}>
                 {doctors.map((doc) => (
-                  <div key={doc.id} className="doctor-card-carousel">
-                    <h4>{doc.name}</h4>
-                    <p>{doc.specialization}</p>
-                    <button onClick={() => handleSelectDoctor(doc)}>Select</button>
-                  </div>
+                  doc.status === 1 && (
+                    <div key={doc.doctorId} className="doctor-card-carousel">
+                      <h4>{doc.doctorName}</h4>
+                      <p><b>{doc.specializedrole}</b></p>
+                      <p>Gender: {doc.gender}</p>
+                      <p>Experience: {doc.experience} Years</p>
+                      <p>Consultation Fee: ₹{doc.consultationFee}</p>
+                      <button onClick={() => handleSelectDoctor(doc)}>Select</button>
+                    </div>
+                  )
                 ))}
               </div>
               {doctors.length > 1 && (
@@ -234,73 +319,63 @@ const CheckHealth = () => {
 
         {selectedDoctor && (
           <div className="selected-doctor-details" ref={doctorRef}>
-            <h3>{selectedDoctor.name}</h3>
+            <h3>{selectedDoctor.doctorName}</h3>
             <p>
-              <strong>Specialization:</strong> {selectedDoctor.specialization}
+              <strong>Specialization:</strong> {selectedDoctor.specializedrole}
             </p>
             <p>
-              <strong>Experience:</strong> {selectedDoctor.experience}
+              <strong>Experience:</strong> {selectedDoctor.experience} Years
             </p>
             <p>
-              <strong>Consultation Fee:</strong> {selectedDoctor.fee}
-            </p>
-            <p>
-              <strong>Description:</strong> {selectedDoctor.description}
+              <strong>Consultation Fee:</strong> ₹{selectedDoctor.consultationFee}
             </p>
 
             <h4>Choose Appointment</h4>
             <div className="calendar">
-              {Object.entries(selectedDoctor.availability).map(
-                ([day, slots]) => (
-                  <div key={day} className="day-slot">
-                    <strong>{day}</strong>
-                    <div className="slots">
-                      {slots.map((slot, idx) => (
-                        <button
-                          key={idx}
-                          className={`slot-button ${
-                            selectedDay === day && selectedSlot === slot
-                              ? "selected"
-                              : ""
-                          }`}
-                          onClick={() => handleSlotSelect(day, slot)}
-                        >
-                          {slot}
-                        </button>
-                      ))}
-                    </div>
+              {selectedDoctor && getNextDays(selectedDoctor.availability).map(({ day, date }) => (
+                <div key={`${day}-${date}`} className="day-slot">
+                  <strong>{day}, {date}</strong>
+                  <div className="slots">
+                    {TIME_SLOTS.map((slot, idx) => (
+                      <button
+                        key={idx}
+                        className={`slot-button ${selectedDay === day && selectedSlot === slot ? "selected" : ""}`}
+                        onClick={() => handleSlotSelect(day, date, slot)}
+                      >
+                        {slot}
+                      </button>
+                    ))}
                   </div>
-                )
-              )}
+                </div>
+              ))}
             </div>
 
             {selectedSlot && (
-              <button className="make-payment-btn" onClick={handleMakePayment}>
-                Make Payment
-              </button>
+              <div className="appointment-actions">
+                <button 
+                  className="book-appointment-btn" 
+                  onClick={handleBookAppointment}
+                >
+                  Book Appointment
+                </button>
+              </div>
             )}
           </div>
         )}
 
-        {paymentInitiated && (
-          <div className="payment-section" ref={paymentRef}>
-            <h4>Payment</h4>
-            <form
-              className="payment-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmitPayment();
-              }}
-            >
-              <div className="form-check">
-                <input type="radio" name="paymentMethod" checked readOnly />Card
-              </div>
-              <input type="text" placeholder="Card Number" required />
-              <input type="text" placeholder="Expires" required />
-              <input type="password" placeholder="Security Code" required />
-              <button type="submit">Submit</button>
-            </form>
-            {paymentSuccess && <p className="success-message">Payment Success!</p>}
+        {showSuccessPopup && (
+          <div className="success-popup-overlay">
+            <div className="success-popup">
+              <div className="success-icon">✓</div>
+              <h3>Appointment Booked Successfully!</h3>
+              <p>Waiting for doctor's approval</p>
+              <button 
+                className="view-appointments-btn"
+                onClick={() => navigate('/viewappointments')}
+              >
+                View My Appointments
+              </button>
+            </div>
           </div>
         )}
       </div>

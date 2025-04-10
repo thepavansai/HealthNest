@@ -6,6 +6,7 @@ import './ManageDoctors.css';
 const ManageDoctors = () => {
   const [doctors, setDoctors] = useState([]);
   const [pendingDoctors, setPendingDoctors] = useState([]);
+  const[rejectedDoctors, setRejectedDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
