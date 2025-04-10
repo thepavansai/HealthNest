@@ -1,6 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './View.css';
+import { FaCalendarAlt } from 'react-icons/fa';
+
+
+
 
 const View = () => {
   const [appointments, setAppointments] = useState([]);
@@ -74,12 +78,16 @@ const View = () => {
     <div className="view-appointments-container">
       <header className="appointments-header">
         <h1>Appointments Dashboard</h1>
-        <div className="appointments-summary">
-          <div className="summary-card">
-            <h2>Total Appointments</h2>
-            <span className="count">{totalAppointments}</span>
-          </div>
-        </div>
+        <div className="summary-card">
+  <div className="summary-icon">
+    <FaCalendarAlt />
+  </div>
+  <div className="summary-content">
+    <div className="count">{totalAppointments}</div>
+    <h2>Total Appointments</h2>
+  </div>
+</div>
+
       </header>
 
       <section className="current-appointments">
