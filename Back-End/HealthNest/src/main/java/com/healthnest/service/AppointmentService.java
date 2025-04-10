@@ -1,14 +1,16 @@
 package com.healthnest.service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.healthnest.repository.AppointmentRepository;
 import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.model.Appointment;
+import com.healthnest.repository.AppointmentRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -64,5 +66,19 @@ public class AppointmentService {
             return "Appointment with ID " + appointmentId + " does not exist.";
         }
     }
-}
+
+	public List<AppointmentShowDTO> getTodayAppointmentsByDoctor(Integer doctorId,LocalDate todaydate) {
+//	        LocalDate todayDate = LocalDate.now();
+
+	        // Fetch all appointments for the given doctorId
+	        List<AppointmentShowDTO> appointments = appointmentRepository.findByDoctorIdWithUserName(doctorId);
+
+	        // Filter appointments for today's date
+	        return appointments.stream()
+	                .filter(appointment -> appointment.getAppointmentDate().isEqual(todaydate))
+	                .collect(Collectors.toList());
+	    }
+		
+	}
+
 

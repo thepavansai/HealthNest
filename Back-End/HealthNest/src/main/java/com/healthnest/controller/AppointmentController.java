@@ -1,13 +1,20 @@
 package com.healthnest.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.model.Appointment;
 import com.healthnest.service.AppointmentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/appointments")
@@ -15,6 +22,13 @@ public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;
+    
+    @GetMapping("/doctor/{doctorId}/date/{todaydate}")
+    public ResponseEntity<List<AppointmentShowDTO>> getTodayAppointmentsByDoctor(@PathVariable Integer doctorId,@PathVariable LocalDate todaydate)
+    {
+    	List<AppointmentShowDTO> appointments=appointmentService.getTodayAppointmentsByDoctor(doctorId,todaydate);
+    	return ResponseEntity.ok(appointments);
+    }
 
     @GetMapping("/doctor/{doctorId}")
     public ResponseEntity<List<AppointmentShowDTO>> getAppointmentsByDoctor(@PathVariable Integer doctorId) {

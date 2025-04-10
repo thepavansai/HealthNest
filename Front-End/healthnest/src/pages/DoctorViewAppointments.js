@@ -5,6 +5,7 @@ import './DoctorViewAppointments.css';
 
 const DoctorViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -68,7 +69,6 @@ const DoctorViewAppointments = () => {
       
       if (response.status === 200) {
         // Update the appointment directly with the data returned from the API
-        console.log(response.data)
         setAppointments(prevAppointments =>
           prevAppointments.map(appointment =>
             appointment.appointmentId === appointmentId
@@ -83,6 +83,7 @@ const DoctorViewAppointments = () => {
               : appointment
           )
         );
+      
         alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
       } else {
         alert(`Failed to ${action} appointment. Please try again.`);
@@ -380,8 +381,7 @@ const DoctorViewAppointments = () => {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Doctor</th>
-                  <th>Hospital</th>
+                  <th>User</th>
                   <th>Date & Time</th>
                   <th>Fee</th>
                   <th>Status</th>
@@ -392,7 +392,6 @@ const DoctorViewAppointments = () => {
                   <tr key={appointment.appointmentId}>
                     <td>{appointment.appointmentId}</td>
                     <td>Dr. {appointment.doctorName}</td>
-                    <td>{appointment.hospitalName}</td>
                     <td>
                       <div className="appointment-time">
                         <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
