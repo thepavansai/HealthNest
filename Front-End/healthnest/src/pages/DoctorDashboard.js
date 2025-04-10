@@ -53,7 +53,7 @@ const DoctorDashboard = () => {
       <DoctorHeader></DoctorHeader>
 
       <main className="doctor-dashboard-container">
-        {/* Welcome Section */}
+        { }
         <div className="welcome-section">
           <div className="welcome-content">
             <h1>Welcome back, {doctorData.doctorName || 'Doctor'} 👋</h1>
@@ -86,7 +86,7 @@ const DoctorDashboard = () => {
           </div>
         </div>
 
-        {/* Dashboard Grid */}
+        { }
         <div className="dashboard-grid">
           <div className="dashboard-card patient-overview-card">
             <div className="card-header">

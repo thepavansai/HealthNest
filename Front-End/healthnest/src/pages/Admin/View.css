@@ -1,4 +1,4 @@
-/* View.css */
+ 
 .view-appointments-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -82,7 +82,7 @@
 
 .appointments-table-container {
   overflow-x: auto;
-  position: relative; /* To position the delete all button relative to this container */
+  position: relative;  
 }
 
 .appointments-table {
@@ -217,7 +217,7 @@
 .delete-all-container {
   display: flex;
   justify-content: center;
-  padding-top: 1rem; /* Add some space above the button */
+  padding-top: 1rem;  
 }
 
 .delete-all-button {

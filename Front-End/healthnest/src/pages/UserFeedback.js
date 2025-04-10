@@ -66,7 +66,7 @@ const UserFeedback = () => {
           />
           <button type="submit" className="feedback-button"> Submit Feedback</button>
 
-          {/* ✅ Success message shown here */}
+          { }
           {submitted && <p className="success-message">✅ Feedback sent successfully!</p>}
         </form>
       </div>

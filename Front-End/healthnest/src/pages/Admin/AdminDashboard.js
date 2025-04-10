@@ -46,7 +46,7 @@ const AdminDashboard = () => {
 
         <div className="admin-content">
           <div className="admin-grid">
-            {/* Admin Profile */}
+            { }
             <div className="admin-profile-card">
               <div className="admin-card">
                 <img
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Admin Actions */}
+            { }
             <div className="admin-actions">
               <div className="admin-stats">
                 <div className="admin-card">

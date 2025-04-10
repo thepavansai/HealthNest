@@ -86,7 +86,7 @@ ul li {
   color: #2c3e50;
 }
 
-/* Responsive adjustments */
+ 
 @media (max-width: 768px) {
   .delete-content {
     padding: 15px 0;

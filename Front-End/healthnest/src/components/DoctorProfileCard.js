@@ -3,8 +3,8 @@ import { Box, Typography, Button, Card } from '@mui/material';
 import styled from '@emotion/styled';
 
 const DoctorCard = styled(Card)`
-  display: block; /* Changed from flex to block */
-  text-align: center; /* Center internal elements */
+  display: block;  
+  text-align: center;  
   padding: 20px;
   background: white;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
@@ -16,11 +16,11 @@ const DoctorImage = styled('img')`
   height: 150px;
   object-fit: cover;
   border-radius: 50%;
-  margin: 0 auto 20px; /* Center image and add bottom margin */
+  margin: 0 auto 20px;  
 `;
 
 const DoctorInfo = styled(Box)`
-  /* No specific styles needed now, parent handles centering */
+   
 `;
 
 const BookButton = styled(Button)`

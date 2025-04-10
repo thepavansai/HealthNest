@@ -25,7 +25,7 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    text-decoration: none;  /* Removes underline */
+    text-decoration: none;   
   }
   
   .brand-logo {
@@ -79,7 +79,7 @@
   
   .nav-links {
     display: flex;
-    gap: 2.5rem; /* Increased gap slightly to better distribute space with one less item */
+    gap: 2.5rem;  
   }
   
   .nav-link {
@@ -87,7 +87,7 @@
     align-items: center;
     gap: 0.5rem;
     color: #4b5563;
-    text-decoration: none;  /* Removes underline */
+    text-decoration: none;   
     font-weight: 500;
     transition: all 0.2s ease;
     position: relative;
@@ -165,7 +165,7 @@
     border-color: #ef4444;
   }
   
-  /* Remove notification related styles */
+   
   .notification-btn,
   .notification-badge,
   .user-avatar-wrapper,
@@ -174,7 +174,7 @@
     display: none;
   }
   
-  /* Remove old user menu styles */
+   
   .user-menu {
     position: relative;
   }
@@ -222,9 +222,9 @@
     transform: rotate(180deg);
   }
   
-  /* Remove all dropdown related styles */
+   
   
-  /* Updated Auth Buttons */
+   
   .auth-buttons {
     display: flex;
     align-items: center;
@@ -275,7 +275,7 @@
     font-size: 1.1rem;
   }
 
-  /* Add ripple effect */
+   
   .btn-login::after, .btn-signup::after {
     content: '';
     position: absolute;
@@ -298,9 +298,9 @@
     transition: 0s;
   }
   
-  /* Dropdown Items */
+   
   .dropdown-item {
-    text-decoration: none;  /* Removes underline */
+    text-decoration: none;   
   }
   
   @media (max-width: 1024px) {

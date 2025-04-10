@@ -43,7 +43,7 @@ const Login = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="card p-4 shadow rounded" style={{ width: "25rem" }}>
-        {/* User Role Links */}
+        { }
         <div className="d-flex justify-content-between mb-3">
           <a href="/doctor/login" className="text-decoration-none text-primary fw-bold">
             I&apos;m a Doctor

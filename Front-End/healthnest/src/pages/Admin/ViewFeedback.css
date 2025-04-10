@@ -1,4 +1,4 @@
-/* viewfeedback.css */
+ 
 .view-feedback-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -32,7 +32,7 @@
   background: #fff;
   border-radius: 10px;
   padding: 1.5rem;
-  flex: 0 0 auto; /* Don't grow, take intrinsic width */
+  flex: 0 0 auto;  
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   text-align: center;
   transition: transform 0.3s ease;
@@ -209,7 +209,7 @@
   font-style: italic;
 }
 
-/* Feedback Detail Modal */
+ 
 .feedback-detail-overlay {
   position: fixed;
   top: 0;

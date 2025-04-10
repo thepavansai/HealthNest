@@ -1,6 +1,6 @@
-/* UserDashboard.css - Improved Version */
+ 
 
-/* Base Font Settings */
+ 
 .dashboard-container {
   background-color: #f5f7fa;
   min-height: 100vh;
@@ -20,7 +20,7 @@
   margin: 0 auto;
 }
 
-/* Loading State */
+ 
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -44,7 +44,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Welcome Section */
+ 
 .welcome-section {
   display: flex;
   justify-content: space-between;
@@ -57,7 +57,7 @@
   box-shadow: 0 10px 20px rgba(79, 70, 229, 0.15);
 }
 
-/* Welcome Section Typography */
+ 
 .welcome-content h1 {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 2.25rem;
@@ -81,7 +81,7 @@
   line-height: 1.6;
 }
 
-/* Profile Widget */
+ 
 .profile-widget {
   position: relative;
 }
@@ -175,7 +175,7 @@
   color: #dc2626;
 }
 
-/* Dashboard Cards */
+ 
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -193,8 +193,8 @@
   flex-direction: column;
   opacity: 1;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  max-height: 380px; /* Added max-height */
-  min-height: 180px; /* Reduced minimum height */
+  max-height: 380px;  
+  min-height: 180px;  
 }
 
 .dashboard-card:hover {
@@ -211,7 +211,7 @@
   animation: none;
 }
 
-/* Card Headers */
+ 
 .card-header {
   padding: 1.25rem;
   border-bottom: 1px solid #f3f4f6;
@@ -241,16 +241,16 @@
 }
 
 .card-content {
-  padding: 1.25rem; /* Reduced from 1.5rem */
+  padding: 1.25rem;  
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* Profile Card */
+ 
 .profile-card {
   grid-row: span 2;
-  max-height: 420px; /* Added max height */
+  max-height: 420px;  
 }
 
 .profile-details {
@@ -261,16 +261,16 @@
 }
 
 .profile-image {
-  width: 100px; /* Reduced from 120px */
-  height: 100px; /* Reduced from 120px */
+  width: 100px;  
+  height: 100px;  
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid #f3f4f6;
-  margin-bottom: 1rem; /* Reduced from 1.25rem */
+  margin-bottom: 1rem;  
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Profile Details */
+ 
 .user-details h4 {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 1.5rem;
@@ -291,7 +291,7 @@
   line-height: 1.6;
 }
 
-/* Remove or comment out these styles */
+ 
 /*
 .user-badge {
   background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
@@ -314,7 +314,7 @@
 }
 */
 
-/* Appointment & Health Cards */
+ 
 .appointments-card, .health-card, .book-appointment, .medical-history {
   cursor: pointer;
   height: 100%;
@@ -340,7 +340,7 @@
   transform: translateY(-2px);
 }
 
-/* Stats and Numbers */
+ 
 .appointment-count h2, 
 .health-stats h2 {
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -352,7 +352,7 @@
   line-height: 1.1;
 }
 
-/* Appointment Details */
+ 
 .next-appointment {
   margin-top: 1rem;
   padding: 0.75rem;
@@ -386,7 +386,7 @@
   margin-top: 1rem;
 }
 
-/* Action Buttons */
+ 
 .action-buttons {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -428,12 +428,12 @@
 .action-btn.primary {
   background-color: #4f46e5;
   color: white;
-  height: 40px; /* Reduced from 48px */
-  min-height: 40px; /* Reduced from 48px */
+  height: 40px;  
+  min-height: 40px;  
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1.25rem; /* Adjusted padding */
+  padding: 0 1.25rem;  
 }
 
 .action-btn.primary:hover {
@@ -458,7 +458,7 @@
   background-color: #e5e7eb;
 }
 
-/* General Button Styles */
+ 
 .btn-outline {
   padding: 0.5rem 1rem;
   border: 1px solid #4f46e5;
@@ -510,14 +510,14 @@
   background-color: #4338ca;
 }
 
-/* Action Cards */
+ 
 .action-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
   background: white;
   height: auto;
-  min-height: 180px; /* Reduced from 220px */
-  max-height: 280px; /* Added max height */
+  min-height: 180px;  
+  max-height: 280px;  
 }
 
 .action-card:hover {
@@ -551,7 +551,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100% - 60px); /* Subtracting header height */
+  height: calc(100% - 60px);  
 }
 
 .action-card p {
@@ -588,7 +588,7 @@
   transform: translateY(-2px);
 }
 
-/* Accessibility */
+ 
 @media (prefers-reduced-motion: reduce) {
   .dashboard-card,
   .action-btn,
@@ -612,7 +612,7 @@
   }
 }
 
-/* Responsive adjustments */
+ 
 @media (max-width: 768px) {
   .action-card {
     margin-bottom: 1rem;
@@ -623,7 +623,7 @@
   }
 }
 
-/* Responsive Design */
+ 
 @media (max-width: 1024px) {
   .dashboard-grid {
     grid-template-columns: 1fr;

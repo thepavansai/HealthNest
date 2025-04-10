@@ -6,13 +6,13 @@ return (
 <div className="row">
 
 
-        {/* Company Info */}
+        { }
         <div className="col-md-3 mb-4">
           <h5 className="text-uppercase mb-3">HealthNest</h5>
           <p>Your trusted health partner, connecting you with expert doctors anytime, anywhere.</p>
         </div>
 
-        {/* Quick Links */}
+        { }
         <div className="col-md-3 mb-4">
           <h5 className="text-uppercase mb-3">Quick Links</h5>
           <ul className="list-unstyled">
@@ -23,7 +23,7 @@ return (
           </ul>
         </div>
 
-        {/* Contact Info */}
+        { }
         <div className="col-md-3 mb-4">
           <h5 className="text-uppercase mb-3">Contact</h5>
           <p><strong>Phone:</strong> +91 98765 43210</p>
@@ -31,7 +31,7 @@ return (
           <p><strong>Address:</strong> 123 Health Street, Hyderabad, India</p>
         </div>
 
-        {/* Social Media */}
+        { }
         <div className="col-md-3 mb-4">
           <h5 className="text-uppercase mb-3">Follow Us</h5>
           <a href="#" className="text-light me-3 fs-5"><i className="bi bi-facebook"></i></a>

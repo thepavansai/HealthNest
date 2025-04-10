@@ -93,7 +93,7 @@
   color: #ffffff;
 }
 
-/* Responsive adjustments */
+ 
 @media (max-width: 768px) {
   .profile-header {
     text-align: center;
