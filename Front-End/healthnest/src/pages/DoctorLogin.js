@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./DoctorLogin.css";
 
 const DoctorLogin = () => {
   const [emailId, setEmailId] = useState("");
@@ -22,7 +23,7 @@ const DoctorLogin = () => {
       if (res.data.message === "Login successful") {
         setIsError(false);
         setMessage("Login successful! Redirecting...");
-        localStorage.setItem("doctorId", res.data.userId); 
+        localStorage.setItem("doctorId", res.data.userId);
         localStorage.setItem("doctorName", res.data.name);
 
         setTimeout(() => navigate("/doctordashboard"), 500);
@@ -41,52 +42,55 @@ const DoctorLogin = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="card p-4 shadow rounded" style={{ width: "25rem" }}>
-        <h4 className="mb-4 text-center">Login to Your Account</h4>
+    <div
+      className="doctor-login-bg"
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL + "/images/DoctorLogin.jpg"})`,
+      }}
+    >
+      <div className="doctor-login-overlay">
+        <div className="login-form-card">
+          <h2 className="login-title">Login to Your Account</h2>
 
-        {message && (
-          <div
-            className={`alert ${isError ? "alert-danger" : "alert-success"} text-center`}
-            role="alert"
-          >
-            {message}
-          </div>
-        )}
+          {message && (
+            <div
+              className={`alert ${isError ? "alert-danger" : "alert-success"}`}
+              role="alert"
+            >
+              {message}
+            </div>
+          )}
 
-        <form onSubmit={handleLogin}>
-          <div className="mb-3">
-            <label className="form-label">Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter your email"
-              value={emailId}
-              onChange={(e) => setEmailId(e.target.value)}
-              required
-            />
-          </div>
+          <form onSubmit={handleLogin}>
+            <div>
+              <label>Email address</label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={emailId}
+                onChange={(e) => setEmailId(e.target.value)}
+                required
+              />
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+            <div>
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
 
-          <button type="submit" className="btn btn-primary w-100">Login</button>
+            <button type="submit">Login</button>
 
-          <div className="text-center mt-3">
-            <small>
-              Don't have an account? <a href="/doctor/signup">Register</a>
-            </small>
-          </div>
-        </form>
+            <div className="signup-link">
+              Don’t have an account? <a href="/doctor/signup">Register</a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

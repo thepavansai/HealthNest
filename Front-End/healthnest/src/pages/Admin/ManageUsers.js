@@ -176,9 +176,9 @@ const ManageUsers = () => {
                       </div>
                     </td>
                     <td>{user.email}</td>
-                    <td>{user.phone_no || 'N/A'}</td>
+                    <td>{user.phoneNo || 'N/A'}</td>
                     <td>{user.gender || 'N/A'}</td>
-                    <td>{user.date_of_birth || 'N/A'}</td>
+                    <td>{user.dateOfBirth || 'N/A'}</td>
                     <td>
                       <div className="action-buttons">
                         <button className="view-btn">
