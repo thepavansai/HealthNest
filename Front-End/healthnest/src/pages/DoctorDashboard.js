@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import React, { useEffect, useState } from 'react';
 import {
   FaCalendarAlt,
@@ -64,7 +65,7 @@ const DoctorDashboard = () => {
             <div className="profile-info" onClick={toggleDropdown}>
               <div className="profile-avatar">
                 <img
-                  src={doctorData.profileImage || "/doctor-avatar.jpg"}
+                  src={doctorData.profileImage || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
                   alt="Doctor Avatar"
                 />
               </div>
@@ -104,6 +105,40 @@ const DoctorDashboard = () => {
               </div>
             </div>
           </div>
+              {/* Stats Viewing Card */}
+          <div className="dashboard-card stats-viewing-card">
+            <div className="card-header">
+              <h3>View Stats</h3>
+            </div>
+            <div className="card-content">
+              <div className="stats-info">
+                <h2>12</h2>
+                <p>Patients seen today</p>
+              </div>
+              <div className="stats-info">
+                <h2>5</h2>
+                <p>Appointments pending</p>
+              </div>
+            </div>
+          </div>
+         {/* Manage Appointments Card */}
+<div className="dashboard-card manage-appointments-card">
+  <div className="card-header">
+    <h3>Manage Appointments</h3>
+    <span className="view-all" onClick={() => navigate("/manageappointments")}>View All</span>
+  </div>
+  <div className="card-content">
+    <div className="appointment-count">
+      <FaCalendarAlt className="card-icon pulse" />
+      <h2>3</h2>
+    </div>
+    <div className="next-appointment">
+      <p className="appointment-date">Next: 11:30 AM</p>
+      <p className="appointment-doctor">Jane Smith - Consultation</p>
+    </div>
+  </div>
+</div>
+
         </div>
       </main>
 
