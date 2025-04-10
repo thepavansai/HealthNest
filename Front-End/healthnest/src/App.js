@@ -25,6 +25,7 @@ import DoctorSignup from './pages/DoctorSignUp';
 import UserLogin from './pages/UserLogin.js';
 import Remedies from './components/Remedies.js';
 import UserFeedback from './pages/UserFeedback.js';
+import DoctorViewAppointments from './pages/DoctorViewAppointments.js';
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
 
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
+          <Route path="/doctor/viewappointments" element={<DoctorViewAppointments/>}/>
 
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
           <Route path="/aboutus" element={<AboutUs/>}/>
