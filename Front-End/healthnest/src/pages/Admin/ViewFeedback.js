@@ -46,8 +46,11 @@ const ViewFeedback = () => {
         <p>Review and respond to user feedback across the platform</p>
       </header>
 
-      <div className="feedback-count">
-        Showing <strong>{feedbacks.length}</strong> feedback entries
+      <div className="feedback-summary">
+        <div className="summary-card">
+          <h2>Total Feedbacks</h2>
+          <span className="count">{feedbacks.length}</span>
+        </div>
       </div>
 
       <div className="feedback-list">
