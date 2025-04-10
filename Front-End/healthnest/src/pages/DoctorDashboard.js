@@ -12,6 +12,9 @@ import {
   FaTrashAlt
 } from 'react-icons/fa';
 import DoctorHeader from '../components/DoctorHeader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 const DoctorDashboard = () => {
   const navigate = useNavigate();
