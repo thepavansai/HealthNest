@@ -54,7 +54,7 @@ const DoctorDashboard = () => {
       <DoctorHeader></DoctorHeader>
 
       <main className="doctor-dashboard-container">
-        {/* Welcome Section */}
+        { }
         <div className="welcome-section">
           <div className="welcome-content">
             <h1>Welcome back, {doctorData.doctorName || 'Doctor'} 👋</h1>
@@ -64,12 +64,11 @@ const DoctorDashboard = () => {
           <div className="profile-widget">
             <div className="profile-info" onClick={toggleDropdown}>
               <div className="profile-avatar">
-                <img
-                  src={doctorData.profileImage || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+                  
                   alt="Doctor Avatar"
-                />
+                
               </div>
-              <span className="profile-name">Dr. {doctorData.name}</span>
+              {/* <span className="profile-name">Dr. {doctorData.name}</span> */}
               <span className="profile-arrow">▼</span>
             </div>
 
@@ -87,12 +86,12 @@ const DoctorDashboard = () => {
           </div>
         </div>
 
-        {/* Dashboard Grid */}
+        { }
         <div className="dashboard-grid">
           <div className="dashboard-card patient-overview-card">
             <div className="card-header">
               <h3>View Appointments</h3>
-              <span className="view-all">View All</span>
+              <a href='/doctor/viewappointments' >View All</a>
             </div>
             <div className="card-content">
               <div className="appointment-count">

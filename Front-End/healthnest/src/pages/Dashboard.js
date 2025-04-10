@@ -12,7 +12,7 @@ const Dashboard=()=>{
     ];
     return(<div>
         <Header></Header>
-        <div className="container mt-5 pt-4"> {/* Increased top spacing */}
+        <div className="container mt-5 pt-4"> { }
       <div className="row justify-content-center gap-3 mt-4">
         <div className="col-md-3">
           <HealthCheck name={names[0]} description={description[0]} />

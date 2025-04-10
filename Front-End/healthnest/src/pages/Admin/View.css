@@ -1,4 +1,4 @@
-/* View.css */
+
 .view-appointments-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -29,7 +29,11 @@
   padding: 1.5rem;
   flex: 1;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border-top: 4px solid #3498db;
   transition: transform 0.3s ease;
 }
 
@@ -37,29 +41,35 @@
   transform: translateY(-5px);
 }
 
-.summary-card:nth-child(1) {
-  border-top: 4px solid #3498db;
-}
 
-.summary-card:nth-child(2) {
-  border-top: 4px solid #f39c12;
-}
 
-.summary-card:nth-child(3) {
-  border-top: 4px solid #2ecc71;
-}
-
-.summary-card h2 {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  color: #5d6975;
-  font-weight: 500;
-}
-
-.summary-card .count {
+.summary-content .count {
   font-size: 2.5rem;
   font-weight: 700;
   color: #2c3e50;
+}
+
+.summary-content h2 {
+  font-size: 1.1rem;
+  color: #5d6975;
+  font-weight: 500;
+  margin-top: 0.3rem;
+}
+
+.summary-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #e3eafc;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  color: #3498db;
+}
+
+/* Hide icon if not needed */
+.summary-card.no-icon .summary-icon {
+  display: none;
 }
 
 .current-appointments,
@@ -82,7 +92,7 @@
 
 .appointments-table-container {
   overflow-x: auto;
-  position: relative; /* To position the delete all button relative to this container */
+  position: relative; 
 }
 
 .appointments-table {
@@ -217,7 +227,7 @@
 .delete-all-container {
   display: flex;
   justify-content: center;
-  padding-top: 1rem; /* Add some space above the button */
+  padding-top: 1rem; 
 }
 
 .delete-all-button {

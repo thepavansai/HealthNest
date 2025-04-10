@@ -1,4 +1,4 @@
-/* Full background container with image */
+ 
 .doctor-login-bg {
     height: 100vh;
     width: 100%;
@@ -10,18 +10,18 @@
     align-items: center;
   }
   
-  /* Optional semi-transparent overlay for contrast */
+   
   .doctor-login-overlay {
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.1); /* optional light overlay */
+    background-color: rgba(255, 255, 255, 0.1);  
     display: flex;
     justify-content: flex-end;
     align-items: center;
     padding: 2rem;
   }
   
-  /* Right-side login form card */
+   
   .login-form-card {
     width: 100%;
     max-width: 400px;

@@ -15,13 +15,7 @@ const TIME_SLOTS = [
   '4:00 PM'
 ];
 
-const getAvailableDays = (availability) => {
-  const availabilityString = availability.toString(2).padStart(7, '0');
-  return DAYS.filter((_, index) => {
-    // Read directly from index position (no need to reverse with 6-index)
-    return availabilityString.charAt(index) === '1';
-  });
-};
+
 
 const getNextDays = (availability) => {
   const today = new Date();
@@ -95,8 +89,6 @@ const CheckHealth = () => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [paymentInitiated, setPaymentInitiated] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [doctors, setDoctors] = useState([]);
@@ -204,7 +196,7 @@ const CheckHealth = () => {
       );
 
       if (response.status === 200) {
-        setShowSuccessPopup(true); // Show success popup instead of alert
+        setShowSuccessPopup(true); 
       }
     } catch (error) {
       console.error('Error booking appointment:', error);
