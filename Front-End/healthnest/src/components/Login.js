@@ -25,7 +25,7 @@ const Login = () => {
         localStorage.setItem("userId", res.data.userId);
         localStorage.setItem("userName", res.data.name);
 
-        setTimeout(() => navigate("/"), 500);
+        setTimeout(() => navigate("/user"), 500);
       } else {
         setIsError(true);
         setMessage(res.data.message);
