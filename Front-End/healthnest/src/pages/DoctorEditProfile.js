@@ -10,7 +10,7 @@ const DoctorEditProfile = () => {
     email: '',
     experience: '',
     hospitalName: '',
-    specialization: '',
+    specializedrole: '',
     phone: '',
     consultationFee: '',
     availability: [],
@@ -36,7 +36,7 @@ const DoctorEditProfile = () => {
           email: data.emailId || '',
           experience: data.experience || '',
           hospitalName: data.hospitalName || '',
-          specialization: data.specialization || '',
+          specialization: data.specializedrole || '',
           phone: data.docPhnNo || '',
           consultationFee: data.consultationFee || '',
           availability: availabilityDays,
@@ -76,7 +76,7 @@ const DoctorEditProfile = () => {
       emailId: formData.email,
       experience: Number(formData.experience),
       hospitalName: formData.hospitalName,
-      specialization: formData.specialization,
+      specialization: formData.specializedrole,
       docPhnNo: formData.phone,
       consultationFee: parseFloat(formData.consultationFee),
       availability: binaryAvailability,
@@ -109,7 +109,7 @@ const DoctorEditProfile = () => {
         <input type="email" name="email" placeholder="Email ID" value={formData.email} onChange={handleChange} required />
         <input type="text" name="experience" placeholder="Experience (in years)" value={formData.experience} onChange={handleChange} required />
         <input type="text" name="hospitalName" placeholder="Hospital Name" value={formData.hospitalName} onChange={handleChange} required />
-        <input type="text" name="specialization" placeholder="Specialization" value={formData.specialization} onChange={handleChange} required />
+        <input type="text" name="specialization" placeholder="Specialization" value={formData.specializedrole} onChange={handleChange} required />
         <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required />
         <input type="number" name="consultationFee" placeholder="Consultation Fee" value={formData.consultationFee} onChange={handleChange} required />
 

@@ -63,12 +63,11 @@ const DoctorDashboard = () => {
           <div className="profile-widget">
             <div className="profile-info" onClick={toggleDropdown}>
               <div className="profile-avatar">
-                <img
-                  src={doctorData.profileImage || "/doctor-avatar.jpg"}
+                  
                   alt="Doctor Avatar"
-                />
+                
               </div>
-              <span className="profile-name">Dr. {doctorData.name}</span>
+              {/* <span className="profile-name">Dr. {doctorData.name}</span> */}
               <span className="profile-arrow">▼</span>
             </div>
 
@@ -91,7 +90,7 @@ const DoctorDashboard = () => {
           <div className="dashboard-card patient-overview-card">
             <div className="card-header">
               <h3>View Appointments</h3>
-              <span className="view-all">View All</span>
+              <a href='/doctor/viewappointments' >View All</a>
             </div>
             <div className="card-content">
               <div className="appointment-count">

@@ -16,14 +16,11 @@ const ManageDoctors = () => {
     const fetchDoctors = async () => {
       try {
         setLoading(true);
-        // Replace with your actual API endpoint
-        const response = await axios.get('/api/admin/doctors');
-        
-        // Separate active and pending doctors
-        const active = response.data.filter(doctor => doctor.status === 0);
-        const pending = response.data.filter(doctor => doctor.status === 1);
-        const rejected = response.data.filter(doctor => doctor.status === -1);
-        
+        const response = await axios.get('http://localhost:8080/admin/doctors');
+
+        const active = response.data.filter(doctor => doctor.status === 1);
+        const pending = response.data.filter(doctor => doctor.status === 0);
+
         setDoctors(active);
         setPendingDoctors(pending);
         setLoading(false);
@@ -32,21 +29,19 @@ const ManageDoctors = () => {
         setLoading(false);
       }
     };
-    
+
     fetchDoctors();
   }, []);
 
   const handleApproveDoctor = async (doctorId) => {
     try {
-      // Replace with your actual API endpoint
       await axios.put(`/api/admin/doctors/${doctorId}/approve`);
-      
-      // Update local state
-      const approvedDoctor = pendingDoctors.find(doctor => doctor.id === doctorId);
+
+      const approvedDoctor = pendingDoctors.find(doctor => doctor.doctorId === doctorId);
       if (approvedDoctor) {
-        approvedDoctor.status = 'active';
-        setDoctors([...doctors, approvedDoctor]);
-        setPendingDoctors(pendingDoctors.filter(doctor => doctor.id !== doctorId));
+        const updatedDoctor = { ...approvedDoctor, status: 1 };
+        setDoctors([...doctors, updatedDoctor]);
+        setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== doctorId));
       }
     } catch (error) {
       console.error('Error approving doctor:', error);
@@ -55,14 +50,12 @@ const ManageDoctors = () => {
 
   const handleDeleteDoctor = async (doctorId, isPending = false) => {
     try {
-      // Replace with your actual API endpoint
-      await axios.delete(`/api/admin/doctors/${doctorId}`);
-      
-      // Update local state
+      await axios.delete(`http://localhost:8080/admin/doctors/delete?doctorId=${doctorId}`);
+
       if (isPending) {
-        setPendingDoctors(pendingDoctors.filter(doctor => doctor.id !== doctorId));
+        setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== doctorId));
       } else {
-        setDoctors(doctors.filter(doctor => doctor.id !== doctorId));
+        setDoctors(doctors.filter(doctor => doctor.doctorId !== doctorId));
       }
     } catch (error) {
       console.error('Error deleting doctor:', error);
@@ -70,18 +63,18 @@ const ManageDoctors = () => {
   };
 
   const filteredDoctors = doctors.filter(doctor => {
-    const matchesSearch = 
-      doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doctor.specialty.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doctor.email.toLowerCase().includes(searchTerm.toLowerCase());
-    
+    const matchesSearch =
+      (doctor.doctorName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (doctor.specializedrole?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (doctor.emailId?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+
     return matchesSearch;
   });
 
   const filteredPendingDoctors = pendingDoctors.filter(doctor => {
-    return doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doctor.specialty.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doctor.email.toLowerCase().includes(searchTerm.toLowerCase());
+    return (doctor.doctorName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (doctor.specializedrole?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (doctor.emailId?.toLowerCase() || '').includes(searchTerm.toLowerCase());
   });
 
   if (loading) {
@@ -97,7 +90,7 @@ const ManageDoctors = () => {
     <div className="manage-doctors-container">
       <div className="doctors-header">
         <h1>Manage Doctors</h1>
-        
+
         <div className="doctors-summary">
           <div className="summary-card">
             <div className="summary-icon">
@@ -108,7 +101,7 @@ const ManageDoctors = () => {
               <p>Active Doctors</p>
             </div>
           </div>
-          
+
           <div className="summary-card">
             <div className="summary-icon pending-icon">
               <FaUserPlus />
@@ -120,35 +113,34 @@ const ManageDoctors = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="doctors-filter">
         <div className="search-container">
           <FaSearch className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search by name, specialty or email" 
+          <input
+            type="text"
+            placeholder="Search by name, specialty or email"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        
+
         <div className="view-toggle">
-          <button 
-            className={viewMode === 'all' ? 'active' : ''} 
+          <button
+            className={viewMode === 'all' ? 'active' : ''}
             onClick={() => setViewMode('all')}
           >
             All Doctors
           </button>
-          <button 
-            className={viewMode === 'pending' ? 'active' : ''} 
+          <button
+            className={viewMode === 'pending' ? 'active' : ''}
             onClick={() => setViewMode('pending')}
           >
             Pending Requests {pendingDoctors.length > 0 && <span className="badge">{pendingDoctors.length}</span>}
           </button>
         </div>
       </div>
-      
-      { }
+      +
       {viewMode === 'all' && (
         <div className="doctors-section">
           <h2>Active Doctors</h2>
@@ -159,31 +151,31 @@ const ManageDoctors = () => {
           ) : (
             <div className="doctors-grid">
               {filteredDoctors.map(doctor => (
-                <div className="doctor-card" key={doctor.id}>
+                <div className="doctor-card" key={doctor.doctorId}>
                   <div className="doctor-header">
                     <div className="doctor-avatar">
                       {doctor.profileImage ? (
-                        <img src={doctor.profileImage} alt={doctor.name} />
+                        <img src={doctor.profileImage} alt={doctor.doctorName} />
                       ) : (
                         <div className="avatar-placeholder">
-                          {doctor.name.charAt(0)}
+                          {doctor.doctorName?.charAt(0)?.toUpperCase()}
                         </div>
                       )}
                     </div>
                     <div>
-                      <h3>{doctor.name}</h3>
-                      <p className="doctor-specialty">{doctor.specialty}</p>
+                      <h3>{doctor.doctorName}</h3>
+                      <p className="doctor-specialty">{doctor.specializedrole}</p>
                     </div>
                   </div>
-                  
+
                   <div className="doctor-details">
                     <div className="detail-row">
                       <span className="detail-label">Email:</span>
-                      <span className="detail-value">{doctor.email}</span>
+                      <span className="detail-value">{doctor.emailId}</span>
                     </div>
                     <div className="detail-row">
                       <span className="detail-label">Phone:</span>
-                      <span className="detail-value">{doctor.phone}</span>
+                      <span className="detail-value">{doctor.docPhnNo}</span>
                     </div>
                     <div className="detail-row">
                       <span className="detail-label">Experience:</span>
@@ -194,12 +186,11 @@ const ManageDoctors = () => {
                       <span className="detail-value">${doctor.consultationFee}</span>
                     </div>
                   </div>
-                  
+
                   <div className="doctor-actions">
-                    <button className="view-btn">View Details</button>
-                    <button 
+                    <button
                       className="delete-btn"
-                      onClick={() => handleDeleteDoctor(doctor.id)}
+                      onClick={() => handleDeleteDoctor(doctor.doctorId)}
                     >
                       Delete
                     </button>
@@ -211,7 +202,7 @@ const ManageDoctors = () => {
         </div>
       )}
       
-      { }
+    
       {(viewMode === 'pending' || pendingDoctors.length > 0) && (
         <div className="doctors-section pending-section">
           <h2>Pending Doctor Requests</h2>
@@ -235,39 +226,39 @@ const ManageDoctors = () => {
                 </thead>
                 <tbody>
                   {filteredPendingDoctors.map(doctor => (
-                    <tr key={doctor.id}>
+                    <tr key={doctor.doctorId}>
                       <td>
                         <div className="doctor-name-cell">
                           {doctor.profileImage ? (
-                            <img 
-                              src={doctor.profileImage} 
-                              alt={doctor.name} 
-                              className="small-avatar" 
+                            <img
+                              src={doctor.profileImage}
+                              alt={doctor.doctorName}
+                              className="small-avatar"
                             />
                           ) : (
                             <div className="small-avatar-placeholder">
-                              {doctor.name.charAt(0)}
+                              {doctor.doctorName?.charAt(0)?.toUpperCase()}
                             </div>
                           )}
-                          <span>{doctor.name}</span>
+                          <span>{doctor.doctorName}</span>
                         </div>
                       </td>
-                      <td>{doctor.specialty}</td>
-                      <td>{doctor.email}</td>
-                      <td>{doctor.phone}</td>
+                      <td>{doctor.specializedrole}</td>
+                      <td>{doctor.emailId}</td>
+                      <td>{doctor.docPhnNo}</td>
                       <td>{doctor.experience} years</td>
                       <td>${doctor.consultationFee}</td>
                       <td>
                         <div className="action-buttons">
-                          <button 
-                            className="approve-btn" 
-                            onClick={() => handleApproveDoctor(doctor.id)}
+                          <button
+                            className="approve-btn"
+                            onClick={() => handleApproveDoctor(doctor.doctorId)}
                           >
                             <FaCheckCircle /> Approve
                           </button>
-                          <button 
+                          <button
                             className="reject-btn"
-                            onClick={() => handleDeleteDoctor(doctor.id, true)}
+                            onClick={() => handleDeleteDoctor(doctor.doctorId, true)}
                           >
                             <FaTimesCircle /> Reject
                           </button>

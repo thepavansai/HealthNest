@@ -11,7 +11,7 @@ const DoctorSignup = () => {
     email: '',
     experience: '',
     hospitalName: '',
-    specialization: '',
+    specializedrole: '',
     phone: '',
     consultationFee: '',
     availability: [],
@@ -57,14 +57,14 @@ const DoctorSignup = () => {
       emailId: formData.email,
       experience: Number(formData.experience),
       hospitalName: formData.hospitalName,
-      specialization: formData.specialization,
+      specializedrole: formData.specializedrole,
       docPhnNo: formData.phone,
       consultationFee: parseFloat(formData.consultationFee),
       password: formData.password,
       availability: binaryAvailability,
       gender: "MALE",  // Optional: make it dynamic
       rating: 0.0,
-      status: 1
+      status: 0
     };
 
     try {
@@ -95,7 +95,7 @@ const DoctorSignup = () => {
         <input type="email" name="email" placeholder="Email ID" value={formData.email} onChange={handleChange} required />
         <input type="text" name="experience" placeholder="Experience (in years)" value={formData.experience} onChange={handleChange} required />
         <input type="text" name="hospitalName" placeholder="Hospital Name" value={formData.hospitalName} onChange={handleChange} required />
-        <input type="text" name="specialization" placeholder="Specialization" value={formData.specialization} onChange={handleChange} required />
+        <input type="text" name="specializedrole" placeholder="specializedrole" value={formData.specializedrole} onChange={handleChange} required />
         <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required />
         <input type="number" name="consultationFee" placeholder="Consultation Fee" value={formData.consultationFee} onChange={handleChange} required />
 
