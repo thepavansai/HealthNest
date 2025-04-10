@@ -4,8 +4,15 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Footer from './Footer';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 
 const AboutUs = () => {
+    const navigate = useNavigate();
+
+    const handleJoinClick = () => {
+        navigate('/doctor/signup'); // 👈 Navigate on button click
+      };
+    
   return (
     <>
     <Header/>
@@ -72,7 +79,9 @@ const AboutUs = () => {
           Are you a medical professional passionate about helping people?
           Partner with us to reach more patients and grow your practice with HealthNest.
         </p>
-        <button className="join-button">Join Us</button>
+        <button className="join-button" onClick={handleJoinClick}>
+            Join Us
+          </button>
       </section>
     </div>
     <Footer />
