@@ -24,6 +24,7 @@ import DoctorLogin from './pages/DoctorLogin';
 import DoctorSignup from './pages/DoctorSignUp';
 import UserLogin from './pages/UserLogin.js';
 import Remedies from './components/Remedies.js';
+import UserFeedback from './pages/UserFeedback.js';
 
 
 function App() {
@@ -47,7 +48,7 @@ function App() {
           <Route path="/editprofile" element={<UserEditProfile />} />
           <Route path="/user/viewappointments" element={<ViewAppointments />} />
           
-          
+          <Route path="/user/feedback" element={<UserFeedback/>}/>
           <Route path="/admin/managedoctors" element={<ManageDoctors />} />
           <Route path="/admin/manageusers" element={<ManageUsers />} />
           <Route path="/admin/viewappointments" element={<View />} />

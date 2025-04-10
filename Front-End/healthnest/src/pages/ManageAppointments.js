@@ -227,10 +227,10 @@ const ManageAppointments = () => {
                   {isLoading ? (
                     <>
                       <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                      Cancelling...
+                      Deleting...
                     </>
                   ) : (
-                    'Yes, Cancel Appointment'
+                    'Yes, Delete Appointment'
                   )}
                 </button>
               </div>

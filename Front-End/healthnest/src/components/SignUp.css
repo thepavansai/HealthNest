@@ -1,0 +1,217 @@
+/* SignUp.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #f5f8fa;
+  color: #333;
+}
+
+.signup-wrapper {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Triangle background on the left */
+.signup-wrapper::before {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(135deg, #00bcd4, #0091ea);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  z-index: 0;
+}
+
+/* Healthcare-related decorative elements */
+.signup-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" opacity="0.2"><path d="M19 3h-4V1h-6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 11c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>');
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.8;
+  z-index: 1;
+  pointer-events: none;
+}
+/*right side with form*/
+.signup-form {
+  width: 50%;
+  margin-left: auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+  position: relative;
+  max-width: 600px;
+  transform: translateX(-5%);
+}
+
+.signup-form h2 {
+  color: #00838f;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 600;
+  position: relative;
+}
+
+.signup-form h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(to right, #00bcd4, #0091ea);
+  border-radius: 10px;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #546e7a;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-control, .form-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #00bcd4;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
+  background-color: #fff;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 2rem;
+  background: linear-gradient(to right, #00bcd4, #0091ea);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.btn:hover {
+  background: linear-gradient(to right, #0091ea, #00bcd4);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 145, 234, 0.4);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.alert-danger {
+  background-color: #fee2e2;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+}
+
+.alert-success {
+  background-color: #dcfce7;
+  color: #22c55e;
+  border: 1px solid #bbf7d0;
+}
+
+/* Branding text for HealthNest on left side */
+.branding {
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  color: white;
+  z-index: 5;
+  max-width: 300px;
+}
+
+.branding h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.branding p {
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .signup-wrapper::before {
+    width: 40%;
+  }
+  
+  .signup-form {
+    width: 60%;
+    transform: translateX(0);
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .signup-wrapper {
+    flex-direction: column;
+  }
+  
+  .signup-wrapper::before {
+    width: 100%;
+    height: 30%;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  }
+  
+  .signup-form {
+    width: 90%;
+    margin: 30% auto 2rem;
+    transform: none;
+  }
+  
+  .branding {
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+}

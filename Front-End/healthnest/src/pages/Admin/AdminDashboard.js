@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import Header from '../../components/Header';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -93,6 +93,7 @@ const AdminDashboard = () => {
                   <button className="admin-button admin-button-warning" onClick={handleManageUsers}>
                     Manage Users
                   </button>
+                  <button className="admin-button admin-button-primary" onClick={handleFeedback}>View Feedbacks</button>
                 </div>
               </div>
             </div>
