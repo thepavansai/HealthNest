@@ -57,7 +57,7 @@ const UserDashboard = () => {
 
   const handleHealthCheck = () => navigate('/suggestions');
   const handleEditProfile = () => navigate('/editprofile');
-  const handleFeedback = () => navigate('/feedback');
+  const handleFeedback = () => navigate('/user/feedback');
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
