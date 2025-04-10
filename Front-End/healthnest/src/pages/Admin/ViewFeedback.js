@@ -31,11 +31,6 @@ const ViewFeedback = () => {
     setActiveFeedback(null);
   };
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
-  };
-
   if (loading) {
     return <div className="loading-container"><div className="loader"></div></div>;
   }
@@ -62,24 +57,25 @@ const ViewFeedback = () => {
           </div>
         ) : (
           feedbacks.map(feedback => (
-            <div 
-              key={feedback.id} 
+            <div
+              key={feedback.id}
               className={`feedback-card ${feedback.status === 'new' ? 'new' : ''}`}
               onClick={() => openFeedbackDetail(feedback)}
             >
               <div className="feedback-card-header">
                 <div className="user-info">
-                  <div className="user-avatar">{feedback.username?.charAt(0).toUpperCase() || 'U'}</div>
+                  <div className="user-avatar">
+                    {feedback.username ? feedback.username.charAt(0).toUpperCase() : 'U'}
+                  </div>
                   <div>
-                    <h3>{feedback.username}</h3>
-                    <p className="user-email">{feedback.email}</p>
+                    <h3>{feedback.username || 'Unknown User'}</h3>
+                    <p className="user-email">{feedback.email || 'No Email Provided'}</p>
                   </div>
                 </div>
-                <div className="feedback-date">{formatDate(feedback.submittedAt)}</div>
               </div>
               <div className="feedback-preview">
-                {feedback.content.length > 120 
-                  ? `${feedback.content.substring(0, 120)}...` 
+                {feedback.content?.length > 120
+                  ? `${feedback.content.substring(0, 120)}...`
                   : feedback.content
                 }
               </div>
@@ -103,19 +99,11 @@ const ViewFeedback = () => {
               <div className="feedback-user-details">
                 <div className="detail-row">
                   <span className="detail-label">From:</span>
-                  <span className="detail-value">{activeFeedback.username}</span>
+                  <span className="detail-value">{activeFeedback.username || 'Unknown'}</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Email:</span>
-                  <span className="detail-value">{activeFeedback.email}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Date:</span>
-                  <span className="detail-value">{formatDate(activeFeedback.submittedAt)}</span>
-                </div>
-                <div className="detail-row">
-                  <span className="detail-label">Category:</span>
-                  <span className="detail-value">{activeFeedback.type}</span>
+                  <span className="detail-value">{activeFeedback.email || 'N/A'}</span>
                 </div>
               </div>
               <div className="feedback-message">
