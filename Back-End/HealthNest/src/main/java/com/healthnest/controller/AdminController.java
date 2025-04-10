@@ -8,6 +8,8 @@ import com.healthnest.dto.FeedBackDTO;
 import com.healthnest.service.FeedBackService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -71,5 +73,27 @@ public class AdminController {
     @GetMapping("/feedbacks")
     public List<FeedBackDTO> getAllFeedBacks(){
         return feedBackService.getAllFeedBack();
+    }
+
+    @PutMapping("/doctors/{doctorId}/accept")
+    public ResponseEntity<String> acceptDoctor(@PathVariable Integer doctorId) {
+        try {
+            doctorService.updateDoctorStatus(doctorId, 1);
+            return ResponseEntity.ok("Doctor accepted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                               .body("Doctor not found with id: " + doctorId);
+        }
+    }
+
+    @PutMapping("/doctors/{doctorId}/reject")
+    public ResponseEntity<String> rejectDoctor(@PathVariable Integer doctorId) {
+        try {
+            doctorService.updateDoctorStatus(doctorId, -1);
+            return ResponseEntity.ok("Doctor rejected successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                               .body("Doctor not found with id: " + doctorId);
+        }
     }
 }
