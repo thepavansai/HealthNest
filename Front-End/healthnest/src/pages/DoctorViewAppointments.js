@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaClock } from 'react-icons/fa';
-import './ViewAppointments.css';
+import './DoctorViewAppointments.css';
 
 const DoctorViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -13,7 +13,7 @@ const DoctorViewAppointments = () => {
     const fetchAppointments = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8080/users/appointments/${localStorage.getItem('userId')}`);
+        const response = await axios.get(`http://localhost:8080/appointments/doctor/${localStorage.getItem('doctorId')}`);
         setAppointments(response.data);
         setLoading(false);
       } catch (error) {
@@ -25,6 +25,7 @@ const DoctorViewAppointments = () => {
     fetchAppointments();
   }, []);
 
+  // Define all appointment category filters
   const completedAppointments = appointments.filter(
     appointment => appointment.appointmentStatus.toLowerCase() === 'completed'
   );
@@ -40,6 +41,15 @@ const DoctorViewAppointments = () => {
   const pendingAppointments = appointments.filter(
     appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
   );
+  
+  // Adding previous appointments filter - appointments that occurred in the past
+  const previousAppointments = appointments.filter(appointment => {
+    const appointmentDateTime = new Date(`${appointment.appointmentDate}T${appointment.appointmentTime}`);
+    const currentTime = new Date();
+    return appointmentDateTime < currentTime && 
+           (appointment.appointmentStatus.toLowerCase() === 'completed' || 
+            appointment.appointmentStatus.toLowerCase() === 'cancelled');
+  });
 
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch =
@@ -52,29 +62,31 @@ const DoctorViewAppointments = () => {
 
   const handleAppointmentAction = async (appointmentId, action) => {
     try {
-      const response = await axios.patch(
+      const response = await axios.post(
         `http://localhost:8080/appointments/${appointmentId}/${action}/${localStorage.getItem("doctorId")}`
       );
       
-    //   if (response.status === 200) {
-    //     setAppointments(prevAppointments =>
-    //       prevAppointments.map(appointment =>
-    //         appointment.appointmentId === appointmentId
-    //           ? { ...appointment, appointmentStatus: action === 'accept' ? 'Upcoming' : 'Cancelled' }
-    //           : appointment
-    //       )
-    //     );
-    //     alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
-    //   } else {
-    //     alert(`Failed to ${action} appointment. Please try again.`);
-    //   }
-    if(response.status===200)
-    {
-        if(response.data.appointmentStatus==="Upcoming")
-        {
-            
-        }
-    }
+      if (response.status === 200) {
+        // Update the appointment directly with the data returned from the API
+        console.log(response.data)
+        setAppointments(prevAppointments =>
+          prevAppointments.map(appointment =>
+            appointment.appointmentId === appointmentId
+              ? { 
+                  ...appointment, 
+                  appointmentStatus: response.data.appointmentStatus,
+                  appointmentDate: response.data.appointmentDate,
+                  appointmentTime: response.data.appointmentTime,
+                  description: response.data.description,
+                  // Update any other fields that might have changed
+                }
+              : appointment
+          )
+        );
+        alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
+      } else {
+        alert(`Failed to ${action} appointment. Please try again.`);
+      }
     } catch (error) {
       console.error(`Error ${action}ing appointment:`, error);
       alert(`Error ${action}ing appointment. Please try again later.`);
@@ -99,13 +111,24 @@ const DoctorViewAppointments = () => {
     try {
       const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
       if (response.status === 200) {
-        setAppointments(prevAppointments =>
-          prevAppointments.map(appointment =>
-            appointment.appointmentId === appointmentId
-              ? { ...appointment, appointmentStatus: 'Cancelled' }
-              : appointment
-          )
-        );
+        // Update with data from the response if available, otherwise fall back to just status update
+        if (response.data && response.data.appointmentStatus) {
+          setAppointments(prevAppointments =>
+            prevAppointments.map(appointment =>
+              appointment.appointmentId === appointmentId
+                ? { ...appointment, ...response.data }
+                : appointment
+            )
+          );
+        } else {
+          setAppointments(prevAppointments =>
+            prevAppointments.map(appointment =>
+              appointment.appointmentId === appointmentId
+                ? { ...appointment, appointmentStatus: 'Cancelled' }
+                : appointment
+            )
+          );
+        }
         alert('Appointment cancelled successfully!');
       } else {
         alert('Failed to cancel appointment. Please try again.');
@@ -234,6 +257,12 @@ const DoctorViewAppointments = () => {
           >
             Cancelled
           </button>
+          <button
+            className={filterStatus === 'previous' ? 'active' : ''}
+            onClick={() => setFilterStatus('previous')}
+          >
+            Previous
+          </button>
         </div>
       </div>
 
@@ -334,6 +363,52 @@ const DoctorViewAppointments = () => {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+      </div>
+
+      {/* New section to display previous appointments */}
+      <div className="appointments-section previous-section">
+        <h2>Previous Appointments</h2>
+        {previousAppointments.length === 0 ? (
+          <div className="no-appointments">
+            <p>No previous appointments found</p>
+          </div>
+        ) : (
+          <div className="appointments-table-container">
+            <table className="appointments-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Doctor</th>
+                  <th>Hospital</th>
+                  <th>Date & Time</th>
+                  <th>Fee</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {previousAppointments.map(appointment => (
+                  <tr key={appointment.appointmentId}>
+                    <td>{appointment.appointmentId}</td>
+                    <td>Dr. {appointment.doctorName}</td>
+                    <td>{appointment.hospitalName}</td>
+                    <td>
+                      <div className="appointment-time">
+                        <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
+                        <span>{appointment.appointmentTime}</span>
+                      </div>
+                    </td>
+                    <td>₹{appointment.consultationFee}</td>
+                    <td>
+                      <span className={`status-badge ${getStatusClass(appointment.appointmentStatus)}`}>
+                        {appointment.appointmentStatus}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
