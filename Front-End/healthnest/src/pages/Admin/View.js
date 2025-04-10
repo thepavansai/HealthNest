@@ -12,14 +12,11 @@ const View = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        // Replace with your actual API endpoint
         const response = await axios.get('http://localhost:8080/admin/appointments');
         const allAppointments = response.data;
-        
-        // Filter completed and pending appointments
         const completed = allAppointments.filter(app => app.status === 'completed');
         const pending = allAppointments.filter(app => app.status !== 'completed');
-        
+
         setAppointments(pending);
         setCompletedAppointments(completed);
         setTotalAppointments(allAppointments.length);
@@ -33,12 +30,33 @@ const View = () => {
     fetchAppointments();
   }, []);
 
+  const handleDeleteAll = () => {
+    const confirmed = window.confirm("Are you sure, do you want delete all the records?");
+    if (confirmed) {
+      fetch("http://localhost:8080/admin/appointments/delete", { method: "DELETE" })
+        .then((res) => {
+          if (res.ok) {
+            setAppointments([]);
+            setCompletedAppointments([]);
+            setTotalAppointments(0);
+            alert("All appointments deleted successfully.");
+          } else {
+            alert("Failed to delete appointments.");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("An error occurred.");
+        });
+    }
+  };
+
   const formatDateTime = (dateTimeString) => {
-    const options = { 
-      year: 'numeric', 
-      month: 'short', 
+    const options = {
+      year: 'numeric',
+      month: 'short',
       day: 'numeric',
-      hour: '2-digit', 
+      hour: '2-digit',
       minute: '2-digit'
     };
     return new Date(dateTimeString).toLocaleDateString('en-US', options);
@@ -61,19 +79,11 @@ const View = () => {
             <h2>Total Appointments</h2>
             <span className="count">{totalAppointments}</span>
           </div>
-          <div className="summary-card">
-            <h2>Pending</h2>
-            <span className="count">{appointments.length}</span>
-          </div>
-          <div className="summary-card">
-            <h2>Completed</h2>
-            <span className="count">{completedAppointments.length}</span>
-          </div>
         </div>
       </header>
 
       <section className="current-appointments">
-        <h2>Current Appointments</h2>
+        <h2>Total Appointments</h2>
         {appointments.length === 0 ? (
           <p className="no-data-message">No pending appointments found.</p>
         ) : (
@@ -93,14 +103,13 @@ const View = () => {
                 {appointments.map(appointment => (
                   <tr key={appointment.id}>
                     <td>{appointment.patientName}</td>
-                    <td>Dr. {appointment.doctorName}</td>
+                    <td>{appointment.doctorName}</td>
                     <td>{appointment.specialization}</td>
                     <td>{formatDateTime(appointment.appointmentDateTime)}</td>
                     <td>
-                    <span className={`status-badge ${appointment.status || 'unknown'}`}>
-                   {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1): 'Unknown'}
-</span>
-
+                      <span className={`status-badge ${appointment.status || 'unknown'}`}>
+                        {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1) : 'Unknown'}
+                      </span>
                     </td>
                     <td>
                       <div className="action-buttons">
@@ -111,44 +120,11 @@ const View = () => {
                 ))}
               </tbody>
             </table>
-          </div>
-        )}
-      </section>
-
-      <section className="completed-appointments">
-        <h2>Completed Appointments</h2>
-        {completedAppointments.length === 0 ? (
-          <p className="no-data-message">No completed appointments found.</p>
-        ) : (
-          <div className="appointments-table-container">
-            <table className="appointments-table">
-              <thead>
-                <tr>
-                  <th>Patient Name</th>
-                  <th>Doctor</th>
-                  <th>Specialization</th>
-                  <th>Date & Time</th>
-                  <th>Payment</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {completedAppointments.map(appointment => (
-                  <tr key={appointment.id}>
-                    <td>{appointment.patientName}</td>
-                    <td>Dr. {appointment.doctorName}</td>
-                    <td>{appointment.specialization}</td>
-                    <td>{formatDateTime(appointment.appointmentDateTime)}</td>
-                    <td>₹{appointment.paymentAmount}</td>
-                    <td>
-                      <div className="action-buttons">
-                        <button className="action-btn view">View Details</button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="delete-all-container">
+              <button className="delete-all-button" onClick={handleDeleteAll}>
+                Delete All
+              </button>
+            </div>
           </div>
         )}
       </section>

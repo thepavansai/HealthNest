@@ -3,6 +3,7 @@ package com.healthnest.service;
 import com.healthnest.model.Doctor;
 import com.healthnest.repository.DoctorRepository;
 import com.healthnest.dto.DoctorDTO;
+import com.healthnest.exception.DoctorNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,5 +97,15 @@ public class DoctorService {
 	}
 	public Doctor getDoctorIdByEmail(String emailId) {
 		return doctorRepository.findByEmailId(emailId).get();
+	}
+	public void updateDoctorStatus(Long doctorId, int status) {
+	    Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
+	    if (optionalDoctor.isPresent()) {
+	        Doctor doctor = optionalDoctor.get();
+	        doctor.setStatus(status);
+	        doctorRepository.save(doctor);
+	    } else {
+	        throw new DoctorNotFoundException("Doctor not found with id: " + doctorId);
+	    }
 	}
 }

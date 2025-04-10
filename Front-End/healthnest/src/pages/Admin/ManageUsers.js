@@ -13,7 +13,7 @@ const ManageUsers = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('/api/admin/users');
+        const response = await axios.get('http://localhost:8080/admin/users');
         setUsers(response.data);
         setLoading(false);
       } catch (error) {
@@ -28,7 +28,7 @@ const ManageUsers = () => {
   const handleDeleteUser = async (userId) => {
     try {
       // Replace with your actual API endpoint
-      await axios.delete(`/api/admin/users/${userId}`);
+      await axios.delete(`http://localhost:8080/admin/delete/${userId}`);
       
       // Update local state
       setUsers(users.filter(user => user.id !== userId));
@@ -42,7 +42,7 @@ const ManageUsers = () => {
     if (window.confirm(`Are you sure you want to delete ${selectedUsers.length} selected users?`)) {
       try {
         // Replace with your actual API endpoint
-        await axios.post('/api/admin/users/bulk-delete', { userIds: selectedUsers });
+        await axios.post('http://localhost:8080/admin/delete', { userIds: selectedUsers });
         
         // Update local state
         setUsers(users.filter(user => !selectedUsers.includes(user.id)));
@@ -116,7 +116,7 @@ const ManageUsers = () => {
           <FaSearch className="search-icon" />
           <input 
             type="text" 
-            placeholder="Search by name, email or phone" 
+            placeholder="Search by name or email " 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -145,9 +145,7 @@ const ManageUsers = () => {
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Gender</th>
-                  <th>Age</th>
-                  <th>Registered On</th>
-                  <th>Status</th>
+                  <th>Date Of Birth</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -178,15 +176,9 @@ const ManageUsers = () => {
                       </div>
                     </td>
                     <td>{user.email}</td>
-                    <td>{user.phone || 'N/A'}</td>
+                    <td>{user.phone_no || 'N/A'}</td>
                     <td>{user.gender || 'N/A'}</td>
-                    <td>{user.age || 'N/A'}</td>
-                    <td>{new Date(user.registeredDate).toLocaleDateString()}</td>
-                    <td>
-                      <span className={`status-badge ${user.active ? 'status-active' : 'status-inactive'}`}>
-                        {user.active ? 'Active' : 'Inactive'}
-                      </span>
-                    </td>
+                    <td>{user.date_of_birth || 'N/A'}</td>
                     <td>
                       <div className="action-buttons">
                         <button className="view-btn">
