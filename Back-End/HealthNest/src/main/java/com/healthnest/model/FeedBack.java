@@ -20,6 +20,7 @@ public class FeedBack {
     private  Integer id;
     private String feedback;
     private String emailId;
+    private Float rating;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

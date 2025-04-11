@@ -13,6 +13,7 @@ public class FeedBackDTO {
     private String userName;
     private String userEmail;
     private String feedback;
+    private Float rating;
 
 }
   

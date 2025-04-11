@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './DoctorEditProfile.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 
 const DoctorEditProfile = () => {
   const [formData, setFormData] = useState({
@@ -14,9 +16,8 @@ const DoctorEditProfile = () => {
     phone: '',
     consultationFee: '',
     availability: [],
-    gender: '',
   });
-
+  const navigate=useNavigate()
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
   const doctorId = localStorage.getItem("doctorId");
@@ -27,6 +28,7 @@ const DoctorEditProfile = () => {
     axios.get(`http://localhost:8080/doctor/profile/${doctorId}`) // replace with actual endpoint
       .then(res => {
         const data = res.data;
+        console.log(data)
 
         // Convert binary availability to array of days
         const availabilityDays = daysOfWeek.filter((day, index) => data.availability[index] === '1');
@@ -36,11 +38,10 @@ const DoctorEditProfile = () => {
           email: data.emailId || '',
           experience: data.experience || '',
           hospitalName: data.hospitalName || '',
-          specialization: data.specializedrole || '',
+          specializedrole: data.specializedrole || '',
           phone: data.docPhnNo || '',
           consultationFee: data.consultationFee || '',
           availability: availabilityDays,
-          gender: data.gender || '',
         });
       })
       .catch(() => {
@@ -76,14 +77,13 @@ const DoctorEditProfile = () => {
       emailId: formData.email,
       experience: Number(formData.experience),
       hospitalName: formData.hospitalName,
-      specialization: formData.specializedrole,
+      specializedrole: formData.specializedrole,
       docPhnNo: formData.phone,
       consultationFee: parseFloat(formData.consultationFee),
       availability: binaryAvailability,
-      gender: formData.gender
     };
 
-    axios.put("http://localhost:8080/doctor/update-profile", payload)
+    axios.put(`http://localhost:8080/doctor/profile/${localStorage.getItem("doctorId")}`, payload)
       .then(() => {
         setIsError(false);
         setMessage("Profile updated successfully!");
@@ -92,6 +92,7 @@ const DoctorEditProfile = () => {
         setIsError(true);
         setMessage("Error updating profile.");
       });
+      navigate("/doctordashboard")
   };
 
   return (
@@ -130,14 +131,6 @@ const DoctorEditProfile = () => {
             ))}
           </div>
         </div>
-
-        <select name="gender" value={formData.gender} onChange={handleChange} required>
-          <option value="">Select Gender</option>
-          <option value="MALE">Male</option>
-          <option value="FEMALE">Female</option>
-          <option value="OTHER">Other</option>
-        </select>
-
         <button type="submit" className="save-btn">Save Changes</button>
       </form>
     </div>
