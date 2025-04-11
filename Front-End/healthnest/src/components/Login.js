@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Login.css"; // Import your CSS file here
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -41,35 +42,30 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="card p-4 shadow rounded" style={{ width: "25rem" }}>
-        { }
-        <div className="d-flex justify-content-between mb-3">
-          <a href="/doctor/login" className="text-decoration-none text-primary fw-bold">
-            I&apos;m a Doctor
-          </a>
-          <a href="/admin/login" className="text-decoration-none text-primary fw-bold">
-            I&apos;m an Admin
-          </a>
-        </div>
+    <div
+      className="doctor-login-bg"
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL + "/images/UserLogin.jpg"})`,
+      }}
+    >
+      
+    <div className="login-container">
+      <div className="login-card">
 
-        <h4 className="mb-4 text-center">Login to Your Account</h4>
+
+        <h4 className="login-title">Login to Your Account</h4>
 
         {message && (
-          <div
-            className={`alert ${isError ? "alert-danger" : "alert-success"} text-center`}
-            role="alert"
-          >
+          <div className={`login-alert ${isError ? "error" : "success"}`}>
             {message}
           </div>
         )}
 
         <form onSubmit={handleLogin}>
-          <div className="mb-3">
-            <label className="form-label">Email address</label>
+          <div className="form-group">
+            <label>Email address</label>
             <input
               type="email"
-              className="form-control"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -77,11 +73,10 @@ const Login = () => {
             />
           </div>
 
-          <div className="mb-3">
-            <label className="form-label">Password</label>
+          <div className="form-group">
+            <label>Password</label>
             <input
               type="password"
-              className="form-control"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -89,17 +84,20 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary w-100">
-            Login
-          </button>
+          <button type="submit" className="login-btn">Login</button>
 
-          <div className="text-center mt-3">
+          <div className="register-link">
             <small>
               Don&apos;t have an account? <a href="/signup">Register</a>
             </small>
           </div>
+          <div className="login-links">
+          <a href="/doctor/login">I&apos;m a Doctor</a>
+          <a href="/admin/login">I&apos;m an Admin</a>
+        </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };
