@@ -2,12 +2,15 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch } from 'react-icons/fa';
 import './ViewAppointments.css';
+import Header from "../components/Header"
+import Footer from "../components/Footer"
 
 const ViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const[currAppointments, setCurrAppointments] = useState('All Appointments');
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -105,7 +108,8 @@ const ViewAppointments = () => {
     );
   }
 
-  return (
+  return (<>
+  <Header/>
     <div className="view-appointments-container">
       <div className="appointments-header">
         <h1>Appointments Dashboard</h1>
@@ -175,25 +179,33 @@ const ViewAppointments = () => {
         <div className="filter-buttons">
           <button
             className={filterStatus === 'all' ? 'active' : ''}
-            onClick={() => setFilterStatus('all')}
+            onClick={() => {setFilterStatus('all');
+              setCurrAppointments('All Appointments')}}
           >
             All
           </button>
           <button
             className={filterStatus === 'pending' ? 'active' : ''}
-            onClick={() => setFilterStatus('pending')}
+            onClick={() => {setFilterStatus('pending');
+              setCurrAppointments('Pending Appointments')}
+            }
           >
             Pending
           </button>
           <button
             className={filterStatus === 'upcoming' ? 'active' : ''}
-            onClick={() => setFilterStatus('upcoming')}
+            onClick={() =>{ setFilterStatus('upcoming');
+              setCurrAppointments('Upcoming Appointments')}
+            }
           >
             Upcoming
           </button>
           <button
             className={filterStatus === 'completed' ? 'active' : ''}
-            onClick={() => setFilterStatus('completed')}
+            onClick={() =>{ setFilterStatus('completed');
+              setCurrAppointments('Completed Appointments')
+            }
+            }
           >
             Completed
           </button>
@@ -207,7 +219,7 @@ const ViewAppointments = () => {
       </div>
 
       <div className="appointments-section">
-        <h2>All Appointments</h2>
+        <h2>{currAppointments}</h2>
         {filteredAppointments.length === 0 ? (
           <div className="no-appointments">
             <p>No appointments found matching your criteria</p>
@@ -265,7 +277,7 @@ const ViewAppointments = () => {
       </div>
 
       <div className="appointments-section completed-section">
-        <h2>Recently Completed Appointments</h2>
+        <h2>Completed Appointments</h2>
         {completedAppointments.length === 0 ? (
           <div className="no-appointments">
             <p>No completed appointments yet</p>
@@ -291,6 +303,8 @@ const ViewAppointments = () => {
         )}
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 
