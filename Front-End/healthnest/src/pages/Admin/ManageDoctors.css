@@ -461,7 +461,7 @@
     margin-right: 5px; 
   }
 
-  .view-toggle button {
+  .view-toggle button { 
     padding: 8px 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -488,4 +488,55 @@
     font-size: 0.7rem;
     padding: 2px 6px;
     margin-left: 8px; 
+  }
+
+  .doctor-card {
+    /* ... existing styles ... */
+    cursor: pointer; /* Indicate it's clickable */
+    border: 1px solid transparent; /* Add a transparent border by default */
+    transition: border-color 0.2s ease-in-out;
+  }
+  
+  .doctor-card.expanded {
+    border-color: #007bff; /* Example: Blue border when expanded */
+  }
+  
+  .expanded-details {
+    padding: 15px;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+  }
+  
+  .expanded-details .detail-row {
+    display: flex;
+    margin-bottom: 8px;
+  }
+  
+  .expanded-details .detail-label {
+    font-weight: bold;
+    width: 100px; /* Adjust width as needed */
+  }
+  
+  .expanded-details .detail-value {
+    flex-grow: 1;
+  }
+  
+  .expanded-actions {
+    margin-top: 15px;
+    text-align: right; /* Align delete button to the right */
+  }
+  
+  .expanded-actions .delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .expanded-actions .delete-btn:hover {
+    background-color: #c82333;
   }
