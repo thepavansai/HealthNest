@@ -129,6 +129,8 @@ const ManageDoctors = () => {
             placeholder="Search by name, specialty or email"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            
+            style={{ textAlign: searchTerm ? 'left' : 'center' }}
           />
         </div>
 

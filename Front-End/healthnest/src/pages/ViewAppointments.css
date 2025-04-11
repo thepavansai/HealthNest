@@ -117,10 +117,10 @@
 }
 
 
-
 .search-container input {
   width: 100%;
-  padding: 12px 16px 12px 40px;
+  padding: 12px 16px;
+  padding-left: 48px; /* space for icon */
   border-radius: 8px;
   border: 1px solid #e3e8ef;
   font-size: 14px;
