@@ -108,8 +108,8 @@ const DoctorDashboard = () => {
                 appointments.map((appointment, index) => (
                   <div key={index} className="appointment-item">
                     <FaCalendarAlt className="card-icon pulse" />
-                    <h4>{appointment.appointmentTime}</h4>
-                    <p>{appointment.name} - {appointment.description}</p>
+                    <h6>{appointment.appointmentTime}</h6>
+                    <p>{appointment.userName} - {appointment.description}</p>
                   </div>
                 ))
               ) : (

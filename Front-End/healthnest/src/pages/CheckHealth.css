@@ -595,3 +595,53 @@
         transform: translateY(0);
     }
 }
+
+/* Add these styles to your CheckHealth.css file */
+
+.slot-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .slot-button.booked {
+    background-color: #f0f0f0;
+    color: #999;
+    cursor: not-allowed;
+    border: 1px solid #ddd;
+    position: relative;
+  }
+  
+  .booked-tooltip {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+  }
+  
+  .slot-container:hover .booked-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Add a small arrow pointing down */
+  .booked-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  }
