@@ -35,9 +35,15 @@ const UserFeedback = () => {
   };
 
   return (
+    <div
+      className="doctor-login-bg"
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL + "/images/UserFeedback.jpg"})`,
+      }}
+    >
     <div className="feedback-container">
       <div className="feedback-card">
-        <h2 className="feedback-title">User Feedback Form</h2>
+        <h2 className="feedback-title">User Feedback</h2>
         <form onSubmit={handleSubmit} className="feedback-form">
           <input
             type="text"
@@ -83,6 +89,7 @@ const UserFeedback = () => {
           {submitted && <p className="success-message">✅ Feedback sent successfully!</p>}
         </form>
       </div>
+    </div>
     </div>
   );
 };
