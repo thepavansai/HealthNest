@@ -20,7 +20,7 @@ const Remedies = ({ onSuggest }) => {
           messages: [
             {
               role: "system",
-              content: "The user will give his current health condition. Suggest a WHO recommended Suggestions and remedies for symptoms",
+              content: "The user will give his current health condition. Suggest a WHO recommended Suggestions and remedies for symptoms if symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms.",
             },
             {
               role: "user",

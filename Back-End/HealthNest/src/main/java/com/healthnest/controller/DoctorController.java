@@ -32,28 +32,42 @@ public class DoctorController {
    
     
     @GetMapping("/profile/{id}")
-    public DoctorDTO getDoctorProfile(@PathVariable Long id) {
-        return modelMapper.map(doctorService.getDoctorProfile(id), DoctorDTO.class);
+    public ResponseEntity<DoctorDTO> getDoctorProfile(@PathVariable Long id) {
+        DoctorDTO doctorDTO = modelMapper.map(doctorService.getDoctorProfile(id), DoctorDTO.class);
+        return ResponseEntity.ok(doctorDTO);
     }
 
     @PutMapping("/profile/{id}")
-    public String updateDoctorProfile(@PathVariable Long id, @RequestBody DoctorDTO doctorDTO) {
-        return doctorService.updateDoctorProfile(id, doctorDTO);
+    public ResponseEntity<String> updateDoctorProfile(@PathVariable Long id, @RequestBody DoctorDTO doctorDTO) {
+        String result = doctorService.updateDoctorProfile(id, doctorDTO);
+        return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/{id}/{availability}")
-    public String updateDoctorAvailability(@PathVariable Long id, @PathVariable String availability) {
-        return doctorService.updateDoctorAvailability(id, availability);
+    public ResponseEntity<String> updateDoctorAvailability(@PathVariable Long id, @PathVariable String availability) {
+        String result = doctorService.updateDoctorAvailability(id, availability);
+        return ResponseEntity.ok(result);
     }
 
-    @PatchMapping("/{id}/consultation-fee")
-    public String updateConsultationFee(@PathVariable Long id, @RequestParam Double fee) {
-        return doctorService.updateConsultationFee(id, fee);
+    @PatchMapping("/{id}/{consultation-fee}")
+    public ResponseEntity<String> updateConsultationFee(@PathVariable Long id, @PathVariable Double fee) {
+        String result = doctorService.updateConsultationFee(id, fee);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}/rating")
-    public Float getDoctorReviews(@PathVariable Long id) {
-        return doctorService.getDoctorRating(id);
+    public ResponseEntity<Float> getDoctorRating(@PathVariable Long id) {
+        Float rating = doctorService.getDoctorRating(id);
+        return ResponseEntity.ok(rating);
+    }
+
+    @PatchMapping("/{id}/rating")
+    public ResponseEntity<String> updateDoctorRating(@PathVariable Long id, @RequestParam Float rating) {
+        if (rating < 0 || rating > 5) {
+            throw new IllegalArgumentException("Rating must be between 0 and 5");
+        }
+        String result = doctorService.updateDoctorRating(id, rating);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{specialization}")

@@ -2,9 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaClock } from 'react-icons/fa';
 import './DoctorViewAppointments.css';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const DoctorViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
+  
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -14,6 +17,7 @@ const DoctorViewAppointments = () => {
       try {
         setLoading(true);
         const response = await axios.get(`http://localhost:8080/appointments/doctor/${localStorage.getItem('doctorId')}`);
+        console.log(response.data)
         setAppointments(response.data);
         setLoading(false);
       } catch (error) {
@@ -42,14 +46,6 @@ const DoctorViewAppointments = () => {
     appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
   );
   
-  // Adding previous appointments filter - appointments that occurred in the past
-  const previousAppointments = appointments.filter(appointment => {
-    const appointmentDateTime = new Date(`${appointment.appointmentDate}T${appointment.appointmentTime}`);
-    const currentTime = new Date();
-    return appointmentDateTime < currentTime && 
-           (appointment.appointmentStatus.toLowerCase() === 'completed' || 
-            appointment.appointmentStatus.toLowerCase() === 'cancelled');
-  });
 
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch =
@@ -68,21 +64,21 @@ const DoctorViewAppointments = () => {
       
       if (response.status === 200) {
         // Update the appointment directly with the data returned from the API
-        console.log(response.data)
-        setAppointments(prevAppointments =>
-          prevAppointments.map(appointment =>
-            appointment.appointmentId === appointmentId
-              ? { 
-                  ...appointment, 
-                  appointmentStatus: response.data.appointmentStatus,
-                  appointmentDate: response.data.appointmentDate,
-                  appointmentTime: response.data.appointmentTime,
-                  description: response.data.description,
-                  // Update any other fields that might have changed
-                }
-              : appointment
-          )
-        );
+        // setAppointments(prevAppointments =>
+        //   prevAppointments.map(appointment =>
+        //     appointment.appointmentId === appointmentId
+        //       ? { 
+        //           ...appointment, 
+        //           appointmentStatus: response.data.appointmentStatus,
+        //           appointmentDate: response.data.appointmentDate,
+        //           appointmentTime: response.data.appointmentTime,
+        //           description: response.data.description,
+        //           // Update any other fields that might have changed
+        //         }
+        //       : appointment
+        //   )
+        // );
+      
         alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
       } else {
         alert(`Failed to ${action} appointment. Please try again.`);
@@ -111,7 +107,7 @@ const DoctorViewAppointments = () => {
     try {
       const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
       if (response.status === 200) {
-        // Update with data from the response if available, otherwise fall back to just status update
+        
         if (response.data && response.data.appointmentStatus) {
           setAppointments(prevAppointments =>
             prevAppointments.map(appointment =>
@@ -158,7 +154,8 @@ const DoctorViewAppointments = () => {
     );
   }
 
-  return (
+  return (<>
+  <Header></Header>
     <div className="view-appointments-container">
       <div className="appointments-header">
         <h1>Appointments Dashboard</h1>
@@ -257,17 +254,12 @@ const DoctorViewAppointments = () => {
           >
             Cancelled
           </button>
-          <button
-            className={filterStatus === 'previous' ? 'active' : ''}
-            onClick={() => setFilterStatus('previous')}
-          >
-            Previous
-          </button>
+         
         </div>
       </div>
 
       <div className="appointments-section">
-        <h2>All Appointments</h2>
+      <h2>{filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} Appointments</h2>
         {filteredAppointments.length === 0 ? (
           <div className="no-appointments">
             <p>No appointments found matching your criteria</p>
@@ -278,10 +270,10 @@ const DoctorViewAppointments = () => {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Doctor</th>
-                  <th>Hospital</th>
+                  <th>Patient Name</th>
+                  <th>Description</th>
                   <th>Date & Time</th>
-                  <th>Fee</th>
+                  <th>Phone Number</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -290,15 +282,15 @@ const DoctorViewAppointments = () => {
                 {filteredAppointments.map(appointment => (
                   <tr key={appointment.appointmentId}>
                     <td>{appointment.appointmentId}</td>
-                    <td>Dr. {appointment.doctorName}</td>
-                    <td>{appointment.hospitalName}</td>
+                    <td>{appointment.userName}</td>
+                    <td>{appointment.description}</td>
                     <td>
                       <div className="appointment-time">
                         <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
                         <span>{appointment.appointmentTime}</span>
                       </div>
                     </td>
-                    <td>₹{appointment.consultationFee}</td>
+                    <td>+91-{appointment.userPhoneNo}</td>
                     <td>
                       <span className={`status-badge ${getStatusClass(appointment.appointmentStatus)}`}>
                         {appointment.appointmentStatus}
@@ -341,7 +333,7 @@ const DoctorViewAppointments = () => {
       </div>
 
       <div className="appointments-section completed-section">
-        <h2>Recently Completed Appointments</h2>
+        <h2>Completed Appointments</h2>
         {completedAppointments.length === 0 ? (
           <div className="no-appointments">
             <p>No completed appointments yet</p>
@@ -358,62 +350,17 @@ const DoctorViewAppointments = () => {
                 </div>
                 <div className="completed-details">
                   <h4>#{appointment.appointmentId} - {appointment.doctorName}</h4>
-                  <p>Hospital: {appointment.hospitalName}</p>
-                  <p>Fee: ₹{appointment.consultationFee}</p>
+                  <p>Description: {appointment.description}</p>
+                  <p>Date: {appointment.appointmentDate}</p>
                 </div>
               </div>
             ))}
           </div>
         )}
       </div>
-
-      {/* New section to display previous appointments */}
-      <div className="appointments-section previous-section">
-        <h2>Previous Appointments</h2>
-        {previousAppointments.length === 0 ? (
-          <div className="no-appointments">
-            <p>No previous appointments found</p>
-          </div>
-        ) : (
-          <div className="appointments-table-container">
-            <table className="appointments-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Doctor</th>
-                  <th>Hospital</th>
-                  <th>Date & Time</th>
-                  <th>Fee</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {previousAppointments.map(appointment => (
-                  <tr key={appointment.appointmentId}>
-                    <td>{appointment.appointmentId}</td>
-                    <td>Dr. {appointment.doctorName}</td>
-                    <td>{appointment.hospitalName}</td>
-                    <td>
-                      <div className="appointment-time">
-                        <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
-                        <span>{appointment.appointmentTime}</span>
-                      </div>
-                    </td>
-                    <td>₹{appointment.consultationFee}</td>
-                    <td>
-                      <span className={`status-badge ${getStatusClass(appointment.appointmentStatus)}`}>
-                        {appointment.appointmentStatus}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
     </div>
-  );
+    <Footer></Footer>
+ </> );
 };
 
 export default DoctorViewAppointments;

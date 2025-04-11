@@ -6,31 +6,21 @@ import Header from "../components/Header";
 
 import "./CheckHealth.css";
 
-// Update the helper functions at the top
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const TIME_SLOTS = [
-  '9:00 AM', 
-  '11:00 AM',
-  '2:00 PM',
-  '4:00 PM'
-];
-
-
+const TIME_SLOTS = ['9:00 AM', '11:00 AM', '2:00 PM', '4:00 PM'];
 
 const getNextDays = (availability) => {
   const today = new Date();
   const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1); // Start from tomorrow
+  tomorrow.setDate(today.getDate() + 1);
   const nextDays = [];
   
-  // Get next 7 days starting from tomorrow
   for (let i = 0; i < 7; i++) {
     const date = new Date(tomorrow);
     date.setDate(tomorrow.getDate() + i);
     
-    const dayIndex = date.getDay(); // 0 for Sunday, 1 for Monday, etc.
-    // Reverse the bit position since our bitmap has Sunday as rightmost bit
-    const reversedIndex = 6 - dayIndex; // Convert 0->6, 1->5, 2->4, etc.
+    const dayIndex = date.getDay();
+    const reversedIndex = 6 - dayIndex;
     if ((availability & (1 << reversedIndex)) !== 0) {
       nextDays.push({
         day: DAYS[dayIndex],
@@ -48,21 +38,13 @@ const getNextDays = (availability) => {
 const formatDate = (day, date) => {
   const [dayNum, monthStr] = date.split(' ');
   const currentYear = new Date().getFullYear();
-  
-  // Map month abbreviations to month numbers
   const monthMap = {
     'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04',
     'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08',
     'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'
   };
-  
-  // Get month number from the map
   const monthNum = monthMap[monthStr];
-  
-  // Pad day number with leading zero if needed
   const paddedDay = dayNum.padStart(2, '0');
-  
-  // Return in YYYY-MM-DD format
   return `${currentYear}-${monthNum}-${paddedDay}`;
 };
 
@@ -77,7 +59,6 @@ const formatTime = (timeStr) => {
     hour = 0;
   }
   
-  // Return time in HH:mm:ss format
   return `${hour.toString().padStart(2, '0')}:${minutes}:00`;
 };
 
@@ -93,12 +74,22 @@ const CheckHealth = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [doctors, setDoctors] = useState([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [doctorAppointments, setDoctorAppointments] = useState([]);
 
   const suggestionsRef = useRef(null);
   const doctorRef = useRef(null);
   const paymentRef = useRef(null);
   const carouselRef = useRef(null);
   const navigate = useNavigate();
+
+  const fetchDoctorAppointments = async (doctorId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/appointments/doctor/${doctorId}`);
+      setDoctorAppointments(response.data);
+    } catch (error) {
+      console.error("Error fetching doctor's appointments:", error);
+    }
+  };
 
   const handleSymptomSubmit = async () => {
     if (!text.trim()) return;
@@ -111,7 +102,7 @@ const CheckHealth = () => {
           messages: [
             {
               role: "system",
-              content: "The user will give his current health condition. Suggest a specialist doctor or general physician based on the user's input. Respond with just one word like 'Cardiologist' or 'General physician'.",
+              content: "The user will give his current health condition(which should be explainatory raather than random hi and other stuff) with appropiate symptoms.prompt should be reasonale  to decide specilist if not ask him to give input again . Suggest a specialist doctor or general physician based on the user's appropiate and accurate input Donot give for random words. Respond with just one word like 'Cardiologist' or 'General physician'. if the user is not clear about the disease, ask them to clarify their symptoms. and give specialist name only when appropiate symptoms are given ask for again to give prompt.",
             },
             {
               role: "user",
@@ -151,6 +142,7 @@ const CheckHealth = () => {
 
   const handleSelectDoctor = (doctor) => {
     setSelectedDoctor(doctor);
+    fetchDoctorAppointments(doctor.doctorId);
     setTimeout(() => {
       doctorRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
@@ -175,7 +167,7 @@ const CheckHealth = () => {
       const appointmentData = {
         appointmentDate: formatDate(selectedDay, selectedDate),
         appointmentTime: formatTime(selectedSlot),
-        appointmentStatus: "PENDING", // Changed to PENDING
+        appointmentStatus: "PENDING",
         description: text,
         user: {
           userId: userId
@@ -202,6 +194,13 @@ const CheckHealth = () => {
       console.error('Error booking appointment:', error);
       alert('Failed to book appointment. Please try again.');
     }
+  };
+
+  const isSlotBooked = (date, slot) => {
+    return doctorAppointments.some(appointment => 
+      appointment.appointmentDate === formatDate(selectedDay, date) &&
+      appointment.appointmentTime === formatTime(slot)
+    );
   };
 
   const goToPrevious = () => {
@@ -328,15 +327,25 @@ const CheckHealth = () => {
                 <div key={`${day}-${date}`} className="day-slot">
                   <strong>{day}, {date}</strong>
                   <div className="slots">
-                    {TIME_SLOTS.map((slot, idx) => (
-                      <button
-                        key={idx}
-                        className={`slot-button ${selectedDay === day && selectedSlot === slot ? "selected" : ""}`}
-                        onClick={() => handleSlotSelect(day, date, slot)}
-                      >
-                        {slot}
-                      </button>
-                    ))}
+                    {TIME_SLOTS.map((slot, idx) => {
+                      const booked = isSlotBooked(date, slot);
+                      return (
+                        <div className="slot-container" key={idx} title={booked ? "This slot is already booked" : ""}>
+                          <button
+                            className={`slot-button ${selectedDay === day && selectedSlot === slot ? "selected" : ""} ${booked ? "booked" : ""}`}
+                            onClick={() => {
+                              if (!booked) {
+                                handleSlotSelect(day, date, slot);
+                              }
+                            }}
+                            disabled={booked}
+                          >
+                            {slot}
+                          </button>
+                          {booked && <span className="booked-tooltip">Already Booked</span>}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               ))}

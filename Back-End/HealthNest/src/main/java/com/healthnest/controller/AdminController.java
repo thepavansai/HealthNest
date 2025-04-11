@@ -42,68 +42,68 @@ public class AdminController {
     private FeedBackService feedBackService;
 
     @GetMapping("/users")
-    public List<UserDTO> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return users.stream()
+        List<UserDTO> userDTOs = users.stream()
                 .map(user -> modelMapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOs);
     }
 
     @GetMapping("/doctors")
-    public List<DoctorDTO> getAllDoctors() {
+    public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
         List<Doctor> doctors = doctorService.getAllDoctors();
-        return doctors.stream().map(doctor -> modelMapper.map(doctor, DoctorDTO.class)).collect(Collectors.toList());
+        List<DoctorDTO> doctorDTOs = doctors.stream()
+                .map(doctor -> modelMapper.map(doctor, DoctorDTO.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(doctorDTOs);
     }
 
     @DeleteMapping("/users/delete")
-    public String deleteAllUsers() {
-        return userService.deleteAllUsers();
+    public ResponseEntity<String> deleteAllUsers() {
+        String result = userService.deleteAllUsers();
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/doctors/delete")
-    public String deleteAllDoctors() {
-        return doctorService.deleteAllDoctors();
+    public ResponseEntity<String> deleteAllDoctors() {
+        String result = doctorService.deleteAllDoctors();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/appointments")
-    public List<AppointmentShowDTO> getAllAppointments() {
-        return appointmentService.getAllAppointments();
+    public ResponseEntity<List<AppointmentShowDTO>> getAllAppointments() {
+        List<AppointmentShowDTO> appointments = appointmentService.getAllAppointments();
+        return ResponseEntity.ok(appointments);
     }
 
     @DeleteMapping("/appointments/delete")
-    public String deleteAppointment() {
-        return appointmentService.deleteAllAppointments();
+    public ResponseEntity<String> deleteAppointment() {
+        String result = appointmentService.deleteAllAppointments();
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/appointments/{id}")
-    public String deleteAppointment(@PathVariable("id") Integer appointmentId) {
-        return appointmentService.deleteAppointment(appointmentId);
+    public ResponseEntity<String> deleteAppointment(@PathVariable("id") Integer appointmentId) {
+        String result = appointmentService.deleteAppointment(appointmentId);
+        return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/feedbacks")
-    public List<FeedBackDTO> getAllFeedBacks() {
-        return feedBackService.getAllFeedBack();
+    @GetMapping("/feedbacks") 
+    public ResponseEntity<List<FeedBackDTO>> getAllFeedBacks() {
+        List<FeedBackDTO> feedbacks = feedBackService.getAllFeedBack();
+        return ResponseEntity.ok(feedbacks);
     }
 
     @PutMapping("/doctors/{doctorId}/accept")
     public ResponseEntity<String> acceptDoctor(@PathVariable Long doctorId) {
-        try {
-            doctorService.updateDoctorStatus(doctorId, 1);
-            return ResponseEntity.ok("Doctor accepted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Doctor not found with id: " + doctorId);
-        }
+        doctorService.updateDoctorStatus(doctorId, 1);
+        return ResponseEntity.ok("Doctor accepted successfully");
     }
 
     @PutMapping("/doctors/{doctorId}/reject")
     public ResponseEntity<String> rejectDoctor(@PathVariable Long doctorId) {
-        try {
-            doctorService.updateDoctorStatus(doctorId, -1);
-            return ResponseEntity.ok("Doctor rejected successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Doctor not found with id: " + doctorId);
-        }
+        doctorService.updateDoctorStatus(doctorId, -1);
+        return ResponseEntity.ok("Doctor rejected successfully");
     }
 }
