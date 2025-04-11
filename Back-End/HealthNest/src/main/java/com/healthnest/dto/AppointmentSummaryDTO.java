@@ -10,6 +10,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class AppointmentSummaryDTO {
 		private Integer appointmentId;
+		private Integer doctorId;
 	 	private String doctorName;
 	    private Integer experience;
 	    private String docPhnNo;

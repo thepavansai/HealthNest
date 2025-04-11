@@ -78,10 +78,10 @@ public class UserService {
 	}
 
 	public void deleteAccount(Integer userId) {
-		if (!userRepository.existsById(userId)) {
-			throw new UserNotFoundException("User not found with id: " + userId);
-		}
-		userRepository.deleteById(userId);
+	    if (!userRepository.existsById(userId)) {
+	        throw new UserNotFoundException("User not found with id: " + userId);
+	    }
+	    userRepository.deleteById(userId);
 	}
 	
 	public boolean bookAppointment(Appointment appointment) {
