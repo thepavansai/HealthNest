@@ -38,8 +38,8 @@ const DoctorDashboard = () => {
   useEffect(() => {
     // Fetch today's appointments
     if (doctorId) {
-      //const today = new Date().toISOString().split('T')[0]; // Format date as YYYY-MM-DD
-      today=2025-04-15
+      const today = new Date().toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+     // today=2025-04-15
       axios.get(`http://localhost:8080/appointments/doctor/${doctorId}/date/${today}`)
         .then(res => {
           setAppointments(res.data || []);
