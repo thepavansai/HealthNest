@@ -9,6 +9,7 @@ const ManageDoctors = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState('all');
+  const [expandedDoctorId, setExpandedDoctorId] = useState(null);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -55,10 +56,25 @@ const ManageDoctors = () => {
     }
   };
 
+  const handleDeleteDoctor = async (doctorId, isPending = false) => {
+    try {
+      await axios.delete(`http://localhost:8080/admin/doctors/delete?doctorId=${doctorId}`);
+
+      if (isPending) {
+        setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== doctorId));
+      } else {
+        setDoctors(doctors.filter(doctor => doctor.doctorId !== doctorId));
+      }
+      setExpandedDoctorId(null);
+    } catch (error) {
+      console.error('Error deleting doctor:', error);
+    }
+  };
+
   const handleDeleteAllDoctors = async () => {
-    if (window.confirm('Are you sure you want to delete ALL doctors? This action is irreversible!')) {
+    if (window.confirm('Are you sure you want to delete ALL doctors (active and pending)? This action is irreversible!')) {
       try {
-        await axios.delete('http://localhost:8080/admin/doctors/delete/all'); // Assuming this is your delete all endpoint
+        await axios.delete('http://localhost:8080/admin/doctors/delete/all');
         setDoctors([]);
         setPendingDoctors([]);
         alert('All doctors have been deleted successfully.');
@@ -67,6 +83,10 @@ const ManageDoctors = () => {
         alert('Failed to delete all doctors. Please try again.');
       }
     }
+  };
+
+  const toggleExpandDoctor = (doctorId) => {
+    setExpandedDoctorId(expandedDoctorId === doctorId ? null : doctorId);
   };
 
   const filteredDoctors = doctors.filter(doctor => {
@@ -129,6 +149,8 @@ const ManageDoctors = () => {
             placeholder="Search by name, specialty or email"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            
+            style={{ textAlign: searchTerm ? 'left' : 'center' }}
           />
         </div>
 
@@ -158,14 +180,18 @@ const ManageDoctors = () => {
           ) : (
             <div className="doctors-grid">
               {filteredDoctors.map(doctor => (
-                <div className="doctor-card" key={doctor.doctorId}>
+                <div
+                  className={`doctor-card ${expandedDoctorId === doctor.doctorId ? 'expanded' : ''}`}
+                  key={doctor.doctorId}
+                  onClick={() => toggleExpandDoctor(doctor.doctorId)}
+                >
                   <div className="doctor-header">
                     <div className="doctor-avatar">
                       {doctor.profileImage ? (
                         <img src={doctor.profileImage} alt={doctor.doctorName} />
                       ) : (
                         <div className="avatar-placeholder">
-                          {doctor.doctorName?.charAt(0)?.toUpperCase()}
+                          {doctor.doctorName?.charAt(4)?.toUpperCase()}
                         </div>
                       )}
                     </div>
@@ -175,24 +201,37 @@ const ManageDoctors = () => {
                     </div>
                   </div>
 
-                  <div className="doctor-details">
-                    <div className="detail-row">
-                      <span className="detail-label">Email:</span>
-                      <span className="detail-value">{doctor.emailId}</span>
+                  {expandedDoctorId === doctor.doctorId && (
+                    <div className="expanded-details">
+                      <div className="detail-row">
+                        <span className="detail-label">Email:</span>
+                        <span className="detail-value">{doctor.emailId}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">Phone:</span>
+                        <span className="detail-value">{doctor.docPhnNo}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">Experience:</span>
+                        <span className="detail-value">{doctor.experience} years</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">Fee:</span>
+                        <span className="detail-value">${doctor.consultationFee}</span>
+                      </div>
+                      <div className="doctor-actions expanded-actions">
+                        <button
+                          className="delete-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteDoctor(doctor.doctorId);
+                          }}
+                        >
+                          <FaTrash /> Delete
+                        </button>
+                      </div>
                     </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Phone:</span>
-                      <span className="detail-value">{doctor.docPhnNo}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Experience:</span>
-                      <span className="detail-value">{doctor.experience} years</span>
-                    </div>
-                    <div className="detail-row">
-                      <span className="detail-label">Fee:</span>
-                      <span className="detail-value">${doctor.consultationFee}</span>
-                    </div>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -272,7 +311,7 @@ const ManageDoctors = () => {
 
       <div className="delete-all-doctors-container">
         <button className="delete-all-doctors-btn" onClick={handleDeleteAllDoctors}>
-          <FaTrash /> Delete All Doctors
+          <FaTrash /> Delete All
         </button>
       </div>
     </div>

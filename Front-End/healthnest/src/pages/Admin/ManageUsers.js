@@ -78,6 +78,9 @@ const ManageUsers = () => {
             placeholder="Search by name or email "
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            
+            style={{ textAlign: searchTerm ? 'center' : 'center' }}
+            
           />
         </div>
       </div>
@@ -133,7 +136,7 @@ const ManageUsers = () => {
 
       <div className="delete-all-container">
         <button className="delete-all-btn" onClick={handleDeleteAllUsers}>
-          <FaTrash /> Delete All Users
+          <FaTrash /> Delete All 
         </button>
       </div>
     </div>
