@@ -1,4 +1,3 @@
-
 package com.healthnest.repository;
 
 import java.util.List;
@@ -19,17 +18,20 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Integ
 	@Query("SELECT new com.healthnest.dto.AppointmentShowDTO(a.appointmentId,d.doctorName,d.specializedrole, u.name, u.phoneNo, a.appointmentStatus, a.description, a.appointmentDate, a.appointmentTime) " +
 		       "FROM Appointment a JOIN a.user u JOIN a.doctor d WHERE a.doctor.doctorId = :doctorId")
 	List<AppointmentShowDTO> findByDoctorIdWithUserName(@Param("doctorId") Integer doctorId);
-	@Query("SELECT new com.healthnest.dto.AppointmentShowDTO(a.appointmentId,d.doctorName,d.specializedrole, u.name, u.phoneNo, a.appointmentStatus, a.description, a.appointmentDate, a.appointmentTime) " +
-			"FROM Appointment a JOIN a.user u JOIN a.doctor d")
+	@Query("SELECT new com.healthnest.dto.AppointmentShowDTO(" +
+	       "a.appointmentId, d.doctorName, d.specializedrole, u.name, u.phoneNo, " +
+	       "a.appointmentStatus, a.description, a.appointmentDate, a.appointmentTime) " +
+	       "FROM Appointment a JOIN a.user u JOIN a.doctor d")
 	List<AppointmentShowDTO> findAllAppointments();
 
+	
 	@Query("SELECT new com.healthnest.dto.AppointmentSummaryDTO(" +
-		       "a.appointmentId, d.doctorName, d.experience, d.docPhnNo, d.consultationFee, d.rating, d.hospitalName, " +
+		       "a.appointmentId, d.doctorId, d.doctorName, d.experience, d.docPhnNo, d.consultationFee, d.rating, d.hospitalName, " +
 		       "a.appointmentDate, a.appointmentTime, a.appointmentStatus, a.description) " +
 		       "FROM Appointment a " +
 		       "JOIN a.doctor d " +
 		       "WHERE a.user.userId = :userId")
-		List<AppointmentSummaryDTO> findAppointmentSummariesByUserId(@Param("userId") Integer userId);
+	List<AppointmentSummaryDTO> findAppointmentSummariesByUserId(@Param("userId") Integer userId);
 
 
 }

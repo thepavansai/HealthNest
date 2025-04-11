@@ -78,6 +78,9 @@ const ManageUsers = () => {
             placeholder="Search by name or email "
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            
+            style={{ textAlign: searchTerm ? 'center' : 'center' }}
+            
           />
         </div>
       </div>

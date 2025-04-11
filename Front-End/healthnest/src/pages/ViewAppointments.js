@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch } from 'react-icons/fa';
+import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaStar, FaRegStar } from 'react-icons/fa';
 import './ViewAppointments.css';
 import Header from "../components/Header"
 import Footer from "../components/Footer"
@@ -10,7 +10,8 @@ const ViewAppointments = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
-  const[currAppointments, setCurrAppointments] = useState('All Appointments');
+  const [currAppointments, setCurrAppointments] = useState('All Appointments');
+  const [ratings, setRatings] = useState({}); // Add this new state
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -96,6 +97,31 @@ const ViewAppointments = () => {
       case 'cancelled': return 'status-cancelled';
       case 'pending': return 'status-pending';
       default: return '';
+    }
+  };
+
+  const updateRating = async (doctorId, rating) => {
+    if (!rating) {
+      alert('Please select a rating first');
+      return;
+    }
+    
+    try {
+      // Fix URL concatenation and remove empty object body
+      const response = await axios.patch(`http://localhost:8080/doctor/${doctorId}/rating/${rating}`);
+      if (response.status === 200) {
+        alert('Rating submitted successfully!');
+        // Optionally update the local state to reflect the change
+        setRatings(prev => ({
+          ...prev,
+          [doctorId]: rating  
+        }));
+      } else {
+        alert('Failed to update rating. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error updating rating:', error);
+      alert('Error updating rating. Please try again later.');
     }
   };
 
@@ -267,6 +293,39 @@ const ViewAppointments = () => {
                           >
                             Cancel
                           </button>
+                        )}
+                        {appointment.appointmentStatus.toLowerCase() === 'completed' && (
+                          <div className="rating-action">
+                            <div className="star-rating">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                  key={star}
+                                  className="star-icon"
+                                  onClick={() => {
+                                    setRatings(prev => ({
+                                      ...prev,
+                                      [appointment.appointmentId]: star
+                                    }));
+                                  }}
+                                >
+                                  {star <= (ratings[appointment.appointmentId] || 0) ? (
+                                    <FaStar className="star-filled" />
+                                  ) : (
+                                    <FaRegStar />
+                                  )}
+                                </span>
+                              ))}
+                            </div>
+                            <button 
+                              className="rate-btn"
+                              onClick={() => updateRating(
+                                appointment.doctorId, 
+                                ratings[appointment.appointmentId] || 0
+                              )}
+                            >
+                              Submit Rating
+                            </button>
+                          </div>
                         )}
                       </div>
                     </td>

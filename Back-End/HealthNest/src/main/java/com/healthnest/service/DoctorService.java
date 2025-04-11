@@ -134,4 +134,11 @@ public class DoctorService {
         doctorRepository.save(doctor);
         return "Rating updated successfully";
     }
+    
+    public void deleteDoctor(Long doctorId) {
+        if (!doctorRepository.existsById(doctorId)) {
+            throw new DoctorNotFoundException("Doctor not found with id: " + doctorId);
+        }
+        doctorRepository.deleteById(doctorId);
+    }
 }
