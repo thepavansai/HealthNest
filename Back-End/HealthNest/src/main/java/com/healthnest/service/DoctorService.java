@@ -18,94 +18,116 @@ public class DoctorService {
     private DoctorRepository doctorRepository;
     
     public String addDoctor(Doctor doctor) {
+        if (doctor == null) {
+            throw new IllegalArgumentException("Doctor cannot be null");
+        }
         if (doctorRepository.existsByEmailId(doctor.getEmailId())) {
-            return "Doctor with the same name and email already exists.";
+            throw new IllegalArgumentException("Doctor with the same email already exists");
         }
         doctorRepository.save(doctor);
         return "Saved Successfully";
     }
+    
     public Doctor getDoctorProfile(Long doctorId) {
-        return doctorRepository.findById(doctorId).get();
+        return doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
     }
+    
     public String updateDoctorProfile(Long doctorId, DoctorDTO doctorDTO) {
-        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
-
-        if (optionalDoctor.isPresent()) {
-            Doctor doctor = optionalDoctor.get();
-            doctor.setDoctorName(doctorDTO.getDoctorName());
-            doctor.setHospitalName(doctorDTO.getHospitalName());
-            doctor.setExperience(doctorDTO.getExperience());
-            doctorRepository.save(doctor);
-            return "Updated Doctor Profile";
-        }
-
-        return "Doctor not found";
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        
+        doctor.setDoctorName(doctorDTO.getDoctorName());
+        doctor.setHospitalName(doctorDTO.getHospitalName());
+        doctor.setExperience(doctorDTO.getExperience());
+        doctorRepository.save(doctor);
+        return "Updated Doctor Profile";
     }
-    // Update Availability
-   
+    
     public String updateDoctorAvailability(Long doctorId, String isAvailable) {
-        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
-        if (doctor.isPresent()) {
-            doctor.get().setAvailability(isAvailable);
-            doctorRepository.save(doctor.get());
-            return "Availability updated successfully";
-        }
-        return "Doctor not found";
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        
+        doctor.setAvailability(isAvailable);
+        doctorRepository.save(doctor);
+        return "Availability updated successfully";
     }
-
-    // Update Consultation Fee
+    
     public String updateConsultationFee(Long doctorId, Double fee) {
-        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
-        if (doctor.isPresent()) {
-            doctor.get().setConsultationFee(fee);
-            doctorRepository.save(doctor.get());
-            return "Consultation fee updated successfully";
-        }
-        return "Doctor not found";
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        
+        doctor.setConsultationFee(fee);
+        doctorRepository.save(doctor);
+        return "Consultation fee updated successfully";
     }
-    // View Doctor Ratings
+    
     public Float getDoctorRating(Long doctorId) {
-        return doctorRepository.findById(doctorId).get().getRating();
-
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        return doctor.getRating();
     }
+    
     public List<Doctor> findDoctorsBySpecialization(String specialization) {
         return doctorRepository.findBySpecializedroleContaining(specialization);
     }
-
+    
     public Doctor addSpecialization(Long doctorId, String newSpecialization) {
-        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new RuntimeException("Doctor not found"));
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        
         String updatedSpecialization = doctor.getSpecializedrole() + ", " + newSpecialization;
         doctor.setSpecializedrole(updatedSpecialization);
         return doctorRepository.save(doctor);
     }
-
+    
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
     }
-
+    
     public String deleteAllDoctors() {
         doctorRepository.deleteAll();
         return "All doctors deleted";
     }
+    
     public String getDoctorPasswordHashByEmailId(String emailId) {
-        Optional<Doctor> doctor = doctorRepository.findByEmailId(emailId);
-        return doctor.map(Doctor::getPassword).orElse(null);
+        return doctorRepository.findByEmailId(emailId)
+            .map(Doctor::getPassword)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with email: " + emailId));
     }
-	public Doctor getDoctorNameByEmail(String emailId) {
-		return doctorRepository.findByEmailId(emailId).get();
-		
-	}
-	public Doctor getDoctorIdByEmail(String emailId) {
-		return doctorRepository.findByEmailId(emailId).get();
-	}
-	public void updateDoctorStatus(Long doctorId, int status) {
-	    Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
-	    if (optionalDoctor.isPresent()) {
-	        Doctor doctor = optionalDoctor.get();
-	        doctor.setStatus(status);
-	        doctorRepository.save(doctor);
-	    } else {
-	        throw new DoctorNotFoundException("Doctor not found with id: " + doctorId);
-	    }
-	}
+    
+    public Doctor getDoctorNameByEmail(String emailId) {
+        return doctorRepository.findByEmailId(emailId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with email: " + emailId));
+    }
+    
+    public Doctor getDoctorIdByEmail(String emailId) {
+        return doctorRepository.findByEmailId(emailId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with email: " + emailId));
+    }
+    
+    public void updateDoctorStatus(Long doctorId, int status) {
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
+        if (optionalDoctor.isPresent()) {
+            Doctor doctor = optionalDoctor.get();
+            doctor.setStatus(status);
+            doctorRepository.save(doctor);
+        } else {
+            throw new DoctorNotFoundException("Doctor not found with id: " + doctorId);
+        }
+    }
+    
+    public String updateDoctorRating(Long id, Float rating) {
+        Doctor doctor = doctorRepository.findById(id)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + id));
+        
+        Float initialRating = doctor.getRating();
+        if (initialRating == null || initialRating == 0) {
+            doctor.setRating(rating);
+        } else {
+            doctor.setRating((initialRating + rating) / 2);
+        }
+        doctorRepository.save(doctor);
+        return "Rating updated successfully";
+    }
 }

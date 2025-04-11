@@ -24,10 +24,15 @@ public class AppointmentController {
     private AppointmentService appointmentService;
     
     @GetMapping("/doctor/{doctorId}/date/{todaydate}")
-    public ResponseEntity<List<AppointmentShowDTO>> getTodayAppointmentsByDoctor(@PathVariable Integer doctorId,@PathVariable LocalDate todaydate)
-    {
-    	List<AppointmentShowDTO> appointments=appointmentService.getTodayAppointmentsByDoctor(doctorId,todaydate);
-    	return ResponseEntity.ok(appointments);
+    public ResponseEntity<List<AppointmentShowDTO>> getTodayAppointmentsByDoctor(
+        @PathVariable Integer doctorId,
+        @PathVariable LocalDate todaydate
+    ) {
+        if (todaydate == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+        List<AppointmentShowDTO> appointments = appointmentService.getTodayAppointmentsByDoctor(doctorId, todaydate);
+        return ResponseEntity.ok(appointments);
     }
 
     @GetMapping("/doctor/{doctorId}")

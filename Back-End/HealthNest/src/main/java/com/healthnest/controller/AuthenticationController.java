@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthnest.dto.DoctorDTO;
+import com.healthnest.exception.AuthenticationException;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
 
@@ -41,28 +42,22 @@ public class AuthenticationController {
     @PostMapping("/doctor-login")
     public ResponseEntity<Object> doctorLogin(@RequestBody DoctorDTO doctor) {
         if (doctor.getEmailId() == null || doctor.getPassword() == null) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Email and password must not be empty"));
+            throw new IllegalArgumentException("Email and password must not be empty");
         }
 
-        try {
-            String storedHashedPassword = doctorService.getDoctorPasswordHashByEmailId(doctor.getEmailId());
-            if (storedHashedPassword == null) {
-                return ResponseEntity.badRequest().body(Map.of("message", "Invalid email or password"));
-            }
-
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (passwordEncoder.matches(doctor.getPassword(), storedHashedPassword)) {
-                return ResponseEntity.ok(Map.of(
-                    "message", "Login successful",
-                    "userId", doctorService.getDoctorIdByEmail(doctor.getEmailId()).getDoctorId(),
-                    "name", doctorService.getDoctorNameByEmail(doctor.getEmailId()).getDoctorName()
-                ));
-            } else {
-                return ResponseEntity.badRequest().body(Map.of("message", "Invalid email or password"));
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "An error occurred during login"));
+        String storedHashedPassword = doctorService.getDoctorPasswordHashByEmailId(doctor.getEmailId());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        
+        if (!passwordEncoder.matches(doctor.getPassword(), storedHashedPassword)) {
+            throw new AuthenticationException("Invalid email or password");
         }
+
+        Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(doctor.getEmailId());
+        return ResponseEntity.ok(Map.of(
+            "message", "Login successful",
+            "userId", authenticatedDoctor.getDoctorId(),
+            "name", authenticatedDoctor.getDoctorName()
+        ));
     }
 
     @PostMapping("/admin-login")
@@ -71,24 +66,19 @@ public class AuthenticationController {
         String password = credentials.get("password");
 
         if (username == null || password == null) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Username and password must not be empty"));
+            throw new IllegalArgumentException("Username and password must not be empty");
         }
+        
         final String ADMIN_USERNAME = "admin";
         final String ADMIN_PASSWORD = "admin";
 
-        try {
-            if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
-                return ResponseEntity.ok(Map.of(
-                    "message", "Admin login successful",
-                    "role", "ADMIN"
-                ));
-            } else {
-                return ResponseEntity.badRequest().body(Map.of("message", "Invalid credentials"));
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "An error occurred during admin login"));
+        if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
+            return ResponseEntity.ok(Map.of(
+                "message", "Admin login successful",
+                "role", "ADMIN"
+            ));
         }
+        throw new AuthenticationException("Invalid credentials");
     }
 
     private String hashPassword(String password) {

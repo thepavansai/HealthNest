@@ -10,6 +10,8 @@ import com.healthnest.repository.AppointmentRepository;
 import com.healthnest.repository.UserRepository;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
+import com.healthnest.exception.UserNotFoundException;
+import com.healthnest.exception.AuthenticationException;
 
 import jakarta.transaction.Transactional;
 
@@ -27,28 +29,29 @@ public class UserService {
 			throw new RuntimeException("User already exists!");
 		}
 		userRepository.save(user);
-
 	}
 	
 	public User getUserDetails(Integer userId) {
 	    return userRepository.findById(userId)
-	            .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 	}
-
 
 	public boolean isUserAlreadyRegistered(String email) {
 		Optional<User> user = userRepository.findByEmail(email);
 		return user.isPresent();
 	}
 
-	public boolean editProfile(User user,Integer userId) {
-		User userafter = userRepository.findById(userId).get();
-		userafter.setName(user.getName());
-		userafter.setPhoneNo(user.getPhoneNo());
-		userafter.setEmail(user.getEmail());
-		userafter.setDateOfBirth(user.getDateOfBirth());
-		userafter.setGender(user.getGender());
-		userRepository.save(userafter);
+	public boolean editProfile(User user, Integer userId) {
+		User existingUser = userRepository.findById(userId)
+	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+		
+		existingUser.setName(user.getName());
+		existingUser.setName(user.getName());
+		existingUser.setPhoneNo(user.getPhoneNo());
+		existingUser.setEmail(user.getEmail());
+		existingUser.setDateOfBirth(user.getDateOfBirth());
+		existingUser.setGender(user.getGender());
+		userRepository.save(existingUser);
 		return true;
 	}
 
@@ -61,57 +64,54 @@ public class UserService {
 		appointment.setAppointmentStatus("Cancelled");
 	}
 
-	public boolean changePassword(Integer userId, String before_password1, String Changed_password) {
-		User user = userRepository.findById(userId).get();
-		if (user.getPassword().equals(before_password1)) {
-			user.setPassword(Changed_password);
-			return true;
-		} else {
-			return false;
-
+	public boolean changePassword(Integer userId, String oldPassword, String newPassword) {
+		User user = userRepository.findById(userId)
+	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+		
+		if (!user.getPassword().equals(oldPassword)) {
+			throw new IllegalArgumentException("Current password is incorrect");
 		}
-
+		
+		user.setPassword(newPassword);
+		userRepository.save(user);
+		return true;
 	}
 
 	public void deleteAccount(Integer userId) {
+		if (!userRepository.existsById(userId)) {
+			throw new UserNotFoundException("User not found with id: " + userId);
+		}
 		userRepository.deleteById(userId);
 	}
 	
-	public boolean bookAppointment(Appointment appointment)
-	{
+	public boolean bookAppointment(Appointment appointment) {
         appointmentRepository.save(appointment);
         return true;
-		
 	}
 
-	
 	public String login(String email, String password) {
-	    Optional<User> userOpt = userRepository.findByEmail(email);
-
-	    if (userOpt.isEmpty()) {
-	        return "User doesn't exist";
-	    }
-
-	    User user = userOpt.get();
-	    if (!user.getPassword().equals(password)) {
-	        return "Invalid Password";
-	    }
-
-	    return "Login successful";
+	    return userRepository.findByEmail(email)
+	        .map(user -> {
+	            if (!user.getPassword().equals(password)) {
+	                throw new AuthenticationException("Invalid Password");
+	            }
+	            return "Login successful";
+	        })
+	        .orElseThrow(() -> new UserNotFoundException("User doesn't exist"));
 	}
 
- public Integer getUserId(String email)
- {
-	 return userRepository.findByEmail(email).get().getUserId();	 
- }
+	public Integer getUserId(String email) {
+	    return userRepository.findByEmail(email)
+	        .map(User::getUserId)
+	        .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+	}
 
-public String getUserName(String email) {
-	return userRepository.findByEmail(email).get().getName();
+	public String getUserName(String email) {
+		return userRepository.findByEmail(email).get().getName();
+	}
 	
-}
-public String deleteAllUsers() {
+	public String deleteAllUsers() {
 		userRepository.deleteAll();
 		return "All users deleted";
-}
-
+	}
 }
