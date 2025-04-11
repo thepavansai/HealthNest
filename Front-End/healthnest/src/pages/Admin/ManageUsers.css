@@ -377,3 +377,30 @@
       justify-content: center;
     }
   }
+
+
+  .delete-all-container {
+    display: flex;
+    justify-content: center; 
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+  }
+  
+  .delete-all-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-all-btn:hover {
+    background-color: #ff0019;
+  }
+  
+  .delete-all-btn svg {
+    margin-right: 5px;
+  }
