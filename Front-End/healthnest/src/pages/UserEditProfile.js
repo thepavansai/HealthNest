@@ -49,7 +49,8 @@ const UserEditProfile = () => {
     };
 
     axios
-      .patch("http://localhost:8080/users/editprofile", updatedUser)
+    .patch(`http://localhost:8080/users/editprofile/${userId}`, updatedUser)
+
       .then(() => {
         toast.success("Profile updated successfully!", {
           onClose: () => navigate("/user"),
