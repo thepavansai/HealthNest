@@ -133,7 +133,7 @@ const ManageUsers = () => {
 
       <div className="delete-all-container">
         <button className="delete-all-btn" onClick={handleDeleteAllUsers}>
-          <FaTrash /> Delete All Users
+          <FaTrash /> Delete All 
         </button>
       </div>
     </div>
