@@ -1,3 +1,4 @@
+
 .view-appointments-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -91,7 +92,7 @@
 
 .appointments-table-container {
   overflow-x: auto;
-  position: relative;
+  position: relative; 
 }
 
 .appointments-table {
@@ -226,7 +227,7 @@
 .delete-all-container {
   display: flex;
   justify-content: center;
-  padding-top: 1rem;
+  padding-top: 1rem; 
 }
 
 .delete-all-button {

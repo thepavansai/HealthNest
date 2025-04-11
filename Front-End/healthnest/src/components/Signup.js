@@ -53,7 +53,7 @@ const SignUp = () => {
 
   return (
     <div className="signup-wrapper">
-      {/* Branding section */}
+      { }
       <div className="branding">
         <h1>HealthNest</h1>
         <p>Find the right doctor based on your symptoms with our smart healthcare platform.</p>

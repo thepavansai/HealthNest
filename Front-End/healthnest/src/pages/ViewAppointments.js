@@ -32,11 +32,13 @@ const ViewAppointments = () => {
   const upcomingAppointments = appointments.filter(
     appointment => appointment.appointmentStatus.toLowerCase() === 'upcoming'
   );
-
+  
   const cancelledAppointments = appointments.filter(
     appointment => appointment.appointmentStatus.toLowerCase() === 'cancelled'
   );
-
+  const pendingAppointments = appointments.filter(
+    appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
+  );
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch =
       appointment.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -66,7 +68,7 @@ const ViewAppointments = () => {
     }
     try {
       const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
-      if (response.status === 200) {
+      if (response.status === 200) { 
         setAppointments(prevAppointments =>
           prevAppointments.map(appointment =>
             appointment.appointmentId === appointmentId
@@ -85,10 +87,11 @@ const ViewAppointments = () => {
   };
 
   const getStatusClass = (status) => {
-    switch (status) {
-      case 'Completed': return 'status-completed';
-      case 'Upcoming': return 'status-upcoming';
-      case 'Cancelled': return 'status-cancelled';
+    switch (status.toLowerCase()) {
+      case 'completed': return 'status-completed';
+      case 'upcoming': return 'status-upcoming';
+      case 'cancelled': return 'status-cancelled';
+      case 'pending': return 'status-pending';
       default: return '';
     }
   };
@@ -136,7 +139,16 @@ const ViewAppointments = () => {
               <p>Completed Appointments</p>
             </div>
           </div>
-
+          <div className="summary-card">
+            <div className="summary-icon pending-icon">
+              <FaCalendarAlt />
+            </div>
+            <div className="summary-details">
+              <h3>{pendingAppointments.length}</h3>
+              <p>Pending Appointments</p>
+            </div>
+          </div>
+          
           <div className="summary-card">
             <div className="summary-icon cancelled-icon">
               <FaCalendarAlt />
@@ -166,6 +178,12 @@ const ViewAppointments = () => {
             onClick={() => setFilterStatus('all')}
           >
             All
+          </button>
+          <button
+            className={filterStatus === 'pending' ? 'active' : ''}
+            onClick={() => setFilterStatus('pending')}
+          >
+            Pending
           </button>
           <button
             className={filterStatus === 'upcoming' ? 'active' : ''}

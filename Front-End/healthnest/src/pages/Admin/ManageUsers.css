@@ -292,7 +292,7 @@
     background: rgba(220, 53, 69, 0.2);
   }
   
-  /* Loading state */
+   
   .loading-container {
     display: flex;
     flex-direction: column;
@@ -317,7 +317,7 @@
     }
   }
   
-  /* Pagination styling */
+   
   .pagination {
     display: flex;
     justify-content: center;
@@ -352,7 +352,7 @@
     cursor: not-allowed;
   }
   
-  /* Responsive adjustments */
+   
   @media (max-width: 768px) {
     .users-filter {
       flex-direction: column;

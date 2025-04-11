@@ -78,7 +78,7 @@ const UserDashboard = () => {
     <div className="dashboard-container">
       <Header />
       <div className="user-dashboard-new">
-        {/* Welcome Section */}
+        { }
         <div className="welcome-section">
           <div className="welcome-content">
             <h1>Welcome back, {userData.name || 'Patient'}</h1>
@@ -112,9 +112,9 @@ const UserDashboard = () => {
           </div>
         </div>
         
-        {/* Dashboard Grid */}
+        { }
         <div className="dashboard-grid">
-          {/* Appointments Card */}
+          { }
           <div className="dashboard-card appointments-card" onClick={handleViewAppointments}>
             <div className="card-header">
               <h3>Appointments</h3>
@@ -142,7 +142,7 @@ const UserDashboard = () => {
           </div>
           
           
-          {/* Health Stats Card */}
+          { }
           <div className="dashboard-card health-card">
             <div className="card-header">
               <h3>Health Status</h3>
@@ -159,7 +159,7 @@ const UserDashboard = () => {
             </div>
           </div>
           
-          {/* Book Appointment Card */}
+          { }
           <div className="dashboard-card action-card book-appointment">
             <div className="card-header">
               <h3>Book Appointment</h3>
@@ -175,7 +175,7 @@ const UserDashboard = () => {
             </div>
           </div>
 
-          {/* Medical History Card */}
+          { }
           <div className="dashboard-card action-card medical-history">
             <div className="card-header">
               <h3>Medical History</h3>

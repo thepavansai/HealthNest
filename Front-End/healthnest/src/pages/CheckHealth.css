@@ -2,41 +2,37 @@
     padding: 40px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f8fa;
-  }
-  
-  /* Suggestion Box - Adjust spacing */
-  .suggestion-box {
+}
+
+.suggestion-box {
     margin-bottom: 10px !important;
-  }
-  
-  /* Title - Suggested Specialists */
-  .suggested-doctors-carousel-container {
+}
+
+.suggested-doctors-carousel-container {
     margin-top: 20px !important;
-  }
-  
-  .suggested-doctors-carousel-container h2 {
+}
+
+.suggested-doctors-carousel-container h2 {
     text-align: center;
     font-size: 28px;
     color: #222;
     margin-bottom: 30px;
-  }
-  
-  /* Carousel Container */
-  .suggested-doctors-carousel {
+}
+
+.suggested-doctors-carousel {
     position: relative;
     overflow: hidden;
     max-width: 1000px;
     margin: 0 auto;
-  }
-  
-  /* Inner Carousel */
-  .carousel-wrapper {
+    padding: 0 50px; 
+}
+
+.carousel-wrapper {
     display: flex;
     transition: transform 0.5s ease-in-out;
-  }
-  
-  /* Individual Doctor Cards */
-  .doctor-card-carousel {
+}
+
+.doctor-card-carousel {
     flex: 0 0 300px;
     margin: 0 15px;
     padding: 20px;
@@ -45,33 +41,33 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     text-align: center;
     transition: transform 0.3s ease;
-  }
-  
-  .doctor-card-carousel:hover {
+}
+
+.doctor-card-carousel:hover {
     transform: translateY(-5px);
-  }
-  
-  .doctor-card-carousel img {
+}
+
+.doctor-card-carousel img {
     width: 80px;
     height: 80px;
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 12px;
-  }
-  
-  .doctor-card-carousel h4 {
+}
+
+.doctor-card-carousel h4 {
     font-size: 20px;
     margin: 0;
     color: #333;
-  }
-  
-  .doctor-card-carousel p {
+}
+
+.doctor-card-carousel p {
     margin: 8px 0;
     font-size: 16px;
     color: #555;
-  }
-  
-  .doctor-card-carousel button {
+}
+
+.doctor-card-carousel button {
     width: 100%;
     padding: 10px;
     background-color: #2196F3;
@@ -81,36 +77,47 @@
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
-  }
-  
-  .doctor-card-carousel button:hover {
+}
+
+.doctor-card-carousel button:hover {
     background-color: #1976D2;
-  }
-  
-  /* Carousel Buttons */
-  .carousel-button {
+}
+
+.carousel-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 24px;
-    font-weight: bold;
-    color: #555;
-    background: none;
-    border: none;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
     cursor: pointer;
-    z-index: 2;
-  }
-  
-  .carousel-button.prev {
-    left: -10px;
-  }
-  
-  .carousel-button.next {
-    right: -10px;
-  }
-  
-  /* Selected Doctor Details */
-  .selected-doctor-details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-button:hover {
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: #2196F3;
+}
+
+.carousel-button.prev {
+    left: 10px;
+}
+
+.carousel-button.next {
+    right: 10px;
+}
+
+.selected-doctor-details {
     max-width: 700px;
     margin: 40px auto;
     background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
@@ -118,44 +125,44 @@
     border-radius: 18px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  .selected-doctor-details h3 {
+}
+
+.selected-doctor-details h3 {
     font-size: 26px;
     margin-bottom: 20px;
     color: #2c3e50;
     text-align: center;
-  }
-  
-  .selected-doctor-details p {
+}
+
+.selected-doctor-details p {
     margin: 6px 0;
     font-size: 16px;
     color: #444;
-  }
-  
-  .selected-doctor-details strong {
+}
+
+.selected-doctor-details strong {
     color: #2e86de;
-  }
-  
-  .selected-doctor-details .calendar {
+}
+
+.selected-doctor-details .calendar {
     margin-top: 25px;
-  }
-  
-  .selected-doctor-details .day-slot {
+}
+
+.selected-doctor-details .day-slot {
     font-size: 18px;
     font-weight: 600;
     color: #333;
     margin-top: 20px;
-  }
-  
-  .selected-doctor-details .slots {
+}
+
+.selected-doctor-details .slots {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
-  }
-  
-  .selected-doctor-details .slot-button {
+}
+
+.selected-doctor-details .slot-button {
     padding: 8px 16px;
     margin: 4px;
     background-color: #f8f9fa;
@@ -165,35 +172,34 @@
     transition: all 0.3s ease;
     font-weight: 500;
     color: #006bb3;
-  }
-  
-  .selected-doctor-details .slot-button:hover {
+}
+
+.selected-doctor-details .slot-button:hover {
     background-color: #cceaff;
-  }
-  
-  .selected-doctor-details .slot-button.selected {
+}
+
+.selected-doctor-details .slot-button.selected {
     background-color: #2e86de;
     color: white;
     border-color: #2e86de;
-  }
-  
-  /* Calendar Styles */
-  .calendar {
+}
+
+.calendar {
     margin-top: 20px;
-  }
-  
-  .day-slot {
+}
+
+.day-slot {
     font-weight: 600;
     margin-bottom: 10px;
-  }
-  
-  .slots {
+}
+
+.slots {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-  }
-  
-  .slot-button {
+}
+
+.slot-button {
     padding: 8px 16px;
     margin: 4px;
     background-color: #f8f9fa;
@@ -201,90 +207,87 @@
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s;
-  }
-  
-  .slot-button:hover {
+}
+
+.slot-button:hover {
     background: #e6e6e6;
-  }
-  
-  .slot-button.selected {
+}
+
+.slot-button.selected {
     background: #007bff;
     color: #fff;
     border-color: #007bff;
-  }
-  
-  /* Payment Section */
+}
+
 .payment-section {
     margin-top: 30px;
-    background: linear-gradient(135deg, #f0f8ff, #e0f2f7); /* Light blue gradient */
+    background: linear-gradient(135deg, #f0f8ff, #e0f2f7);  
     padding: 30px;
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px; /* Limit width for payment section */
-    text-align: center; /* Center content within payment section */
-    
+    max-width: 400px;  
+    text-align: center;  
+}
 
-  }
-  
-  .payment-section h4 {
+.payment-section h4 {
     font-size: 24px;
     color: #333;
     margin-bottom: 20px;
-  }
-  
-  .payment-form {
+}
+
+.payment-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    align-items: center; /* Center form elements horizontally */
-  }
-  
-  .payment-form > div {
-    text-align: left; /* Align labels to the left within the form */
-    width: 100%; /* Make form elements take full width of the form */
-  }
-  
-  .payment-form label {
+    align-items: center;  
+}
+
+.payment-form > div {
+    text-align: left;  
+    width: 100%;  
+}
+
+.payment-form label {
     display: block;
     margin-bottom: 5px;
     color: #555;
     font-weight: bold;
-  }
-  
-  .payment-form input[type="text"],
-  .payment-form input[type="password"] {
+}
+
+.payment-form input[type="text"],
+.payment-form input[type="password"] {
     padding: 12px;
-    border: 1px solid #a8dadc; /* Light teal border */
+    border: 1px solid #a8dadc;  
     border-radius: 8px;
     font-size: 16px;
-    width: calc(100% - 24px); /* Adjust width for padding */
+    width: calc(100% - 24px);  
     box-sizing: border-box;
-    background-color: #f8f9fa; /* Light background */
-  }
-  
-  .payment-form input[type="text"]:focus,
-  .payment-form input[type="password"]:focus {
-    border-color: #45a247; /* Green focus border */
+    background-color: #f8f9fa;  
+}
+
+.payment-form input[type="text"]:focus,
+.payment-form input[type="password"]:focus {
+    border-color: #45a247;  
     outline: none;
-    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3); /* Green focus shadow */
-  }
-  
-  .payment-form .form-check {
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);  
+}
+
+.payment-form .form-check {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
     text-align: left;
-    width: 100%; /* Make form-check take full width */
-  }
-  
-  .payment-form .form-check input[type="radio"] {
+    width: 100%;  
+}
+
+.payment-form .form-check input[type="radio"] {
     margin-right: 10px;
-  }
-  
-  .payment-form button[type="submit"] {
+}
+
+.payment-form button[type="submit"] {
     padding: 14px 20px;
-    background-color: #4CAF50; /* Green submit button */
+    background-color: #4CAF50;  
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -292,308 +295,303 @@
     cursor: pointer;
     font-size: 18px;
     transition: background-color 0.3s ease;
-    width: 100%; /* Make submit button take full width */
-  }
-  
-  .payment-form button[type="submit"]:hover {
+    width: 100%;  
+}
+
+.payment-form button[type="submit"]:hover {
     background-color: #45a049;
-  }
-  
-  /* Success Message */
-  .success-message {
+}
+
+.success-message {
     color: #28a745;
     font-weight: 600;
     margin-top: 20px;
     font-size: 18px;
-    background-color: #e6ffe9; /* Light green background */
+    background-color: #e6ffe9;  
     padding: 15px;
     border-radius: 8px;
-    border: 1px solid #b3e6b3; /* Light green border */
-    text-align: center; /* Center success message text */
-  }
+    border: 1px solid #b3e6b3;  
+    text-align: center;  
+}
 
-  /* Make Payment Button */
 .make-payment-btn {
-  display: block;
-  width: 100%;
-  max-width: 300px;
-  margin: 30px auto 0;
-  padding: 16px 32px;
-  background: linear-gradient(135deg, #4CAF50, #45a049);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 30px auto 0;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
 }
 
 .make-payment-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
-  background: linear-gradient(135deg, #45a049, #3d8b40);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
+    background: linear-gradient(135deg, #45a049, #3d8b40);
 }
 
 .make-payment-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
 }
 
 .make-payment-btn:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
-  /* Feeling Container */
 .feeling-container {
-  min-height: 100vh;
-  padding: 4rem 1rem;
-  background: linear-gradient(135deg, #f0f7ff 0%, #e8eaff 100%);
+    min-height: 100vh;
+    padding: 4rem 1rem;
+    background: linear-gradient(135deg, #f0f7ff 0%, #e8eaff 100%);
 }
 
 .feeling-card {
-  max-width: 42rem;
-  margin: 0 auto;
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+    max-width: 42rem;
+    margin: 0 auto;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
 }
 
 .header {
-  text-align: center;
-  margin-bottom: 2.5rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
 }
 
 .header h2 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  background: linear-gradient(90deg, #2563eb, #4f46e5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #2563eb, #4f46e5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
 }
 
 .header p {
-  color: #6b7280;
+    color: #6b7280;
 }
 
 .input-area {
-  margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .symptom-textarea {
-  width: 100%;
-  height: 10rem;
-  padding: 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.75rem;
-  font-size: 1.125rem;
-  color: #374151;
-  transition: all 0.2s ease;
-  resize: none;
+    width: 100%;
+    height: 10rem;
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    font-size: 1.125rem;
+    color: #374151;
+    transition: all 0.2s ease;
+    resize: none;
 }
 
 .symptom-textarea:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .submit-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .submit-button:hover {
-  background-color: #45a049;
+    background-color: #45a049;
 }
 
 .submit-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
 .loading-spinner {
-  animation: spin 1s linear infinite;
-  margin-right: 0.5rem;
+    animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
 }
 
 .result-card {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  background: linear-gradient(90deg, #eff6ff, #eef2ff);
-  border: 1px solid #dbeafe;
-  animation: fadeIn 0.3s ease-out;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(90deg, #eff6ff, #eef2ff);
+    border: 1px solid #dbeafe;
+    animation: fadeIn 0.3s ease-out;
 }
 
 .result-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
 }
 
 .specialist-name {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #2563eb;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2563eb;
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .appointment-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 16px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 16px;
 }
 
 .book-appointment-btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .book-appointment-btn:hover {
-  background-color: #45a049;
+    background-color: #45a049;
 }
 
 .proceed-payment-btn {
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background-color: #2196F3;
-  color: white;
-  border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #2196F3;
+    color: white;
+    border: none;
 }
 
 .proceed-payment-btn:hover {
-  background-color: #1976D2;
+    background-color: #1976D2;
 }
 
-/* Payment Overlay */
 .payment-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
-/* Success Popup Overlay */
 .success-popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; 
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .success-popup {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 400px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  animation: popupFadeIn 0.3s ease-out;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    animation: popupFadeIn 0.3s ease-out;
 }
 
 .success-icon {
-  width: 60px;
-  height: 60px;
-  background: #4CAF50;
-  border-radius: 50%;
-  color: white;
-  font-size: 36px;
-  line-height: 60px;
-  margin: 0 auto 20px;
+    width: 60px;
+    height: 60px;
+    background: #4CAF50;
+    border-radius: 50%;
+    color: white;
+    font-size: 36px;
+    line-height: 60px;
+    margin: 0 auto 20px;
 }
 
 .success-popup h3 {
-  color: #333;
-  margin-bottom: 10px;
-  font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 24px;
 }
 
 .success-popup p {
-  color: #666;
-  margin-bottom: 20px;
+    color: #666;
+    margin-bottom: 20px;
 }
 
 .view-appointments-btn {
-  background-color: #2196F3;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
+    background-color: #2196F3;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .view-appointments-btn:hover {
-  background-color: #1976D2;
+    background-color: #1976D2;
 }
 
 @keyframes popupFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

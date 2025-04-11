@@ -1,4 +1,4 @@
-/* Doctor Signup Container */
+ 
 .doctor-signup-container {
     max-width: 480px;
     margin: 60px auto;
@@ -9,7 +9,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
-  /* Form Title */
+   
   .signup-title {
     text-align: center;
     margin-bottom: 25px;
@@ -18,7 +18,7 @@
     font-weight: 600;
   }
   
-  /* Input Fields */
+   
   .doctor-signup-form input[type="text"],
   .doctor-signup-form input[type="email"],
   .doctor-signup-form input[type="tel"],
@@ -38,7 +38,7 @@
     border-color: #3498db;
   }
   
-  /* Availability Section */
+   
   .availability-section {
     margin: 15px 0;
   }
@@ -64,7 +64,7 @@
     gap: 5px;
   }
   
-  /* Signup Button */
+   
   .signup-btn {
     width: 100%;
     padding: 12px;
@@ -83,7 +83,7 @@
     cursor: pointer;
   }
   
-  /* Login Redirect */
+   
   .login-redirect {
     text-align: center;
     margin-top: 18px;
@@ -101,7 +101,7 @@
     text-decoration: underline;
   }
   
-  /* Responsive Styling */
+   
   @media (max-width: 520px) {
     .doctor-signup-container {
       padding: 25px 20px;

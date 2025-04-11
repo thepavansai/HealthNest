@@ -140,8 +140,7 @@ const ManageDoctors = () => {
           </button>
         </div>
       </div>
-
-      {/* Active Doctors Section */}
+      +
       {viewMode === 'all' && (
         <div className="doctors-section">
           <h2>Active Doctors</h2>
@@ -202,8 +201,8 @@ const ManageDoctors = () => {
           )}
         </div>
       )}
-
-      {/* Pending Requests Section */}
+      
+    
       {(viewMode === 'pending' || pendingDoctors.length > 0) && (
         <div className="doctors-section pending-section">
           <h2>Pending Doctor Requests</h2>

@@ -71,7 +71,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
   
-  /* Fancy animation */
+   
   @keyframes slideIn {
     from {
       transform: translateY(50px);

@@ -27,7 +27,7 @@ const DoctorProfile = () => {
       <Header />
       <div className="container mt-5 pt-4">
         <div className="row">
-          {/* Profile Header */}
+          { }
           <div className="col-12 mb-4">
             <div className="bg-white border rounded shadow-sm p-4">
               <div className="row align-items-center">
@@ -51,7 +51,7 @@ const DoctorProfile = () => {
             </div>
           </div>
 
-          {/* Main Content */}
+          { }
           <div className="col-md-8">
             <div className="card mb-4 shadow-sm border-0">
               <div className="card-body">
@@ -83,7 +83,7 @@ const DoctorProfile = () => {
             </div>
           </div>
 
-          {/* Sidebar */}
+          { }
           <div className="col-md-4">
             <div className="card mb-4 shadow-sm border-0">
               <div className="card-body">

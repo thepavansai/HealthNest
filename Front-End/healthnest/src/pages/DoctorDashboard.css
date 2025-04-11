@@ -1,4 +1,4 @@
-/* DoctorDashboard.css */
+ 
 
 .doctor-dashboard-container {
   background-color: #f8fafc;
@@ -9,7 +9,7 @@
   margin: 0 auto;
 }
 
-/* Welcome Section (same styling for consistency) */
+ 
 .welcome-section {
   display: flex;
   justify-content: space-between;
@@ -39,7 +39,7 @@
   margin-top: 0.5rem;
 }
 
-/* Profile Widget (same as user dashboard) */
+ 
 .profile-widget {
   position: relative;
 }
@@ -98,14 +98,14 @@
   margin-right: 0.75rem;
 }
 
-/* Grid */
+ 
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
-/* Cards */
+ 
 .dashboard-card {
   background-color: #ffffff;
   border-radius: 16px;
@@ -141,7 +141,7 @@
   flex-grow: 1;
 }
 
-/* Icons + Stats */
+ 
 .card-icon {
   font-size: 2rem;
   margin-right: 1rem;
@@ -167,7 +167,7 @@
   margin: 0;
 }
 
-/* Appointment Info */
+ 
 .next-appointment {
   background-color: #f9fafb;
   padding: 0.75rem;
@@ -181,7 +181,7 @@
   font-size: 0.95rem;
 }
 
-/* Action Buttons */
+ 
 .action-buttons {
   display: flex;
   justify-content: space-between;
@@ -225,7 +225,7 @@
   background-color: #d1d5db;
 }
 
-/* Responsive */
+ 
 @media (max-width: 768px) {
   .welcome-section {
     flex-direction: column;
