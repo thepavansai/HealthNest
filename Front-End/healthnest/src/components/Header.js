@@ -6,28 +6,41 @@ import './Header.css';
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
+  const [isDoctor, setIsDoctor] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUsername = localStorage.getItem('userName');
+    // Check for doctor first, then user
+    const doctorId = localStorage.getItem('doctorId');
+    const doctorName = localStorage.getItem('doctorName');
     const userId = localStorage.getItem('userId');
-    if (storedUsername && userId) {
+    const userName = localStorage.getItem('userName');
+
+    if (doctorId && doctorName) {
       setIsLoggedIn(true);
-      setUsername(storedUsername);
+      setUsername(doctorName);
+      setIsDoctor(true);
+    } else if (userId && userName) {
+      setIsLoggedIn(true);
+      setUsername(userName);
+      setIsDoctor(false);
+    } else {
+      // If neither doctor nor user is logged in
+      setIsLoggedIn(false);
+      setUsername('');
+      setIsDoctor(false);
     }
   }, []);
 
   const handleLogout = () => {
-
-    localStorage.removeItem('username');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userId');
-    localStorage.clear();
-
-
+    // Clear all relevant localStorage items
+    const itemsToClear = ['userId', 'userName', 'doctorId', 'doctorName'];
+    itemsToClear.forEach(item => localStorage.removeItem(item));
+    
+    // Reset states
     setIsLoggedIn(false);
     setUsername('');
-
+    setIsDoctor(false);
 
     navigate('/');
   };
@@ -55,7 +68,13 @@ const Header = () => {
             <div className="user-controls">
               <div className="user-info">
                 <span className="user-greeting">Welcome,</span>
-                <Link to="/user" className="user-name" title={username}>{username}</Link>
+                <Link 
+                  to={isDoctor ? "/doctor/appointments" : "/user"} 
+                  className="user-name" 
+                  title={username}
+                >
+                  {isDoctor ? `Dr. ${username}` : username}
+                </Link>
               </div>
               <button onClick={handleLogout} className="logout-button">
                 <FaSignOutAlt />

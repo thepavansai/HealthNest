@@ -67,8 +67,9 @@ public class UserController {
 	}
 
 	@GetMapping("/userdetails/{userId}")
-	public User getUserDetails(@PathVariable Integer userId) {
-	    return userService.getUserDetails(userId);
+	public ResponseEntity<User> getUserDetails(@PathVariable Integer userId) {
+	    User user = userService.getUserDetails(userId);
+	    return ResponseEntity.ok(user);
 	}
 
 	@PostMapping("/feeback")
@@ -78,13 +79,9 @@ public class UserController {
 	
 
 	@PatchMapping("/editprofile/{userId}")
-	public ResponseEntity<String> editProfile(@RequestBody User user,@PathVariable Integer userId) {
-		boolean updated = userService.editProfile(user,userId);
-		if (updated) {
-			return ResponseEntity.ok("Profile successfully edited");
-		} else {
-			return ResponseEntity.status(404).body("User not found. Failed to edit profile.");
-		}
+	public ResponseEntity<String> editProfile(@RequestBody User user, @PathVariable Integer userId) {
+		userService.editProfile(user, userId);
+		return ResponseEntity.ok("Profile successfully edited");
 	}
 
 	@GetMapping("/appointments/{userId}")
@@ -100,14 +97,14 @@ public class UserController {
 	}
 
 	@PatchMapping("/changepassword/{userid}/{beforepassword}/{changepassword}")
-	public ResponseEntity<String> changepassword(@PathVariable Integer userid, @PathVariable String beforepassword,
-			@PathVariable String changepassword) {
-		if (userService.changePassword(userid, beforepassword, changepassword)) {
-			return ResponseEntity.ok("successfully changed");
-		} else {
-			return ResponseEntity.ok("unsuccessful");
-		}
-
+	public ResponseEntity<String> changePassword(@PathVariable Integer userid, 
+	                                             @PathVariable String beforepassword,
+	                                             @PathVariable String changepassword) {
+	    boolean success = userService.changePassword(userid, beforepassword, changepassword);
+	    if (!success) {
+	        throw new IllegalArgumentException("Invalid current password");
+	    }
+	    return ResponseEntity.ok("Password changed successfully");
 	}
 
 	@DeleteMapping("/deleteuser/{userId}")
@@ -117,16 +114,11 @@ public class UserController {
 	}
 	
 	@PostMapping("/bookappointment")
-	public ResponseEntity<String> bookAppointment(@RequestBody Appointment appointment)
-	{
-		if(userService.bookAppointment(appointment))
-		{
-			return ResponseEntity.ok("your appointment is Successfully booked");
-		}
-		else
-		{
-			return ResponseEntity.ok("your appointment is not booked try again");
-			
-		}
+	public ResponseEntity<String> bookAppointment(@RequestBody Appointment appointment) {
+	    boolean success = userService.bookAppointment(appointment);
+	    if (!success) {
+	        throw new IllegalArgumentException("Unable to book appointment");
+	    }
+	    return ResponseEntity.ok("Your appointment is successfully booked");
 	}
 }

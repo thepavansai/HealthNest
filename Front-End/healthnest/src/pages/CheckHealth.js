@@ -102,7 +102,7 @@ const CheckHealth = () => {
           messages: [
             {
               role: "system",
-              content: "The user will give his current health condition. Suggest a specialist doctor or general physician based on the user's input. Respond with just one word like 'Cardiologist' or 'General physician'.",
+              content: "The user will give his current health condition(which should be explainatory raather than random hi and other stuff) with appropiate symptoms.prompt should be reasonale  to decide specilist if not ask him to give input again . Suggest a specialist doctor or general physician based on the user's appropiate and accurate input Donot give for random words. Respond with just one word like 'Cardiologist' or 'General physician'. if the user is not clear about the disease, ask them to clarify their symptoms. and give specialist name only when appropiate symptoms are given ask for again to give prompt.",
             },
             {
               role: "user",

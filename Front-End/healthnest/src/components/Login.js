@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Login.css"; 
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
+    setIsError(false);
+    setIsLoading(true);
 
     try {
       const res = await axios.post("http://localhost:8080/users/login", {
@@ -24,81 +28,104 @@ const Login = () => {
         setMessage("Login successful! Redirecting...");
         localStorage.setItem("userId", res.data.userId);
         localStorage.setItem("userName", res.data.name);
-
         setTimeout(() => navigate("/user"), 500);
       } else {
-        setIsError(true);
-        setMessage(res.data.message);
+        throw new Error(res.data.message);
       }
     } catch (err) {
       setIsError(true);
-      if (err.response && err.response.status === 401) {
-        setMessage(err.response.data.message || "Invalid credentials");
+      
+      if (err.response) {
+        switch (err.response.status) {
+          case 404:
+            setMessage("User not found. Please check your email address.");
+            break;
+          case 401:
+            setMessage("Incorrect password. Please try again.");
+            break;
+          case 400:
+            setMessage("Invalid email or password format.");
+            break;
+          case 500:
+            setMessage("Server error. Please try again later.");
+            break;
+          default:
+            setMessage("Login failed. Please try again.");
+        }
+      } else if (err.request) {
+        setMessage("Cannot connect to server. Please check your internet connection.");
       } else {
-        setMessage("An error occurred during login.");
+        setMessage(err.message || "An error occurred during login.");
       }
+
+      // Clear password field on error
+      setPassword("");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="card p-4 shadow rounded" style={{ width: "25rem" }}>
-        { }
-        <div className="d-flex justify-content-between mb-3">
-          <a href="/doctor/login" className="text-decoration-none text-primary fw-bold">
-            I&apos;m a Doctor
-          </a>
-          <a href="/admin/login" className="text-decoration-none text-primary fw-bold">
-            I&apos;m an Admin
-          </a>
+    <div
+      className="doctor-login-bg"
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL + "/images/UserLogin.jpg"})`,
+      }}
+    >
+      <div className="login-container">
+        <div className="login-card">
+          <h4 className="login-title">Login to Your Account</h4>
+
+          {message && (
+            <div className={`login-alert ${isError ? "error" : "success"}`}>
+              {message}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin}>
+            <div className="form-group">
+              <label>Email address</label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
+
+            <button 
+              type="submit" 
+              className="login-btn"
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Login"}
+            </button>
+
+            <div className="register-link">
+              <small>
+                Don&apos;t have an account? <a href="/signup">Register</a>
+              </small>
+            </div>
+            <div className="login-links">
+              <a href="/doctor/login">I&apos;m a Doctor</a>
+              <a href="/admin/login">I&apos;m an Admin</a>
+            </div>
+          </form>
         </div>
-
-        <h4 className="mb-4 text-center">Login to Your Account</h4>
-
-        {message && (
-          <div
-            className={`alert ${isError ? "alert-danger" : "alert-success"} text-center`}
-            role="alert"
-          >
-            {message}
-          </div>
-        )}
-
-        <form onSubmit={handleLogin}>
-          <div className="mb-3">
-            <label className="form-label">Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary w-100">
-            Login
-          </button>
-
-          <div className="text-center mt-3">
-            <small>
-              Don&apos;t have an account? <a href="/signup">Register</a>
-            </small>
-          </div>
-        </form>
       </div>
     </div>
   );
