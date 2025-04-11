@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
+
 @CrossOrigin(origins = "http://localhost:3000/")
 @RestController
 @RequestMapping("/doctor")
@@ -30,7 +30,6 @@ public class DoctorController {
     @Autowired
     private ModelMapper modelMapper;
    
-    
     @GetMapping("/profile/{id}")
     public ResponseEntity<DoctorDTO> getDoctorProfile(@PathVariable Long id) {
         DoctorDTO doctorDTO = modelMapper.map(doctorService.getDoctorProfile(id), DoctorDTO.class);
@@ -49,8 +48,8 @@ public class DoctorController {
         return ResponseEntity.ok(result);
     }
 
-    @PatchMapping("/{id}/{consultation-fee}")
-    public ResponseEntity<String> updateConsultationFee(@PathVariable Long id, @PathVariable Double fee) {
+    @PatchMapping("/{id}/fee/{consultation-fee}")
+    public ResponseEntity<String> updateConsultationFee(@PathVariable Long id, @PathVariable("consultation-fee") Double fee) {
         String result = doctorService.updateConsultationFee(id, fee);
         return ResponseEntity.ok(result);
     }
@@ -61,8 +60,8 @@ public class DoctorController {
         return ResponseEntity.ok(rating);
     }
 
-    @PatchMapping("/{id}/rating")
-    public ResponseEntity<String> updateDoctorRating(@PathVariable Long id, @RequestParam Float rating) {
+    @PatchMapping("/{id}/rating/{rating}")
+    public ResponseEntity<String> updateDoctorRating(@PathVariable Long id, @PathVariable Float rating) {
         if (rating < 0 || rating > 5) {
             throw new IllegalArgumentException("Rating must be between 0 and 5");
         }
@@ -86,5 +85,4 @@ public class DoctorController {
         return ResponseEntity.ok(updatedDoctorDTO);
     }
     
-   
 }
