@@ -65,6 +65,31 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/admin-login")
+    public ResponseEntity<Object> adminLogin(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+
+        if (username == null || password == null) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Username and password must not be empty"));
+        }
+        final String ADMIN_USERNAME = "admin";
+        final String ADMIN_PASSWORD = "admin";
+
+        try {
+            if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
+                return ResponseEntity.ok(Map.of(
+                    "message", "Admin login successful",
+                    "role", "ADMIN"
+                ));
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("message", "Invalid credentials"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "An error occurred during admin login"));
+        }
+    }
 
     private String hashPassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

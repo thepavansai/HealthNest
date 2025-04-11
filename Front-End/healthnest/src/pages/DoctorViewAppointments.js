@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 
 const DoctorViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
-
+  
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -115,7 +115,7 @@ const DoctorViewAppointments = () => {
     try {
       const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
       if (response.status === 200) {
-        // Update with data from the response if available, otherwise fall back to just status update
+        
         if (response.data && response.data.appointmentStatus) {
           setAppointments(prevAppointments =>
             prevAppointments.map(appointment =>
