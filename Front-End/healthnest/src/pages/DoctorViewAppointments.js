@@ -46,14 +46,6 @@ const DoctorViewAppointments = () => {
     appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
   );
   
-  // Adding previous appointments filter - appointments that occurred in the past
-  const previousAppointments = appointments.filter(appointment => {
-    const appointmentDateTime = new Date(`${appointment.appointmentDate}T${appointment.appointmentTime}`);
-    const currentTime = new Date();
-    return appointmentDateTime < currentTime && 
-           (appointment.appointmentStatus.toLowerCase() === 'completed' || 
-            appointment.appointmentStatus.toLowerCase() === 'cancelled');
-  });
 
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch =
