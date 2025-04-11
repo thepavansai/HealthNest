@@ -26,14 +26,14 @@ public class UserService {
 
 	public void createUser(User user) {
 		if (isUserAlreadyRegistered(user.getEmail())) {
-			throw new RuntimeException("User already exists!");
+			throw new IllegalArgumentException("User already exists!");
 		}
 		userRepository.save(user);
 	}
 	
 	public User getUserDetails(Integer userId) {
 	    return userRepository.findById(userId)
-	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+	            .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 	}
 
 	public boolean isUserAlreadyRegistered(String email) {

@@ -32,7 +32,7 @@ class AppointmentServiceTest {
     @Test
     void testGetAppointmentSummaries() {
         List<AppointmentSummaryDTO> mockList = List.of(
-            new AppointmentSummaryDTO(1, "Dr. A", 5, "1234567890", 500.0, 4.5f, "XYZ Hospital",
+            new AppointmentSummaryDTO(1, 1,"Dr. A", 5, "1234567890", 500.0, 4.5f, "XYZ Hospital",
                     LocalDate.now(), LocalTime.now(), "Upcoming", "Test appointment"));
 
         when(appointmentRepository.findAppointmentSummariesByUserId(1)).thenReturn(mockList);
