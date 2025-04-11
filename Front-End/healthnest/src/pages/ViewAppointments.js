@@ -167,13 +167,15 @@ const ViewAppointments = () => {
 
       <div className="appointments-filter">
         <div className="search-container">
-          <FaSearch className="search-icon" /> 
+          <FaSearch className="search-icon" />
           <input
-            type="text"
-            placeholder="Search by doctor or description"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+  type="text"
+  placeholder="Search by doctor or description"
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  style={{ textAlign: searchTerm ? 'left' : 'center' }}
+/>
+
         </div>
 
         <div className="filter-buttons">
