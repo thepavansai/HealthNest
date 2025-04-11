@@ -18,7 +18,7 @@ public class DoctorService {
     private DoctorRepository doctorRepository;
     
     public String addDoctor(Doctor doctor) {
-        if (doctorRepository.existsByDoctorNameAndEmailId(doctor.getDoctorName(), doctor.getEmailId())) {
+        if (doctorRepository.existsByEmailId(doctor.getEmailId())) {
             return "Doctor with the same name and email already exists.";
         }
         doctorRepository.save(doctor);
