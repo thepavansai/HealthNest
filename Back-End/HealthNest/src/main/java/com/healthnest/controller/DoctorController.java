@@ -19,9 +19,9 @@ import com.healthnest.dto.DoctorDTO;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
 
-@CrossOrigin(origins = "http://localhost:3000/")
 @RestController
 @RequestMapping("/doctor")
+@CrossOrigin(origins = "http://localhost:3000") 
 public class DoctorController {
 
     @Autowired
