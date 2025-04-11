@@ -1,13 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaSearch, FaTrash, FaUser, FaUserCheck, FaUserSlash } from 'react-icons/fa';
+import { FaSearch, FaTrash, FaUser } from 'react-icons/fa';
 import './ManageUsers.css';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUsers, setSelectedUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -21,58 +20,27 @@ const ManageUsers = () => {
         setLoading(false);
       }
     };
-    
+
     fetchUsers();
   }, []);
 
-  const handleDeleteUser = async (userId) => {
-    try {
-      // Replace with your actual API endpoint
-      await axios.delete(`http://localhost:8080/admin/delete/${userId}`);
-      
-      // Update local state
-      setUsers(users.filter(user => user.id !== userId));
-      setSelectedUsers(selectedUsers.filter(id => id !== userId));
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
-  };
-
-  const handleBulkDelete = async () => {
-    if (window.confirm(`Are you sure you want to delete ${selectedUsers.length} selected users?`)) {
+  const handleDeleteAllUsers = async () => {
+    if (window.confirm('Are you sure you want to delete ALL users? This action is irreversible!')) {
       try {
-        // Replace with your actual API endpoint
-        await axios.post('http://localhost:8080/admin/delete', { userIds: selectedUsers });
-        
-        // Update local state
-        setUsers(users.filter(user => !selectedUsers.includes(user.id)));
-        setSelectedUsers([]);
+        await axios.delete('http://localhost:8080/admin/users/delete');
+        setUsers([]); 
+        alert('All users have been deleted successfully.');
       } catch (error) {
-        console.error('Error performing bulk delete:', error);
+        console.error('Error deleting all users:', error);
+        alert('Failed to delete all users. Please try again.');
       }
-    }
-  };
-
-  const toggleSelectUser = (userId) => {
-    if (selectedUsers.includes(userId)) {
-      setSelectedUsers(selectedUsers.filter(id => id !== userId));
-    } else {
-      setSelectedUsers([...selectedUsers, userId]);
-    }
-  };
-
-  const toggleSelectAll = () => {
-    if (selectedUsers.length === filteredUsers.length) {
-      setSelectedUsers([]);
-    } else {
-      setSelectedUsers(filteredUsers.map(user => user.id));
     }
   };
 
   const filteredUsers = users.filter(user => {
     return user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.phone && user.phone.includes(searchTerm));
+      (user.phoneNo && user.phoneNo.includes(searchTerm));
   });
 
   if (loading) {
@@ -88,7 +56,7 @@ const ManageUsers = () => {
     <div className="manage-users-container">
       <div className="users-header">
         <h1>Manage Users</h1>
-        
+
         <div className="users-summary">
           <div className="summary-card">
             <div className="summary-icon">
@@ -99,30 +67,21 @@ const ManageUsers = () => {
               <p>Total Users</p>
             </div>
           </div>
-          
-          {selectedUsers.length > 0 && (
-            <div className="bulk-actions">
-              <span>{selectedUsers.length} users selected</span>
-              <button className="bulk-delete-btn" onClick={handleBulkDelete}>
-                <FaTrash /> Delete Selected
-              </button>
-            </div>
-          )}
         </div>
       </div>
-      
+
       <div className="users-filter">
         <div className="search-container">
           <FaSearch className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search by name or email " 
+          <input
+            type="text"
+            placeholder="Search by name or email "
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
-      
+
       <div className="users-section">
         <h2>All Users</h2>
         {filteredUsers.length === 0 ? (
@@ -134,38 +93,23 @@ const ManageUsers = () => {
             <table className="users-table">
               <thead>
                 <tr>
-                  <th>
-                    <input 
-                      type="checkbox" 
-                      checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
-                      onChange={toggleSelectAll}
-                    />
-                  </th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Gender</th>
                   <th>Date Of Birth</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.map(user => (
-                  <tr key={user.id}>
-                    <td>
-                      <input 
-                        type="checkbox" 
-                        checked={selectedUsers.includes(user.id)}
-                        onChange={() => toggleSelectUser(user.id)}
-                      />
-                    </td>
+                  <tr key={user.id}> {/* Assuming 'id' is the unique key for users */}
                     <td>
                       <div className="user-name-cell">
                         {user.profileImage ? (
-                          <img 
-                            src={user.profileImage} 
-                            alt={user.name} 
-                            className="small-avatar" 
+                          <img
+                            src={user.profileImage}
+                            alt={user.name}
+                            className="small-avatar"
                           />
                         ) : (
                           <div className="small-avatar-placeholder">
@@ -179,34 +123,18 @@ const ManageUsers = () => {
                     <td>{user.phoneNo || 'N/A'}</td>
                     <td>{user.gender || 'N/A'}</td>
                     <td>{user.dateOfBirth || 'N/A'}</td>
-                    <td>
-                      <div className="action-buttons">
-                        <button className="view-btn">
-                          View
-                        </button>
-                        {user.active ? (
-                          <button className="deactivate-btn">
-                            <FaUserSlash /> Deactivate
-                          </button>
-                        ) : (
-                          <button className="activate-btn">
-                            <FaUserCheck /> Activate
-                          </button>
-                        )}
-                        <button 
-                          className="delete-btn"
-                          onClick={() => handleDeleteUser(user.id)}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         )}
+      </div>
+
+      <div className="delete-all-container">
+        <button className="delete-all-btn" onClick={handleDeleteAllUsers}>
+          <FaTrash /> Delete All Users
+        </button>
       </div>
     </div>
   );

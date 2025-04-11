@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import './View.css';
 import { FaCalendarAlt } from 'react-icons/fa';
+import './View.css';
 
 
 
@@ -110,12 +110,12 @@ const View = () => {
               <tbody>
                 {appointments.map(appointment => (
                   <tr key={appointment.id}>
-                    <td>{appointment.patientName}</td>
+                    <td>{appointment.userName}</td>
                     <td>{appointment.doctorName}</td>
-                    <td>{appointment.specialization}</td>
-                    <td>{formatDateTime(appointment.appointmentDateTime)}</td>
+                    <td>{appointment.doctorSpecialization}</td>
+                    <td>{formatDateTime(appointment.appointmentDate)}</td>
                     <td>
-                      <span className={`status-badge ${appointment.status || 'unknown'}`}>
+                      <span className={`status-badge ${appointment.appointmentStatus || 'unknown'}`}>
                         {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1) : 'Unknown'}
                       </span>
                     </td>

@@ -1,15 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaCheckCircle, FaSearch, FaTimesCircle, FaUserMd, FaUserPlus } from 'react-icons/fa';
+import { FaCheckCircle, FaSearch, FaTimesCircle, FaTrash, FaUserMd, FaUserPlus } from 'react-icons/fa';
 import './ManageDoctors.css';
 
 const ManageDoctors = () => {
   const [doctors, setDoctors] = useState([]);
   const [pendingDoctors, setPendingDoctors] = useState([]);
-  const[rejectedDoctors, setRejectedDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
   const [viewMode, setViewMode] = useState('all');
 
   useEffect(() => {
@@ -35,7 +33,7 @@ const ManageDoctors = () => {
 
   const handleApproveDoctor = async (doctorId) => {
     try {
-      await axios.put(`/api/admin/doctors/${doctorId}/approve`);
+      await axios.put(`http://localhost:8080/admin/doctors/${doctorId}/accept`);
 
       const approvedDoctor = pendingDoctors.find(doctor => doctor.doctorId === doctorId);
       if (approvedDoctor) {
@@ -48,17 +46,26 @@ const ManageDoctors = () => {
     }
   };
 
-  const handleDeleteDoctor = async (doctorId, isPending = false) => {
+  const handleRejectDoctor = async (doctorId) => {
     try {
-      await axios.delete(`http://localhost:8080/admin/doctors/delete?doctorId=${doctorId}`);
-
-      if (isPending) {
-        setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== doctorId));
-      } else {
-        setDoctors(doctors.filter(doctor => doctor.doctorId !== doctorId));
-      }
+      await axios.put(`http://localhost:8080/admin/doctors/${doctorId}/reject`);
+      setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== doctorId));
     } catch (error) {
-      console.error('Error deleting doctor:', error);
+      console.error('Error rejecting doctor:', error);
+    }
+  };
+
+  const handleDeleteAllDoctors = async () => {
+    if (window.confirm('Are you sure you want to delete ALL doctors? This action is irreversible!')) {
+      try {
+        await axios.delete('http://localhost:8080/admin/doctors/delete/all'); // Assuming this is your delete all endpoint
+        setDoctors([]);
+        setPendingDoctors([]);
+        alert('All doctors have been deleted successfully.');
+      } catch (error) {
+        console.error('Error deleting all doctors:', error);
+        alert('Failed to delete all doctors. Please try again.');
+      }
     }
   };
 
@@ -140,7 +147,7 @@ const ManageDoctors = () => {
           </button>
         </div>
       </div>
-      +
+
       {viewMode === 'all' && (
         <div className="doctors-section">
           <h2>Active Doctors</h2>
@@ -186,24 +193,14 @@ const ManageDoctors = () => {
                       <span className="detail-value">${doctor.consultationFee}</span>
                     </div>
                   </div>
-
-                  <div className="doctor-actions">
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDeleteDoctor(doctor.doctorId)}
-                    >
-                      Delete
-                    </button>
-                  </div>
                 </div>
               ))}
             </div>
           )}
         </div>
       )}
-      
-    
-      {(viewMode === 'pending' || pendingDoctors.length > 0) && (
+
+      {viewMode === 'pending' && (
         <div className="doctors-section pending-section">
           <h2>Pending Doctor Requests</h2>
           {filteredPendingDoctors.length === 0 ? (
@@ -258,7 +255,7 @@ const ManageDoctors = () => {
                           </button>
                           <button
                             className="reject-btn"
-                            onClick={() => handleDeleteDoctor(doctor.doctorId, true)}
+                            onClick={() => handleRejectDoctor(doctor.doctorId)}
                           >
                             <FaTimesCircle /> Reject
                           </button>
@@ -272,6 +269,12 @@ const ManageDoctors = () => {
           )}
         </div>
       )}
+
+      <div className="delete-all-doctors-container">
+        <button className="delete-all-doctors-btn" onClick={handleDeleteAllDoctors}>
+          <FaTrash /> Delete All Doctors
+        </button>
+      </div>
     </div>
   );
 };

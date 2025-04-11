@@ -434,3 +434,58 @@
       flex-direction: column;
     }
   }
+
+  .delete-all-doctors-container {
+    display: flex;
+    justify-content: center; 
+    margin-top: 30px; 
+    margin-bottom: 30px; 
+  }
+  
+  .delete-all-doctors-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-all-doctors-btn:hover {
+    background-color: #c82333;
+  }
+  
+  .delete-all-doctors-btn svg {
+    margin-right: 5px; 
+  }
+
+  .view-toggle button {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
+    display: flex;
+    align-items: center; 
+  }
+  
+  .view-toggle button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+  
+  .view-toggle button .badge {
+    background-color: #dc3545; 
+    color: #ffffff;
+    border-radius: 50%; 
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    margin-left: 8px; 
+  }
