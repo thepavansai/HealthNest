@@ -124,8 +124,7 @@ class UserControllerTest {
 
     @Test
     void getUpcomingAppointments_shouldReturnList() throws Exception {
-        AppointmentSummaryDTO dto = new AppointmentSummaryDTO(1, "Dr. Smith", 10, "1234567890", 200.0,
-                4.5f, "City Hospital", LocalDate.now(), LocalTime.NOON, "Upcoming", "Consultation");
+        AppointmentSummaryDTO dto = new AppointmentSummaryDTO(1, 1,"Dr. Smith", 10, "1234567890", 200.0,4.5f, "City Hospital", LocalDate.now(), LocalTime.NOON, "Upcoming", "Consultation");
 
         when(appointmentService.getAppointmentSummaries(1)).thenReturn(List.of(dto));
 

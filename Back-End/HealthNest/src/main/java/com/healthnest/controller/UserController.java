@@ -104,7 +104,7 @@ public class UserController {
 	    if (!success) {
 	        throw new IllegalArgumentException("Invalid current password");
 	    }
-	    return ResponseEntity.ok("Password changed successfully");
+	    return ResponseEntity.ok("successfully changed");
 	}
 
 	@DeleteMapping("/deleteuser/{userId}")
@@ -119,6 +119,6 @@ public class UserController {
 	    if (!success) {
 	        throw new IllegalArgumentException("Unable to book appointment");
 	    }
-	    return ResponseEntity.ok("Your appointment is successfully booked");
+	    return ResponseEntity.ok("your appointment is Successfully booked");
 	}
 }
