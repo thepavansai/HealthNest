@@ -36,10 +36,14 @@ public class DoctorService {
     public String updateDoctorProfile(Long doctorId, DoctorDTO doctorDTO) {
         Doctor doctor = doctorRepository.findById(doctorId)
             .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
-        
         doctor.setDoctorName(doctorDTO.getDoctorName());
         doctor.setHospitalName(doctorDTO.getHospitalName());
         doctor.setExperience(doctorDTO.getExperience());
+        doctor.setConsultationFee(doctorDTO.getConsultationFee());
+        doctor.setEmailId(doctorDTO.getEmailId());
+        doctor.setDocPhnNo(doctorDTO.getDocPhnNo());
+        doctor.setAvailability(doctorDTO.getAvailability());
+        doctor.setSpecializedrole(doctorDTO.getSpecializedrole());
         doctorRepository.save(doctor);
         return "Updated Doctor Profile";
     }
