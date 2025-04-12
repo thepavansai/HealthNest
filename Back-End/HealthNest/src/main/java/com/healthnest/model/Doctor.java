@@ -7,7 +7,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "Doctor")
@@ -29,5 +33,6 @@ public class Doctor {
     private String hospitalName;
     private Integer status;
 
-
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments;
 }

@@ -8,10 +8,12 @@ import com.healthnest.exception.DoctorNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class DoctorService {
 
     @Autowired
@@ -90,8 +92,12 @@ public class DoctorService {
     }
     
     public String deleteAllDoctors() {
-        doctorRepository.deleteAll();
-        return "All doctors deleted";
+        try {
+            doctorRepository.deleteAll();
+            return "All doctors and their appointments deleted successfully";
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete all doctors: " + e.getMessage());
+        }
     }
     
     public String getDoctorPasswordHashByEmailId(String emailId) {

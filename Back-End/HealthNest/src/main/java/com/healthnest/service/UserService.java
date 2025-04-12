@@ -111,7 +111,11 @@ public class UserService {
 	}
 	
 	public String deleteAllUsers() {
-		userRepository.deleteAll();
-		return "All users deleted";
+		try {
+			userRepository.deleteAll();
+			return "All users and their appointments deleted successfully";
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to delete all users: " + e.getMessage());
+		}
 	}
 }

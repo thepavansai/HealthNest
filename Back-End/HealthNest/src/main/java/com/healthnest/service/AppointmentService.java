@@ -54,9 +54,13 @@ public class AppointmentService {
 
         return appointmentRepository.findAllAppointments();
 	}
-	public String deleteAllAppointments(){
-        appointmentRepository.deleteAll();
-        return "All appointments deleted";
+	public String deleteAllAppointments() {
+        try {
+            appointmentRepository.deleteAll();
+            return "All appointments deleted successfully";
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete all appointments: " + e.getMessage());
+        }
     }
     public String deleteAppointment(Integer appointmentId) {
         if (appointmentRepository.existsById(appointmentId)) {

@@ -4,6 +4,7 @@ import com.healthnest.dto.enums.Gender;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 @Table(name="User")
 @Entity
@@ -18,4 +19,7 @@ public class User {
 	private String email;
 	private String dateOfBirth;
 	private String phoneNo;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Appointment> appointments;
 }
