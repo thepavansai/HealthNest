@@ -120,10 +120,15 @@ class AppointmentServiceTest {
     @Test
     void testDeleteAllAppointments() {
         doNothing().when(appointmentRepository).deleteAll();
-
         String result = appointmentService.deleteAllAppointments();
+        assertEquals("All appointments deleted successfully", result);
+        verify(appointmentRepository, times(1)).deleteAll();
+    }
 
-        assertEquals("All appointments deleted", result);
+    @Test
+    void testDeleteAllAppointments_Error() {
+        doThrow(new RuntimeException("Database error")).when(appointmentRepository).deleteAll();
+        assertThrows(RuntimeException.class, () -> appointmentService.deleteAllAppointments());
     }
 
     @Test

@@ -51,8 +51,7 @@ class DoctorServiceTest {
 
         when(doctorRepository.existsByEmailId("john@example.com")).thenReturn(true);
 
-        String result = doctorService.addDoctor(doctor);
-        assertEquals("Doctor with the same name and email already exists.", result);
+        assertThrows(IllegalArgumentException.class, () -> doctorService.addDoctor(doctor));
     }
 
     @Test
@@ -101,9 +100,7 @@ class DoctorServiceTest {
     void testUpdateDoctorProfile_DoctorNotFound() {
         when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
 
-        DoctorDTO dto = new DoctorDTO();
-        String result = doctorService.updateDoctorProfile(1L, dto);
-        assertEquals("Doctor not found", result);
+        assertThrows(DoctorNotFoundException.class, () -> doctorService.updateDoctorProfile(1L, new DoctorDTO()));
     }
 
     @Test
@@ -170,9 +167,10 @@ class DoctorServiceTest {
 
     @Test
     void testDeleteAllDoctors() {
+        when(doctorRepository.findAll()).thenReturn(Arrays.asList(new Doctor()));
         String response = doctorService.deleteAllDoctors();
-        verify(doctorRepository).deleteAll();
-        assertEquals("All doctors deleted", response);
+        verify(doctorRepository, times(1)).deleteAll();
+        assertEquals("All doctors and their appointments deleted successfully", response);
     }
 
     @Test

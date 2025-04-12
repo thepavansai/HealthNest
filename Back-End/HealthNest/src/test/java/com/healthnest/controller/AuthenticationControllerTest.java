@@ -2,6 +2,7 @@ package com.healthnest.controller;
 
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.exception.AuthenticationException;
+import com.healthnest.exception.DoctorNotFoundException;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
 import org.junit.jupiter.api.BeforeEach;
@@ -94,25 +95,21 @@ class AuthenticationControllerTest {
         doctorDTO.setEmailId("wrong@example.com");
         doctorDTO.setPassword("wrongpass");
 
-        when(doctorService.getDoctorPasswordHashByEmailId("wrong@example.com")).thenReturn(null);
+        when(doctorService.getDoctorPasswordHashByEmailId("wrong@example.com"))
+            .thenThrow(new DoctorNotFoundException("Doctor not found with email: wrong@example.com"));
 
-        AuthenticationException exception = assertThrows(AuthenticationException.class, () -> {
+        assertThrows(DoctorNotFoundException.class, () -> {
             authenticationController.doctorLogin(doctorDTO);
         });
-
-        assertTrue(exception.getMessage().toLowerCase().contains("invalid"));
     }
-
 
     @Test
     void testDoctorLoginMissingFields() {
-        DoctorDTO doctorDTO = new DoctorDTO(); // Missing both fields
-
-        AuthenticationException exception = assertThrows(AuthenticationException.class, () -> {
+        DoctorDTO doctorDTO = new DoctorDTO(); // Empty fields
+        
+        assertThrows(IllegalArgumentException.class, () -> {
             authenticationController.doctorLogin(doctorDTO);
         });
-
-        assertEquals("Email and password must not be empty", exception.getMessage());
     }
 
 }

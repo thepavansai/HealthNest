@@ -1,20 +1,22 @@
 package com.healthnest.service;
 
-import com.healthnest.model.Appointment;
-import com.healthnest.model.User;
-import com.healthnest.repository.AppointmentRepository;
-import com.healthnest.repository.UserRepository;
-import com.healthnest.dto.enums.Gender;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import com.healthnest.dto.enums.Gender;
+import com.healthnest.exception.AuthenticationException;
+import com.healthnest.exception.UserNotFoundException;
+import com.healthnest.model.Appointment;
+import com.healthnest.model.User;
+import com.healthnest.repository.AppointmentRepository;
+import com.healthnest.repository.UserRepository;
 
 @SpringBootTest
 public class UserServiceTest {
@@ -65,15 +67,13 @@ public class UserServiceTest {
     @Test
     void testLogin_InvalidPassword() {
         when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
-        String result = userService.login(sampleUser.getEmail(), "wrongPassword");
-        assertEquals("Invalid Password", result);
+        assertThrows(AuthenticationException.class, () -> userService.login(sampleUser.getEmail(), "wrongPassword"));
     }
 
     @Test
     void testLogin_UserNotFound() {
         when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
-        String result = userService.login("nonexistent@example.com", "password");
-        assertEquals("User doesn't exist", result);
+        assertThrows(UserNotFoundException.class, () -> userService.login("nonexistent@example.com", "password"));
     }
 
     @Test
@@ -111,12 +111,14 @@ public class UserServiceTest {
     @Test
     void testChangePassword_Failure() {
         when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
-        boolean result = userService.changePassword(1, "wrongPassword", "newPassword");
-        assertFalse(result);
+        assertThrows(IllegalArgumentException.class, () -> 
+            userService.changePassword(1, "wrongPassword", "newPassword"));
     }
 
     @Test
     void testDeleteAccount() {
+        when(userRepository.existsById(1)).thenReturn(true);
+        doNothing().when(userRepository).deleteById(1);
         userService.deleteAccount(1);
         verify(userRepository, times(1)).deleteById(1);
     }
@@ -146,9 +148,17 @@ public class UserServiceTest {
 
     @Test
     void testDeleteAllUsers() {
+        doNothing().when(userRepository).deleteAll();
         String response = userService.deleteAllUsers();
         verify(userRepository, times(1)).deleteAll();
-        assertEquals("All users deleted", response);
+        assertEquals("All users and their appointments deleted successfully", response);
+    }
+
+    @Test
+    void testDeleteAllUsers_Error() {
+        doThrow(new RuntimeException("Database error")).when(userRepository).deleteAll();
+        Exception exception = assertThrows(RuntimeException.class, () -> userService.deleteAllUsers());
+        assertTrue(exception.getMessage().contains("Failed to delete all users"));
     }
 
     @Test

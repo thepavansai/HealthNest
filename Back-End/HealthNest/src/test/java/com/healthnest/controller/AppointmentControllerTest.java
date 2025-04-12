@@ -53,6 +53,15 @@ class AppointmentControllerTest {
     }
 
     @Test
+    void testGetTodayAppointmentsByDoctor_NullDate() {
+        Integer doctorId = 1;
+        LocalDate date = null;
+        
+        assertThrows(IllegalArgumentException.class, () -> 
+            appointmentController.getTodayAppointmentsByDoctor(doctorId, date));
+    }
+
+    @Test
     void testGetAppointmentsByDoctor() {
         Integer doctorId = 1;
 
@@ -87,6 +96,18 @@ class AppointmentControllerTest {
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(appointmentId, response.getBody().getAppointmentId());
+    }
+
+    @Test
+    void testAcceptAppointment_Unauthorized() {
+        Integer appointmentId = 1;
+        Integer doctorId = 2;
+        
+        when(appointmentService.acceptAppointment(appointmentId, doctorId))
+            .thenThrow(new RuntimeException("You are not authorized to accept this appointment"));
+            
+        assertThrows(RuntimeException.class, () -> 
+            appointmentController.acceptAppointment(appointmentId, doctorId));
     }
 
     @Test
