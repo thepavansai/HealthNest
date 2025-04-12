@@ -1,6 +1,7 @@
 package com.healthnest.controller;
 
 import com.healthnest.dto.DoctorDTO;
+import com.healthnest.exception.AuthenticationException;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,23 +22,18 @@ class AuthenticationControllerTest {
     private ModelMapper modelMapper;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         doctorService = mock(DoctorService.class);
         modelMapper = mock(ModelMapper.class);
         authenticationController = new AuthenticationController();
 
-        // Use reflection to set private fields
-        try {
-            var doctorServiceField = AuthenticationController.class.getDeclaredField("doctorService");
-            doctorServiceField.setAccessible(true);
-            doctorServiceField.set(authenticationController, doctorService);
+        var doctorServiceField = AuthenticationController.class.getDeclaredField("doctorService");
+        doctorServiceField.setAccessible(true);
+        doctorServiceField.set(authenticationController, doctorService);
 
-            var modelMapperField = AuthenticationController.class.getDeclaredField("modelMapper");
-            modelMapperField.setAccessible(true);
-            modelMapperField.set(authenticationController, modelMapper);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        var modelMapperField = AuthenticationController.class.getDeclaredField("modelMapper");
+        modelMapperField.setAccessible(true);
+        modelMapperField.set(authenticationController, modelMapper);
     }
 
     @Test
@@ -82,7 +78,6 @@ class AuthenticationControllerTest {
 
         when(doctorService.getDoctorPasswordHashByEmailId("test@example.com")).thenReturn(hashed);
         when(doctorService.getDoctorIdByEmail("test@example.com")).thenReturn(mockDoctor);
-        when(doctorService.getDoctorNameByEmail("test@example.com")).thenReturn(mockDoctor);
 
         ResponseEntity<Object> response = authenticationController.doctorLogin(doctorDTO);
         Map<?, ?> responseBody = (Map<?, ?>) response.getBody();
@@ -101,19 +96,23 @@ class AuthenticationControllerTest {
 
         when(doctorService.getDoctorPasswordHashByEmailId("wrong@example.com")).thenReturn(null);
 
-        ResponseEntity<Object> response = authenticationController.doctorLogin(doctorDTO);
+        AuthenticationException exception = assertThrows(AuthenticationException.class, () -> {
+            authenticationController.doctorLogin(doctorDTO);
+        });
 
-        assertEquals(400, response.getStatusCodeValue());
-        assertTrue(((Map<?, ?>) response.getBody()).get("message").toString().contains("Invalid"));
+        assertTrue(exception.getMessage().toLowerCase().contains("invalid"));
     }
+
 
     @Test
     void testDoctorLoginMissingFields() {
-        DoctorDTO doctorDTO = new DoctorDTO(); // No email or password set
+        DoctorDTO doctorDTO = new DoctorDTO(); // Missing both fields
 
-        ResponseEntity<Object> response = authenticationController.doctorLogin(doctorDTO);
+        AuthenticationException exception = assertThrows(AuthenticationException.class, () -> {
+            authenticationController.doctorLogin(doctorDTO);
+        });
 
-        assertEquals(400, response.getStatusCodeValue());
-        assertEquals("Email and password must not be empty", ((Map<?, ?>) response.getBody()).get("message"));
+        assertEquals("Email and password must not be empty", exception.getMessage());
     }
+
 }

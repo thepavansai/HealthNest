@@ -124,11 +124,26 @@ class UserControllerTest {
 
     @Test
     void getUpcomingAppointments_shouldReturnList() throws Exception {
-        AppointmentSummaryDTO dto = new AppointmentSummaryDTO(1, "Dr. Smith", 10, "1234567890", 200.0,
-                4.5f, "City Hospital", LocalDate.now(), LocalTime.NOON, "Upcoming", "Consultation");
+        // Create AppointmentSummaryDTO using constructor from @AllArgsConstructor
+        AppointmentSummaryDTO dto = new AppointmentSummaryDTO(
+                1,                        // appointmentId
+                1,                        // doctorId
+                "Dr. Smith",              // doctorName
+                10,                       // experience
+                "1234567890",             // docPhnNo
+                200.0,                    // consultationFee
+                4.5f,                     // rating
+                "City Hospital",          // hospitalName
+                LocalDate.now(),          // appointmentDate
+                LocalTime.NOON,           // appointmentTime
+                "Upcoming",               // appointmentStatus
+                "Consultation"            // description
+        );
 
+        // Mock the service to return this DTO
         when(appointmentService.getAppointmentSummaries(1)).thenReturn(List.of(dto));
 
+        // Perform the test with mockMvc
         mockMvc.perform(get("/users/appointments/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].doctorName").value("Dr. Smith"));
@@ -147,7 +162,7 @@ class UserControllerTest {
 
         mockMvc.perform(patch("/users/changepassword/1/oldpass/newpass"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("successfully changed"));
+                .andExpect(content().string("Password changed successfully"));
     }
 
     @Test
@@ -166,6 +181,6 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(appointment)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("your appointment is Successfully booked"));
+                .andExpect(content().string("Your appointment is successfully booked"));
     }
 }
