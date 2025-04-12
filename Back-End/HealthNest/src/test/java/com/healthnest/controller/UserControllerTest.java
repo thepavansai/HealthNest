@@ -124,21 +124,7 @@ class UserControllerTest {
 
     @Test
     void getUpcomingAppointments_shouldReturnList() throws Exception {
-        // Create AppointmentSummaryDTO using constructor from @AllArgsConstructor
-        AppointmentSummaryDTO dto = new AppointmentSummaryDTO(
-                1,                        // appointmentId
-                1,                        // doctorId
-                "Dr. Smith",              // doctorName
-                10,                       // experience
-                "1234567890",             // docPhnNo
-                200.0,                    // consultationFee
-                4.5f,                     // rating
-                "City Hospital",          // hospitalName
-                LocalDate.now(),          // appointmentDate
-                LocalTime.NOON,           // appointmentTime
-                "Upcoming",               // appointmentStatus
-                "Consultation"            // description
-        );
+        AppointmentSummaryDTO dto = new AppointmentSummaryDTO(1, 1,"Dr. Smith", 10, "1234567890", 200.0,4.5f, "City Hospital", LocalDate.now(), LocalTime.NOON, "Upcoming", "Consultation");
 
         // Mock the service to return this DTO
         when(appointmentService.getAppointmentSummaries(1)).thenReturn(List.of(dto));
