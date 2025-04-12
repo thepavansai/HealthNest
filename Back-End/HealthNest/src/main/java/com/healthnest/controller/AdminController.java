@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -91,7 +90,7 @@ public class AdminController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/feedbacks") 
+    @GetMapping("/feedbacks")
     public ResponseEntity<List<FeedBackDTO>> getAllFeedBacks() {
         List<FeedBackDTO> feedbacks = feedBackService.getAllFeedBack();
         return ResponseEntity.ok(feedbacks);

@@ -4,7 +4,6 @@ import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.Doctor;
-import com.healthnest.model.User;
 import com.healthnest.repository.AppointmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +31,8 @@ class AppointmentServiceTest {
     @Test
     void testGetAppointmentSummaries() {
         List<AppointmentSummaryDTO> mockList = List.of(
-            new AppointmentSummaryDTO(1, 1,"Dr. A", 5, "1234567890", 500.0, 4.5f, "XYZ Hospital",
-                    LocalDate.now(), LocalTime.now(), "Upcoming", "Test appointment"));
+                new AppointmentSummaryDTO(1, 1, "Dr. A", 5, "1234567890", 500.0, 4.5f, "XYZ Hospital",
+                        LocalDate.now(), LocalTime.now(), "Upcoming", "Test appointment"));
 
         when(appointmentRepository.findAppointmentSummariesByUserId(1)).thenReturn(mockList);
 
@@ -97,8 +96,8 @@ class AppointmentServiceTest {
     @Test
     void testGetAppointments() {
         List<AppointmentShowDTO> dtoList = List.of(
-                new AppointmentShowDTO(1, "Dr. A", "Cardiology", "John Doe", "1234567890", "Upcoming", "Checkup", LocalDate.now(), LocalTime.now())
-        );
+                new AppointmentShowDTO(1, "Dr. A", "Cardiology", "John Doe", "1234567890", "Upcoming", "Checkup",
+                        LocalDate.now(), LocalTime.now()));
 
         when(appointmentRepository.findByDoctorIdWithUserName(1)).thenReturn(dtoList);
 
@@ -157,8 +156,7 @@ class AppointmentServiceTest {
                 new AppointmentShowDTO(1, "Dr. A", "General", "John Doe", "9999999999", "Upcoming", "Test",
                         today, LocalTime.NOON),
                 new AppointmentShowDTO(2, "Dr. A", "General", "Jane Roe", "8888888888", "Upcoming", "Test",
-                        today.minusDays(1), LocalTime.NOON)
-        );
+                        today.minusDays(1), LocalTime.NOON));
 
         when(appointmentRepository.findByDoctorIdWithUserName(1)).thenReturn(allAppointments);
 

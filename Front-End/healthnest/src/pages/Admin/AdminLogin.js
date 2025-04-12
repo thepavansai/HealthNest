@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
 
 const AdminLogin = () => {
-  const [userName, setUserName] = useState(""); // Changed to match the naming convention
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
@@ -16,10 +16,8 @@ const AdminLogin = () => {
     if (userName === "admin" && password === "admin") {
       setIsError(false);
       setMessage("Login successful! Redirecting...");
-
-      // Store admin credentials
       localStorage.setItem("adminId", "admin");
-      localStorage.setItem("userName", "Admin"); // Using userName for consistency
+      localStorage.setItem("userName", "Admin");
 
       setTimeout(() => navigate("/admin"), 1000);
     } else {
@@ -54,8 +52,8 @@ const AdminLogin = () => {
               <input
                 type="text"
                 placeholder="Enter your username"
-                value={userName} // Changed from emailId to userName
-                onChange={(e) => setUserName(e.target.value)} // Changed to setUserName
+                value={userName} 
+                onChange={(e) => setUserName(e.target.value)} 
                 required
               />
             </div>
