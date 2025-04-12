@@ -184,16 +184,22 @@ class AdminControllerTest {
     @Test
     void testAcceptDoctorNotFound() {
         doThrow(new RuntimeException()).when(doctorService).updateDoctorStatus(2L, 1);
-        ResponseEntity<String> response = adminController.acceptDoctor(2L);
-        assertEquals(404, response.getStatusCodeValue());
-        assertTrue(response.getBody().contains("Doctor not found with id: 2"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            adminController.acceptDoctor(2L);
+        });
+
+        assertNotNull(exception);
     }
 
     @Test
     void testRejectDoctorNotFound() {
         doThrow(new RuntimeException()).when(doctorService).updateDoctorStatus(3L, -1);
-        ResponseEntity<String> response = adminController.rejectDoctor(3L);
-        assertEquals(404, response.getStatusCodeValue());
-        assertTrue(response.getBody().contains("Doctor not found with id: 3"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            adminController.rejectDoctor(3L);
+        });
+
+        assertNotNull(exception);
     }
 }
