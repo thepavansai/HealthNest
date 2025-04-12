@@ -74,7 +74,7 @@ const ManageDoctors = () => {
   const handleDeleteAllDoctors = async () => {
     if (window.confirm('Are you sure you want to delete ALL doctors (active and pending)? This action is irreversible!')) {
       try {
-        await axios.delete('http://localhost:8080/admin/doctors/delete/all');
+        await axios.delete('http://localhost:8080/admin/doctors/delete');
         setDoctors([]);
         setPendingDoctors([]);
         alert('All doctors have been deleted successfully.');
