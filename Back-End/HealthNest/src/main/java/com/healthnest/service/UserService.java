@@ -25,10 +25,29 @@ public class UserService {
 	AppointmentRepository appointmentRepository;
 
 	public void createUser(User user) {
+		validateUser(user);
 		if (isUserAlreadyRegistered(user.getEmail())) {
 			throw new IllegalArgumentException("User already exists!");
 		}
 		userRepository.save(user);
+	}
+	
+	private void validateUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("User cannot be null");
+		}
+		if (user.getName() == null || user.getName().trim().isEmpty()) {
+			throw new IllegalArgumentException("User name cannot be empty");
+		}
+		if (user.getEmail() == null || !user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+			throw new IllegalArgumentException("Invalid email format");
+		}
+		if (user.getPassword() == null || user.getPassword().length() < 6) {
+			throw new IllegalArgumentException("Password must be at least 6 characters long");
+		}
+		if (user.getPhoneNo() != null && !user.getPhoneNo().matches("\\d{10}")) {
+			throw new IllegalArgumentException("Phone number must be 10 digits");
+		}
 	}
 	
 	public User getUserDetails(Integer userId) {

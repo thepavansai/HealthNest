@@ -26,8 +26,14 @@ public class AppointmentService {
     }
 
 	public Appointment acceptAppointment(Integer appointmentId, Integer doctorId) {
+        if (appointmentId == null || doctorId == null) {
+            throw new IllegalArgumentException("Appointment ID and Doctor ID cannot be null");
+        }
+
 		Appointment appointment = appointmentRepository.findById(appointmentId)
 				.orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        validateAppointment(appointment);
 
 		if (!appointment.getDoctor().getDoctorId().equals(doctorId)) {
 			throw new RuntimeException("You are not authorized to accept this appointment");
@@ -36,6 +42,27 @@ public class AppointmentService {
 		appointment.setAppointmentStatus("Upcoming");
 		return appointmentRepository.save(appointment);
 	}
+
+    private void validateAppointment(Appointment appointment) {
+        if (appointment.getAppointmentDate() == null) {
+            throw new IllegalArgumentException("Appointment date cannot be null");
+        }
+        if (appointment.getAppointmentDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Appointment date cannot be in the past");
+        }
+        if (appointment.getAppointmentTime() == null) {
+            throw new IllegalArgumentException("Appointment time cannot be null");
+        }
+        if (appointment.getDescription() == null || appointment.getDescription().trim().isEmpty()) {
+            throw new IllegalArgumentException("Appointment description cannot be empty");
+        }
+        if (appointment.getUser() == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        if (appointment.getDoctor() == null) {
+            throw new IllegalArgumentException("Doctor cannot be null");
+        }
+    }
 
 	public Appointment rejectAppointment(Integer appointmentId, Integer doctorId) {
 		Appointment appointment = appointmentRepository.findById(appointmentId)

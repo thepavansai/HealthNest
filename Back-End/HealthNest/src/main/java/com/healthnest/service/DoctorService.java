@@ -20,14 +20,33 @@ public class DoctorService {
     private DoctorRepository doctorRepository;
     
     public String addDoctor(Doctor doctor) {
-        if (doctor == null) {
-            throw new IllegalArgumentException("Doctor cannot be null");
-        }
+        validateDoctor(doctor);
         if (doctorRepository.existsByEmailId(doctor.getEmailId())) {
             throw new IllegalArgumentException("Doctor with the same email already exists");
         }
         doctorRepository.save(doctor);
         return "Saved Successfully";
+    }
+    
+    private void validateDoctor(Doctor doctor) {
+        if (doctor == null) {
+            throw new IllegalArgumentException("Doctor cannot be null");
+        }
+        if (doctor.getDoctorName() == null || doctor.getDoctorName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Doctor name cannot be empty");
+        }
+        if (doctor.getEmailId() == null || !doctor.getEmailId().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (doctor.getDocPhnNo() != null && !doctor.getDocPhnNo().matches("\\d{10}")) {
+            throw new IllegalArgumentException("Phone number must be 10 digits");
+        }
+        if (doctor.getConsultationFee() != null && doctor.getConsultationFee() < 0) {
+            throw new IllegalArgumentException("Consultation fee cannot be negative");
+        }
+        if (doctor.getRating() != null && (doctor.getRating() < 0 || doctor.getRating() > 5)) {
+            throw new IllegalArgumentException("Rating must be between 0 and 5");
+        }
     }
     
     public Doctor getDoctorProfile(Long doctorId) {
