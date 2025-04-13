@@ -126,10 +126,10 @@ class UserControllerTest {
     void getUpcomingAppointments_shouldReturnList() throws Exception {
         AppointmentSummaryDTO dto = new AppointmentSummaryDTO(1, 1,"Dr. Smith", 10, "1234567890", 200.0,4.5f, "City Hospital", LocalDate.now(), LocalTime.NOON, "Upcoming", "Consultation");
 
-        // Mock the service to return this DTO
+       
         when(appointmentService.getAppointmentSummaries(1)).thenReturn(List.of(dto));
 
-        // Perform the test with mockMvc
+        
         mockMvc.perform(get("/users/appointments/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].doctorName").value("Dr. Smith"));

@@ -30,13 +30,13 @@ public class FeedBackServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Mock User
+        
         User mockUser = new User();
         mockUser.setUserId(101);
         mockUser.setName("Test User");
         mockUser.setEmail("testuser@example.com");
 
-        // Sample feedback
+      
         sampleFeedBack = new FeedBack();
         sampleFeedBack.setId(1);
         sampleFeedBack.setFeedback("Excellent service!");

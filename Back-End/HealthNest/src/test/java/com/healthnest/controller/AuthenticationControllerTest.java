@@ -105,7 +105,7 @@ class AuthenticationControllerTest {
 
     @Test
     void testDoctorLoginMissingFields() {
-        DoctorDTO doctorDTO = new DoctorDTO(); // Empty fields
+        DoctorDTO doctorDTO = new DoctorDTO();
         
         assertThrows(IllegalArgumentException.class, () -> {
             authenticationController.doctorLogin(doctorDTO);

@@ -24,13 +24,13 @@ const DoctorEditProfile = () => {
   console.log(doctorId)
 
   useEffect(() => {
-    // Simulating data fetch – Replace with your actual API call
+    
     axios.get(`http://localhost:8080/doctor/profile/${doctorId}`) // replace with actual endpoint
       .then(res => {
         const data = res.data;
         console.log(data)
 
-        // Convert binary availability to array of days
+     
         const availabilityDays = daysOfWeek.filter((day, index) => data.availability[index] === '1');
 
         setFormData({

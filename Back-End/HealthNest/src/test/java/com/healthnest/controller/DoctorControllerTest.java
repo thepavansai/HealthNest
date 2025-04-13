@@ -29,7 +29,7 @@ public class DoctorControllerTest {
         modelMapper = mock(ModelMapper.class);
         doctorController = new DoctorController();
 
-        // Inject mocks via reflection
+        
         Field doctorServiceField = DoctorController.class.getDeclaredField("doctorService");
         doctorServiceField.setAccessible(true);
         doctorServiceField.set(doctorController, doctorService);

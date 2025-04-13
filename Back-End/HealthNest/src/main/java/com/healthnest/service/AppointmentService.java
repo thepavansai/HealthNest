@@ -99,12 +99,12 @@ public class AppointmentService {
     }
 
 	public List<AppointmentShowDTO> getTodayAppointmentsByDoctor(Integer doctorId,LocalDate todaydate) {
-//	        LocalDate todayDate = LocalDate.now();
 
-	        // Fetch all appointments for the given doctorId
+
+	        
 	        List<AppointmentShowDTO> appointments = appointmentRepository.findByDoctorIdWithUserName(doctorId);
 
-	        // Filter appointments for today's date
+	        
 	        return appointments.stream()
 	                .filter(appointment -> appointment.getAppointmentDate().isEqual(todaydate))
 	                .collect(Collectors.toList());

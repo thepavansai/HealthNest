@@ -92,7 +92,7 @@ class DoctorServiceTest {
             updated.getDoctorName().equals("Updated Name") &&
             updated.getHospitalName().equals("Updated Hospital") &&
             updated.getExperience().equals(15)
-            // Add more assertions if service method gets updated to set more fields
+            
         ));
     }
 

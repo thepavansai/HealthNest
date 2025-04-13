@@ -24,7 +24,7 @@ class AppointmentControllerTest {
         appointmentService = mock(AppointmentService.class);
         appointmentController = new AppointmentController();
 
-        // Inject mock via reflection since it's private and no setter
+    
         try {
             var serviceField = AppointmentController.class.getDeclaredField("appointmentService");
             serviceField.setAccessible(true);

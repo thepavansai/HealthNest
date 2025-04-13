@@ -41,7 +41,7 @@ public class UserServiceTest {
         sampleUser.setEmail("john@example.com");
         sampleUser.setPassword("password123");
         sampleUser.setPhoneNo("1234567890");
-        sampleUser.setGender(Gender.MALE); // Set gender using enum
+        sampleUser.setGender(Gender.MALE);
     }
 
     @Test
@@ -82,8 +82,7 @@ public class UserServiceTest {
         updatedUser.setName("Jane Doe");
         updatedUser.setPhoneNo("1111111111");
         updatedUser.setEmail("jane@example.com");
-        updatedUser.setGender(Gender.FEMALE); // Set updated gender as enum
-
+        updatedUser.setGender(Gender.FEMALE);
         when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
         boolean result = userService.editProfile(updatedUser, 1);
         assertTrue(result);
