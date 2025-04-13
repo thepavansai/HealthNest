@@ -105,7 +105,7 @@ const ManageUsers = () => {
               </thead>
               <tbody>
                 {filteredUsers.map(user => (
-                  <tr key={user.id}> {/* Assuming 'id' is the unique key for users */}
+                  <tr key={user.id}> 
                     <td>
                       <div className="user-name-cell">
                         {user.profileImage ? (
