@@ -21,8 +21,6 @@ const ChangePassword = () => {
       ...formData,
       [name]: value
     });
-    
-    // Clear error when user types
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -60,22 +58,21 @@ const ChangePassword = () => {
     if (validateForm()) {
       setIsSubmitting(true);
       
-      // Simulate API call
       setTimeout(() => {
-        // This would be replaced with your actual API call
+        
         console.log('Password change submitted:', formData);
         
-        // Reset form
+        
         setFormData({
           currentPassword: '',
           newPassword: '',
           confirmPassword: ''
         });
         
-        // Show success message
+        
         setSuccessMessage('Your password has been successfully updated!');
         
-        // Clear success message after 5 seconds
+        
         setTimeout(() => {
           setSuccessMessage('');
         }, 5000);

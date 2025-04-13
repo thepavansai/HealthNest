@@ -41,7 +41,8 @@ public class AuthenticationController {
 
     @PostMapping("/doctor-login")
     public ResponseEntity<Object> doctorLogin(@RequestBody DoctorDTO doctor) {
-        if (doctor.getEmailId() == null || doctor.getPassword() == null) {
+        if (doctor.getEmailId() == null || doctor.getPassword() == null || 
+            doctor.getEmailId().trim().isEmpty() || doctor.getPassword().trim().isEmpty()) {
             throw new IllegalArgumentException("Email and password must not be empty");
         }
 

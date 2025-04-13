@@ -6,8 +6,8 @@
   background-position: center;
   position: relative;
   display: flex;
-  justify-content: center; /* changed from flex-end */
-  align-items: center;     /* ensure vertical center */
+  justify-content: center; 
+  align-items: center;     
 }
 
 .doctor-login-overlay {
@@ -15,7 +15,7 @@
   height: 100%;
   background-color: rgba(255, 255, 255, 0.1);
   display: flex;
-  justify-content: center; /* changed from flex-end */
+  justify-content: center; 
   align-items: center;
   padding: 2rem;
 }

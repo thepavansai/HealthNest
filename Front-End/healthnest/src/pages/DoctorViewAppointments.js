@@ -28,8 +28,6 @@ const DoctorViewAppointments = () => {
 
     fetchAppointments();
   }, []);
-
-  // Define all appointment category filters
   const completedAppointments = appointments.filter(
     appointment => appointment.appointmentStatus.toLowerCase() === 'completed'
   );
@@ -63,21 +61,7 @@ const DoctorViewAppointments = () => {
       );
       
       if (response.status === 200) {
-        // Update the appointment directly with the data returned from the API
-        // setAppointments(prevAppointments =>
-        //   prevAppointments.map(appointment =>
-        //     appointment.appointmentId === appointmentId
-        //       ? { 
-        //           ...appointment, 
-        //           appointmentStatus: response.data.appointmentStatus,
-        //           appointmentDate: response.data.appointmentDate,
-        //           appointmentTime: response.data.appointmentTime,
-        //           description: response.data.description,
-        //           // Update any other fields that might have changed
-        //         }
-        //       : appointment
-        //   )
-        // );
+      
       
         alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
       } else {

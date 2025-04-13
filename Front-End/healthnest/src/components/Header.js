@@ -7,40 +7,47 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [isDoctor, setIsDoctor] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check for doctor first, then user
     const doctorId = localStorage.getItem('doctorId');
     const doctorName = localStorage.getItem('doctorName');
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName');
+    const adminId = localStorage.getItem('adminId');
 
-    if (doctorId && doctorName) {
+    if (adminId) {
+      setIsLoggedIn(true);
+      setUsername(userName);
+      setIsDoctor(false);
+      setIsAdmin(true);
+    } else if (doctorId && doctorName) {
       setIsLoggedIn(true);
       setUsername(doctorName);
       setIsDoctor(true);
+      setIsAdmin(false);
     } else if (userId && userName) {
       setIsLoggedIn(true);
       setUsername(userName);
       setIsDoctor(false);
+      setIsAdmin(false);
     } else {
-      // If neither doctor nor user is logged in
       setIsLoggedIn(false);
       setUsername('');
       setIsDoctor(false);
+      setIsAdmin(false);
     }
   }, []);
 
   const handleLogout = () => {
-    // Clear all relevant localStorage items
-    const itemsToClear = ['userId', 'userName', 'doctorId', 'doctorName'];
+    const itemsToClear = ['userId', 'userName', 'doctorId', 'doctorName', 'adminId'];
     itemsToClear.forEach(item => localStorage.removeItem(item));
     
-    // Reset states
     setIsLoggedIn(false);
     setUsername('');
     setIsDoctor(false);
+    setIsAdmin(false);
 
     navigate('/');
   };
@@ -69,7 +76,7 @@ const Header = () => {
               <div className="user-info">
                 <span className="user-greeting">Welcome,</span>
                 <Link 
-                  to={isDoctor ? "/doctor/appointments" : "/user"} 
+                  to={isAdmin ? "/admin" : isDoctor ? "/doctor/appointments" : "/user"} 
                   className="user-name" 
                   title={username}
                 >

@@ -67,7 +67,7 @@
   color: #3498db;
 }
 
-/* Hide icon if not needed */
+
 .summary-card.no-icon .summary-icon {
   display: none;
 }

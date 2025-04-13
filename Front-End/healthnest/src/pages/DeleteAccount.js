@@ -10,8 +10,7 @@ const DeleteAccount = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isDeleted, setIsDeleted] = useState(false);
-  
-  // This would be fetched from your user context or API
+ 
   const userEmail = "user@example.com";
   
   const handlePasswordChange = (e) => {
@@ -25,7 +24,7 @@ const DeleteAccount = () => {
   };
   
   const handleDeleteAccount = () => {
-    // Validate inputs
+   
     if (!password) {
       setError('Please enter your password');
       return;
@@ -39,12 +38,10 @@ const DeleteAccount = () => {
     setIsLoading(true);
     setError('');
     
-    // Simulate API call
     setTimeout(() => {
-      // This would be replaced with your actual API call
+      
       console.log('Account deletion requested for:', userEmail);
       
-      // Reset form and show success message
       setPassword('');
       setConfirmText('');
       setIsDeleted(true);

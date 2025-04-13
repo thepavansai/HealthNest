@@ -74,7 +74,7 @@ const ManageDoctors = () => {
   const handleDeleteAllDoctors = async () => {
     if (window.confirm('Are you sure you want to delete ALL doctors (active and pending)? This action is irreversible!')) {
       try {
-        await axios.delete('http://localhost:8080/admin/doctors/delete/all');
+        await axios.delete('http://localhost:8080/admin/doctors/delete');
         setDoctors([]);
         setPendingDoctors([]);
         alert('All doctors have been deleted successfully.');
@@ -149,6 +149,8 @@ const ManageDoctors = () => {
             placeholder="Search by name, specialty or email"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            
+            style={{ textAlign: searchTerm ? 'left' : 'center' }}
           />
         </div>
 
