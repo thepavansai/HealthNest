@@ -133,22 +133,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
          {}
-<div className="dashboard-card manage-appointments-card">
-  <div className="card-header">
-    <h3>Manage Appointments</h3>
-    <span className="view-all" onClick={() => navigate("/manageappointments")}>View All</span>
-  </div>
-  <div className="card-content">
-    <div className="appointment-count">
-      <FaCalendarAlt className="card-icon pulse" />
-      <h2>3</h2>
-    </div>
-    <div className="next-appointment">
-      <p className="appointment-date">Next: 11:30 AM</p>
-      <p className="appointment-doctor">Jane Smith - Consultation</p>
-    </div>
-  </div>
-</div>
+
 
         </div>
       </main>
