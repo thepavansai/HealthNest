@@ -56,9 +56,7 @@ const Login = () => {
         setMessage("Cannot connect to server. Please check your internet connection.");
       } else {
         setMessage(err.message || "An error occurred during login.");
-      }
-
-      // Clear password field on error
+      }  
       setPassword("");
     } finally {
       setIsLoading(false);

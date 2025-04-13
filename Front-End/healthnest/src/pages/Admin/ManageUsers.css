@@ -106,7 +106,7 @@
   }
   
   .search-container {
-    position: relative; /* Important to contain the absolutely positioned icon */
+    position: relative; 
     width: 100%;
   }
   
@@ -116,8 +116,8 @@
     top: 50%;
     transform: translateY(-50%);
     color: #6c757d;
-    font-size: 16px; /* You can reduce or increase this */
-    pointer-events: none; /* So clicks go through to input */
+    font-size: 16px; 
+    pointer-events: none; 
   }
   
   .search-container input {
@@ -126,7 +126,7 @@
     border-radius: 8px;
     border: 1px solid #e3e8ef;
     font-size: 14px;
-    text-align: center; /* This centers the input text horizontally */
+    text-align: center; 
     transition: all 0.3s;
   }
   

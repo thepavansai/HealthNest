@@ -14,6 +14,28 @@ const DoctorLogin = () => {
     e.preventDefault();
     setMessage("");
 
+    
+    if (!emailId.trim() || !password.trim()) {
+      setIsError(true);
+      setMessage("Please fill in all fields");
+      return;
+    }
+
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailId)) {
+      setIsError(true);
+      setMessage("Please enter a valid email address");
+      return;
+    }
+
+
+    if (password.length < 6) {
+      setIsError(true);
+      setMessage("Password must be at least 6 characters long");
+      return;
+    }
+
     try {
       const res = await axios.post("http://localhost:8080/doctor-login", {
         emailId,
@@ -36,10 +58,10 @@ const DoctorLogin = () => {
           setTimeout(() => navigate("/doctordashboard"), 500);
         } else if (status === 0) {
           setIsError(true);
-          setMessage("You are yet to be approved by Administration.");
+          setMessage("Your account is pending approval by Administration.");
         } else if (status === -1) {
           setIsError(true);
-          setMessage("Sorry we are not proceding with your application.");
+          setMessage("Your application has been rejected by Administration.");
         }
       } else {
         setIsError(true);
@@ -47,10 +69,34 @@ const DoctorLogin = () => {
       }
     } catch (err) {
       setIsError(true);
-      if (err.response && err.response.status === 401) {
-        setMessage(err.response.data.message || "Invalid credentials");
+     
+      if (err.response) {
+        switch (err.response.status) {
+          case 400:
+            setMessage("Invalid request. Please check your input.");
+            break;
+          case 401:
+            setMessage("Invalid email or password.");
+            break;
+          case 403:
+            setMessage("Access denied. Please contact support.");
+            break;
+          case 404:
+            setMessage("Account not found. Please register first.");
+            break;
+          case 429:
+            setMessage("Too many login attempts. Please try again later.");
+            break;
+          case 500:
+            setMessage("Server error. Please try again later.");
+            break;
+          default:
+            setMessage("An error occurred during login.");
+        }
+      } else if (err.request) {
+        setMessage("Network error. Please check your internet connection.");
       } else {
-        setMessage("An error occurred during login.");
+        setMessage("An unexpected error occurred.");
       }
     }
   };

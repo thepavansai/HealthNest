@@ -40,7 +40,6 @@ const Remedies = ({ onSuggest }) => {
       const doctorSuggestion = res.data.choices[0].message.content.trim();
       setResponse(doctorSuggestion);
 
-      // 🔔 Notify parent (CheckHealth.js)
       if (onSuggest) {
         onSuggest(doctorSuggestion);
       }
@@ -61,22 +60,22 @@ const Remedies = ({ onSuggest }) => {
       });
     };
 
-    // Split response into sections based on common patterns
+
     const sections = response.split(/\n(?=[A-Z][a-z]* *:)|\n(?=\d+\.)/);
-    
+
     let currentList = [];
     let formattedSections = [];
 
     sections.forEach((section, index) => {
       if (section.trim().length === 0) return;
 
-      // Check if section starts with number
+
       const isNumberedPoint = /^(\d+)\.(.*)/.test(section);
-      // Check if section has a title
+
       const hasTitle = /^[A-Z][a-z]* *:/.test(section);
 
       if (isNumberedPoint) {
-        // Extract just the content without the number
+
         const content = section.replace(/^\d+\./, '').trim();
         currentList.push(
           <li key={`point-${index}`} className="remedy-point">
@@ -85,7 +84,7 @@ const Remedies = ({ onSuggest }) => {
           </li>
         );
       } else {
-        // If we have accumulated list items, add them to formatted sections
+
         if (currentList.length > 0) {
           formattedSections.push(
             <ul key={`list-${index}`} className="remedy-list">
@@ -114,7 +113,7 @@ const Remedies = ({ onSuggest }) => {
       }
     });
 
-    // Add any remaining list items
+
     if (currentList.length > 0) {
       formattedSections.push(
         <ul key="final-list" className="remedy-list">
@@ -127,7 +126,7 @@ const Remedies = ({ onSuggest }) => {
   };
 
   return (<>
-    <Header/>
+    <Header />
     <div className="feeling-input-component">
       <div className="feeling-container">
         <div className="feeling-card">
@@ -153,15 +152,15 @@ const Remedies = ({ onSuggest }) => {
             {isLoading ? (
               <>
                 <svg className="loading-spinner" width="20" height="20" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
                 <span>Analyzing...</span>
               </>
             ) : (
               <>
                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
                 <span>Suggest</span>
               </>
@@ -183,8 +182,8 @@ const Remedies = ({ onSuggest }) => {
         </div>
       </div>
     </div>
-    <Footer/>
-    </>
+    <Footer />
+  </>
   );
 };
 

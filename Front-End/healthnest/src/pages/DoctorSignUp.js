@@ -47,7 +47,6 @@ const DoctorSignup = () => {
       return;
     }
 
-    // Convert availability to 7-bit binary string (Sun-Sat)
     const binaryAvailability = daysOfWeek.map(day =>
       formData.availability.includes(day) ? '1' : '0'
     ).join('');
@@ -62,7 +61,7 @@ const DoctorSignup = () => {
       consultationFee: parseFloat(formData.consultationFee),
       password: formData.password,
       availability: binaryAvailability,
-      gender: "MALE",  // Optional: make it dynamic
+      gender: "MALE",  
       rating: 0.0,
       status: 0
     };

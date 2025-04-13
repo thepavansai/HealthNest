@@ -83,7 +83,7 @@
   }
 }
 
-/* ⭐ Rating Section */
+
 .rating-section {
   margin: 10px 0 20px;
   text-align: left;
@@ -104,7 +104,7 @@
   color: #555;
 }
 
-/* Optional: FontAwesome stars size override */
+
 .fas.fa-star, .far.fa-star {
   font-size: 20px;
   margin-right: 3px;

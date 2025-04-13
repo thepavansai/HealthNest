@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Rating from 'react-rating'; // Import rating library
+import Rating from 'react-rating'; 
 import './UserFeedback.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -70,7 +70,7 @@ const UserFeedback = () => {
             required
           />
 
-          {/* ⭐ Rating Section */}
+          {}
           <div className="rating-section">
             <label>Rate your experience:</label>
             <Rating

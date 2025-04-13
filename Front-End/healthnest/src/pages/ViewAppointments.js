@@ -11,7 +11,8 @@ const ViewAppointments = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [currAppointments, setCurrAppointments] = useState('All Appointments');
-  const [ratings, setRatings] = useState({}); // Add this new state
+  const [ratings, setRatings] = useState({}); 
+  const [ratedAppointments, setRatedAppointments] = useState(new Set());
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -100,22 +101,27 @@ const ViewAppointments = () => {
     }
   };
 
-  const updateRating = async (doctorId, rating) => {
+  const updateRating = async (doctorId, appointmentId, rating) => {
     if (!rating) {
       alert('Please select a rating first');
       return;
     }
+
+    if (ratedAppointments.has(appointmentId)) {
+      alert('You have already submitted a rating for this appointment');
+      return;
+    }
     
     try {
-      // Fix URL concatenation and remove empty object body
       const response = await axios.patch(`http://localhost:8080/doctor/${doctorId}/rating/${rating}`);
       if (response.status === 200) {
         alert('Rating submitted successfully!');
-        // Optionally update the local state to reflect the change
+       
         setRatings(prev => ({
           ...prev,
-          [doctorId]: rating  
+          [appointmentId]: rating  
         }));
+        setRatedAppointments(prev => new Set([...prev, appointmentId]));
       } else {
         alert('Failed to update rating. Please try again.');
       }
@@ -318,12 +324,14 @@ const ViewAppointments = () => {
                             </div>
                             <button 
                               className="rate-btn"
+                              disabled={ratedAppointments.has(appointment.appointmentId)}
                               onClick={() => updateRating(
-                                appointment.doctorId, 
+                                appointment.doctorId,
+                                appointment.appointmentId, 
                                 ratings[appointment.appointmentId] || 0
                               )}
                             >
-                              Submit Rating
+                              {ratedAppointments.has(appointment.appointmentId) ? 'Rating Submitted' : 'Submit Rating'}
                             </button>
                           </div>
                         )}

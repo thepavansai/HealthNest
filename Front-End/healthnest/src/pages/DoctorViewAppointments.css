@@ -330,7 +330,7 @@
     font-size: 14px;
   }
   
-  /* Loading state */
+  
   .loading-container {
     display: flex;
     flex-direction: column;

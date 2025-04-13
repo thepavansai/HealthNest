@@ -23,7 +23,7 @@ const DoctorDashboard = () => {
   const doctorId = localStorage.getItem("doctorId");
 
   useEffect(() => {
-    // Fetch doctor profile
+    
     if (doctorId) {
       axios.get(`http://localhost:8080/doctor/profile/${doctorId}`)
         .then(res => {
@@ -37,10 +37,9 @@ const DoctorDashboard = () => {
   }, [doctorId]);
 
   useEffect(() => {
-    // Fetch today's appointments
+  
     if (doctorId) {
-      const today = new Date().toISOString().split('T')[0]; // Format date as YYYY-MM-DD
-     // today=2025-04-15
+      const today = new Date().toISOString().split('T')[0];
       axios.get(`http://localhost:8080/appointments/doctor/${doctorId}/date/${today}`)
         .then(res => {
           setAppointments(res.data || []);
@@ -117,7 +116,7 @@ const DoctorDashboard = () => {
               )}
             </div>
           </div>
-              {/* Stats Viewing Card */}
+              {}
           <div className="dashboard-card stats-viewing-card">
             <div className="card-header">
               <h3>View Stats</h3>
@@ -133,7 +132,7 @@ const DoctorDashboard = () => {
               </div>
             </div>
           </div>
-         {/* Manage Appointments Card */}
+         {}
 <div className="dashboard-card manage-appointments-card">
   <div className="card-header">
     <h3>Manage Appointments</h3>
