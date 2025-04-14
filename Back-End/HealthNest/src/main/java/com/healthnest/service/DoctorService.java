@@ -7,6 +7,7 @@ import com.healthnest.exception.DoctorNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -19,6 +20,8 @@ public class DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
     
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public String addDoctor(Doctor doctor) {
         validateDoctor(doctor);
         if (doctorRepository.existsByEmailId(doctor.getEmailId())) {
@@ -170,11 +173,14 @@ public class DoctorService {
     public String changePassword(Long doctorId, String oldPassword, String newPassword) {
         Doctor doctor = doctorRepository.findById(doctorId)
             .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
-            
-        if (!doctor.getPassword().equals(oldPassword)) {
+        
+        if (!passwordEncoder.matches(oldPassword, doctor.getPassword())) {
             throw new IllegalArgumentException("Current password is incorrect");
         }
-        doctor.setPassword(newPassword);
+
+        String hashedNewPassword = passwordEncoder.encode(newPassword);
+        doctor.setPassword(hashedNewPassword);
+        
         doctorRepository.save(doctor);
         return "Password changed successfully";
     }

@@ -27,7 +27,7 @@ import Remedies from './components/Remedies.js';
 import UserFeedback from './pages/UserFeedback.js';
 import DoctorViewAppointments from './pages/DoctorViewAppointments.js';
 import AdminLogin from './pages/Admin/AdminLogin.js';
-
+import UserChangePassword from './pages/UserChangePassword.js';
 
 function App() {
   return (
@@ -63,6 +63,7 @@ function App() {
 
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
           <Route path="/aboutus" element={<AboutUs/>}/>
+          <Route path="/user/change-password" element={<UserChangePassword />} />
         </Routes>
       </div>
     </Router>

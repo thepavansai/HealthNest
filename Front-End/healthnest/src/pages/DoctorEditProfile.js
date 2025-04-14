@@ -86,6 +86,7 @@ const DoctorEditProfile = () => {
     axios.put(`http://localhost:8080/doctor/profile/${localStorage.getItem("doctorId")}`, payload)
       .then(() => {
         setIsError(false);
+        localStorage.setDoctorName(payload.name);
         setMessage("Profile updated successfully!");
       })
       .catch(() => {

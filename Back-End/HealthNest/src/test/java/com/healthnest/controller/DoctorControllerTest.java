@@ -123,4 +123,21 @@ public class DoctorControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Cardio, Neuro", response.getBody().getSpecializedrole());
     }
+
+    @Test
+    void testChangePassword_Success() {
+        when(doctorService.changePassword(1L, "oldPass", "newPass123"))
+            .thenReturn("Password changed successfully");
+
+        ResponseEntity<String> response = doctorController.changePassword(1L, "oldPass", "newPass123");
+        
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Password changed successfully", response.getBody());
+    }
+
+    @Test
+    void testChangePassword_TooShort() {
+        assertThrows(IllegalArgumentException.class, () -> 
+            doctorController.changePassword(1L, "oldPass", "short"));
+    }
 }
