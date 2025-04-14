@@ -114,16 +114,10 @@ const AdminDashboard = () => {
               </div>
               <div className="admin-dropdown">
                 <button onClick={toggleDropdown} className="admin-profile-button">
-                  Profile Options
+                  Options
                 </button>
                 {dropdownOpen && (
                   <div className="admin-dropdown-menu">
-                    <button className="admin-dropdown-item">
-                      Edit Profile
-                    </button>
-                    <button className="admin-dropdown-item">
-                      Settings
-                    </button>
                     <button className="admin-dropdown-item admin-logout" onClick={handleLogout}>
                       <BiLogOut /> Logout
                     </button>

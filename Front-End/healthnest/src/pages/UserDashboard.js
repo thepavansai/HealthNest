@@ -31,6 +31,7 @@ const UserDashboard = () => {
       Promise.all([getUserDetails, getUserAppointments])
         .then(([userRes, appointmentsRes]) => {
           setUserData(userRes.data);
+       
           setAppointments(appointmentsRes.data || []);
         })
         .catch((err) => {
@@ -82,7 +83,8 @@ const UserDashboard = () => {
         { }
         <div className="welcome-section">
           <div className="welcome-content">
-            <h1>Welcome back, {userData.name || 'Patient'}</h1>
+            
+            <h1>Welcome back, {userData.name}</h1>
             <p className="subtitle">Manage your healthcare journey with ease</p>
           </div>
           <div className="profile-widget">

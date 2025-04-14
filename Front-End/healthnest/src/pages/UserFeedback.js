@@ -18,6 +18,7 @@ const UserFeedback = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null); // To handle errors
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,6 +49,7 @@ const UserFeedback = () => {
     setFormData(prev => ({ ...prev, rating: rate }));
   };
 
+  const handleSubmit = async (e) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -97,7 +99,7 @@ const UserFeedback = () => {
     <div
       className="doctor-login-bg"
       style={{
-        backgroundImage: `url(${process.env.PUBLIC_URL + "/images/UserFeedback.jpg"})`,
+        backgroundImage: `url(${process.env.PUBLIC_URL + '/images/UserFeedback.jpg'})`,
       }}
     >
       <div className="feedback-container">
