@@ -89,5 +89,17 @@ public class DoctorController {
 	{
 		return ResponseEntity.ok(doctorService.getAllDoctors().size());
 	}
+
+    @PatchMapping("/changepassword/{doctorId}/{oldPassword}/{newPassword}")
+    public ResponseEntity<String> changePassword(
+            @PathVariable Long doctorId,
+            @PathVariable String oldPassword,
+            @PathVariable String newPassword) {
+        if (newPassword == null || newPassword.length() < 6) {
+            throw new IllegalArgumentException("New password must be at least 6 characters long");
+        }
+        String result = doctorService.changePassword(doctorId, oldPassword, newPassword);
+        return ResponseEntity.ok(result);
+    }
     
 }

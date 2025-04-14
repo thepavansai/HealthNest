@@ -48,7 +48,7 @@ const DoctorEditProfile = () => {
         setIsError(true);
         setMessage("Failed to load profile.");
       });
-  }, []);
+  }, [doctorId]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

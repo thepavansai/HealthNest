@@ -58,21 +58,6 @@ const ManageDoctors = () => {
     }
   };
 
-  const handleDeleteDoctor = async (doctorId, isPending = false) => {
-    try {
-      await axios.delete(`http://localhost:8080/admin/doctors/delete?doctorId=${doctorId}`);
-
-      if (isPending) {
-        setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== doctorId));
-      } else {
-        setDoctors(doctors.filter(doctor => doctor.doctorId !== doctorId));
-      }
-      setExpandedDoctorId(null);
-    } catch (error) {
-      console.error('Error deleting doctor:', error);
-    }
-  };
-
   const handleDeleteAllDoctors = async () => {
     if (window.confirm('Are you sure you want to delete ALL doctors (active and pending)? This action is irreversible!')) {
       try {
@@ -221,17 +206,6 @@ const ManageDoctors = () => {
                       <div className="detail-row">
                         <span className="detail-label">Fee:</span>
                         <span className="detail-value">${doctor.consultationFee}</span>
-                      </div>
-                      <div className="doctor-actions expanded-actions">
-                        <button
-                          className="delete-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteDoctor(doctor.doctorId);
-                          }}
-                        >
-                          <FaTrash /> Delete
-                        </button>
                       </div>
                     </div>
                   )}

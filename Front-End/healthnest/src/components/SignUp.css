@@ -1,4 +1,3 @@
- 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 * {
@@ -108,6 +107,31 @@ body {
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
   background-color: #fff;
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+}
+
+.password-toggle:hover {
+  color: #333;
 }
 
 .btn {

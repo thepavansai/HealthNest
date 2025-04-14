@@ -233,12 +233,14 @@
   
   .upi-amount {
     font-size: 1.5rem;
+    text-align: center;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
   }
   
   .upi-scan-text {
+    text-align: center;
     color: #666;
     margin-bottom: 15px;
   }
@@ -268,6 +270,7 @@
   .upi-or {
     margin: 15px 0;
     color: #666;
+    text-align: center;
     position: relative;
   }
   

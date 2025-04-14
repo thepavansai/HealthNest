@@ -1,10 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaCalendarAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaTrash } from 'react-icons/fa';
 import './View.css';
-
-
-
 
 const View = () => {
   const [appointments, setAppointments] = useState([]);
@@ -34,12 +31,33 @@ const View = () => {
     fetchAppointments();
   }, []);
 
+  const handleDelete = (id) => {
+    const confirmed = window.confirm(`Are you sure you want to delete appointment with ID: ${id}?`);
+    if (confirmed) {
+      axios.delete(`http://localhost:8080/admin/appointments/${id}`)
+        .then((res) => {
+          if (res.status === 200) {
+            setAppointments(appointments.filter(app => app.id !== id));
+            setCompletedAppointments(completedAppointments.filter(app => app.id !== id));
+            setTotalAppointments(totalAppointments - 1);
+            alert("Appointment deleted successfully.");
+          } else {
+            alert("Failed to delete appointment.");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("An error occurred while deleting the appointment.");
+        });
+    }
+  };
+
   const handleDeleteAll = () => {
     const confirmed = window.confirm("Are you sure, do you want delete all the records?");
     if (confirmed) {
-      fetch("http://localhost:8080/admin/appointments/delete", { method: "DELETE" })
+      axios.delete("http://localhost:8080/admin/appointments/delete")
         .then((res) => {
-          if (res.ok) {
+          if (res.status === 200) {
             setAppointments([]);
             setCompletedAppointments([]);
             setTotalAppointments(0);
@@ -50,7 +68,7 @@ const View = () => {
         })
         .catch((err) => {
           console.error(err);
-          alert("An error occurred.");
+          alert("An error occurred while deleting all appointments.");
         });
     }
   };
@@ -79,15 +97,14 @@ const View = () => {
       <header className="appointments-header">
         <h1>Appointments Dashboard</h1>
         <div className="summary-card">
-  <div className="summary-icon">
-    <FaCalendarAlt />
-  </div>
-  <div className="summary-content">
-    <div className="count">{totalAppointments}</div>
-    <h2>Total Appointments</h2>
-  </div>
-</div>
-
+          <div className="summary-icon">
+            <FaCalendarAlt />
+          </div>
+          <div className="summary-content">
+            <div className="count">{totalAppointments}</div>
+            <h2>Total Appointments</h2>
+          </div>
+        </div>
       </header>
 
       <section className="current-appointments">
@@ -109,17 +126,21 @@ const View = () => {
               </thead>
               <tbody>
                 {appointments.map(appointment => (
-                  <tr key={appointment.id}>
+                  <tr key={appointment.appointmentId}>
                     <td>{appointment.userName}</td>
                     <td>{appointment.doctorName}</td>
                     <td>{appointment.doctorSpecialization}</td>
                     <td>{formatDateTime(appointment.appointmentDate)}</td>
                     <td>
-                        {appointment.appointmentStatus}
+                      <span className={`status-badge ${appointment.appointmentStatus || 'unknown'}`}>
+                        {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1) : 'Unknown'}
+                      </span>
                     </td>
                     <td>
                       <div className="action-buttons">
-                        <button className="action-btn cancel">Delete</button>
+                        <button className="action-btn cancel" onClick={()=>handleDelete(appointment.appointmentId)}>
+                          <FaTrash size={14} />
+                        </button>
                       </div>
                     </td>
                   </tr>
