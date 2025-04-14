@@ -151,12 +151,11 @@ const Home = () => {
             </motion.div>
           </section>
 
-          <HappyPatients />
-
           <section className="doctor-section">
             <DoctorCarousel />
           </section>
         </div>
+        <HappyPatients />
 
         <Footer />
       </div>

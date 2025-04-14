@@ -7,7 +7,10 @@ import Footer from '../components/Footer';
 
 const DoctorViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
-  
+  const [completedAppointments, setCompletedAppointments] = useState([]);
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [cancelledAppointments, setCancelledAppointments] = useState([]);
+  const [pendingAppointments, setPendingAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -19,6 +22,18 @@ const DoctorViewAppointments = () => {
         const response = await axios.get(`http://localhost:8080/appointments/doctor/${localStorage.getItem('doctorId')}`);
         console.log(response.data)
         setAppointments(response.data);
+        setCompletedAppointments(response.data.filter(
+          appointment => appointment.appointmentStatus.toLowerCase() === 'completed'
+        ));
+        setUpcomingAppointments(response.data.filter(
+          appointment => appointment.appointmentStatus.toLowerCase() === 'upcoming'
+        ));
+        setCancelledAppointments(response.data.filter(
+          appointment => appointment.appointmentStatus.toLowerCase() === 'cancelled'
+        ));
+        setPendingAppointments(response.data.filter(
+          appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
+        ));
         setLoading(false);
       } catch (error) {
         console.error('Error fetching appointments:', error);
@@ -28,22 +43,6 @@ const DoctorViewAppointments = () => {
 
     fetchAppointments();
   }, []);
-  const completedAppointments = appointments.filter(
-    appointment => appointment.appointmentStatus.toLowerCase() === 'completed'
-  );
-
-  const upcomingAppointments = appointments.filter(
-    appointment => appointment.appointmentStatus.toLowerCase() === 'upcoming'
-  );
-
-  const cancelledAppointments = appointments.filter(
-    appointment => appointment.appointmentStatus.toLowerCase() === 'cancelled'
-  );
-
-  const pendingAppointments = appointments.filter(
-    appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
-  );
-  
 
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch =
@@ -59,11 +58,18 @@ const DoctorViewAppointments = () => {
       const response = await axios.post(
         `http://localhost:8080/appointments/${appointmentId}/${action}/${localStorage.getItem("doctorId")}`
       );
-      
+
       if (response.status === 200) {
-      
-      
         alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
+
+        // Update the state of appointments immediately
+        setAppointments((prevAppointments) =>
+          prevAppointments.map((appointment) =>
+            appointment.appointmentId === appointmentId
+              ? { ...appointment, appointmentStatus: action === 'accept' ? 'upcoming' : 'rejected' }
+              : appointment
+          )
+        );
       } else {
         alert(`Failed to ${action} appointment. Please try again.`);
       }
@@ -116,6 +122,43 @@ const DoctorViewAppointments = () => {
     } catch (error) {
       console.error('Error cancelling appointment:', error);
       alert('Error cancelling appointment. Please try again later.');
+    }
+  };
+
+  const markAsCompleted = async (appointmentId) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:8080/appointments/${appointmentId}/status/Completed`
+      );
+
+      if (response.status === 200) {
+        alert('Appointment marked as completed successfully!');
+
+        // Update the state of appointments immediately
+        setAppointments((prevAppointments) =>
+          prevAppointments.map((appointment) =>
+            appointment.appointmentId === appointmentId
+              ? { ...appointment, appointmentStatus: 'completed' }
+              : appointment
+          )
+        );
+
+        // Update the completedAppointments state
+        setCompletedAppointments((prevCompleted) => [
+          ...prevCompleted,
+          appointments.find((appointment) => appointment.appointmentId === appointmentId),
+        ]);
+
+        // Remove the appointment from upcomingAppointments
+        setUpcomingAppointments((prevUpcoming) =>
+          prevUpcoming.filter((appointment) => appointment.appointmentId !== appointmentId)
+        );
+      } else {
+        alert('Failed to mark appointment as completed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error marking appointment as completed:', error);
+      alert('Error marking appointment as completed. Please try again later.');
     }
   };
 
@@ -299,12 +342,26 @@ const DoctorViewAppointments = () => {
                           </>
                         )}
                         {appointment.appointmentStatus.toLowerCase() === 'upcoming' && (
-                          <button
-                            className="cancel-btn"
-                            onClick={() => cancelAppointment(appointment.appointmentId, appointment.appointmentDate, appointment.appointmentTime)}
-                          >
-                            Cancel
-                          </button>
+                          <>
+                            <button
+                              className="cancel-btn"
+                              onClick={() =>
+                                cancelAppointment(
+                                  appointment.appointmentId,
+                                  appointment.appointmentDate,
+                                  appointment.appointmentTime
+                                )
+                              }
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              className="complete-btn"
+                              onClick={() => markAsCompleted(appointment.appointmentId)}
+                            >
+                              Completed
+                            </button>
+                          </>
                         )}
                       </div>
                     </td>
