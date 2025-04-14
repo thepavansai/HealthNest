@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaSearch, FaTrash, FaUser } from 'react-icons/fa';
+import { FaSearch, FaUser } from 'react-icons/fa';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
 import './ManageUsers.css';
 
 const ManageUsers = () => {
@@ -24,19 +26,6 @@ const ManageUsers = () => {
     fetchUsers();
   }, []);
 
-  const handleDeleteAllUsers = async () => {
-    if (window.confirm('Are you sure you want to delete ALL users? This action is irreversible!')) {
-      try {
-        await axios.delete('http://localhost:8080/admin/users/delete');
-        setUsers([]); 
-        alert('All users have been deleted successfully.');
-      } catch (error) {
-        console.error('Error deleting all users:', error);
-        alert('Failed to delete all users. Please try again.');
-      }
-    }
-  };
-
   const filteredUsers = users.filter(user => {
     return user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -52,7 +41,8 @@ const ManageUsers = () => {
     );
   }
 
-  return (
+  return (<>
+  <Header></Header>
     <div className="manage-users-container">
       <div className="users-header">
         <h1>Manage Users</h1>
@@ -133,13 +123,9 @@ const ManageUsers = () => {
           </div>
         )}
       </div>
-
-      <div className="delete-all-container">
-        <button className="delete-all-btn" onClick={handleDeleteAllUsers}>
-          <FaTrash /> Delete All 
-        </button>
-      </div>
     </div>
+    <Footer></Footer>
+    </>
   );
 };
 
