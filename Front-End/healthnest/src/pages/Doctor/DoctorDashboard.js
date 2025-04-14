@@ -84,9 +84,8 @@ const DoctorDashboard = () => {
 
             {showDropdown && (
               <div className="profile-dropdown-menu">
-                <button onClick={() => navigate("/doctor/editprofile")}><FaUserMd /> Edit Profile</button>
-                <button onClick={() => navigate("/changepassword")}><FaKey /> Change Password</button>
-                <button onClick={() => navigate("/deleteaccount")}><FaTrashAlt /> Delete Account</button>
+                <button onClick={() => navigate("/doctor/profile")}><FaUserMd /> Edit Profile</button>
+                <button onClick={() => navigate("/doctor/change-password")}><FaKey /> Change Password</button>
                 <button onClick={() => {
                   localStorage.clear();
                   navigate("/");
@@ -127,7 +126,7 @@ const DoctorDashboard = () => {
               <p>Check all your upcoming and past appointments.</p>
               <button
                 className="view-all-button"
-                onClick={() => navigate('/doctor/viewappointments')}
+                onClick={() => navigate('/doctor/appointments')}
               >
                 View All
               </button>
