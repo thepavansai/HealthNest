@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
 import './ViewFeedback.css';
 
 const ViewFeedback = () => {
@@ -39,7 +41,8 @@ const ViewFeedback = () => {
     return <div className="error-message">{error}</div>;
   }
 
-  return (
+  return (<>
+    <Header></Header>
     <div className="view-feedback-container">
       <header className="feedback-header">
         <h1>User Feedback</h1>
@@ -132,6 +135,8 @@ const ViewFeedback = () => {
         </div>
       )}
     </div>
+    <Footer></Footer>
+    </>
   );
 };
 
