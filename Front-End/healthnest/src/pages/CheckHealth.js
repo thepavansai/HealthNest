@@ -167,7 +167,7 @@ const CheckHealth = () => {
       const appointmentData = {
         appointmentDate: formatDate(selectedDay, selectedDate),
         appointmentTime: formatTime(selectedSlot),
-        appointmentStatus: "PENDING",
+        appointmentStatus: "Pending",
         description: text,
         user: {
           userId: userId

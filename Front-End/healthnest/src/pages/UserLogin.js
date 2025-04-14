@@ -1,8 +1,7 @@
 import Login from "../components/Login"
+const UserLogin = () => {
 
-const UserLogin=()=>{
-    
-    return(
+    return (
         <div>
             <Login></Login>
         </div>

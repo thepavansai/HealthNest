@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import './SignUp.css';
+import Footer from "./Footer";
+import Header from "./Header";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -18,13 +21,56 @@ const SignUp = () => {
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const validateForm = () => {
+    if (!/^[A-Za-z\s]{3,}$/.test(formData.name)) {
+      setError("Name should contain only letters and be at least 3 characters long");
+      return false;
+    }
+
+    if (!formData.gender) {
+      setError("Please select a gender");
+      return false;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError("Please enter a valid email address");
+      return false;
+    }
+
+    if (!/^\d{10}$/.test(formData.phoneNo)) {
+      setError("Phone number should be 10 digits");
+      return false;
+    }
+
+    const today = new Date();
+    const birthDate = new Date(formData.dateOfBirth);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    if (age < 18 || age > 120) {
+      setError("Age should be between 18 and 120 years");
+      return false;
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.password)) {
+      setError("Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
@@ -52,6 +98,8 @@ const SignUp = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="signup-wrapper">
       { }
       <div className="branding">
@@ -123,32 +171,50 @@ const SignUp = () => {
             />
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="password-field">
             <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="password-input-wrapper">
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <span 
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="password-field">
             <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-            />
+            <div className="password-input-wrapper">
+              <Form.Control
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+              <span 
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </Form.Group>
 
           <Button type="submit">Sign Up</Button>
         </Form>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 
