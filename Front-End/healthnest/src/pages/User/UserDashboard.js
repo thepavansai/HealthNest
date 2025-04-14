@@ -134,12 +134,20 @@ const UserDashboard = () => {
               <p>Upcoming Appointments</p>
               {appointments.length > 0 ? (
                 <div className="next-appointment">
-                  <p className="appointment-date">
-                    Next: {new Date(appointments[0].appointmentDate).toLocaleDateString()}
-                  </p>
-                  <p className="appointment-doctor">
-                    Dr. {appointments[0].doctorName}
-                  </p>
+                 <p className="appointment-date">
+  Next: {appointments
+    .filter(appointment => appointment.appointmentStatus === 'Upcoming')
+    .slice(0, 1)
+    .map(appointment => new Date(appointment.appointmentDate).toLocaleDateString())[0] || "No upcoming appointments"}
+</p>
+
+<p className="appointment-doctor">
+  Dr. {appointments
+    .filter(appointment => appointment.appointmentStatus === 'Upcoming')
+    .slice(0, 1)
+    .map(appointment => appointment.doctorName)[0] || "No upcoming appointments"}
+</p>
+
                 </div>
               ) : (
                 <p className="no-appointments">No upcoming appointments</p>
