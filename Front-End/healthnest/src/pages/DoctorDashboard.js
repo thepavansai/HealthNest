@@ -118,7 +118,6 @@ const DoctorDashboard = () => {
             </div>
           </div>
               {}
-              <ManageearningsDoctors></ManageearningsDoctors>
          
          {}
 
