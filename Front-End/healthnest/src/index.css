@@ -1,6 +1,8 @@
 :root {
   --font-size-base: 16px;
   --line-height-base: 1.5;
+  --container-max-width: 1200px;
+  --header-height: 60px;
 }
 
 * {
@@ -11,6 +13,10 @@
 
 html {
   font-size: var(--font-size-base);
+  -webkit-text-size-adjust: 100%;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -21,25 +27,109 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: var(--line-height-base);
+  min-height: 100%;
+  width: 100%;
   overflow-x: hidden;
-  min-height: 100vh;
+  position: relative;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#root {
+  min-height: 100%;
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* Fix for containers */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+  overflow-x: hidden;
+}
+
+/* Fix for images and videos */
 img, video {
   max-width: 100%;
   height: auto;
   display: block;
+  object-fit: cover;
 }
 
-/* Responsive Typography */
+/* Base layout fixes */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  z-index: 1000;
+}
+
+main {
+  padding-top: var(--header-height);
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Prevent horizontal scroll on mobile */
 @media screen and (max-width: 768px) {
   :root {
     --font-size-base: 14px;
+    --header-height: 56px;
+  }
+
+  html, 
+  body, 
+  #root {
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Fix any potential overflow issues */
+  .row, 
+  .container, 
+  .section {
+    width: 100%;
+    max-width: 100vw;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    overflow-x: hidden;
+  }
+
+  /* Mobile menu fixes */
+  .mobile-menu {
+    position: fixed;
+    top: var(--header-height);
+    right: 0;
+    bottom: 0;
+    width: 280px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .mobile-menu.open {
+    transform: translateX(0);
+  }
+
+  .mobile-overlay {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-overlay.open {
+    opacity: 1;
+    visibility: visible;
   }
 }
 
@@ -47,4 +137,25 @@ img, video {
   :root {
     --font-size-base: 12px;
   }
+}
+
+/* Global overflow fixes */
+div, 
+section, 
+header, 
+footer, 
+main, 
+nav {
+  max-width: 100vw;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Fix for code blocks */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
