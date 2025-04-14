@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Login from './components/Login';
+import Login from './pages/UserLogin.js';
 import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import ManageDoctors from './pages/Admin/ManageDoctors';
@@ -28,42 +28,114 @@ import UserFeedback from './pages/UserFeedback.js';
 import DoctorViewAppointments from './pages/DoctorViewAppointments.js';
 import AdminLogin from './pages/Admin/AdminLogin.js';
 import UserChangePassword from './pages/UserChangePassword.js';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
+          <Route path="/aboutus" element={<AboutUs />} />
+          
+          {/* Authentication Routes */}
           <Route path="/login" element={<UserLogin />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/viewappointments" element={<ViewAppointments />} />
-          <Route path="/changepassword" element={<ChangePassword />} />
-          <Route path="/deleteaccount" element={<DeleteAccount />} />
-          <Route path="/doctorprofile" element={<DoctorProfile />} />
-          <Route path="/manageappointments" element={<ManageAppointments />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/user" element={<UserDashboard />} />
-          <Route path="/checkhealth" element={<CheckHealth />} />
-          <Route path="/doctordashboard" element={<DoctorDashboard />} />
-          <Route path="/suggestions" element={<Remedies />} />
-          <Route path="/editprofile" element={<UserEditProfile />} />
-          <Route path="/user/viewappointments" element={<ViewAppointments />} />
-          <Route path="/admin/login" element={<AdminLogin/>}/>
-          <Route path="/user/feedback" element={<UserFeedback/>}/>
-          <Route path="/admin/managedoctors" element={<ManageDoctors />} />
-          <Route path="/admin/manageusers" element={<ManageUsers />} />
-          <Route path="/admin/viewappointments" element={<View />} />
-          <Route path="/admin/viewfeedbacks" element={<ViewFeedback/>} />
-
-
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
-          <Route path="/doctor/viewappointments" element={<DoctorViewAppointments/>}/>
+          <Route path="/admin/login" element={<AdminLogin />} />
 
-          <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
-          <Route path="/aboutus" element={<AboutUs/>}/>
-          <Route path="/user/change-password" element={<UserChangePassword />} />
+          {/* Protected User Routes */}
+          <Route path="/user" element={
+            <ProtectedRoute userType="user">
+              <UserDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/user/appointments" element={
+            <ProtectedRoute userType="user">
+              <ViewAppointments />
+            </ProtectedRoute>
+          } />
+          <Route path="/user/profile" element={
+            <ProtectedRoute userType="user">
+              <UserEditProfile />
+            </ProtectedRoute>
+          } />
+          <Route path="/user/feedback" element={
+            <ProtectedRoute userType="user">
+              <UserFeedback />
+            </ProtectedRoute>
+          } />
+          <Route path="/user/change-password" element={
+            <ProtectedRoute userType="user">
+              <UserChangePassword />
+            </ProtectedRoute>
+          } />
+          <Route path="/user/delete-account" element={
+            <ProtectedRoute userType="user">
+              <DeleteAccount />
+            </ProtectedRoute>
+          } />
+          <Route path="/user/check-health" element={
+            <ProtectedRoute userType="user">
+              <CheckHealth />
+            </ProtectedRoute>
+          } />
+          <Route path="/user/remedies" element={
+            <ProtectedRoute userType="user">
+              <Remedies />
+            </ProtectedRoute>
+          } />
+
+          {/* Protected Doctor Routes */}
+          <Route path="/doctor/dashboard" element={
+            <ProtectedRoute userType="doctor">
+              <DoctorDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctor/appointments" element={
+            <ProtectedRoute userType="doctor">
+              <DoctorViewAppointments />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctor/profile" element={
+            <ProtectedRoute userType="doctor">
+              <DoctorEditProfile />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctor/profile/view" element={
+            <ProtectedRoute userType="doctor">
+              <DoctorProfile />
+            </ProtectedRoute>
+          } />
+
+          {/* Protected Admin Routes */}
+          <Route path="/admin" element={
+            <ProtectedRoute userType="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/doctors" element={
+            <ProtectedRoute userType="admin">
+              <ManageDoctors />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/users" element={
+            <ProtectedRoute userType="admin">
+              <ManageUsers />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/appointments" element={
+            <ProtectedRoute userType="admin">
+              <View />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/feedback" element={
+            <ProtectedRoute userType="admin">
+              <ViewFeedback />
+            </ProtectedRoute>
+          } />
         </Routes>
       </div>
     </Router>
