@@ -596,7 +596,7 @@
     }
 }
 
-/* Add these styles to your CheckHealth.css file */
+
 
 .slot-container {
     position: relative;
@@ -634,7 +634,7 @@
     opacity: 1;
   }
   
-  /* Add a small arrow pointing down */
+  
   .booked-tooltip::after {
     content: "";
     position: absolute;

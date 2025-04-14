@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +18,8 @@ import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.FeedBackDTO;
 import com.healthnest.dto.UserDTO;
+import com.healthnest.exception.DoctorNotFoundException;
+import com.healthnest.exception.UserNotFoundException;
 import com.healthnest.model.Doctor;
 import com.healthnest.model.User;
 import com.healthnest.service.AppointmentService;
@@ -89,7 +90,7 @@ public class AdminController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/feedbacks") 
+    @GetMapping("/feedbacks")
     public ResponseEntity<List<FeedBackDTO>> getAllFeedBacks() {
         List<FeedBackDTO> feedbacks = feedBackService.getAllFeedBack();
         return ResponseEntity.ok(feedbacks);
@@ -105,5 +106,25 @@ public class AdminController {
     public ResponseEntity<String> rejectDoctor(@PathVariable Long doctorId) {
         doctorService.updateDoctorStatus(doctorId, -1);
         return ResponseEntity.ok("Doctor rejected successfully");
+    }
+
+    @DeleteMapping("/doctors/{doctorId}")
+    public ResponseEntity<String> deleteDoctor(@PathVariable Long doctorId) {
+        try {
+            doctorService.deleteDoctor(doctorId);
+            return ResponseEntity.ok("Doctor deleted successfully");
+        } catch (DoctorNotFoundException ex) {
+            throw new DoctorNotFoundException("Doctor not found with id: " + doctorId);
+        }
+    }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
+        try {
+            userService.deleteAccount(userId);
+            return ResponseEntity.ok("User deleted successfully");
+        } catch (UserNotFoundException ex) {
+            throw new UserNotFoundException("User not found with id: " + userId);
+        }
     }
 }

@@ -12,6 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Entity
@@ -26,8 +28,12 @@ public class Appointment {
     private LocalDate appointmentDate;
     @NotNull
     private LocalTime appointmentTime;
-    @NotNull
+
+    @NotBlank(message = "Appointment status cannot be blank")
+    @Pattern(regexp = "^(Pending|Upcoming|Cancelled|Completed)$", 
+            message = "Status must be one of: Pending, Upcoming, Cancelled, Completed")
     private String appointmentStatus;
+
     @NotNull
     private String description;
 

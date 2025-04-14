@@ -10,7 +10,7 @@ const AboutUs = () => {
     const navigate = useNavigate();
 
     const handleJoinClick = () => {
-        navigate('/doctor/signup'); // 👈 Navigate on button click
+        navigate('/doctor/signup');
       };
     
   return (

@@ -25,15 +25,34 @@ public class UserService {
 	AppointmentRepository appointmentRepository;
 
 	public void createUser(User user) {
+		validateUser(user);
 		if (isUserAlreadyRegistered(user.getEmail())) {
-			throw new RuntimeException("User already exists!");
+			throw new IllegalArgumentException("User already exists!");
 		}
 		userRepository.save(user);
 	}
 	
+	private void validateUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("User cannot be null");
+		}
+		if (user.getName() == null || user.getName().trim().isEmpty()) {
+			throw new IllegalArgumentException("User name cannot be empty");
+		}
+		if (user.getEmail() == null || !user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+			throw new IllegalArgumentException("Invalid email format");
+		}
+		if (user.getPassword() == null || user.getPassword().length() < 6) {
+			throw new IllegalArgumentException("Password must be at least 6 characters long");
+		}
+		if (user.getPhoneNo() != null && !user.getPhoneNo().matches("\\d{10}")) {
+			throw new IllegalArgumentException("Phone number must be 10 digits");
+		}
+	}
+	
 	public User getUserDetails(Integer userId) {
 	    return userRepository.findById(userId)
-	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+	            .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 	}
 
 	public boolean isUserAlreadyRegistered(String email) {
@@ -78,10 +97,10 @@ public class UserService {
 	}
 
 	public void deleteAccount(Integer userId) {
-		if (!userRepository.existsById(userId)) {
-			throw new UserNotFoundException("User not found with id: " + userId);
-		}
-		userRepository.deleteById(userId);
+	    if (!userRepository.existsById(userId)) {
+	        throw new UserNotFoundException("User not found with id: " + userId);
+	    }
+	    userRepository.deleteById(userId);
 	}
 	
 	public boolean bookAppointment(Appointment appointment) {
@@ -111,7 +130,11 @@ public class UserService {
 	}
 	
 	public String deleteAllUsers() {
-		userRepository.deleteAll();
-		return "All users deleted";
+		try {
+			userRepository.deleteAll();
+			return "All users and their appointments deleted successfully";
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to delete all users: " + e.getMessage());
+		}
 	}
 }

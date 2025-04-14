@@ -132,8 +132,9 @@ const View = () => {
                     <td>{appointment.doctorSpecialization}</td>
                     <td>{formatDateTime(appointment.appointmentDate)}</td>
                     <td>
-                    {appointment.appointmentStatus.charAt(0).toUpperCase() + appointment.appointmentStatus.slice(1).toLowerCase()}
-                      {/* {filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} */}
+                      <span className={`status-badge ${appointment.appointmentStatus || 'unknown'}`}>
+                        {appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1) : 'Unknown'}
+                      </span>
                     </td>
                     <td>
                       <div className="action-buttons">

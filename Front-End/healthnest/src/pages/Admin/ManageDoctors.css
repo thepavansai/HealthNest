@@ -491,14 +491,14 @@
   }
 
   .doctor-card {
-    /* ... existing styles ... */
-    cursor: pointer; /* Indicate it's clickable */
-    border: 1px solid transparent; /* Add a transparent border by default */
+    
+    cursor: pointer; 
+    border: 1px solid transparent; 
     transition: border-color 0.2s ease-in-out;
   }
   
   .doctor-card.expanded {
-    border-color: #007bff; /* Example: Blue border when expanded */
+    border-color: #007bff; 
   }
   
   .expanded-details {
@@ -514,7 +514,7 @@
   
   .expanded-details .detail-label {
     font-weight: bold;
-    width: 100px; /* Adjust width as needed */
+    width: 100px; 
   }
   
   .expanded-details .detail-value {
@@ -523,7 +523,7 @@
   
   .expanded-actions {
     margin-top: 15px;
-    text-align: right; /* Align delete button to the right */
+    text-align: right; 
   }
   
   .expanded-actions .delete-btn {

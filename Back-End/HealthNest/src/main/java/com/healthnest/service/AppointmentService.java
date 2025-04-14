@@ -26,8 +26,14 @@ public class AppointmentService {
     }
 
 	public Appointment acceptAppointment(Integer appointmentId, Integer doctorId) {
+        if (appointmentId == null || doctorId == null) {
+            throw new IllegalArgumentException("Appointment ID and Doctor ID cannot be null");
+        }
+
 		Appointment appointment = appointmentRepository.findById(appointmentId)
 				.orElseThrow(() -> new RuntimeException("Appointment not found"));
+
+        validateAppointment(appointment);
 
 		if (!appointment.getDoctor().getDoctorId().equals(doctorId)) {
 			throw new RuntimeException("You are not authorized to accept this appointment");
@@ -36,6 +42,27 @@ public class AppointmentService {
 		appointment.setAppointmentStatus("Upcoming");
 		return appointmentRepository.save(appointment);
 	}
+
+    private void validateAppointment(Appointment appointment) {
+        if (appointment.getAppointmentDate() == null) {
+            throw new IllegalArgumentException("Appointment date cannot be null");
+        }
+        if (appointment.getAppointmentDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Appointment date cannot be in the past");
+        }
+        if (appointment.getAppointmentTime() == null) {
+            throw new IllegalArgumentException("Appointment time cannot be null");
+        }
+        if (appointment.getDescription() == null || appointment.getDescription().trim().isEmpty()) {
+            throw new IllegalArgumentException("Appointment description cannot be empty");
+        }
+        if (appointment.getUser() == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        if (appointment.getDoctor() == null) {
+            throw new IllegalArgumentException("Doctor cannot be null");
+        }
+    }
 
 	public Appointment rejectAppointment(Integer appointmentId, Integer doctorId) {
 		Appointment appointment = appointmentRepository.findById(appointmentId)
@@ -54,9 +81,13 @@ public class AppointmentService {
 
         return appointmentRepository.findAllAppointments();
 	}
-	public String deleteAllAppointments(){
-        appointmentRepository.deleteAll();
-        return "All appointments deleted";
+	public String deleteAllAppointments() {
+        try {
+            appointmentRepository.deleteAll();
+            return "All appointments deleted successfully";
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete all appointments: " + e.getMessage());
+        }
     }
     public String deleteAppointment(Integer appointmentId) {
         if (appointmentRepository.existsById(appointmentId)) {
@@ -68,12 +99,12 @@ public class AppointmentService {
     }
 
 	public List<AppointmentShowDTO> getTodayAppointmentsByDoctor(Integer doctorId,LocalDate todaydate) {
-//	        LocalDate todayDate = LocalDate.now();
 
-	        // Fetch all appointments for the given doctorId
+
+	        
 	        List<AppointmentShowDTO> appointments = appointmentRepository.findByDoctorIdWithUserName(doctorId);
 
-	        // Filter appointments for today's date
+	        
 	        return appointments.stream()
 	                .filter(appointment -> appointment.getAppointmentDate().isEqual(todaydate))
 	                .collect(Collectors.toList());

@@ -22,10 +22,10 @@ const UserDashboard = () => {
     if (userId) {
       setLoading(true);
       
-      // Fetch user details
+      
       const getUserDetails = axios.get(`http://localhost:8080/users/userdetails/${userId}`);
       
-      // Fetch user appointments
+    
       const getUserAppointments = axios.get(`http://localhost:8080/users/appointments/${userId}`);
       
       Promise.all([getUserDetails, getUserAppointments])

@@ -113,14 +113,14 @@
   margin-right: 10px;
   color: #555;
   font-size: 18px;
-  transform: translateY(-3px); /* Adjust the value to move up or down */
+  transform: translateY(-3px); 
 }
-
 
 
 .search-container input {
   width: 100%;
-  padding: 12px 16px 12px 40px;
+  padding: 12px 16px;
+  padding-left: 48px; 
   border-radius: 8px;
   border: 1px solid #e3e8ef;
   font-size: 14px;
@@ -420,4 +420,69 @@
 .summary-card:nth-child(4) .summary-icon {
   background-color: rgba(108, 117, 125, 0.1); 
   color: #6c757d; 
+}
+
+.rating-action {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.rating-action .rating-select {
+  width: 100px;
+  padding: 4px;
+  font-size: 12px;
+}
+
+.rating-action .rate-btn {
+  padding: 4px 8px;
+  font-size: 12px;
+  background-color: #405de6;
+}
+
+.rating-action .rate-btn:hover {
+  background-color: #3248b3;
+}
+
+.star-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.star-icon {
+  cursor: pointer;
+  font-size: 20px;
+  color: #ddd;
+  transition: all 0.2s;
+}
+
+.star-icon:hover {
+  transform: scale(1.2);
+}
+
+.star-filled {
+  color: #ffc107;
+}
+
+.rate-btn {
+  padding: 6px 12px;
+  background-color: #405de6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.rate-btn:hover {
+  background-color: #3248b3;
+  transform: translateY(-1px);
+}
+
+.rate-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
