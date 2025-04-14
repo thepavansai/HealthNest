@@ -26,6 +26,8 @@ import DoctorViewAppointments from './pages/Doctor/DoctorViewAppointments.js';
 import AdminLogin from './pages/Admin/AdminLogin.js';
 import UserChangePassword from './pages/User/UserChangePassword.js';
 import ProtectedRoute from './components/ProtectedRoute';
+import Faq from './components/FAQ.js';
+import ContactUs from './components/ContactUs.js';
 
 function App() {
   return (
@@ -35,7 +37,8 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/aboutus" element={<AboutUs />} />
-          
+          <Route path='/faq' element={<Faq />} />
+          <Route path='/contactus'element={<ContactUs/>} />
           {/* Authentication Routes */}
           <Route path="/login" element={<UserLogin />} />
           <Route path="/signup" element={<SignUp />} />
