@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import PaymentModal from "../components/PaymentModal";
 
 import "./CheckHealth.css";
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const TIME_SLOTS = ['9:00 AM', '11:00 AM', '2:00 PM', '4:00 PM'];
-
+//const [showPaymentModal, setShowPaymentModal] = useState(false);
 const getNextDays = (availability) => {
   const today = new Date();
   const tomorrow = new Date(today);
@@ -75,6 +76,7 @@ const CheckHealth = () => {
   const [doctors, setDoctors] = useState([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [doctorAppointments, setDoctorAppointments] = useState([]);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const suggestionsRef = useRef(null);
   const doctorRef = useRef(null);
@@ -152,6 +154,7 @@ const CheckHealth = () => {
     setSelectedDay(day);
     setSelectedDate(date);
     setSelectedSlot(slot);
+    setShowPaymentModal(true);
   };
 
   const handleBookAppointment = async () => {
@@ -380,6 +383,11 @@ const CheckHealth = () => {
           </div>
         )}
       </div>
+      <PaymentModal
+  isOpen={showPaymentModal}
+  onClose={() => setShowPaymentModal(false)}
+  amount={selectedDoctor ? selectedDoctor.consultationFee : 0} 
+/>
       <Footer />
     </div>
   );
