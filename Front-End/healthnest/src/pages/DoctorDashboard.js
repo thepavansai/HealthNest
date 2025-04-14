@@ -9,7 +9,7 @@ import {
   FaUserMd
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import DoctorHeader from '../components/DoctorHeader';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 import './DoctorDashboard.css';
 
@@ -65,7 +65,7 @@ const DoctorDashboard = () => {
 
   return (
     <div className="doctor-dashboard-wrapper">
-      <DoctorHeader />
+      <Header />
 
       <main className="doctor-dashboard-container">
         { }

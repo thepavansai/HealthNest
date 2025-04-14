@@ -75,87 +75,91 @@ const Home = () => {
 ];
 
     return (
-      <div>
-        
-        <Header/>
+      <div className="home-wrapper">
+        <Header />
         <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
-                className="hero-section"
-            >
-                <div className="hero-content">
-                    <h1 className="hero-title">Welcome to HealthNest</h1>
-                    <p className="hero-description">
-                        Your trusted partner in healthcare. We provide comprehensive medical services with a focus on patient care and well-being.
-                    </p>
-                </div>
-            </motion.div>
-        <div className="container mt-5 pt-4"> { }
-      <div className="row justify-content-center gap-3 mt-4">
-      <h2 style={{ textAlign: "center" }}>Our Featured Services</h2>
-        <div className="col-md-3">
-          <HealthCheck name={names[0]} description={description[0]} />
-        </div>
-        <div className="col-md-3">
-          <HealthCheck name={names[1]} description={description[1]} />
-        </div>
-        <div className="col-md-3">
-          <HealthCheck name={names[2]} description={description[2]} />
-        </div>
-        <section className="statistics-section">
-                <div className="statistics-grid">
-                    {statisticsData.map((stat, index) => (
-                        <motion.div
-                            key={index}
-                            className="stat-item"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                        >
-                            <div className="stat-number">{stat.number}</div>
-                            <div className="stat-label">{stat.label}</div>
-                        </motion.div>
-                    ))}
-                </div>
-            </section>
-        <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-            >
-                {loading ? (
-                    <div className="loading-spinner">
-                        <div className="spinner"></div>
-                    </div>
-                ) : error ? (
-                    <div className="error-message">
-                        {error}
-                        <button 
-                            className="form-button"
-                            onClick={() => fetchHealthTips()}
-                            style={{ marginTop: '10px' }}
-                        >
-                            Try Again
-                        </button>
-                    </div>
-                ) : (
-                    <ContentCarousel items={healthTips} type="tips" />
-                )}
-            </motion.div>
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="hero-section"
+        >
+          <div className="hero-content">
+            <h1 className="hero-title">Welcome to HealthNest</h1>
+            <p className="hero-description">
+              Your trusted partner in healthcare. We provide comprehensive medical services with a focus on patient care and well-being.
+            </p>
+          </div>
+        </motion.div>
 
-        <DoctorCarousel></DoctorCarousel>
-      </div>
+        <div className="container">
+          <section className="services-section">
+            <h2 className="section-title text-center mb-4">Our Featured Services</h2>
+            <div className="services-grid">
+              {names.map((name, index) => (
+                <div key={index} className="service-card">
+                  <HealthCheck 
+                    name={name} 
+                    description={description[index]} 
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
 
-      
-    </div>
-    <Footer></Footer>
-    
+          <section className="statistics-section">
+            <div className="statistics-grid">
+              {statisticsData.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  className="stat-item"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <div className="stat-number">{stat.number}</div>
+                  <div className="stat-label">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          <section className="content-section">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              {loading ? (
+                <div className="loading-spinner">
+                  <div className="spinner"></div>
+                </div>
+              ) : error ? (
+                <div className="error-message">
+                  {error}
+                  <button 
+                    className="form-button"
+                    onClick={() => fetchHealthTips()}
+                  >
+                    Try Again
+                  </button>
+                </div>
+              ) : (
+                <ContentCarousel items={healthTips} type="tips" />
+              )}
+            </motion.div>
+          </section>
+
+          <section className="doctor-section">
+            <DoctorCarousel />
+          </section>
+        </div>
+
+        <Footer />
       </div>
     );
   };
   
   export default Home;
-  
+
 
 
