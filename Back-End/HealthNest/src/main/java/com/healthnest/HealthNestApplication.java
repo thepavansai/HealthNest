@@ -17,7 +17,7 @@ public class HealthNestApplication {
     ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
-    @Bean
+    @Bean	
      BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

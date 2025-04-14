@@ -166,4 +166,16 @@ public class DoctorService {
         }
         doctorRepository.deleteById(doctorId);
     }
+    
+    public String changePassword(Long doctorId, String oldPassword, String newPassword) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+            
+        if (!doctor.getPassword().equals(oldPassword)) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+        doctor.setPassword(newPassword);
+        doctorRepository.save(doctor);
+        return "Password changed successfully";
+    }
 }
