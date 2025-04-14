@@ -28,6 +28,7 @@ import UserFeedback from './pages/UserFeedback.js';
 import DoctorViewAppointments from './pages/DoctorViewAppointments.js';
 import AdminLogin from './pages/Admin/AdminLogin.js';
 import UserChangePassword from './pages/UserChangePassword.js';
+import ContactUs from './components/ContactUs.js';
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
           <Route path="/aboutus" element={<AboutUs/>}/>
           <Route path="/user/change-password" element={<UserChangePassword />} />
+          <Route path="/contactus" element={<ContactUs/>}/>
         </Routes>
       </div>
     </Router>
