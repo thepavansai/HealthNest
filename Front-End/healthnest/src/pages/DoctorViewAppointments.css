@@ -265,13 +265,19 @@
   }
   
   .complete-btn {
-    background: rgba(46, 184, 92, 0.1);
-    color: #2eb85c;
+    background-color: #28a745; /* Green color */
+    color: #fff;
     border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    margin-left: 5px;
   }
   
   .complete-btn:hover {
-    background: rgba(46, 184, 92, 0.2);
+    background-color: #218838; /* Darker green on hover */
   }
   
   .cancel-btn {

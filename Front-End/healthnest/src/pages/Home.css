@@ -4,7 +4,7 @@
   
   /* Hero Section */
   .hero-section {
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    background: linear-gradient(135deg,#4f46e5, #4f46e5 100%);
     color: white;
     padding: 60px 0;
     border-radius: 10px;
@@ -31,7 +31,7 @@
   
   .hero-button {
     background-color: white;
-    color: #0d6efd;
+    color: #4f46e5;
     padding: 12px 30px;
     border-radius: 30px;
     font-weight: bold;
@@ -72,7 +72,7 @@
   .stat-number {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #0d6efd;
+    color:#4f46e5;
     margin-bottom: 10px;
   }
   
@@ -110,4 +110,41 @@
     .services-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  /* Ensure the carousel container has relative positioning */
+  .carousel-container {
+    position: relative;
+  }
+
+  /* Style for carousel arrows */
+  .carousel-arrow {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%);
+    background-color: #007bff; /* Consistent blue color */
+    color: #fff;
+    border: none;
+    border-radius: 50%; /* Ensure the arrow is a perfect circle */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .carousel-arrow:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-50%) scale(1.1); /* Slight zoom effect */
+  }
+  
+  .carousel-arrow.left {
+    left: 10px; /* Adjust for left arrow */
+  }
+  
+  .carousel-arrow.right {
+    right: 10px; /* Adjust for right arrow */
   }

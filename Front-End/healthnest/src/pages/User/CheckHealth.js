@@ -3,9 +3,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from "sonner";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import PaymentModal from "../components/PaymentModal";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import PaymentModal from "../../components/PaymentModal";
 
 import "./CheckHealth.css";
 
@@ -402,7 +402,7 @@ const CheckHealth = () => {
               <p>Waiting for doctor's approval</p>
               <button 
                 className="view-appointments-btn"
-                onClick={() => navigate('/viewappointments')}
+                onClick={() => navigate('/user/appointments')}
               >
                 View My Appointments
               </button>

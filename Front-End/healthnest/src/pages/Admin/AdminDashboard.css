@@ -175,6 +175,8 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   z-index: 10;
   overflow: hidden;
+  max-height: 200px; /* Add this line */
+  overflow-y: auto; /* Add this line */
 }
 
 .admin-dropdown-item {
