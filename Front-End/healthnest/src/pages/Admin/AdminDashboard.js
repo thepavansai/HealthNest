@@ -61,19 +61,19 @@ const AdminDashboard = () => {
   };
 
   const handleFeedback = () => {
-    navigate('/admin/viewfeedbacks');
+    navigate('feedback');
   };
 
   const handleManageDoctors = () => {
-    navigate('/admin/managedoctors');
+    navigate('doctors');
   };
 
   const handleViewAppointments = () => {
-    navigate('/admin/viewappointments');
+    navigate('appointments');
   };
 
   const handleManageUsers = () => {
-    navigate('/admin/manageusers');
+    navigate('users');
   };
 
   return (
