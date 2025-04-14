@@ -103,8 +103,10 @@
 /* Dashboard Grid */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 20px; /* Space between cards */
+  margin: 20px; /* Add space around the grid */
+  align-items: start; /* Align cards to the top */
 }
 
  
@@ -118,6 +120,7 @@
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
+  height: 100%; /* Ensure cards take up equal height */
 }
 .dashboard-card:hover {
   transform: translateY(-5px);
@@ -247,15 +250,103 @@
 }
 
  
-@media (max-width: 768px) {
-  .welcome-section {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-  .action-buttons {
-    flex-direction: column;
-  }
+/* Income Card */
+.income-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.card-content {
+  margin-top: 15px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.show-income-button,
+.view-details-button {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.show-income-button:hover,
+.view-details-button:hover {
+  background-color: #0056b3;
+}
+
+/* Toggle Income Button */
+.toggle-income-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.toggle-income-button:hover {
+  color: #0056b3;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Export Data Card */
+.export-data-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Match height with other cards */
+  margin-top: 20px; 
+}
+
+/* Export Buttons */
+.export-button {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: center;
+  margin: 10px; /* Add spacing on all four sides */
+  text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s ease;
+}
+
+.export-button:hover {
+  background-color: #0056b3;
+}
+
+

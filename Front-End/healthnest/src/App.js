@@ -27,6 +27,7 @@ import DoctorViewAppointments from './pages/Doctor/DoctorViewAppointments.js';
 import AdminLogin from './pages/Admin/AdminLogin.js';
 import UserChangePassword from './pages/User/UserChangePassword.js';
 import ProtectedRoute from './components/ProtectedRoute';
+import IncomeDetails from './pages/Doctor/IncomeDetails.js';
 
 function App() {
   return (
@@ -90,6 +91,11 @@ function App() {
           <Route path="/doctor/dashboard" element={
             <ProtectedRoute userType="doctor">
               <DoctorDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctor/income-details" element={
+            <ProtectedRoute userType="doctor">
+              <IncomeDetails/>
             </ProtectedRoute>
           } />
           <Route path="/doctor/appointments" element={
