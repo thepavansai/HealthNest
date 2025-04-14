@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import './UserDashboard.css';
 import axios from 'axios';
-import { FaCalendarCheck, FaUserEdit, FaComment, FaSignOutAlt, FaHeartbeat, FaClipboardList } from 'react-icons/fa';
+import { FaCalendarCheck, FaUserEdit, FaComment, FaSignOutAlt, FaHeartbeat, FaClipboardList, FaKey } from 'react-icons/fa';
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -65,6 +65,7 @@ const UserDashboard = () => {
   };
   const handleBookAppointment = () => navigate('/checkhealth');
   const handleViewAppointments = () => navigate('/viewappointments');
+  const handleChangePassword = () => navigate('/user/change-password');
 
   if (loading) {
     return (
@@ -102,6 +103,9 @@ const UserDashboard = () => {
               <div className="profile-dropdown-menu">
                 <button onClick={handleEditProfile}>
                   <FaUserEdit /> Edit Profile
+                </button>
+                <button onClick={handleChangePassword}>
+                  <FaKey /> Change Password
                 </button>
                 <button onClick={handleFeedback}>
                   <FaComment /> Send Feedback

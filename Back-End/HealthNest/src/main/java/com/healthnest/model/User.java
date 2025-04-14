@@ -37,6 +37,4 @@ public class User {
 	@Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
 	private String phoneNo;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Appointment> appointments;
 }

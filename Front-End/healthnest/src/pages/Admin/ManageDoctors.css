@@ -583,6 +583,7 @@
   justify-content: center;
   padding: 15px;
   text-align: center;
+  
 }
 
 .flip-card-front .doctor-header {
@@ -597,12 +598,12 @@
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 10px;
-  background-color: #e0e0e0;
+  background-color: #007bff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  color: #555;
+  color: #756e6e;
 }
 
 .flip-card-front .doctor-avatar img {
@@ -627,8 +628,8 @@
 }
 
 .flip-card-back {
-  background-color: #007bff; /* Blue background for the back */
-  color: white;
+  background-color: #2685dd; /* Blue background for the back */
+  color: #F7F2EB;
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
@@ -644,12 +645,26 @@
   align-self: center; /* Center the title on the back */
 }
 
+
+/* Colored labels */
+.flip-card-back .label-email {
+  color: #081F5C; /* Yellow */
+}
+
+.flip-card-back .label-phone {
+  color: #081F5C; /* Orange */
+}
+
+.flip-card-back .label-experience {
+  color: #081F5C; /* Light green */
+}
+
+.flip-card-back .label-fee {
+  color: #081F5C; /* Coral red */
+}
+
+/* Ensure spacing and alignment */
 .flip-card-back p {
   margin-bottom: 8px;
   font-size: 0.95rem;
-}
-
-.flip-card-back .detail-label {
-  font-weight: bold;
-  margin-right: 5px;
 }

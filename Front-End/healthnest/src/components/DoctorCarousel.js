@@ -198,7 +198,6 @@ const getDoctorImage = (doctor) => {
                 </Box>
 
                 <Chip
-                  icon={<LocationOn sx={{ fontSize: 16 }} />}
                   label="Available"
                   size="small"
                   sx={{

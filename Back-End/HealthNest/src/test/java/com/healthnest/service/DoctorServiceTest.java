@@ -9,6 +9,7 @@ import com.healthnest.repository.DoctorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -212,21 +213,25 @@ class DoctorServiceTest {
     @Test
     void testChangePassword_Success() {
         Doctor doctor = new Doctor();
-        doctor.setPassword("oldPassword");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedOldPassword = encoder.encode("oldPassword");
+        doctor.setPassword(hashedOldPassword);
         
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
         
         String result = doctorService.changePassword(1L, "oldPassword", "newPassword");
         
         assertEquals("Password changed successfully", result);
-        assertEquals("newPassword", doctor.getPassword());
+        assertTrue(encoder.matches("newPassword", doctor.getPassword()));
         verify(doctorRepository).save(doctor);
     }
 
     @Test
     void testChangePassword_WrongOldPassword() {
         Doctor doctor = new Doctor();
-        doctor.setPassword("correctPassword");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode("correctPassword");
+        doctor.setPassword(hashedPassword);
         
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
         

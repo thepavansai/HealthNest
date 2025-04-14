@@ -9,7 +9,7 @@ import {
   FaUserMd
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import DoctorHeader from '../components/DoctorHeader';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 import './DoctorDashboard.css';
 
@@ -65,20 +65,21 @@ const DoctorDashboard = () => {
 
   return (
     <div className="doctor-dashboard-wrapper">
-      <DoctorHeader />
+      <Header />
 
       <main className="doctor-dashboard-container">
         { }
         <div className="welcome-section">
           <div className="welcome-content">
-            <h1>Welcome back, {doctorData.doctorName || 'Doctor'} 👋</h1>
+            <h1>Welcome back, {doctorData.doctorName || 'Doctor'} <span>👋</span></h1>
             <p className="subtitle">Here’s what’s happening with your practice today.</p>
           </div>
 
           <div className="profile-widget">
             <div className="profile-info" onClick={toggleDropdown}>
-              <div className="profile-avatar"></div>
+              <div className="profile-avatar"><FaUserMd size={24} /></div>
               <span className="profile-arrow">▼</span>
+              
             </div>
 
             {showDropdown && (
@@ -117,21 +118,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
               {}
-          <div className="dashboard-card stats-viewing-card">
-            <div className="card-header">
-              <h3>View Stats</h3>
-            </div>
-            <div className="card-content">
-              <div className="stats-info">
-                <h2>12</h2>
-                <p>Patients seen today</p>
-              </div>
-              <div className="stats-info">
-                <h2>5</h2>
-                <p>Appointments pending</p>
-              </div>
-            </div>
-          </div>
+         
          {}
 
 

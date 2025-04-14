@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaHome, FaInfoCircle, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
+import { FaHome, FaInfoCircle, FaSignOutAlt, FaSignInAlt, FaUserPlus, FaBars } from 'react-icons/fa';
 import './Header.css';
 
 const Header = () => {
@@ -8,6 +8,7 @@ const Header = () => {
   const [username, setUsername] = useState('');
   const [isDoctor, setIsDoctor] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,6 +41,29 @@ const Header = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMenuOpen && !event.target.closest('.header-right') && !event.target.closest('.hamburger-menu')) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen]);
+
   const handleLogout = () => {
     const itemsToClear = ['userId', 'userName', 'doctorId', 'doctorName', 'adminId'];
     itemsToClear.forEach(item => localStorage.removeItem(item));
@@ -48,6 +72,7 @@ const Header = () => {
     setUsername('');
     setIsDoctor(false);
     setIsAdmin(false);
+    setIsMenuOpen(false);
 
     navigate('/');
   };
@@ -61,12 +86,24 @@ const Header = () => {
           </Link>
         </div>
 
-        <div className="header-right">
+        <div className="mobile-nav">
+          <button 
+            className={`hamburger-menu ${isMenuOpen ? 'open' : ''}`}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+          </button>
+        </div>
+
+        <div className={`header-right ${isMenuOpen ? 'open' : ''}`}>
           <nav className="nav-links">
-            <Link to="/" className="nav-link">
+            <Link to="/" className="nav-link" onClick={() => setIsMenuOpen(false)}>
               <FaHome /> Home
             </Link>
-            <Link to="/aboutus" className="nav-link">
+            <Link to="/aboutus" className="nav-link" onClick={() => setIsMenuOpen(false)}>
               <FaInfoCircle /> About
             </Link>
           </nav>
@@ -79,6 +116,7 @@ const Header = () => {
                   to={isAdmin ? "/admin" : isDoctor ? "/doctor/appointments" : "/user"} 
                   className="user-name" 
                   title={username}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {isDoctor ? `Dr. ${username}` : username}
                 </Link>
@@ -90,11 +128,11 @@ const Header = () => {
             </div>
           ) : (
             <div className="auth-buttons">
-              <Link to="/login" className="btn-login">
+              <Link to="/login" className="btn-login" onClick={() => setIsMenuOpen(false)}>
                 <FaSignInAlt className="btn-icon" />
                 <span className="btn-text">Sign In</span>
               </Link>
-              <Link to="/signup" className="btn-signup">
+              <Link to="/signup" className="btn-signup" onClick={() => setIsMenuOpen(false)}>
                 <FaUserPlus className="btn-icon" />
                 <span className="btn-text">Get Started</span>
               </Link>
@@ -102,6 +140,7 @@ const Header = () => {
           )}
         </div>
       </div>
+      {isMenuOpen && <div className="mobile-overlay" onClick={() => setIsMenuOpen(false)}></div>}
     </header>
   );
 };
