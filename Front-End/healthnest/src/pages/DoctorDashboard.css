@@ -1,7 +1,6 @@
 .doctor-dashboard-container {
   background-color: #f8fafc;
   padding: 2rem 3rem;
-  font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
   color: #374151;
   max-width: 1400px;
   margin: 0 auto;
@@ -81,6 +80,8 @@
   width: 200px;
   overflow: hidden;
   z-index: 99;
+  max-height: 200px; /* Add this line */
+  overflow-y: auto; /* Add this line */
 }
 .profile-dropdown-menu button {
   padding: 0.85rem 1.25rem;

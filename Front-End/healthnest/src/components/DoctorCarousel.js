@@ -1,15 +1,14 @@
 import styled from '@emotion/styled';
 import {
   LocalHospital,
-  LocationOn,
   MedicalServices,
   Star,
 } from '@mui/icons-material';
 import {
   Box,
   Card,
-  CardContent,
   Chip,
+  CardContent,
   Rating,
   Typography,
   useTheme,
@@ -49,7 +48,7 @@ const DoctorImage = styled('img')`
   height: 200px;
   object-fit: cover;
   border-radius: 16px 16px 0 0;
-  border-bottom: 3px solid #75AADB;
+  border-bottom: 3px solid #4f46e5; /* Use the specified color */
 `;
 
 const DoctorCarousel = () => {
@@ -68,23 +67,23 @@ const DoctorCarousel = () => {
   }, []);
 
   let maleCounter = 0;
-let femaleCounter = 0;
+  let femaleCounter = 0;
 
-const getDoctorImage = (doctor) => {
-  const gender = doctor.gender === "FEMALE" ? "female" : "male";
-  const imageCount = 5; // Total number of images per gender
+  const getDoctorImage = (doctor) => {
+    const gender = doctor.gender === "FEMALE" ? "female" : "male";
+    const imageCount = 5; // Total number of images per gender
 
-  let imageNumber;
-  if (gender === "female") {
-    imageNumber = (femaleCounter % imageCount) + 1;
-    femaleCounter++;
-  } else {
-    imageNumber = (maleCounter % imageCount) + 1;
-    maleCounter++;
-  }
+    let imageNumber;
+    if (gender === "female") {
+      imageNumber = (femaleCounter % imageCount) + 1;
+      femaleCounter++;
+    } else {
+      imageNumber = (maleCounter % imageCount) + 1;
+      maleCounter++;
+    }
 
-  return `/images/${gender}model${imageNumber}.jpg`;
-};
+    return `/images/${gender}model${imageNumber}.jpg`;
+  };
 
 
   const responsive = {
@@ -113,16 +112,16 @@ const getDoctorImage = (doctor) => {
   return (
     <Box sx={{
       p: 3,
-      background: 'aliceblue',
+      background: '#f2f0fa',
       borderRadius: 3,
-      boxShadow: 'inset 0 1px 5px rgba(0, 0, 0, 0.05)',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // More noticeable shadow
     }}>
       <Typography
         variant="h5"
         sx={{
           textAlign: 'center',
           mb: 3,
-          color: '#1976d2',
+          color: '#4f46e5', // Use the specified color
           fontWeight: 600,
           display: 'flex',
           alignItems: 'center',
@@ -130,7 +129,7 @@ const getDoctorImage = (doctor) => {
           gap: 1,
         }}
       >
-        <MedicalServices sx={{ fontSize: 28 }} />
+        <MedicalServices sx={{ fontSize: 28, color: '#4f46e5' }} /> {/* Use the specified color */}
         Available Doctors
       </Typography>
 
@@ -153,31 +152,18 @@ const getDoctorImage = (doctor) => {
                 alt={doctor.doctorName}
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = doctor.gender === "FEMALE" 
+                  e.target.src = doctor.gender === "FEMALE"
                     ? "/images/femalemodel1.jpg"
                     : "/images/malemodel1.jpg";
                 }}
               />
               <CardContent sx={{ p: 2, textAlign: 'center' }}>
-                <Typography variant="h6" sx={{ mb: 1, color: '#1976d2', fontWeight: 500 }}>
+                <Typography variant="h6" sx={{ mb: 1, color: '#4f46e5', fontWeight: 500 }}> {/* Use the specified color */}
                   {doctor.doctorName}
                 </Typography>
 
-                <Chip
-                  icon={<MedicalServices sx={{ fontSize: 16 }} />}
-                  label={doctor.specialization}
-                  size="small"
-                  sx={{
-                    mb: 1.5,
-                    bgcolor: '#1976d2',
-                    color: 'white',
-                    '& .MuiChip-icon': { color: 'white' },
-                    fontSize: '0.8rem',
-                  }}
-                />
-
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.5, gap: 0.5 }}>
-                  <LocalHospital sx={{ color: '#1976d2', fontSize: 18 }} />
+                  <LocalHospital sx={{ color: '#4f46e5', fontSize: 18 }} /> {/* Use the specified color */}
                   <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
                     {doctor.hospitalName}
                   </Typography>
@@ -190,11 +176,12 @@ const getDoctorImage = (doctor) => {
                     readOnly
                     size="small"
                     icon={<Star sx={{ color: '#FFD700', fontSize: 18 }} />}
-                    emptyIcon={<Star sx={{ color: '#E0E0E0', fontSize: 18 }} />}
-                  />
-                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
-                    ({doctor.rating})
-                  </Typography>
+                    emptyIcon={<Star sx={{ color: '#E0E0E0', fontSize: 18 }} 
+                    
+                    />}
+                    
+                  />{doctor.rating}
+                  
                 </Box>
 
                 <Chip
@@ -222,13 +209,13 @@ const CustomDot = ({ onClick, ...rest }) => {
     active,
     carouselState: { currentSlide, deviceType }
   } = rest;
-  
+
   return (
     <button
       className={active ? "active" : "inactive"}
       onClick={() => onClick()}
       style={{
-        background: active ? '#1976d2' : '#E0E0E0',
+        background: active ? '#4f46e5' : '#E0E0E0', // Use the specified color
         width: '8px',
         height: '8px',
         borderRadius: '50%',

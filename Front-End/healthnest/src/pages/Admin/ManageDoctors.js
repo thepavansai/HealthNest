@@ -126,7 +126,7 @@ const ManageDoctors = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             
-            style={{ textAlign: searchTerm ? 'left' : 'center' }}
+            style={{ textAlign: 'center' }}
           />
         </div>
 

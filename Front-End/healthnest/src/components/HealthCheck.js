@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { FaHeartbeat, FaCalendarAlt, FaUserMd } from "react-icons/fa";
+import "./HealthCheck.css"; 
 
 const HealthCheck = ({ name, description }) => {
   const navigate = useNavigate();

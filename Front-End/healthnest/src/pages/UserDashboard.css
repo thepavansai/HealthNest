@@ -1,7 +1,6 @@
 .dashboard-container {
   background-color: #f5f7fa;
   min-height: 100vh;
-  font-family: 'Plus Jakarta Sans', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -134,6 +133,8 @@
   width: 200px;
   z-index: 100;
   overflow: hidden;
+  max-height: 200px; /* Add this line */
+  overflow-y: auto; /* Add this line */
 }
 
 .profile-dropdown-menu button {
