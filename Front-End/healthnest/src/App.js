@@ -1,8 +1,10 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Login from './components/Login';
+import AboutUs from './components/AboutUs.js';
+import Remedies from './components/Remedies.js';
 import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
+import AdminLogin from './pages/Admin/AdminLogin.js';
 import ManageDoctors from './pages/Admin/ManageDoctors';
 import ManageUsers from './pages/Admin/ManageUsers.js';
 import View from './pages/Admin/View.js';
@@ -12,22 +14,19 @@ import CheckHealth from './pages/CheckHealth';
 import DeleteAccount from './pages/DeleteAccount';
 import DoctorDashboard from './pages/DoctorDashboard';
 import DoctorEditProfile from './pages/DoctorEditProfile';
+import DoctorLogin from './pages/DoctorLogin';
 import DoctorProfile from './pages/DoctorProfile';
+import DoctorSignup from './pages/DoctorSignUp';
+import DoctorViewAppointments from './pages/DoctorViewAppointments.js';
+import FAQ from './pages/FAQ.js';
 import Home from './pages/Home';
 import ManageAppointments from './pages/ManageAppointments';
+import UserChangePassword from './pages/UserChangePassword.js';
 import UserDashboard from './pages/UserDashboard';
 import UserEditProfile from './pages/UserEditProfile';
-import ViewAppointments from './pages/ViewAppointments';
-import AboutUs from './components/AboutUs.js';
-
-import DoctorLogin from './pages/DoctorLogin';
-import DoctorSignup from './pages/DoctorSignUp';
-import UserLogin from './pages/UserLogin.js';
-import Remedies from './components/Remedies.js';
 import UserFeedback from './pages/UserFeedback.js';
-import DoctorViewAppointments from './pages/DoctorViewAppointments.js';
-import AdminLogin from './pages/Admin/AdminLogin.js';
-import UserChangePassword from './pages/UserChangePassword.js';
+import UserLogin from './pages/UserLogin.js';
+import ViewAppointments from './pages/ViewAppointments';
 
 function App() {
   return (
@@ -64,6 +63,8 @@ function App() {
           <Route path="/doctor/editprofile" element={<DoctorEditProfile />} />
           <Route path="/aboutus" element={<AboutUs/>}/>
           <Route path="/user/change-password" element={<UserChangePassword />} />
+          <Route path="/faq" element={<FAQ/>}/>
+
         </Routes>
       </div>
     </Router>

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaCheckCircle, FaSearch, FaTimesCircle, FaTrash, FaUserMd, FaUserPlus } from 'react-icons/fa';
-import './ManageDoctors.css';
-import Header from '../../components/Header';
+import { FaCheckCircle, FaSearch, FaTimesCircle, FaUserMd, FaUserPlus } from 'react-icons/fa';
 import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import './ManageDoctors.css';
 
 const ManageDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -11,17 +11,15 @@ const ManageDoctors = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState('all');
-  const [expandedDoctorId, setExpandedDoctorId] = useState(null);
+  const [flippedDoctorId, setFlippedDoctorId] = useState(null);
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
         setLoading(true);
         const response = await axios.get('http://localhost:8080/admin/doctors');
-
         const active = response.data.filter(doctor => doctor.status === 1);
         const pending = response.data.filter(doctor => doctor.status === 0);
-
         setDoctors(active);
         setPendingDoctors(pending);
         setLoading(false);
@@ -30,14 +28,12 @@ const ManageDoctors = () => {
         setLoading(false);
       }
     };
-
     fetchDoctors();
   }, []);
 
   const handleApproveDoctor = async (doctorId) => {
     try {
       await axios.put(`http://localhost:8080/admin/doctors/${doctorId}/accept`);
-
       const approvedDoctor = pendingDoctors.find(doctor => doctor.doctorId === doctorId);
       if (approvedDoctor) {
         const updatedDoctor = { ...approvedDoctor, status: 1 };
@@ -57,11 +53,8 @@ const ManageDoctors = () => {
       console.error('Error rejecting doctor:', error);
     }
   };
-
-  
-
-  const toggleExpandDoctor = (doctorId) => {
-    setExpandedDoctorId(expandedDoctorId === doctorId ? null : doctorId);
+  const handleFlipCard = (doctorId) => {
+    setFlippedDoctorId(flippedDoctorId === doctorId ? null : doctorId);
   };
 
   const filteredDoctors = doctors.filter(doctor => {
@@ -69,7 +62,6 @@ const ManageDoctors = () => {
       (doctor.doctorName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
       (doctor.specializedrole?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
       (doctor.emailId?.toLowerCase() || '').includes(searchTerm.toLowerCase());
-
     return matchesSearch;
   });
 
@@ -89,11 +81,10 @@ const ManageDoctors = () => {
   }
 
   return (<>
-  <Header></Header>
+    <Header></Header>
     <div className="manage-doctors-container">
       <div className="doctors-header">
         <h1>Manage Doctors</h1>
-
         <div className="doctors-summary">
           <div className="summary-card">
             <div className="summary-icon">
@@ -104,7 +95,6 @@ const ManageDoctors = () => {
               <p>Active Doctors</p>
             </div>
           </div>
-
           <div className="summary-card">
             <div className="summary-icon pending-icon">
               <FaUserPlus />
@@ -116,7 +106,6 @@ const ManageDoctors = () => {
           </div>
         </div>
       </div>
-
       <div className="doctors-filter">
         <div className="search-container">
           <FaSearch className="search-icon" />
@@ -125,22 +114,14 @@ const ManageDoctors = () => {
             placeholder="Search by name, specialty or email"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            
             style={{ textAlign: searchTerm ? 'left' : 'center' }}
           />
         </div>
-
         <div className="view-toggle">
-          <button
-            className={viewMode === 'all' ? 'active' : ''}
-            onClick={() => setViewMode('all')}
-          >
+          <button className={viewMode === 'all' ? 'active' : ''} onClick={() => setViewMode('all')}>
             All Doctors
           </button>
-          <button
-            className={viewMode === 'pending' ? 'active' : ''}
-            onClick={() => setViewMode('pending')}
-          >
+          <button className={viewMode === 'pending' ? 'active' : ''} onClick={() => setViewMode('pending')}>
             Pending Requests {pendingDoctors.length > 0 && <span className="badge">{pendingDoctors.length}</span>}
           </button>
         </div>
@@ -157,46 +138,37 @@ const ManageDoctors = () => {
             <div className="doctors-grid">
               {filteredDoctors.map(doctor => (
                 <div
-                  className={`doctor-card ${expandedDoctorId === doctor.doctorId ? 'expanded' : ''}`}
+                  className={`flip-card ${flippedDoctorId === doctor.doctorId ? 'flipped' : ''}`}
                   key={doctor.doctorId}
-                  onClick={() => toggleExpandDoctor(doctor.doctorId)}
+                  onClick={() => handleFlipCard(doctor.doctorId)}
                 >
-                  <div className="doctor-header">
-                    <div className="doctor-avatar">
-                      {doctor.profileImage ? (
-                        <img src={doctor.profileImage} alt={doctor.doctorName} />
-                      ) : (
-                        <div className="avatar-placeholder">
-                          {doctor.doctorName?.charAt(4)?.toUpperCase()}
+                  <div className="flip-card-inner">
+                    <div className="flip-card-front">
+                      <div className="doctor-header">
+                        <div className="doctor-avatar">
+                          {doctor.profileImage ? (
+                            <img src={doctor.profileImage} alt={doctor.doctorName} />
+                          ) : (
+                            <div className="avatar-placeholder">
+                              {doctor.doctorName?.charAt(0)?.toUpperCase()}
+                            </div>
+                          )}
                         </div>
-                      )}
+                        <div>
+                          <h3>{doctor.doctorName}</h3>
+                          <p className="doctor-specialty">{doctor.specializedrole}</p>
+                        </div>
+                      </div>
                     </div>
-                    <div>
+                    <div className="flip-card-back">
                       <h3>{doctor.doctorName}</h3>
-                      <p className="doctor-specialty">{doctor.specializedrole}</p>
+                      <p><span className="label-specialty">Specialty:</span> {doctor.specializedrole}</p>
+                      <p><span className="label-email">Email:</span> {doctor.emailId}</p>
+                      <p><span className="label-phone">Phone:</span> {doctor.docPhnNo}</p>
+                      <p><span className="label-experience">Experience:</span> {doctor.experience} years</p>
+                      <p><span className="label-fee">Fee:</span> ${doctor.consultationFee}</p>
                     </div>
                   </div>
-
-                  {expandedDoctorId === doctor.doctorId && (
-                    <div className="expanded-details">
-                      <div className="detail-row">
-                        <span className="detail-label">Email:</span>
-                        <span className="detail-value">{doctor.emailId}</span>
-                      </div>
-                      <div className="detail-row">
-                        <span className="detail-label">Phone:</span>
-                        <span className="detail-value">{doctor.docPhnNo}</span>
-                      </div>
-                      <div className="detail-row">
-                        <span className="detail-label">Experience:</span>
-                        <span className="detail-value">{doctor.experience} years</span>
-                      </div>
-                      <div className="detail-row">
-                        <span className="detail-label">Fee:</span>
-                        <span className="detail-value">${doctor.consultationFee}</span>
-                      </div>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -251,16 +223,10 @@ const ManageDoctors = () => {
                       <td>${doctor.consultationFee}</td>
                       <td>
                         <div className="action-buttons">
-                          <button
-                            className="approve-btn"
-                            onClick={() => handleApproveDoctor(doctor.doctorId)}
-                          >
+                          <button className="approve-btn" onClick={() => handleApproveDoctor(doctor.doctorId)}>
                             <FaCheckCircle /> Approve
                           </button>
-                          <button
-                            className="reject-btn"
-                            onClick={() => handleRejectDoctor(doctor.doctorId)}
-                          >
+                          <button className="reject-btn" onClick={() => handleRejectDoctor(doctor.doctorId)}>
                             <FaTimesCircle /> Reject
                           </button>
                         </div>
@@ -273,12 +239,9 @@ const ManageDoctors = () => {
           )}
         </div>
       )}
-
-      
     </div>
     <Footer></Footer>
-    </>
-  );
+  </>);
 };
 
 export default ManageDoctors;
