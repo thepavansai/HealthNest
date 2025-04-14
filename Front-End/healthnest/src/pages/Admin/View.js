@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt } from 'react-icons/fa';
 import './View.css';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 const View = () => {
   const [appointments, setAppointments] = useState([]);
@@ -53,7 +55,8 @@ const View = () => {
     return <div className="error-message">{error}</div>;
   }
 
-  return (
+  return (<>
+    <Header></Header>
     <div className="view-appointments-container">
       <header className="appointments-header">
         <h1>Appointments Dashboard</h1>
@@ -104,7 +107,10 @@ const View = () => {
           </div>
         )}
       </section>
+      
     </div>
+    <Footer></Footer>
+    </>
   );
 };
 

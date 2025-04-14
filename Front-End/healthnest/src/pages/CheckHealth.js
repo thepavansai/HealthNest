@@ -1,6 +1,8 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from "sonner";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import PaymentModal from "../components/PaymentModal";
@@ -9,7 +11,7 @@ import "./CheckHealth.css";
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const TIME_SLOTS = ['9:00 AM', '11:00 AM', '2:00 PM', '4:00 PM'];
-//const [showPaymentModal, setShowPaymentModal] = useState(false);
+
 const getNextDays = (availability) => {
   const today = new Date();
   const tomorrow = new Date(today);
@@ -77,10 +79,10 @@ const CheckHealth = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [doctorAppointments, setDoctorAppointments] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentComplete, setPaymentComplete] = useState(false);
 
   const suggestionsRef = useRef(null);
   const doctorRef = useRef(null);
-  const paymentRef = useRef(null);
   const carouselRef = useRef(null);
   const navigate = useNavigate();
 
@@ -154,10 +156,23 @@ const CheckHealth = () => {
     setSelectedDay(day);
     setSelectedDate(date);
     setSelectedSlot(slot);
+  };
+
+  const handleBookAppointment = () => {
+    // Validate if user has selected a slot
+    if (!selectedSlot) {
+      toast.error("Please select a time slot first");
+      return;
+    }
+    
+    // Show payment modal
     setShowPaymentModal(true);
   };
 
-  const handleBookAppointment = async () => {
+  const handlePaymentSuccess = async () => {
+    setShowPaymentModal(false);
+    setPaymentComplete(true);
+    
     try {
       const userId = parseInt(localStorage.getItem('userId'));
       
@@ -195,7 +210,7 @@ const CheckHealth = () => {
       }
     } catch (error) {
       console.error('Error booking appointment:', error);
-      alert('Failed to book appointment. Please try again.');
+      toast.error('Failed to book appointment. Please try again.');
     }
   };
 
@@ -224,6 +239,10 @@ const CheckHealth = () => {
       carouselRef.current.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
     }
   }, [currentIndex, showSuggestions, doctors.length]);
+
+  const getConsultationFee = () => {
+    return selectedDoctor ? selectedDoctor.consultationFee : 0;
+  };
 
   return (
     <div>
@@ -335,7 +354,7 @@ const CheckHealth = () => {
                       return (
                         <div className="slot-container" key={idx} title={booked ? "This slot is already booked" : ""}>
                           <button
-                            className={`slot-button ${selectedDay === day && selectedSlot === slot ? "selected" : ""} ${booked ? "booked" : ""}`}
+                            className={`slot-button ${selectedDay === day && selectedDate === date && selectedSlot === slot ? "selected" : ""} ${booked ? "booked" : ""}`}
                             onClick={() => {
                               if (!booked) {
                                 handleSlotSelect(day, date, slot);
@@ -367,6 +386,14 @@ const CheckHealth = () => {
           </div>
         )}
 
+        {/* Payment Modal */}
+        <PaymentModal 
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          amount={getConsultationFee()}
+          onPaymentSuccess={handlePaymentSuccess}
+        />
+
         {showSuccessPopup && (
           <div className="success-popup-overlay">
             <div className="success-popup">
@@ -383,11 +410,7 @@ const CheckHealth = () => {
           </div>
         )}
       </div>
-      <PaymentModal
-  isOpen={showPaymentModal}
-  onClose={() => setShowPaymentModal(false)}
-  amount={selectedDoctor ? selectedDoctor.consultationFee : 0} 
-/>
+      
       <Footer />
     </div>
   );

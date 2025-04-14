@@ -105,16 +105,16 @@ const ViewFeedback = () => {
               <div className="feedback-user-details">
                 <div className="detail-row">
                   <span className="detail-label">From:</span>
-                  <span className="detail-value">{activeFeedback.username || 'Unknown'}</span>
+                  <span className="detail-value">{activeFeedback.userName|| 'Unknown'}</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Email:</span>
-                  <span className="detail-value">{activeFeedback.email || 'N/A'}</span>
+                  <span className="detail-value">{activeFeedback.userEmail || 'N/A'}</span>
                 </div>
               </div>
               <div className="feedback-message">
                 <h3>Message</h3>
-                <p>{activeFeedback.content}</p>
+                <p>{activeFeedback.feedback}</p>
               </div>
               {activeFeedback.rating && (
                 <div className="feedback-rating">
