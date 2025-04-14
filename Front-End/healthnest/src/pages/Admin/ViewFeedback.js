@@ -71,18 +71,18 @@ const ViewFeedback = () => {
               <div className="feedback-card-header">
                 <div className="user-info">
                   <div className="user-avatar">
-                    {feedback.username ? feedback.username.charAt(0).toUpperCase() : 'U'}
+                    {feedback.userName ? feedback.userName.charAt(0).toUpperCase() : 'U'}
                   </div>
                   <div>
-                    <h3>{feedback.username || 'Unknown User'}</h3>
-                    <p className="user-email">{feedback.email || 'No Email Provided'}</p>
+                    <h3>{feedback.userName || 'Unknown User'}</h3>
+                    <p className="user-email">{feedback.userEmail || 'No Email Provided'}</p>
                   </div>
                 </div>
               </div>
               <div className="feedback-preview">
-                {feedback.content?.length > 120
-                  ? `${feedback.content.substring(0, 120)}...`
-                  : feedback.content
+                {feedback.feedback?.length > 120
+                  ? `${feedback.feedback.substring(0, 120)}...`
+                  : feedback.feedback
                 }
               </div>
               <div className="feedback-card-footer">
@@ -105,16 +105,16 @@ const ViewFeedback = () => {
               <div className="feedback-user-details">
                 <div className="detail-row">
                   <span className="detail-label">From:</span>
-                  <span className="detail-value">{activeFeedback.username || 'Unknown'}</span>
+                  <span className="detail-value">{activeFeedback.userName|| 'Unknown'}</span>
                 </div>
                 <div className="detail-row">
                   <span className="detail-label">Email:</span>
-                  <span className="detail-value">{activeFeedback.email || 'N/A'}</span>
+                  <span className="detail-value">{activeFeedback.userEmail || 'N/A'}</span>
                 </div>
               </div>
               <div className="feedback-message">
                 <h3>Message</h3>
-                <p>{activeFeedback.content}</p>
+                <p>{activeFeedback.feedback}</p>
               </div>
               {activeFeedback.rating && (
                 <div className="feedback-rating">
