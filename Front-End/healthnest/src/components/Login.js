@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css"; 
+import Footer from "./Footer";
+import Header from "./Header";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -64,6 +66,7 @@ const Login = () => {
   };
 
   return (
+    <><Header/>
     <div
       className="doctor-login-bg"
       style={{
@@ -126,6 +129,8 @@ const Login = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

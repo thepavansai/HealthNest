@@ -208,4 +208,37 @@ class DoctorServiceTest {
 
         assertThrows(DoctorNotFoundException.class, () -> doctorService.updateDoctorStatus(1L, 1));
     }
+
+    @Test
+    void testChangePassword_Success() {
+        Doctor doctor = new Doctor();
+        doctor.setPassword("oldPassword");
+        
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
+        
+        String result = doctorService.changePassword(1L, "oldPassword", "newPassword");
+        
+        assertEquals("Password changed successfully", result);
+        assertEquals("newPassword", doctor.getPassword());
+        verify(doctorRepository).save(doctor);
+    }
+
+    @Test
+    void testChangePassword_WrongOldPassword() {
+        Doctor doctor = new Doctor();
+        doctor.setPassword("correctPassword");
+        
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
+        
+        assertThrows(IllegalArgumentException.class, () -> 
+            doctorService.changePassword(1L, "wrongPassword", "newPassword"));
+    }
+
+    @Test
+    void testChangePassword_DoctorNotFound() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        assertThrows(DoctorNotFoundException.class, () -> 
+            doctorService.changePassword(1L, "oldPassword", "newPassword"));
+    }
 }

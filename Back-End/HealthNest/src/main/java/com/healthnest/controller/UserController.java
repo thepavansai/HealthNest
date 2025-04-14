@@ -121,4 +121,12 @@ public class UserController {
 	    }
 	    return ResponseEntity.ok("Your appointment is successfully booked");
 	}
+	
+	@GetMapping("/countallusers")
+	public ResponseEntity<Integer> getAllUsersCount()
+	{
+		return ResponseEntity.ok(userService.getAllUsers().size());
+	}
+	
+	
 }

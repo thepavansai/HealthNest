@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaCheckCircle, FaSearch, FaTimesCircle, FaTrash, FaUserMd, FaUserPlus } from 'react-icons/fa';
 import './ManageDoctors.css';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 const ManageDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -93,7 +95,8 @@ const ManageDoctors = () => {
     );
   }
 
-  return (
+  return (<>
+  <Header></Header>
     <div className="manage-doctors-container">
       <div className="doctors-header">
         <h1>Manage Doctors</h1>
@@ -257,6 +260,8 @@ const ManageDoctors = () => {
         </button>
       </div>
     </div>
+    <Footer></Footer>
+    </>
   );
 };
 

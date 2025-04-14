@@ -72,4 +72,25 @@ public class FeedBackServiceTest {
         assertEquals("bob@example.com", result.get(1).getUserEmail());
         assertEquals("Awesome support!", result.get(0).getFeedback());
     }
+
+    @Test
+    void testAddFeedback_InvalidRating() {
+        sampleFeedBack.setRating(6.0f);
+        assertThrows(IllegalArgumentException.class, () -> 
+            feedBackService.addFeedBack(sampleFeedBack));
+    }
+
+    @Test
+    void testAddFeedback_EmptyContent() {
+        sampleFeedBack.setFeedback("");
+        assertThrows(IllegalArgumentException.class, () -> 
+            feedBackService.addFeedBack(sampleFeedBack));
+    }
+
+    @Test
+    void testAddFeedback_NullUser() {
+        sampleFeedBack.setUser(null);
+        assertThrows(IllegalArgumentException.class, () -> 
+            feedBackService.addFeedBack(sampleFeedBack));
+    }
 }

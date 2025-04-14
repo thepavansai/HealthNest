@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
 
 const AdminLogin = () => {
   const [userName, setUserName] = useState("");
@@ -26,7 +28,8 @@ const AdminLogin = () => {
     }
   };
 
-  return (
+  return (<>
+    <Header/>
     <div
       className="admin-login-bg"
       style={{
@@ -74,6 +77,8 @@ const AdminLogin = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 
