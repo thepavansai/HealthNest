@@ -526,7 +526,3 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Example for responsive stat cards */
   gap: 20px;
 }
-
-.admin-actions-section {
-
-}
