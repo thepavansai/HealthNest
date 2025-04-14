@@ -1,33 +1,31 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Login from './pages/UserLogin.js';
+
 import SignUp from './components/Signup';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import ManageDoctors from './pages/Admin/ManageDoctors';
 import ManageUsers from './pages/Admin/ManageUsers.js';
 import View from './pages/Admin/View.js';
 import ViewFeedback from './pages/Admin/ViewFeedback.js';
-import ChangePassword from './pages/ChangePassword';
-import CheckHealth from './pages/CheckHealth';
+import CheckHealth from './pages/User/CheckHealth';
 import DeleteAccount from './pages/DeleteAccount';
 import DoctorDashboard from './pages/DoctorDashboard';
 import DoctorEditProfile from './pages/DoctorEditProfile';
 import DoctorProfile from './pages/DoctorProfile';
 import Home from './pages/Home';
-import ManageAppointments from './pages/ManageAppointments';
-import UserDashboard from './pages/UserDashboard';
-import UserEditProfile from './pages/UserEditProfile';
-import ViewAppointments from './pages/ViewAppointments';
+import UserDashboard from './pages/User/UserDashboard';
+import UserEditProfile from './pages/User/UserEditProfile';
+import ViewAppointments from './pages/User/ViewAppointments';
 import AboutUs from './components/AboutUs.js';
 
 import DoctorLogin from './pages/DoctorLogin';
 import DoctorSignup from './pages/DoctorSignUp';
-import UserLogin from './pages/UserLogin.js';
+import UserLogin from './pages/User/UserLogin.js';
 import Remedies from './components/Remedies.js';
-import UserFeedback from './pages/UserFeedback.js';
+import UserFeedback from './pages/User/UserFeedback.js';
 import DoctorViewAppointments from './pages/DoctorViewAppointments.js';
 import AdminLogin from './pages/Admin/AdminLogin.js';
-import UserChangePassword from './pages/UserChangePassword.js';
+import UserChangePassword from './pages/User/UserChangePassword.js';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
