@@ -54,15 +54,17 @@
 .profile-avatar {
   width: 40px;
   height: 40px;
+  background-color: #f0f5ff;
   border-radius: 50%;
-  overflow: hidden;
-  margin-right: 0.75rem;
-  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
 }
-.profile-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+
+.profile-avatar svg {
+  font-size: 24px;
+  color: #2563eb;
 }
 .profile-name {
   font-weight: 500;
