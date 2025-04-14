@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './PaymentModal.css';
 
+
+
 const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [cardNumber, setCardNumber] = useState('');
@@ -17,7 +19,6 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
   const [error, setError] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
 
-  // Sample list of popular banks
   const popularBanks = [
     'State Bank of India',
     'HDFC Bank',
@@ -28,31 +29,25 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
     'Bank of Baroda',
     'Canara Bank',
     'Union Bank of India',
-    'IDBI Bank'
+    'IDBI Bank',
   ];
 
-  const filteredBanks = popularBanks.filter(bank =>
+  const filteredBanks = popularBanks.filter((bank) =>
     bank.toLowerCase().includes(bankSearch.toLowerCase())
   );
 
   if (!isOpen) return null;
 
   const handleExpiryDateChange = (e) => {
-    const value = e.target.value.replace(/\D/g, '');
-    if (value.length <= 4) {
-      if (value.length === 2) {
-        setExpiryDate(value + '/');
-      } else {
-        setExpiryDate(value);
-      }
-    }
+    const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    const formatted = value.length > 2 ? `${value.slice(0, 2)}/${value.slice(2)}` : value;
+    setExpiryDate(formatted);
   };
 
   const handlePayment = async () => {
     setLoading(true);
     setError('');
 
-    // Basic validation
     if (paymentMethod === 'card') {
       if (!cardNumber || !cardName || !expiryDate || !cvv) {
         setError('Please fill in all card details');
@@ -70,24 +65,26 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
         return;
       }
     } else if (paymentMethod === 'upi' && !upiId) {
-      setError('Please enter UPI ID');
+      setError('Please enter your UPI ID');
       setLoading(false);
       return;
-    } else if (paymentMethod === 'netbanking') {
-      if (!selectedBank || !bankAccount || !ifscCode || !accountHolderName) {
-        setError('Please fill in all bank details');
-        setLoading(false);
-        return;
-      }
     }
 
     try {
       // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Call the success callback
       onPaymentSuccess();
+
+      // Display success message
+      alert('Payment successful! Thank you for your payment.');
+
+      // Close the modal
       onClose();
     } catch (err) {
       setError('Payment failed. Please try again.');
+      console.error('Payment error:', err);
     } finally {
       setLoading(false);
     }
@@ -97,7 +94,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
     try {
       await navigator.clipboard.writeText('healthnest@upi');
       setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+      setTimeout(() => setCopySuccess(false), 2000);
     } catch (err) {
       console.error('Failed to copy UPI ID:', err);
     }
@@ -155,7 +152,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
                     <label>Cardholder Name</label>
                     <input
                       type="text"
-                      placeholder="John Doe"
+                      placeholder="Mahesh"
                       value={cardName}
                       onChange={(e) => setCardName(e.target.value)}
                     />
@@ -173,7 +170,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
                     <div className="input-group">
                       <label>CVV</label>
                       <input
-                        type="text"
+                        type="password" // Mask the CVV field
                         placeholder="123"
                         value={cvv}
                         onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 3))}
@@ -185,23 +182,15 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
 
               {paymentMethod === 'upi' && (
                 <div className="upi-section">
-                  <div className="upi-qr">
-                    <div className="upi-amount">₹{amount}</div>
-                    <div className="upi-scan-text">Scan to pay</div>
-                    <div className="upi-qr-code">
-                      <img src="images/radaar.png" alt="QR Code" className="qr-code-image" />
-                    </div>
-                    <div className="upi-or">OR</div>
-                    <div className="upi-id-section">
-                      <div className="upi-id-label">Pay to UPI ID</div>
-                      <div className="upi-id-value">healthnest@upi</div>
-                      <button 
-                        className={`copy-upi-btn ${copySuccess ? 'copied' : ''}`}
-                        onClick={handleCopyUpiId}
-                      >
-                        {copySuccess ? 'Copied!' : 'Copy'}
-                      </button>
-                    </div>
+                  <div className="upi-id-section">
+                    <div className="upi-id-label">Pay to UPI ID</div>
+                    <div className="upi-id-value">healthnest@upi</div>
+                    <button 
+                      className={`copy-upi-btn ${copySuccess ? 'copied' : ''}`}
+                      onClick={handleCopyUpiId}
+                    >
+                      {copySuccess ? 'Copied!' : 'Copy'}
+                    </button>
                   </div>
                 </div>
               )}
@@ -218,43 +207,18 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
                     />
                     {bankSearch && (
                       <div className="bank-list">
-                        {filteredBanks.length > 0 ? (
-                          filteredBanks.map((bank) => (
-                            <div
-                              key={bank}
-                              className="bank-option"
-                              onClick={() => {
-                                setSelectedBank(bank);
-                                setBankSearch('');
-                              }}
-                            >
-                              {bank}
-                            </div>
-                          ))
-                        ) : (
-                          <div className="bank-not-found">
-                            <div className="bank-not-found-message">
-                              Bank not found in our list
-                            </div>
-                            <div className="enter-bank-manually">
-                              <input
-                                type="text"
-                                placeholder="Enter your bank name"
-                                value={bankSearch}
-                                onChange={(e) => {
-                                  setBankSearch(e.target.value);
-                                  setSelectedBank(e.target.value);
-                                }}
-                              />
-                              <button 
-                                className="use-this-bank"
-                                onClick={() => setBankSearch('')}
-                              >
-                                Use this bank
-                              </button>
-                            </div>
+                        {filteredBanks.map((bank) => (
+                          <div
+                            key={bank}
+                            className="bank-option"
+                            onClick={() => {
+                              setSelectedBank(bank);
+                              setBankSearch('');
+                            }}
+                          >
+                            {bank}
                           </div>
-                        )}
+                        ))}
                       </div>
                     )}
                   </div>
@@ -316,15 +280,10 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
             <span>🔒</span>
             <span>Secure Payment</span>
           </div>
-          <div className="payment-providers">
-            <img src="images/visa.png" alt="Visa" />
-            <img src="images/mastercard.png" alt="Mastercard" />
-            <img src="images/rupay.png" alt="RuPay" />
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default PaymentModal; 
+export default PaymentModal;
