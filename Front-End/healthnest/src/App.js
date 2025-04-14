@@ -8,8 +8,8 @@ import DoctorSignup from './pages/DoctorSignUp';
 import DoctorViewAppointments from './pages/DoctorViewAppointments.js';
 import FAQ from './pages/FAQ.js';
 import Home from './pages/Home';
-import UserChangePassword from './pages/UserChangePassword.js';
-import UserLogin from './pages/UserLogin.js';
+import UserChangePassword from './pages/User/UserChangePassword.js';
+import UserLogin from './pages/User/UserLogin.js';
 
 function App() {
   return (
