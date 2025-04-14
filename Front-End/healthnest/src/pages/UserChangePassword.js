@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './ChangePassword.css';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const ChangePassword = () => {
+const UserChangePassword = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -13,9 +16,8 @@ const ChangePassword = () => {
   });
   
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const doctorId = localStorage.getItem('doctorId');
+  const userId = localStorage.getItem('userId');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,12 +59,18 @@ const ChangePassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    if (!userId) {
+      toast.error("Please login to change password");
+      navigate('/login');
+      return;
+    }
+
     if (validateForm()) {
       setIsSubmitting(true);
       
       try {
         const response = await axios.put(
-          `http://localhost:8080/doctor/changepassword/${doctorId}/${formData.currentPassword}/${formData.newPassword}`
+          `http://localhost:8080/users/changepassword/${userId}/${formData.currentPassword}/${formData.newPassword}`
         );
 
         if (response.status === 200) {
@@ -72,16 +80,11 @@ const ChangePassword = () => {
             confirmPassword: ''
           });
           
-          setSuccessMessage('Your password has been successfully updated!');
-          
-          setTimeout(() => {
-            setSuccessMessage('');
-          }, 5000);
+          toast.success('Password updated successfully!');
+          setTimeout(() => navigate('/user'), 2000);
         }
       } catch (error) {
-        setErrors({
-          currentPassword: error.response?.data || 'Failed to update password. Please try again.'
-        });
+        toast.error(error.response?.data || 'Failed to update password');
       } finally {
         setIsSubmitting(false);
       }
@@ -89,20 +92,15 @@ const ChangePassword = () => {
   };
 
   return (
-    <div>
+    <>
       <Header />
       <div className="container mt-5 pt-4">
+        <ToastContainer position="top-right" />
         <div className="row justify-content-center">
           <div className="col-md-6">
             <div className="card shadow-sm border-0">
               <div className="card-body p-4">
                 <h2 className="text-center mb-4">Change Password</h2>
-                
-                {successMessage && (
-                  <div className="alert alert-success" role="alert">
-                    {successMessage}
-                  </div>
-                )}
                 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
@@ -169,7 +167,7 @@ const ChangePassword = () => {
                 </form>
                 
                 <div className="text-center mt-4">
-                  <a href="/profile" className="text-decoration-none">Back to Profile</a>
+                  <a href="/user" className="text-decoration-none">Back to Profile</a>
                 </div>
               </div>
             </div>
@@ -177,8 +175,8 @@ const ChangePassword = () => {
         </div>
       </div>
       <Footer />
-    </div>
+    </>
   );
 };
 
-export default ChangePassword;
+export default UserChangePassword;

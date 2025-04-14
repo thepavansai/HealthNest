@@ -1,6 +1,3 @@
- 
-
- 
 .dashboard-container {
   background-color: #f5f7fa;
   min-height: 100vh;
@@ -157,6 +154,11 @@
 .profile-dropdown-menu button svg {
   margin-right: 0.75rem;
   font-size: 1.1rem;
+}
+
+.profile-dropdown-menu button .fa-key {
+  margin-right: 8px;
+  color: #4a90e2;
 }
 
 .profile-dropdown-menu button:hover {

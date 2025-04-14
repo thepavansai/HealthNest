@@ -65,6 +65,4 @@ public class Doctor {
     private String hospitalName;
     private Integer status;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Appointment> appointments;
 }
