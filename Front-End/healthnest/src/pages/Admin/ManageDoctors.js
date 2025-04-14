@@ -165,7 +165,7 @@ const ManageDoctors = () => {
                             <img src={doctor.profileImage} alt={doctor.doctorName} />
                           ) : (
                             <div className="avatar-placeholder">
-                              {doctor.doctorName?.charAt(0)?.toUpperCase()}
+                              {doctor.doctorName?.charAt(4)?.toUpperCase()}
                             </div>
                           )}
                         </div>
@@ -177,10 +177,11 @@ const ManageDoctors = () => {
                     </div>
                     <div className="flip-card-back">
                       <h3>{doctor.doctorName}</h3>
-                      <p><span className="detail-label">Email:</span> {doctor.emailId}</p>
-                      <p><span className="detail-label">Phone:</span> {doctor.docPhnNo}</p>
-                      <p><span className="detail-label">Experience:</span> {doctor.experience} years</p>
-                      <p><span className="detail-label">Fee:</span> ${doctor.consultationFee}</p>
+                      <p><span className="label-email">Email:</span> {doctor.emailId}</p>
+<p><span className="label-phone">Phone:</span> {doctor.docPhnNo}</p>
+<p><span className="label-experience">Experience:</span> {doctor.experience} years</p>
+<p><span className="label-fee">Fee:</span> ${doctor.consultationFee}</p>
+
                     </div>
                   </div>
                 </div>
