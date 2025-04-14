@@ -57,4 +57,9 @@ public class AppointmentController {
         Appointment updatedAppointment = appointmentService.rejectAppointment(appointmentId, doctorId);
         return ResponseEntity.ok(updatedAppointment);
     }
+    @GetMapping("/countall")
+	public ResponseEntity<Integer> getAllDoctorsCount()
+	{
+		return ResponseEntity.ok(appointmentService.getAllAppointments().size());
+	}
 }

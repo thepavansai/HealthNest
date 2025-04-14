@@ -84,5 +84,10 @@ public class DoctorController {
         DoctorDTO updatedDoctorDTO = modelMapper.map(updatedDoctor, DoctorDTO.class);
         return ResponseEntity.ok(updatedDoctorDTO);
     }
+    @GetMapping("/countalldoctors")
+	public ResponseEntity<Integer> getAllDoctorsCount()
+	{
+		return ResponseEntity.ok(doctorService.getAllDoctors().size());
+	}
     
 }
