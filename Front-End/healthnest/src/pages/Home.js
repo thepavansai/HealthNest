@@ -9,6 +9,8 @@ import DoctorCarousel from "../components/DoctorCarousel";
 import { getHealthTips } from "../services/getHealthTips";
 import { getStatistics } from "../services/getStatistics";
 import ContentCarousel from "../components/ContentCarousel";
+import HappyPatients from "../components/HappyPatients";
+
 const Home = () => {
   const [statistics, setStatistics] = useState({
     doctors: 0,
@@ -148,6 +150,8 @@ const Home = () => {
               )}
             </motion.div>
           </section>
+
+          <HappyPatients />
 
           <section className="doctor-section">
             <DoctorCarousel />

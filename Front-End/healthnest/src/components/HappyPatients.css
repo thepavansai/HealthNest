@@ -1,0 +1,43 @@
+.happy-patients-section {
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+}
+
+.feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.feedback-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.feedback-message {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.feedback-rating {
+  color: #f4b400; /* Gold color for stars */
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.feedback-user {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Gold Star Styling */
+.gold-star {
+  color: #f4b400; /* Gold color */
+  font-size: 1.2rem;
+  margin-right: 2px;
+}
