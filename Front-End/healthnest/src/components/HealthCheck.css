@@ -1,0 +1,11 @@
+.btn-primary {
+  background: linear-gradient(to right, #4f46e5, #755ee5); /* Gradient from #4f46e5 to a slightly lighter shade */
+  color: white; /* Ensure text is readable on the gradient */
+  border: none; /* Remove the default border */
+  /* Add any other styles you want for the button */
+}
+
+.btn-primary:hover {
+  /* Slightly darken the gradient on hover */
+  background: linear-gradient(to right, #3a34a5, #5a4aa5);
+}

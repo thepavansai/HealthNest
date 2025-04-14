@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaStar, FaRegStar } from 'react-icons/fa';
 import './ViewAppointments.css';
-import Header from "../components/Header"
-import Footer from "../components/Footer"
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 const ViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -204,8 +204,8 @@ const ViewAppointments = () => {
   type="text"
   placeholder="Search by doctor or description"
   value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-  style={{ textAlign: searchTerm ? 'left' : 'center' }}
+  onChange={(e) => setSearchTerm(e.target.value)} 
+  style={{ textAlign: 'center' }}
 />
 
         </div>

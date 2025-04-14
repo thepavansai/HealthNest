@@ -20,12 +20,17 @@ const AdminLogin = () => {
       setMessage("Login successful! Redirecting...");
       localStorage.setItem("adminId", "admin");
       localStorage.setItem("userName", "Admin");
-
       setTimeout(() => navigate("/admin"), 1000);
     } else {
       setIsError(true);
       setMessage("Invalid username or password.");
     }
+  };
+
+  // Add this function to components that have logout functionality
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
   };
 
   return (<>

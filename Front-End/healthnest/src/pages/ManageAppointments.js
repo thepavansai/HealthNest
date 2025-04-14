@@ -6,38 +6,7 @@ import './ManageAppointments.css';
 
 const ManageAppointments = () => {
   const [appointments, setAppointments] = useState([
-    {
-      id: 1,
-      doctorName: "Dr. Sarah Johnson",
-      specialization: "Cardiologist",
-      date: "2023-06-15",
-      time: "10:00 AM",
-      status: "upcoming",
-    },
-    {
-      id: 2,
-      doctorName: "Dr. Michael Chen",
-      specialization: "Dermatologist",
-      date: "2023-06-10",
-      time: "2:30 PM",
-      status: "completed",
-    },
-    {
-      id: 3,
-      doctorName: "Dr. Emily Rodriguez",
-      specialization: "Pediatrician",
-      date: "2023-06-20",
-      time: "11:15 AM",
-      status: "upcoming",
-    },
-    {
-      id: 4,
-      doctorName: "Dr. James Wilson",
-      specialization: "Orthopedist",
-      date: "2023-05-28",
-      time: "3:45 PM",
-      status: "cancelled",
-    }
+
   ]);
 
   const [filter, setFilter] = useState('all');

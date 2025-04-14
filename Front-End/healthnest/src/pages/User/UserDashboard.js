@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 import './UserDashboard.css';
 import axios from 'axios';
 import { FaCalendarCheck, FaUserEdit, FaComment, FaSignOutAlt, FaHeartbeat, FaClipboardList, FaKey } from 'react-icons/fa';
@@ -56,16 +56,16 @@ const UserDashboard = () => {
     return () => document.removeEventListener('click', closeDropdown);
   }, [dropdownOpen]);
 
-  const handleHealthCheck = () => navigate('/suggestions');
-  const handleEditProfile = () => navigate('/editprofile');
-  const handleFeedback = () => navigate('/user/feedback');
+  const handleHealthCheck = () => navigate('remedies');
+  const handleEditProfile = () => navigate('profile');
+  const handleFeedback = () => navigate('feedback');
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
   };
-  const handleBookAppointment = () => navigate('/checkhealth');
-  const handleViewAppointments = () => navigate('/viewappointments');
-  const handleChangePassword = () => navigate('/user/change-password');
+  const handleBookAppointment = () => navigate('check-health');
+  const handleViewAppointments = () => navigate('appointments');
+  const handleChangePassword = () => navigate('change-password');
 
   if (loading) {
     return (

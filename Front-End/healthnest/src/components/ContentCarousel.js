@@ -52,22 +52,8 @@ const ContentCarousel = ({ items, type }) => {
         backgroundColor: 'rgba(255, 255, 255, 0.9)', // Optional: Background color for the carousel container
       }}
     >
-      <button 
-        className="btn btn-light position-absolute start-0 top-50 translate-middle-y z-1 rounded-circle shadow-sm"
-        onClick={prevSlide}
-        style={{ 
-          left: '-20px',
-          width: '40px',
-          height: '40px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'rgba(255, 255, 255, 0.9)',
-          border: 'none',
-          transition: 'all 0.3s ease'
-        }}
-      >
-        <FaChevronLeft />
+      <button className="carousel-arrow left" onClick={prevSlide}>
+        &#8249; {/* Left arrow symbol */}
       </button>
       
       <div className="row g-4">
@@ -126,22 +112,11 @@ const ContentCarousel = ({ items, type }) => {
         ))}
       </div>
 
-      <button 
-        className="btn btn-light position-absolute end-0 top-50 translate-middle-y z-1 rounded-circle shadow-sm"
-        onClick={nextSlide}
-        style={{ 
-          right: '-20px',
-          width: '40px',
-          height: '40px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'rgba(35, 126, 123, 0.6)',
-          border: 'none',
-          transition: 'all 0.3s ease'
-        }}
-      >
-        <FaChevronRight />
+      <button className="carousel-arrow left" onClick={prevSlide}>
+        &#8249; {/* Left arrow symbol */}
+      </button>
+      <button className="carousel-arrow right" onClick={nextSlide}>
+        &#8250; {/* Right arrow symbol */}
       </button>
 
       <div className="d-flex justify-content-center mt-4">

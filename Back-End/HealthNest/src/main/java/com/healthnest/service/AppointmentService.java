@@ -109,6 +109,11 @@ public class AppointmentService {
 	                .filter(appointment -> appointment.getAppointmentDate().isEqual(todaydate))
 	                .collect(Collectors.toList());
 	    }
+
+	public String changeStatus(Integer appointmentId,String setStatus) {
+		appointmentRepository.findById(appointmentId).get().setAppointmentStatus(setStatus);
+		return "Sucessfully Completed";
+	}
 		
 	}
 

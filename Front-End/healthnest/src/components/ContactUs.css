@@ -1,0 +1,99 @@
+.contact-container {
+    padding: 4rem 2rem;
+    background: linear-gradient(to right, #f0fdfa, #ffffff);
+    font-family: 'Segoe UI', sans-serif;
+    color: #5956f4;
+  }
+  
+  .contact-title {
+    text-align: center;
+    font-size: 3rem;
+    color: #5956f4;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contact-subtitle {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #444;
+    margin-bottom: 2rem;
+  }
+  
+  .intro-section {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 1rem 2rem;
+    background: #e0f7fa;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  }
+  
+  .icon-big {
+    font-size: 3rem;
+    color: #5956f4;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  
+  .contact-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 15px rgba(0, 150, 136, 0.1);
+    transition: transform 0.2s ease-in-out;
+    text-align: center;
+  }
+  
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 150, 136, 0.15);
+  }
+  
+  .contact-card h3 {
+    font-size: 1.25rem;
+    color: #5956f4;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contact-card p {
+    font-size: 0.95rem;
+    color: #444;
+  }
+  
+  .icon {
+    font-size: 2rem;
+    color: #5956f4;
+    margin-bottom: 10px;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .social-icons a {
+    color: #5956f4;
+    font-size: 1.6rem;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .social-icons a:hover {
+    color: #004d40;
+  }
+  
+  .contact-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #ccc;
+    text-align: center;
+    color: #777;
+    font-size: 0.9rem;
+  }
+  

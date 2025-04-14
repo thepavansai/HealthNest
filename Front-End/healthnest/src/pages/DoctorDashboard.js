@@ -98,10 +98,10 @@ const DoctorDashboard = () => {
 
         { }
         <div className="dashboard-grid">
+          {/* Today's Appointments Card */}
           <div className="dashboard-card patient-overview-card">
             <div className="card-header">
               <h3>Today's Appointments</h3>
-              <a href='/doctor/viewappointments'>View All</a>
             </div>
             <div className="card-content">
               {appointments.length > 0 ? (
@@ -117,11 +117,22 @@ const DoctorDashboard = () => {
               )}
             </div>
           </div>
-              {}
-         
-         {}
 
-
+          {/* View All Appointments Card */}
+          <div className="dashboard-card view-all-appointments-card">
+            <div className="card-header">
+              <h3>View All Appointments</h3>
+            </div>
+            <div className="card-content">
+              <p>Check all your upcoming and past appointments.</p>
+              <button
+                className="view-all-button"
+                onClick={() => navigate('/doctor/viewappointments')}
+              >
+                View All
+              </button>
+            </div>
+          </div>
         </div>
       </main>
 

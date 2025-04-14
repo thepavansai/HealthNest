@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,4 +63,9 @@ public class AppointmentController {
 	{
 		return ResponseEntity.ok(appointmentService.getAllAppointments().size());
 	}
+    @PatchMapping("/{appointmentId}/status/{setStatus}")
+    public ResponseEntity<String> changeStatus(@PathVariable Integer appointmentId,@PathVariable String setStatus)
+    {
+    	return ResponseEntity.ok(appointmentService.changeStatus(appointmentId,setStatus));
+    }
 }
