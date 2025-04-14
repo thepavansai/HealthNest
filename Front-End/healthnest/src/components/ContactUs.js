@@ -1,6 +1,6 @@
 import React from 'react';
 import './ContactUs.css';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, HeartPulse, Users, MessageCircle, Globe, Star } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, HeartPulse, Users,Star } from 'lucide-react';
 import Header from './Header';
 import Footer from './Footer';
 const ContactUs = () => {

@@ -8,7 +8,6 @@ import ManageUsers from './pages/Admin/ManageUsers.js';
 import View from './pages/Admin/View.js';
 import ViewFeedback from './pages/Admin/ViewFeedback.js';
 import CheckHealth from './pages/User/CheckHealth';
-import DeleteAccount from './pages/DeleteAccount';
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorEditProfile from './pages/Doctor/DoctorEditProfile';
 import DoctorProfile from './pages/Doctor/DoctorProfile';
@@ -17,7 +16,7 @@ import UserDashboard from './pages/User/UserDashboard';
 import UserEditProfile from './pages/User/UserEditProfile';
 import ViewAppointments from './pages/User/ViewAppointments';
 import AboutUs from './components/AboutUs.js';
-
+import ChangePassword from './pages/Doctor/ChangePassword';
 import DoctorLogin from './pages/Doctor/DoctorLogin';
 import DoctorSignup from './pages/Doctor/DoctorSignUp';
 import UserLogin from './pages/User/UserLogin.js';
@@ -27,6 +26,8 @@ import DoctorViewAppointments from './pages/Doctor/DoctorViewAppointments.js';
 import AdminLogin from './pages/Admin/AdminLogin.js';
 import UserChangePassword from './pages/User/UserChangePassword.js';
 import ProtectedRoute from './components/ProtectedRoute';
+import Faq from './components/FAQ.js';
+import ContactUs from './components/ContactUs.js';
 import IncomeDetails from './pages/Doctor/IncomeDetails.js';
 
 function App() {
@@ -37,7 +38,8 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/aboutus" element={<AboutUs />} />
-          
+          <Route path='/faq' element={<Faq />} />
+          <Route path='/contactus'element={<ContactUs/>} />
           {/* Authentication Routes */}
           <Route path="/login" element={<UserLogin />} />
           <Route path="/signup" element={<SignUp />} />
@@ -71,11 +73,6 @@ function App() {
               <UserChangePassword />
             </ProtectedRoute>
           } />
-          <Route path="/user/delete-account" element={
-            <ProtectedRoute userType="user">
-              <DeleteAccount />
-            </ProtectedRoute>
-          } />
           <Route path="/user/check-health" element={
             <ProtectedRoute userType="user">
               <CheckHealth />
@@ -106,6 +103,11 @@ function App() {
           <Route path="/doctor/profile" element={
             <ProtectedRoute userType="doctor">
               <DoctorEditProfile />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctor/change-password" element={
+            <ProtectedRoute userType="doctor">
+              <ChangePassword />
             </ProtectedRoute>
           } />
           <Route path="/doctor/profile/view" element={
