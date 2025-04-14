@@ -207,18 +207,30 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
                     />
                     {bankSearch && (
                       <div className="bank-list">
-                        {filteredBanks.map((bank) => (
+                        {filteredBanks.length > 0 ? (
+                          filteredBanks.map((bank) => (
+                            <div
+                              key={bank}
+                              className="bank-option"
+                              onClick={() => {
+                                setSelectedBank(bank);
+                                setBankSearch('');
+                              }}
+                            >
+                              {bank}
+                            </div>
+                          ))
+                        ) : (
                           <div
-                            key={bank}
                             className="bank-option"
                             onClick={() => {
-                              setSelectedBank(bank);
+                              setSelectedBank(bankSearch);
                               setBankSearch('');
                             }}
                           >
-                            {bank}
+                            Other Bank: {bankSearch}
                           </div>
-                        ))}
+                        )}
                       </div>
                     )}
                   </div>

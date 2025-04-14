@@ -71,18 +71,18 @@ const ViewFeedback = () => {
               <div className="feedback-card-header">
                 <div className="user-info">
                   <div className="user-avatar">
-                    {feedback.username ? feedback.username.charAt(0).toUpperCase() : 'U'}
+                    {feedback.userName ? feedback.userName.charAt(0).toUpperCase() : 'U'}
                   </div>
                   <div>
-                    <h3>{feedback.username || 'Unknown User'}</h3>
-                    <p className="user-email">{feedback.email || 'No Email Provided'}</p>
+                    <h3>{feedback.userName || 'Unknown User'}</h3>
+                    <p className="user-email">{feedback.userEmail || 'No Email Provided'}</p>
                   </div>
                 </div>
               </div>
               <div className="feedback-preview">
-                {feedback.content?.length > 120
-                  ? `${feedback.content.substring(0, 120)}...`
-                  : feedback.content
+                {feedback.feedback?.length > 120
+                  ? `${feedback.feedback.substring(0, 120)}...`
+                  : feedback.feedback
                 }
               </div>
               <div className="feedback-card-footer">

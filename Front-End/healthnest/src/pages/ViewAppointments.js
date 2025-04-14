@@ -204,8 +204,8 @@ const ViewAppointments = () => {
   type="text"
   placeholder="Search by doctor or description"
   value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-  style={{ textAlign: searchTerm ? 'left' : 'center' }}
+  onChange={(e) => setSearchTerm(e.target.value)} 
+  style={{ textAlign: 'center' }}
 />
 
         </div>
