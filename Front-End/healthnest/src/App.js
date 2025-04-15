@@ -34,20 +34,20 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* Public Routes */}
+          {}
           <Route path="/" element={<Home />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path='/faq' element={<Faq />} />
           <Route path='/terms' element={<TermsOfService/>}/>
           <Route path='/contactus'element={<ContactUs/>} />
-          {/* Authentication Routes */}
+          {}
           <Route path="/login" element={<UserLogin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
           <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* Protected User Routes */}
+          {}
           <Route path="/user" element={
             <ProtectedRoute userType="user">
               <UserDashboard />
@@ -84,7 +84,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Protected Doctor Routes */}
+          {}
           <Route path="/doctor/dashboard" element={
             <ProtectedRoute userType="doctor">
               <DoctorDashboard />
@@ -111,7 +111,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Protected Admin Routes */}
+        
           <Route path="/admin" element={
             <ProtectedRoute userType="admin">
               <AdminDashboard />

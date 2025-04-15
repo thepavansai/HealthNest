@@ -27,7 +27,7 @@ const DoctorEditProfile = () => {
 
   useEffect(() => {
     
-    axios.get(`http://localhost:8080/doctor/profile/${doctorId}`) // replace with actual endpoint
+    axios.get(`http://localhost:8080/doctor/profile/${doctorId}`) 
       .then(res => {
         const data = res.data;
         console.log(data)

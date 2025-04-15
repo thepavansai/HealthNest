@@ -70,7 +70,7 @@ const TermsOfService = () => {
           <p>solely for your personal, non-commercial use or internal business purpose.</p>
         </section>
 
-        {/* You can add additional sections here following the same pattern */}
+        {}
         
         <section className="terms-section" id="prohibited-activities">
           <h2 className="section-title">3. PROHIBITED ACTIVITIES</h2>

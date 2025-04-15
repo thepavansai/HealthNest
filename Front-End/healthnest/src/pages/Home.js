@@ -59,7 +59,7 @@ const Home = () => {
         });
     } catch (err) {
         console.error('Error fetching statistics:', err);
-        // Fallback to default values if API fails
+        
         setStatistics({
             doctors: 100,
             patients: 5000,

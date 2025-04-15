@@ -73,7 +73,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
     }
 
     try {
-      // Simulate payment processing
+      
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       onPaymentSuccess();
@@ -168,7 +168,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
                     <div className="input-group">
                       <label>CVV</label>
                       <input
-                        type="password" // Mask the CVV field
+                        type="password" 
                         placeholder="123"
                         value={cvv}
                         onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 3))}

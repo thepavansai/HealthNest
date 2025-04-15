@@ -48,7 +48,7 @@ const DoctorImage = styled('img')`
   height: 200px;
   object-fit: cover;
   border-radius: 16px 16px 0 0;
-  border-bottom: 3px solid #4f46e5; /* Use the specified color */
+  border-bottom: 3px solid #4f46e5; 
 `;
 
 const DoctorCarousel = () => {
@@ -71,7 +71,7 @@ const DoctorCarousel = () => {
 
   const getDoctorImage = (doctor) => {
     const gender = doctor.gender === "FEMALE" ? "female" : "male";
-    const imageCount = 5; // Total number of images per gender
+    const imageCount = 5; 
 
     let imageNumber;
     if (gender === "female") {
@@ -114,14 +114,14 @@ const DoctorCarousel = () => {
       p: 3,
       background: '#f2f0fa',
       borderRadius: 3,
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // More noticeable shadow
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
     }}>
       <Typography
         variant="h5"
         sx={{
           textAlign: 'center',
           mb: 3,
-          color: '#4f46e5', // Use the specified color
+          color: '#4f46e5', 
           fontWeight: 600,
           display: 'flex',
           alignItems: 'center',
@@ -129,7 +129,7 @@ const DoctorCarousel = () => {
           gap: 1,
         }}
       >
-        <MedicalServices sx={{ fontSize: 28, color: '#4f46e5' }} /> {/* Use the specified color */}
+        <MedicalServices sx={{ fontSize: 28, color: '#4f46e5' }} /> {}
         Available Doctors
       </Typography>
 
@@ -158,12 +158,12 @@ const DoctorCarousel = () => {
                 }}
               />
               <CardContent sx={{ p: 2, textAlign: 'center' }}>
-                <Typography variant="h6" sx={{ mb: 1, color: '#4f46e5', fontWeight: 500 }}> {/* Use the specified color */}
+                <Typography variant="h6" sx={{ mb: 1, color: '#4f46e5', fontWeight: 500 }}> {}
                   {doctor.doctorName}
                 </Typography>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.5, gap: 0.5 }}>
-                  <LocalHospital sx={{ color: '#4f46e5', fontSize: 18 }} /> {/* Use the specified color */}
+                  <LocalHospital sx={{ color: '#4f46e5', fontSize: 18 }} /> {}
                   <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
                     {doctor.hospitalName}
                   </Typography>
@@ -215,7 +215,7 @@ const CustomDot = ({ onClick, ...rest }) => {
       className={active ? "active" : "inactive"}
       onClick={() => onClick()}
       style={{
-        background: active ? '#4f46e5' : '#E0E0E0', // Use the specified color
+        background: active ? '#4f46e5' : '#E0E0E0', 
         width: '8px',
         height: '8px',
         borderRadius: '50%',

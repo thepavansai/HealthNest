@@ -10,7 +10,7 @@ const IncomeDetails = () => {
   const [totalIncome, setTotalIncome] = useState(0);
   const [estimatedPayout, setEstimatedPayout] = useState(0);
   const [consultationFee, setConsultationFee] = useState(0);
-  const [activeFilter, setActiveFilter] = useState('earned'); // 'earned' or 'pending'
+  const [activeFilter, setActiveFilter] = useState('earned'); 
 
   const doctorId = localStorage.getItem('doctorId');
 
@@ -30,7 +30,7 @@ const IncomeDetails = () => {
         const response = await axios.get(`http://localhost:8080/appointments/doctor/${doctorId}`);
         const allAppointments = response.data || [];
 
-        // Filter appointments into Completed and Upcoming
+        
         const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
           || appointment.appointmentStatus === 'Reviewed'
         );
@@ -39,7 +39,7 @@ const IncomeDetails = () => {
         setCompletedAppointments(completed);
         setUpcomingAppointments(upcoming);
 
-        // Calculate total income and estimated payout
+        
         const income = completed.length * consultationFee;
         const payout = upcoming.length * consultationFee;
 
@@ -50,7 +50,7 @@ const IncomeDetails = () => {
       }
     };
 
-    // Fetch doctor profile and appointments
+    
     fetchDoctorProfile().then(fetchAppointments);
   }, [doctorId, consultationFee]);
 
@@ -61,7 +61,7 @@ const IncomeDetails = () => {
       <main className="income-details-container">
         <h1>Income Details</h1>
 
-        {/* Filter Buttons */}
+        {}
         <div className="filter-buttons">
           <button
             className={`filter-button ${activeFilter === 'earned' ? 'active' : ''}`}
@@ -77,7 +77,7 @@ const IncomeDetails = () => {
           </button>
         </div>
 
-        {/* Earned Payments Section */}
+        {}
         {activeFilter === 'earned' && (
           <section className="income-section">
             <h2>Total Earned Payments</h2>
@@ -98,7 +98,7 @@ const IncomeDetails = () => {
           </section>
         )}
 
-        {/* Pending Payments Section */}
+        {}
         {activeFilter === 'pending' && (
           <section className="income-section">
             <h2>Pending Payments</h2>

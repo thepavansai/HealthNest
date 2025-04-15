@@ -63,7 +63,7 @@ const DoctorViewAppointments = () => {
       if (response.status === 200) {
         alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
 
-        // Update the state of appointments immediately
+        
         setAppointments((prevAppointments) =>
           prevAppointments.map((appointment) =>
             appointment.appointmentId === appointmentId
@@ -135,7 +135,7 @@ const DoctorViewAppointments = () => {
       if (response.status === 200) {
         alert('Appointment marked as completed successfully!');
 
-        // Update the state of appointments immediately
+        
         setAppointments((prevAppointments) =>
           prevAppointments.map((appointment) =>
             appointment.appointmentId === appointmentId
@@ -144,13 +144,13 @@ const DoctorViewAppointments = () => {
           )
         );
 
-        // Update the completedAppointments state
+        
         setCompletedAppointments((prevCompleted) => [
           ...prevCompleted,
           appointments.find((appointment) => appointment.appointmentId === appointmentId),
         ]);
 
-        // Remove the appointment from upcomingAppointments
+        
         setUpcomingAppointments((prevUpcoming) =>
           prevUpcoming.filter((appointment) => appointment.appointmentId !== appointmentId)
         );
@@ -169,7 +169,7 @@ const DoctorViewAppointments = () => {
       case 'upcoming': return 'status-upcoming';
       case 'cancelled': return 'status-cancelled';
       case 'pending': return 'status-pending';
-      case 'reviewed': return 'status-reviewed'; // Add reviewed status
+      case 'reviewed': return 'status-reviewed'; 
       default: return '';
     }
   };

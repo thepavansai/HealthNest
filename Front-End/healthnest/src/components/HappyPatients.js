@@ -12,7 +12,7 @@ const HappyPatients = () => {
       try {
         setLoading(true);
         const response = await axios.get("http://localhost:8080/feedback/all");
-        // Access feedback data directly from response.data
+        
         const filteredFeedbacks = response.data.filter(
           (feedback) => feedback.rating === 4 || feedback.rating === 5
         );

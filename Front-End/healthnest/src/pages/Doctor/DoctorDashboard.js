@@ -47,13 +47,13 @@ const DoctorDashboard = () => {
 
   useEffect(() => {
     if (doctorId) {
-      // Fetch doctor profile to get consultation fee
+      
       axios.get(`http://localhost:8080/doctor/profile/${doctorId}`)
         .then(res => {
           const doctorProfile = res.data || {};
           setDoctorData(doctorProfile);
 
-          // Fetch appointments after getting consultation fee
+          
           fetchAppointments(doctorProfile.consultationFee);
         })
         .catch(err => {
@@ -71,7 +71,7 @@ const DoctorDashboard = () => {
       setTotalAppointments(allAppointments.length);
       setAppointments(allAppointments);
 
-      // Filter appointments into Completed and Upcoming
+      
       const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
           || appointment.appointmentStatus === 'Reviewed'
         );
@@ -82,7 +82,7 @@ const DoctorDashboard = () => {
       setCompletedAppointments(completed);
       setUpcomingAppointments(upcoming);
 
-      // Calculate total income and estimated payout using consultation fee
+      
       const income = completed.length  * consultationFee;
       const payout = upcoming.length * consultationFee;
 
@@ -102,7 +102,7 @@ const DoctorDashboard = () => {
     setShowIncome(prev => !prev);
   };
 
-  // Prepare data for CSV export
+  
   const csvHeaders = [
     { label: 'Patient Name', key: 'userName' },
     { label: 'Date', key: 'appointmentDate' },
@@ -116,10 +116,10 @@ const DoctorDashboard = () => {
     appointmentDate: appointment.appointmentDate,
     appointmentTime: appointment.appointmentTime,
     appointmentStatus: appointment.appointmentStatus,
-    fee: doctorData.consultationFee, // Use consultationFee from doctorData
+    fee: doctorData.consultationFee, 
   }));
 
-  // Generate PDF
+  
   const generatePDF = () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -127,16 +127,16 @@ const DoctorDashboard = () => {
     const lineHeight = 10;
     let y = 20;
 
-    // Set font to Times New Roman
+    
     doc.setFont('times', 'normal');
 
-    // Title
+    
     doc.setFontSize(14);
     doc.setFont('times', 'bold');
     doc.text('Appointments Report', pageWidth / 2, y, { align: 'center' });
     y += lineHeight * 2;
 
-    // Table Headers
+    
     doc.setFontSize(12);
     doc.setFont('times', 'bold');
     doc.text('S.No', margin, y);
@@ -147,7 +147,7 @@ const DoctorDashboard = () => {
     doc.text('Fee', margin + 170, y);
     y += lineHeight;
 
-    // Table Data
+    
     doc.setFont('times', 'normal');
     appointments.forEach((appointment, index) => {
       if (y > doc.internal.pageSize.getHeight() - margin) {
@@ -164,7 +164,7 @@ const DoctorDashboard = () => {
       y += lineHeight;
     });
 
-    // Save the PDF
+    
     doc.save('appointments_report.pdf');
   };
 
@@ -208,7 +208,7 @@ const DoctorDashboard = () => {
         </div>
 
         <div className="dashboard-grid">
-          {/* Today's Appointments Card */}
+          {}
           <div className="dashboard-card patient-overview-card">
             <div className="card-header">
               <h3>Today's Appointments</h3>
@@ -228,7 +228,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
 
-          {/* View All Appointments Card */}
+          {}
           <div className="dashboard-card view-all-appointments-card">
             <div className="card-header">
               <h3>View All Appointments</h3>
@@ -244,7 +244,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
 
-          {/* Total Income Card */}
+          {}
           <div className="dashboard-card income-card">
             <div className="card-header">
               <h3>Total Earned Payments</h3>
@@ -270,7 +270,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
 
-          {/* Export Data Card */}
+          {}
           <div className="dashboard-card export-data-card">
             <div className="card-header">
               <h3>Export Data</h3>

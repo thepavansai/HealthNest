@@ -18,7 +18,7 @@ const UserFeedback = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(null); // To handle errors
+  const [error, setError] = useState(null); 
   const navigate = useNavigate();
 
   useEffect(() => {
