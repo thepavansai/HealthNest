@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -67,7 +68,7 @@ public class UserServiceTest {
 
     @Test
     void testCreateUser_UserAlreadyExists() {
-        when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
+        lenient().when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
 
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> userService.createUser(sampleUser));
@@ -80,9 +81,10 @@ public class UserServiceTest {
         String originalPassword = sampleUser.getPassword(); // Store original password
         String encodedPassword = "encodedPassword";
         
-        when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.empty());
+        lenient().when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.empty());
         // Mock the encode call with the original password
-        when(bCryptPasswordEncoder.encode(eq(originalPassword))).thenReturn(encodedPassword);
+        lenient().when(bCryptPasswordEncoder.encode(eq(originalPassword))).thenReturn(encodedPassword);
+        when(bCryptPasswordEncoder.encode(anyString())).thenReturn("encodedPassword");
         
         // Act
         userService.createUser(sampleUser);
@@ -150,8 +152,8 @@ public class UserServiceTest {
 
     @Test
     void testLogin_Success() {
-        when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
-        when(bCryptPasswordEncoder.matches("password123", sampleUser.getPassword())).thenReturn(true);
+        lenient().when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
+        lenient().when(bCryptPasswordEncoder.matches("password123", sampleUser.getPassword())).thenReturn(true);
 
         String result = userService.login(sampleUser.getEmail(), "password123");
 
@@ -161,8 +163,8 @@ public class UserServiceTest {
 
     @Test
     void testLogin_InvalidPassword() {
-        when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
-        when(bCryptPasswordEncoder.matches("wrongPassword", sampleUser.getPassword())).thenReturn(false);
+        lenient().when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
+        lenient().when(bCryptPasswordEncoder.matches("wrongPassword", sampleUser.getPassword())).thenReturn(false);
 
         Exception exception = assertThrows(AuthenticationException.class,
                 () -> userService.login(sampleUser.getEmail(), "wrongPassword"));
@@ -173,7 +175,7 @@ public class UserServiceTest {
 
     @Test
     void testLogin_UserNotFound() {
-        when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
+        lenient().when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(UserNotFoundException.class,
                 () -> userService.login("nonexistent@example.com", "password"));
@@ -189,8 +191,8 @@ public class UserServiceTest {
         updatedUser.setEmail("jane@example.com");
         updatedUser.setGender(Gender.FEMALE);
 
-        when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
-        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+        lenient().when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
+        lenient().when(userRepository.save(any(User.class))).thenReturn(updatedUser);
 
         boolean result = userService.editProfile(updatedUser, 1);
 
@@ -206,7 +208,7 @@ public class UserServiceTest {
     void testEditProfile_UserNotFound() {
         User updatedUser = new User();
 
-        when(userRepository.findById(999)).thenReturn(Optional.empty());
+        lenient().when(userRepository.findById(999)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,
                 () -> userService.editProfile(updatedUser, 999));
@@ -220,7 +222,7 @@ public class UserServiceTest {
         appointment.setAppointmentId(1);
         appointment.setAppointmentStatus("Scheduled");
 
-        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        lenient().when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
 
         userService.cancelAppointment(1);
 
@@ -229,7 +231,7 @@ public class UserServiceTest {
 
     @Test
     void testCancelAppointment_AppointmentNotFound() {
-        when(appointmentRepository.findById(999)).thenReturn(Optional.empty());
+        lenient().when(appointmentRepository.findById(999)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class,
                 () -> userService.cancelAppointment(999));
@@ -237,10 +239,10 @@ public class UserServiceTest {
 
     @Test
     void testChangePassword_Success() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
-        when(bCryptPasswordEncoder.matches("password123", sampleUser.getPassword())).thenReturn(true);
-        when(bCryptPasswordEncoder.encode("newPassword")).thenReturn("encodedNewPassword");
-        when(userRepository.save(sampleUser)).thenReturn(sampleUser);
+        lenient().when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
+        lenient().when(bCryptPasswordEncoder.matches("password123", sampleUser.getPassword())).thenReturn(true);
+        lenient().when(bCryptPasswordEncoder.encode("newPassword")).thenReturn("encodedNewPassword");
+        lenient().when(userRepository.save(sampleUser)).thenReturn(sampleUser);
 
         boolean result = userService.changePassword(1, "password123", "newPassword");
 
@@ -251,8 +253,8 @@ public class UserServiceTest {
 
     @Test
     void testChangePassword_IncorrectOldPassword() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
-        when(bCryptPasswordEncoder.matches("wrongPassword", sampleUser.getPassword())).thenReturn(false);
+        lenient().when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
+        lenient().when(bCryptPasswordEncoder.matches("wrongPassword", sampleUser.getPassword())).thenReturn(false);
 
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> userService.changePassword(1, "wrongPassword", "newPassword"));
@@ -263,7 +265,7 @@ public class UserServiceTest {
 
     @Test
     void testChangePassword_UserNotFound() {
-        when(userRepository.findById(999)).thenReturn(Optional.empty());
+        lenient().when(userRepository.findById(999)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,
                 () -> userService.changePassword(999, "password123", "newPassword"));
@@ -271,7 +273,7 @@ public class UserServiceTest {
 
     @Test
     void testDeleteAccount_Success() {
-        when(userRepository.existsById(1)).thenReturn(true);
+        lenient().when(userRepository.existsById(1)).thenReturn(true);
         doNothing().when(userRepository).deleteById(1);
 
         userService.deleteAccount(1);
@@ -281,7 +283,7 @@ public class UserServiceTest {
 
     @Test
     void testDeleteAccount_UserNotFound() {
-        when(userRepository.existsById(999)).thenReturn(false);
+        lenient().when(userRepository.existsById(999)).thenReturn(false);
 
         assertThrows(UserNotFoundException.class,
                 () -> userService.deleteAccount(999));
@@ -293,7 +295,7 @@ public class UserServiceTest {
     void testBookAppointment_Success() {
         Appointment appointment = new Appointment();
         appointment.setAppointmentId(1);
-        when(appointmentRepository.save(appointment)).thenReturn(appointment);
+        lenient().when(appointmentRepository.save(appointment)).thenReturn(appointment);
 
         boolean result = userService.bookAppointment(appointment);
 
@@ -303,7 +305,7 @@ public class UserServiceTest {
 
     @Test
     void testGetUserId_Success() {
-        when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
+        lenient().when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
 
         Integer userId = userService.getUserId(sampleUser.getEmail());
 
@@ -312,7 +314,7 @@ public class UserServiceTest {
 
     @Test
     void testGetUserId_UserNotFound() {
-        when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
+        lenient().when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,
                 () -> userService.getUserId("nonexistent@example.com"));
@@ -320,7 +322,7 @@ public class UserServiceTest {
 
     @Test
     void testGetUserName_Success() {
-        when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
+        lenient().when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
 
         String name = userService.getUserName(sampleUser.getEmail());
 
@@ -329,7 +331,7 @@ public class UserServiceTest {
 
     @Test
     void testGetUserName_UserNotFound() {
-        when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
+        lenient().when(userRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class,
                 () -> userService.getUserName("nonexistent@example.com"));
@@ -354,7 +356,7 @@ public class UserServiceTest {
 
     @Test
     void testGetUserDetails_Success() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
+        lenient().when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
 
         User result = userService.getUserDetails(1);
 
@@ -365,7 +367,7 @@ public class UserServiceTest {
 
     @Test
     void testGetUserDetails_UserNotFound() {
-        when(userRepository.findById(999)).thenReturn(Optional.empty());
+        lenient().when(userRepository.findById(999)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(UserNotFoundException.class,
                 () -> userService.getUserDetails(999));
@@ -376,7 +378,7 @@ public class UserServiceTest {
     @Test
     void testGetAllUsers_Success() {
         List<User> users = Arrays.asList(sampleUser, new User());
-        when(userRepository.findAll()).thenReturn(users);
+        lenient().when(userRepository.findAll()).thenReturn(users);
 
         List<User> result = userService.getAllUsers();
 
@@ -386,7 +388,7 @@ public class UserServiceTest {
 
     @Test
     void testIsUserAlreadyRegistered_UserExists() {
-        when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
+        lenient().when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.of(sampleUser));
 
         boolean result = userService.isUserAlreadyRegistered(sampleUser.getEmail());
 
@@ -395,7 +397,7 @@ public class UserServiceTest {
 
     @Test
     void testIsUserAlreadyRegistered_UserDoesNotExist() {
-        when(userRepository.findByEmail("notfound@example.com")).thenReturn(Optional.empty());
+        lenient().when(userRepository.findByEmail("notfound@example.com")).thenReturn(Optional.empty());
 
         boolean result = userService.isUserAlreadyRegistered("notfound@example.com");
 
@@ -412,7 +414,7 @@ public class UserServiceTest {
         User updatedUser = new User();
         updatedUser.setName("");
 
-        when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
+        lenient().when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
 
         assertThrows(IllegalArgumentException.class, () -> userService.editProfile(updatedUser, 1));
     }
@@ -422,7 +424,7 @@ public class UserServiceTest {
         User updatedUser = new User();
         updatedUser.setEmail("invalid-email");
 
-        when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
+        lenient().when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
 
         assertThrows(IllegalArgumentException.class, () -> userService.editProfile(updatedUser, 1));
     }
@@ -432,29 +434,29 @@ public class UserServiceTest {
         User updatedUser = new User();
         updatedUser.setPhoneNo("123");
 
-        when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
+        lenient().when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
 
         assertThrows(IllegalArgumentException.class, () -> userService.editProfile(updatedUser, 1));
     }
 
     @Test
     void testCancelAppointment_NullAppointment() {
-        when(appointmentRepository.findById(1)).thenReturn(Optional.of(new Appointment()));
+        lenient().when(appointmentRepository.findById(1)).thenReturn(Optional.of(new Appointment()));
         assertDoesNotThrow(() -> userService.cancelAppointment(1));
     }
 
     @Test
     void testChangePassword_NewPasswordTooShort() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
-        when(bCryptPasswordEncoder.matches("password123", sampleUser.getPassword())).thenReturn(true);
+        lenient().when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
+        lenient().when(bCryptPasswordEncoder.matches("password123", sampleUser.getPassword())).thenReturn(true);
 
         assertThrows(IllegalArgumentException.class, () -> userService.changePassword(1, "password123", "123"));
     }
 
     @Test
     void testChangePassword_SamePassword() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
-        when(bCryptPasswordEncoder.matches("password123", sampleUser.getPassword())).thenReturn(true);
+        lenient().when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
+        lenient().when(bCryptPasswordEncoder.matches("password123", sampleUser.getPassword())).thenReturn(true);
 
         assertThrows(IllegalArgumentException.class, () -> userService.changePassword(1, "password123", "password123"));
     }
@@ -468,14 +470,14 @@ public class UserServiceTest {
 
     @Test
     void testGetUserDetails_Exception() {
-        when(userRepository.findById(1)).thenThrow(new RuntimeException("Test exception"));
+        lenient().when(userRepository.findById(1)).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> userService.getUserDetails(1));
     }
 
     @Test
     void testGetAllUsers_Exception() {
-        when(userRepository.findAll()).thenThrow(new RuntimeException("Test exception"));
+        lenient().when(userRepository.findAll()).thenThrow(new RuntimeException("Test exception"));
 
         assertThrows(RuntimeException.class, () -> userService.getAllUsers());
     }
