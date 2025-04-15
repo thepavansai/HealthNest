@@ -36,7 +36,7 @@ const Home = () => {
 
   const fetchHealthTips = async (customHeight = '', customWeight = '') => {
       try {
-          setLoading(true);
+        setLoading(true);
           const tips = await getHealthTips(customHeight || height, customWeight || weight);
           setHealthTips(tips);
           setError(null);
@@ -105,6 +105,7 @@ const Home = () => {
         <div className="col-md-3">
           <HealthCheck name={names[2]} description={description[2]} />
         </div>
+        <h2 style={{textAlign:"center"}}>HealthNest at a Glance</h2>
         <section className="statistics-section">
                 <div className="statistics-grid">
                     {statisticsData.map((stat, index) => (
@@ -128,8 +129,8 @@ const Home = () => {
                 transition={{ duration: 0.8, delay: 0.6 }}
             >
                 {loading ? (
-                    <div className="loading-spinner">
-                        <div className="spinner"></div>
+                    <div className="loading-message" style={{ textAlign: 'center', padding: '40px' }}>
+                        Loading health tips...
                     </div>
                 ) : error ? (
                     <div className="error-message">
@@ -161,6 +162,6 @@ const Home = () => {
   };
   
   export default Home;
-  
+
 
 

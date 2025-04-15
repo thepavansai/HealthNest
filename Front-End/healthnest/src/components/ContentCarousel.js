@@ -6,7 +6,6 @@ const ContentCarousel = ({ items, type }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const itemsPerPage = 3;
-  const autoScrollInterval = 3000;
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => 
@@ -19,18 +18,6 @@ const ContentCarousel = ({ items, type }) => {
       prevIndex - 1 < 0 ? items.length - 1 : prevIndex - 1
     );
   };
-
-  useEffect(() => {
-    let interval;
-    if (!isHovered) {
-      interval = setInterval(nextSlide, autoScrollInterval);
-    }
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [isHovered, items.length]);
 
   const getVisibleItems = () => {
     const visibleItems = [];
@@ -58,18 +45,13 @@ const ContentCarousel = ({ items, type }) => {
       
       <div className="row g-4">
         {getVisibleItems().map((item, index) => (
-          <motion.div
+          <div
             key={`${item.id}-${currentIndex}-${index}`}
             className="col-md-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
           >
             {type === 'tips' ? (
-              <motion.div 
+              <div 
                 className="card h-100 shadow-sm border-0"
-                whileHover={{ scale: 1.02 }}
                 style={{ 
                   backgroundColor: item.color, 
                   margin: '15px', 
@@ -82,7 +64,7 @@ const ContentCarousel = ({ items, type }) => {
                   </div>
                   <p className="card-text text-center fw-medium">{item.tip}</p>
                 </div>
-              </motion.div>
+              </div>
             ) : type === 'news' ? (
               <div className="card h-100 shadow-sm border-0" style={{ margin: '15px', padding: '20px' }}>
                 <div className="position-relative overflow-hidden">
@@ -92,8 +74,7 @@ const ContentCarousel = ({ items, type }) => {
                     className="card-img-top"
                     style={{ 
                       height: "200px", 
-                      objectFit: "cover",
-                      transition: 'transform 0.3s ease'
+                      objectFit: "cover"
                     }}
                   />
                   <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25" />
@@ -108,7 +89,7 @@ const ContentCarousel = ({ items, type }) => {
                 </div>
               </div>
             ) : null}
-          </motion.div>
+          </div>
         ))}
       </div>
 
@@ -129,8 +110,7 @@ const ContentCarousel = ({ items, type }) => {
               height: '10px',
               padding: 0,
               backgroundColor: currentIndex === index ? '#fdf6ee' : '#fdf6ee',
-              border: 'none',
-              transition: 'all 0.3s ease'
+              border: 'none'
             }}
             onClick={() => setCurrentIndex(index)}
           />
