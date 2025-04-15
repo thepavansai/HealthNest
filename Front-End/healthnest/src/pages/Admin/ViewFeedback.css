@@ -9,7 +9,7 @@
 
 .feedback-header {
   margin-bottom: 2rem;
-  text-align: left; /* Align header text to the left */
+  text-align: left; 
 }
 
 .feedback-header h1 {
@@ -27,7 +27,7 @@
   display: flex;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
-  justify-content: flex-start; /* Align summary cards to the left */
+  justify-content: flex-start; 
 }
 
 .summary-card {
@@ -35,7 +35,7 @@
   border-radius: 10px;
   padding: 1.5rem;
   flex: 0 0 auto;
-  min-width: 200px; /* Adjust minimum width as needed */
+  min-width: 200px; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   text-align: center;
   transition: transform 0.3s ease;
@@ -59,8 +59,8 @@
 }
 
 .feedback-list {
-  display: grid; /* Use grid for better alignment and responsiveness */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Minimum width of 300px per card */
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
   gap: 1.5rem;
 }
 
@@ -71,9 +71,9 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex; /* Use flex to align content within the card */
+  display: flex; 
   flex-direction: column;
-  justify-content: space-between; /* Distribute space between header, preview, and footer */
+  justify-content: space-between; 
 }
 
 .feedback-card:hover {
@@ -167,7 +167,7 @@
   font-style: italic;
 }
 
-/* Feedback Detail Overlay and Modal */
+
 .feedback-detail-overlay {
   position: fixed;
   top: 0;
@@ -304,7 +304,7 @@
   filter: brightness(95%);
 }
 
-/* Loading and Error States */
+
 .loading-container {
   display: flex;
   justify-content: center;
@@ -335,23 +335,23 @@
   margin: 2rem 0;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
   .feedback-header {
-    text-align: center; /* Center header text on smaller screens */
+    text-align: center; 
   }
 
   .feedback-summary {
     flex-direction: column;
-    align-items: stretch; /* Make summary cards take full width */
+    align-items: stretch; 
   }
 
   .summary-card {
-    min-width: auto; /* Allow summary cards to adjust width */
+    min-width: auto; 
   }
 
   .feedback-list {
-    grid-template-columns: 1fr; /* Display one feedback card per row */
+    grid-template-columns: 1fr; 
   }
 
   .feedback-card-header {
@@ -361,34 +361,34 @@
   }
 
   .feedback-date {
-    margin-left: 0; /* Reset margin for date on smaller screens */
+    margin-left: 0; 
   }
 }
 
 .feedback-card {
-  /* ... other styles ... */
+  
   cursor: pointer;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Transition background too if you choose this */
+  transition: background-color 0.2s ease, box-shadow 0.2s ease; 
 }
 
 .feedback-card:hover {
-  transform: none; /* Remove the vertical movement */
-  background-color: #f9f9f9; /* A slightly lighter background */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Keep or adjust the box-shadow */
+  transform: none; 
+  background-color: #f9f9f9; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
 }
 
-/* ... other CSS ... */
+
 
 .feedback-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* Change to flex-start to align items to the top */
+  align-items: flex-start; 
   margin-bottom: 1rem;
 }
 
 .user-info {
   display: flex;
-  align-items: flex-start; /* Change to flex-start to align items to the top */
+  align-items: flex-start; 
   gap: 1rem;
 }
 
@@ -403,30 +403,30 @@
   justify-content: center;
   font-weight: bold;
   font-size: 1.2rem;
-  flex-shrink: 0; /* Prevent the avatar from shrinking */
+  flex-shrink: 0; 
 }
 
 .user-info > div {
-  flex-grow: 1; /* Allow the text container to take up available space */
-  min-width: 0; /* Allow the text container to shrink below its default minimum width if needed */
+  flex-grow: 1; 
+  min-width: 0; 
 }
 
 .user-info h3 {
-  margin: 0 0 0.2rem 0; /* Add a little bottom margin */
+  margin: 0 0 0.2rem 0; 
   font-size: 1rem;
   color: #2c3e50;
-  white-space: nowrap; /* Prevent the name from wrapping to the next line */
-  overflow: hidden; /* Hide any overflowing text */
-  text-overflow: ellipsis; /* Show an ellipsis (...) for overflow */
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 
 .user-email {
   margin: 0;
   font-size: 0.85rem;
   color: #7f8c8d;
-  white-space: nowrap; /* Prevent the email from wrapping */
-  overflow: hidden; /* Hide any overflowing text */
-  text-overflow: ellipsis; /* Show an ellipsis (...) for overflow */
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 
 @media (max-width: 768px) {
@@ -437,15 +437,15 @@
   }
 
   .user-info {
-    align-items: center; /* Revert to center alignment on smaller screens if it looks better */
+    align-items: center; 
   }
 
   .user-info h3,
   .user-email {
-    white-space: normal; /* Allow wrapping on smaller screens */
-    overflow: visible; /* Show all text */
-    text-overflow: clip; /* Remove ellipsis */
+    white-space: normal; 
+    overflow: visible; 
+    text-overflow: clip; 
   }
 
-  /* ... other responsive styles ... */
+  
 }

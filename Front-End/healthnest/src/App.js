@@ -22,6 +22,7 @@ import DoctorViewAppointments from './pages/Doctor/DoctorViewAppointments.js';
 import IncomeDetails from './pages/Doctor/IncomeDetails.js';
 import Home from './pages/Home';
 import CheckHealth from './pages/User/CheckHealth';
+import AnalyticsPage from './pages/Admin/AnalyticsPage.js';
 import UserChangePassword from './pages/User/UserChangePassword.js';
 import UserDashboard from './pages/User/UserDashboard';
 import UserEditProfile from './pages/User/UserEditProfile';
@@ -34,20 +35,20 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* Public Routes */}
+          {}
           <Route path="/" element={<Home />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path='/faq' element={<Faq />} />
           <Route path='/terms' element={<TermsOfService/>}/>
           <Route path='/contactus'element={<ContactUs/>} />
-          {/* Authentication Routes */}
+          {}
           <Route path="/login" element={<UserLogin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
           <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* Protected User Routes */}
+          {}
           <Route path="/user" element={
             <ProtectedRoute userType="user">
               <UserDashboard />
@@ -84,7 +85,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Protected Doctor Routes */}
+          {}
           <Route path="/doctor/dashboard" element={
             <ProtectedRoute userType="doctor">
               <DoctorDashboard />
@@ -111,7 +112,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Protected Admin Routes */}
+        
           <Route path="/admin" element={
             <ProtectedRoute userType="admin">
               <AdminDashboard />
@@ -120,6 +121,11 @@ function App() {
           <Route path="/admin/doctors" element={
             <ProtectedRoute userType="admin">
               <ManageDoctors />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/analytics" element={
+            <ProtectedRoute userType="admin">
+              <AnalyticsPage />
             </ProtectedRoute>
           } />
           <Route path="/admin/users" element={

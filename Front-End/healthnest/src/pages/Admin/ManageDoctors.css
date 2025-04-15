@@ -1,4 +1,4 @@
-/* ManageDoctors.css */
+
 
 .manage-doctors-container {
   padding: 24px;
@@ -175,7 +175,7 @@
 
 .doctors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Increased minmax width */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
   gap: 20px;
   margin-top: 20px;
 }
@@ -183,8 +183,8 @@
 .flip-card {
   background-color: transparent;
   width: 100%;
-  height: 250px; /* Increased height */
-  perspective: 1000px; /* Required for 3D flip effect */
+  height: 250px; 
+  perspective: 1000px; 
   cursor: pointer;
 }
 
@@ -204,9 +204,9 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-backface-visibility: hidden; /* Safari */
+  -webkit-backface-visibility: hidden; 
   backface-visibility: hidden;
-  background-color: #f9f9f9; /* Light background */
+  background-color: #f9f9f9; 
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -244,7 +244,7 @@
 }
 
 .flip-card-front .doctor-avatar .avatar-placeholder {
-  /* Styles for the placeholder */
+  
   width: 100%;
   height: 100%;
   display: flex;
@@ -265,36 +265,36 @@
 }
 
 .flip-card-back {
-  background-color: #2685dd; /* Blue background for the back */
+  background-color: #2685dd; 
   color: #F7F2EB;
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align items at the top */
-  align-items: flex-start; /* Align text to the left */
-  padding: 20px; /* Increased padding */
-  text-align: left; /* Left-align text */
+  justify-content: flex-start; 
+  align-items: flex-start; 
+  padding: 20px; 
+  text-align: left; 
 }
 
 .flip-card-back-content {
   transform: rotateY(180deg);
-   /* Counter-rotate the content */
+   
 }
 
 .flip-card-back h3 {
   margin-bottom: 15px;
   font-size: 1.4rem;
-  align-self: center; /* Center the title on the back */
+  align-self: center; 
 }
 
-/* Colored labels */
+
 .flip-card-back .detail-label {
   font-weight: bold;
   margin-right: 5px;
-  color: #f0ad4e; /* Example label color */
+  color: #f0ad4e; 
 }
 
-/* Ensure spacing and alignment */
+
 .flip-card-back p {
   margin-bottom: 8px;
   font-size: 0.95rem;
@@ -463,13 +463,13 @@
   margin-right: 5px;
 }
 
-/* ManageDoctors.css */
 
-/* ... other existing styles ... */
+
+
 
 .doctors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Increased minmax width */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
   gap: 20px;
   margin-top: 20px;
 }
@@ -477,8 +477,8 @@
 .flip-card {
   background-color: transparent;
   width: 100%;
-  height: 250px; /* Increased height */
-  perspective: 1000px; /* Required for 3D flip effect */
+  height: 250px; 
+  perspective: 1000px; 
   cursor: pointer;
 }
 
@@ -498,9 +498,9 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-backface-visibility: hidden; /* Safari */
+  -webkit-backface-visibility: hidden; 
   backface-visibility: hidden;
-  background-color: #f9f9f9; /* Light background */
+  background-color: #f9f9f9; 
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -538,7 +538,7 @@
 }
 
 .flip-card-front .doctor-avatar .avatar-placeholder {
-  /* Styles for the placeholder */
+  
 }
 
 .flip-card-front h3 {
@@ -553,21 +553,21 @@
 }
 
 .flip-card-back {
-  background-color: #007bff; /* Blue background for the back */
+  background-color: #007bff; 
   color: white;
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align items at the top */
-  align-items: flex-start; /* Align text to the left */
-  padding: 20px; /* Increased padding */
-  text-align: left; /* Left-align text */
+  justify-content: flex-start; 
+  align-items: flex-start; 
+  padding: 20px; 
+  text-align: left; 
 }
 
 .flip-card-back h3 {
   margin-bottom: 15px;
   font-size: 1.4rem;
-  align-self: center; /* Center the title on the back */
+  align-self: center; 
 }
 
 .flip-card-back p {

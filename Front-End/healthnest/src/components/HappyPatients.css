@@ -25,7 +25,7 @@
 }
 
 .feedback-rating {
-  color: #f4b400; /* Gold color for stars */
+  color: #f4b400; 
   font-size: 1.2rem;
   margin-bottom: 10px;
 }
@@ -35,9 +35,9 @@
   color: #333;
 }
 
-/* Gold Star Styling */
+
 .gold-star {
-  color: #f4b400; /* Gold color */
+  color: #f4b400; 
   font-size: 1.2rem;
   margin-right: 2px;
 }

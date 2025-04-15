@@ -159,13 +159,13 @@ const CheckHealth = () => {
   };
 
   const handleBookAppointment = () => {
-    // Validate if user has selected a slot
+    
     if (!selectedSlot) {
       toast.error("Please select a time slot first");
       return;
     }
     
-    // Show payment modal
+    
     setShowPaymentModal(true);
   };
 
@@ -386,7 +386,7 @@ const CheckHealth = () => {
           </div>
         )}
 
-        {/* Payment Modal */}
+        {}
         <PaymentModal 
           isOpen={showPaymentModal}
           onClose={() => setShowPaymentModal(false)}

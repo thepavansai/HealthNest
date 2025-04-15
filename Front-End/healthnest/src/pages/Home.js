@@ -59,7 +59,7 @@ const Home = () => {
         });
     } catch (err) {
         console.error('Error fetching statistics:', err);
-        // Fallback to default values if API fails
+        
         setStatistics({
             doctors: 100,
             patients: 5000,
@@ -121,6 +121,7 @@ const Home = () => {
                     ))}
                 </div>
             </section>
+            <h2 style={{ textAlign: "center" }}>Your Daily Dose of Health Tips</h2>
         <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

@@ -29,7 +29,7 @@ const HealthCheck = ({ name, description }) => {
     }
   };
 
-  // Function to render the appropriate icon based on the name
+  
   const renderIcon = () => {
     switch (name) {
       case "Health Checkup":

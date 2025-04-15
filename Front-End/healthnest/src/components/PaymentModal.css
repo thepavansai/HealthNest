@@ -1,4 +1,4 @@
-/* Modal Overlay */
+
 .payment-modal-overlay {
   position: fixed;
   top: 0;
@@ -10,10 +10,10 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  overflow-y: auto; /* Enable scrolling */
+  overflow-y: auto; 
 }
 
-/* Modal Container */
+
 .payment-modal {
   background-color: #fff;
   width: 90%;
@@ -25,13 +25,13 @@
   position: relative;
 }
 
-/* Header */
+
 .payment-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  background-color: #007bff; /* Blue color */
+  background-color: #007bff; 
   color: #fff;
 }
 
@@ -48,11 +48,11 @@
   cursor: pointer;
 }
 
-/* Modal Content */
+
 .payment-modal-content {
   padding: 20px;
-  max-height: 70vh; /* Limit height for scrollable content */
-  overflow-y: auto; /* Enable scrolling */
+  max-height: 70vh; 
+  overflow-y: auto; 
 }
 
 .payment-amount {
@@ -71,7 +71,7 @@
   margin: 5px 0;
 }
 
-/* Payment Methods */
+
 .payment-methods {
   margin-bottom: 20px;
 }
@@ -94,7 +94,7 @@
 }
 
 .method-tabs .tab.active {
-  background-color: #007bff; /* Blue color */
+  background-color: #007bff; 
   color: #fff;
   border-color: #007bff;
 }
@@ -127,7 +127,7 @@
   flex: 1;
 }
 
-/* UPI Section */
+
 .upi-section {
   text-align: center;
 }
@@ -154,7 +154,7 @@
 }
 
 .copy-upi-btn {
-  background-color: #007bff; /* Blue color */
+  background-color: #007bff; 
   color: #fff;
   border: none;
   padding: 5px 10px;
@@ -167,7 +167,7 @@
   background-color: #555;
 }
 
-/* Net Banking Section */
+
 .bank-list {
   max-height: 150px;
   overflow-y: auto;
@@ -201,7 +201,7 @@
   font-size: 0.9rem;
 }
 
-/* Error Message */
+
 .error-message {
   color: #f44336;
   font-size: 0.9rem;
@@ -209,11 +209,11 @@
   text-align: center;
 }
 
-/* Pay Button */
+
 .pay-button {
   width: 100%;
   padding: 10px;
-  background-color: #007bff; /* Blue color */
+  background-color: #007bff; 
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -228,10 +228,10 @@
 }
 
 .pay-button:hover:not(:disabled) {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3; 
 }
 
-/* Security Badge */
+
 .payment-security {
   text-align: center;
   margin-top: 10px;
@@ -245,7 +245,7 @@
   color: #777;
 }
 
-/* Animations */
+
 @keyframes fadeIn {
   from {
     opacity: 0;

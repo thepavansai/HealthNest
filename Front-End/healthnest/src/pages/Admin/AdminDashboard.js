@@ -193,6 +193,14 @@ const AdminDashboard = () => {
                   <h3>View Feedbacks</h3>
                   <p>Review patient feedback and ratings</p>
                 </div>
+
+                <div className="admin-action-card" onClick={() => navigate('/admin/analytics')}>
+                  <div className="admin-action-icon">
+                    <MdDashboard />
+                  </div>
+                  <h3>View Analytics</h3>
+                  <p>Analyze appointments, doctors, and user trends</p>
+                </div>
               </div>
             </div>
           </div>

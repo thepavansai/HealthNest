@@ -74,15 +74,15 @@
     font-size: 14px;
   }
   .summary-card.completed {
-    background: rgba(46, 184, 92, 0.1); /* Light green background */
+    background: rgba(46, 184, 92, 0.1); 
 }
 
 .summary-card.pending {
-    background: rgba(128, 128, 128, 0.1); /* Light grey background */
+    background: rgba(128, 128, 128, 0.1); 
 }
 
 .summary-details h3 {
-    color: #2a3547; /* Keep this color for headings */
+    color: #2a3547; 
 }
 
 .summary-details.completed-details h3,
@@ -291,7 +291,7 @@
   }
   
   .complete-btn {
-    background-color: #28a745; /* Green color */
+    background-color: #28a745; 
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -303,7 +303,7 @@
   }
   
   .complete-btn:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #218838; 
   }
   
   .cancel-btn {

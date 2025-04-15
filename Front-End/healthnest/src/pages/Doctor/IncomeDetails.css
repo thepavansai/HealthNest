@@ -1,30 +1,30 @@
-/* Wrapper */
+
 .income-details-wrapper {
   padding: 20px;
   background-color: #f9f9f9;
   min-height: 100vh;
 }
 
-/* Container */
+
 .income-details-container {
   max-width: 800px;
-  margin: 20px auto; /* Add space around the container */
+  margin: 20px auto; 
   background-color: #fff;
-  padding: 30px; /* Add padding inside the container */
+  padding: 30px; 
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Filter Buttons */
+
 .filter-buttons {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px; /* Add space below the filter buttons */
+  margin-bottom: 20px; 
 }
 
 .filter-button {
   padding: 10px 20px;
-  margin: 0 10px; /* Add space between buttons */
+  margin: 0 10px; 
   border: none;
   border-radius: 5px;
   background-color: #ddd;
@@ -44,9 +44,9 @@
   color: #fff;
 }
 
-/* Income Section */
+
 .income-section {
-  margin-bottom: 30px; /* Add space between sections */
+  margin-bottom: 30px; 
 }
 
 .income-section h2 {
@@ -62,17 +62,17 @@
 .appointment-item {
   padding: 10px;
   border-radius: 5px;
-  margin-bottom: 10px; /* Add space between appointment items */
+  margin-bottom: 10px; 
   border: 1px solid #ddd;
 }
 
 .appointment-item.completed {
-  background-color: #d4edda; /* Green for completed */
+  background-color: #d4edda; 
   border-color: #c3e6cb;
 }
 
 .appointment-item.pending {
-  background-color: #fff3cd; /* Yellow for pending */
+  background-color: #fff3cd; 
   border-color: #ffeeba;
 }
 

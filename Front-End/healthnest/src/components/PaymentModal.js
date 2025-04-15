@@ -64,23 +64,21 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
         setLoading(false);
         return;
       }
-    } else if (paymentMethod === 'upi' && !upiId) {
-      setError('Please enter your UPI ID');
+    } else if (paymentMethod === 'upi') {
+      onPaymentSuccess();
+      alert('Payment successful! Thank you for your payment.');
+      onClose();
       setLoading(false);
       return;
     }
 
     try {
-      // Simulate payment processing
+      
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Call the success callback
       onPaymentSuccess();
 
-      // Display success message
       alert('Payment successful! Thank you for your payment.');
-
-      // Close the modal
       onClose();
     } catch (err) {
       setError('Payment failed. Please try again.');
@@ -170,7 +168,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
                     <div className="input-group">
                       <label>CVV</label>
                       <input
-                        type="password" // Mask the CVV field
+                        type="password" 
                         placeholder="123"
                         value={cvv}
                         onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 3))}

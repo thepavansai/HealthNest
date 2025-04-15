@@ -52,7 +52,7 @@ const DoctorLogin = () => {
           const { status } = profileRes.data;
 
           if (status === 1) {
-            // Only store in localStorage if approved
+            
             localStorage.setItem("doctorId", doctorId);
             localStorage.setItem("doctorName", res.data.name);
 

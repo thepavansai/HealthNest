@@ -1,0 +1,143 @@
+/* Analytics Page Container */
+.analytics-page {
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+/* Page Title */
+.analytics-page h1 {
+  font-size: 2.5rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+  animation: slideDown 0.8s ease-in-out; /* Slide-down animation */
+}
+
+/* Analytics Section */
+.analytics-section {
+  margin-bottom: 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Full-Width Graph Section */
+.analytics-section canvas {
+  width: 100%; /* Make the graph take the full width */
+  height: 10cm; /* Fix the height to 10cm */
+  display: block;
+  margin: 0 auto;
+  max-height: 10cm; /* Prevent the graph from growing beyond 10cm */
+}
+
+/* Add a wrapper for the graph to control its width */
+.analytics-graph-wrapper {
+  width: 100%; /* Make the graph take full width */
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
+
+/* Section Titles */
+.analytics-section h2 {
+  font-size: 1.8rem;
+  color: #007bff;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.analytics-section p {
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Most Consulted Card */
+.most-consulted-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.most-consulted-card p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.most-consulted-card .icon {
+  font-size: 2rem;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.most-consulted-card .icon-small {
+  font-size: 1rem;
+  color: #007bff;
+  margin-right: 5px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Footer Styling */
+.analytics-page footer {
+  margin-top: 20px;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .analytics-page h1 {
+    font-size: 2rem;
+  }
+
+  .analytics-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .analytics-section p {
+    font-size: 1rem;
+  }
+
+  .analytics-section canvas {
+    max-height: 300px; /* Adjust graph size for smaller screens */
+  }
+}
