@@ -10,7 +10,6 @@ import ViewFeedback from './pages/Admin/ViewFeedback.js';
 import CheckHealth from './pages/User/CheckHealth';
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorEditProfile from './pages/Doctor/DoctorEditProfile';
-import DoctorProfile from './pages/Doctor/DoctorProfile';
 import Home from './pages/Home';
 import UserDashboard from './pages/User/UserDashboard';
 import UserEditProfile from './pages/User/UserEditProfile';
@@ -108,11 +107,6 @@ function App() {
           <Route path="/doctor/change-password" element={
             <ProtectedRoute userType="doctor">
               <ChangePassword />
-            </ProtectedRoute>
-          } />
-          <Route path="/doctor/profile/view" element={
-            <ProtectedRoute userType="doctor">
-              <DoctorProfile />
             </ProtectedRoute>
           } />
 
