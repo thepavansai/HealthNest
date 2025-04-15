@@ -28,6 +28,8 @@ import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
 import com.healthnest.service.AppointmentService;
 import com.healthnest.service.UserService;
+import com.healthnest.exception.AuthenticationException;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")
@@ -55,9 +57,14 @@ public class UserController {
         if (userService.isUserAlreadyRegistered(user.getEmail())) {
             return ResponseEntity.badRequest().body("User already registered!");
         }
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userService.createUser(user);
-        return ResponseEntity.ok("User registered successfully!");
+        
+        // Do not encode password here - let the service handle it
+        try {
+            userService.createUser(user);
+            return ResponseEntity.ok("User registered successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/login")
@@ -66,19 +73,29 @@ public class UserController {
 
         if (user.getEmail() == null || user.getEmail().isEmpty() || user.getPassword() == null || user.getPassword().isEmpty()) {
             response.put("message", "Email and password cannot be empty");
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(response);
         }
 
-        String loginResult = userService.login(user.getEmail(), user.getPassword());
+        try {
+            String loginResult = userService.login(user.getEmail(), user.getPassword());
+            response.put("message", loginResult);
 
-        response.put("message", loginResult);
-
-        if ("Login successful".equals(loginResult)) {
-            response.put("userId", String.valueOf(userService.getUserId(user.getEmail())));
-            response.put("name", userService.getUserName(user.getEmail()));
-            return ResponseEntity.ok(response);
-        } else {
+            if ("Login successful".equals(loginResult)) {
+                response.put("userId", String.valueOf(userService.getUserId(user.getEmail())));
+                response.put("name", userService.getUserName(user.getEmail()));
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+        } catch (AuthenticationException e) {
+            response.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        } catch (UserNotFoundException e) {
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            response.put("message", "An error occurred during login");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
