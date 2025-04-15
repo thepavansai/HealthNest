@@ -113,7 +113,7 @@ const Header = () => {
               <div className="user-info">
                 <span className="user-greeting">Welcome,</span>
                 <Link 
-                  to={isAdmin ? "/admin" : isDoctor ? "/doctor/appointments" : "/user"} 
+                  to={isAdmin ? "/admin" : isDoctor ? "/doctor/dashboard" : "/user"} 
                   className="user-name" 
                   title={username}
                   onClick={() => setIsMenuOpen(false)}

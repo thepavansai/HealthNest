@@ -31,7 +31,9 @@ const IncomeDetails = () => {
         const allAppointments = response.data || [];
 
         // Filter appointments into Completed and Upcoming
-        const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed');
+        const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
+          || appointment.appointmentStatus === 'Reviewed'
+        );
         const upcoming = allAppointments.filter(appointment => appointment.appointmentStatus === 'Upcoming');
 
         setCompletedAppointments(completed);

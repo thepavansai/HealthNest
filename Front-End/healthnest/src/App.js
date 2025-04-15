@@ -17,7 +17,6 @@ import ChangePassword from './pages/Doctor/ChangePassword';
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorEditProfile from './pages/Doctor/DoctorEditProfile';
 import DoctorLogin from './pages/Doctor/DoctorLogin';
-import DoctorProfile from './pages/Doctor/DoctorProfile';
 import DoctorSignup from './pages/Doctor/DoctorSignUp';
 import DoctorViewAppointments from './pages/Doctor/DoctorViewAppointments.js';
 import IncomeDetails from './pages/Doctor/IncomeDetails.js';
@@ -109,11 +108,6 @@ function App() {
           <Route path="/doctor/change-password" element={
             <ProtectedRoute userType="doctor">
               <ChangePassword />
-            </ProtectedRoute>
-          } />
-          <Route path="/doctor/profile/view" element={
-            <ProtectedRoute userType="doctor">
-              <DoctorProfile />
             </ProtectedRoute>
           } />
 
