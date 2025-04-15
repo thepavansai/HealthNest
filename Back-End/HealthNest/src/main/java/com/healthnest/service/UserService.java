@@ -65,18 +65,32 @@ public class UserService {
 	}
 
 	public boolean editProfile(User user, Integer userId) {
-		User existingUser = userRepository.findById(userId)
-	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-		
-		existingUser.setName(user.getName());
-		existingUser.setName(user.getName());
-		existingUser.setPhoneNo(user.getPhoneNo());
-		existingUser.setEmail(user.getEmail());
-		existingUser.setDateOfBirth(user.getDateOfBirth());
-		existingUser.setGender(user.getGender());
-		userRepository.save(existingUser);
-		return true;
-	}
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        if (user.getName() == null || user.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("User name cannot be empty");
+        }
+        if (user.getEmail() == null || !user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (user.getPhoneNo() != null && !user.getPhoneNo().matches("\\d{10}")) {
+            throw new IllegalArgumentException("Invalid phone number format");
+        }
+
+        existingUser.setName(user.getName());
+        existingUser.setName(user.getName());
+        existingUser.setPhoneNo(user.getPhoneNo());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setDateOfBirth(user.getDateOfBirth());
+        existingUser.setGender(user.getGender());
+        userRepository.save(existingUser);
+        return true;
+    }
 
 	public List<User> getAllUsers() {
 		return (List<User>) userRepository.findAll();
@@ -88,17 +102,25 @@ public class UserService {
 	}
 
 	public boolean changePassword(Integer userId, String oldPassword, String newPassword) {
-		User user = userRepository.findById(userId)
-	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-		
-		if (!bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
-			throw new IllegalArgumentException("Current password is incorrect");
-		}
-		
-		user.setPassword(bCryptPasswordEncoder.encode(newPassword));
-		userRepository.save(user);
-		return true;
-	}
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        if (!bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        if (newPassword.length() < 6) {
+            throw new IllegalArgumentException("New password must be at least 6 characters long");
+        }
+
+        if (oldPassword.equals(newPassword)) {
+            throw new IllegalArgumentException("New password must be different from the current password");
+        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
+    }
 
 	public void deleteAccount(Integer userId) {
 	    if (!userRepository.existsById(userId)) {

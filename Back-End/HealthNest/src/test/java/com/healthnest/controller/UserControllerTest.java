@@ -1,172 +1,254 @@
 package com.healthnest.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.dto.UserDTO;
+import com.healthnest.exception.UserNotFoundException;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.FeedBack;
 import com.healthnest.model.User;
 import com.healthnest.service.AppointmentService;
 import com.healthnest.service.FeedBackService;
 import com.healthnest.service.UserService;
-import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.*;
-
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-@WebMvcTest(UserController.class)
+@ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private UserService userService;
-
-    @MockBean
+    
+    @Mock
     private AppointmentService appointmentService;
-
-    @MockBean
+    
+    @Mock
     private FeedBackService feedBackService;
-
-    @MockBean
+    
+    @Mock
     private ModelMapper modelMapper;
+    
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @InjectMocks
+    private UserController userController;
 
-    @Test
-    void createAccount_userNotRegistered_returnsSuccess() throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("test@example.com");
-        User user = new User();
-        user.setEmail("test@example.com");
+    private User testUser;
+    private UserDTO testUserDTO;
 
-        when(modelMapper.map(any(UserDTO.class), eq(User.class))).thenReturn(user);
-        when(userService.isUserAlreadyRegistered(user.getEmail())).thenReturn(false);
+    @BeforeEach
+    void setUp() {
+        testUser = new User();
+        testUser.setUserId(1);
+        testUser.setName("Test User");
+        testUser.setEmail("test@example.com");
+        testUser.setPassword("password123");
 
-        mockMvc.perform(post("/users/Signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDTO)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("User registered successfully!"));
+        testUserDTO = new UserDTO();
+        testUserDTO.setEmail("test@example.com");
+        testUserDTO.setPassword("password123");
+        testUserDTO.setName("Test User");
     }
 
     @Test
-    void login_successful() throws Exception {
-        User user = new User();
-        user.setEmail("user@example.com");
-        user.setPassword("pass");
+    void createAccount_Success() {
+        when(modelMapper.map(testUserDTO, User.class)).thenReturn(testUser);
+        when(userService.isUserAlreadyRegistered(anyString())).thenReturn(false);
+        when(bCryptPasswordEncoder.encode(anyString())).thenReturn("encodedPassword");
+
+        ResponseEntity<String> response = userController.createAccount(testUserDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("User registered successfully!", response.getBody());
+    }
+
+    @Test
+    void createAccount_EmptyCredentials() {
+        testUserDTO.setEmail("");
+        testUserDTO.setPassword("");
+
+        ResponseEntity<String> response = userController.createAccount(testUserDTO);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Email and password cannot be empty", response.getBody());
+    }
+
+    @Test
+    void login_Success() {
+        User loginUser = new User();
+        loginUser.setEmail("test@example.com");
+        loginUser.setPassword("password123");
 
         when(userService.login(anyString(), anyString())).thenReturn("Login successful");
         when(userService.getUserId(anyString())).thenReturn(1);
-        when(userService.getUserName(anyString())).thenReturn("John");
+        when(userService.getUserName(anyString())).thenReturn("Test User");
 
-        mockMvc.perform(post("/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Login successful"))
-                .andExpect(jsonPath("$.userId").value("1"))
-                .andExpect(jsonPath("$.name").value("John"));
+        ResponseEntity<HashMap<String, String>> response = userController.login(loginUser);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Login successful", response.getBody().get("message"));
+        assertEquals("1", response.getBody().get("userId"));
+        assertEquals("Test User", response.getBody().get("name"));
     }
 
     @Test
-    void getUserDetails_shouldReturnUser() throws Exception {
-        User user = new User();
-        user.setUserId(1);
-        user.setName("Alice");
+    void getUserDetails_Success() {
+        when(userService.getUserDetails(1)).thenReturn(testUser);
 
-        when(userService.getUserDetails(1)).thenReturn(user);
+        ResponseEntity<User> response = userController.getUserDetails(1);
 
-        mockMvc.perform(get("/users/userdetails/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Alice"));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(testUser, response.getBody());
     }
 
     @Test
-    void submitFeedback_shouldReturnSuccessMessage() throws Exception {
+    void submitFeedback_Success() {
         FeedBack feedback = new FeedBack();
         feedback.setFeedback("Great service!");
-
+        
         when(feedBackService.addFeedBack(any(FeedBack.class))).thenReturn("Success");
 
-        mockMvc.perform(post("/users/feeback")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(feedback)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Success"));
+        ResponseEntity<String> response = userController.submitFeedback(feedback);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Success", response.getBody());
     }
 
     @Test
-    void editProfile_successful() throws Exception {
-        User user = new User();
-        when(userService.editProfile(any(User.class), eq(1))).thenReturn(true);
+    void submitFeedback_EmptyFeedback() {
+        FeedBack feedback = new FeedBack();
+        feedback.setFeedback("");
 
-        mockMvc.perform(patch("/users/editprofile/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Profile successfully edited"));
+        ResponseEntity<String> response = userController.submitFeedback(feedback);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Feedback cannot be empty", response.getBody());
     }
 
     @Test
-    void getUpcomingAppointments_shouldReturnList() throws Exception {
-        AppointmentSummaryDTO dto = new AppointmentSummaryDTO(1, 1,"Dr. Smith", 10, "1234567890", 200.0,4.5f, "City Hospital", LocalDate.now(), LocalTime.NOON, "Upcoming", "Consultation");
+    void editProfile_Success() {
+        when(userService.editProfile(any(User.class), anyInt())).thenReturn(true);
 
-       
-        when(appointmentService.getAppointmentSummaries(1)).thenReturn(List.of(dto));
+        ResponseEntity<String> response = userController.editProfile(testUser, 1);
 
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Profile successfully edited", response.getBody());
+    }
+
+    @Test
+    void getUpcomingAppointments_Success() {
+        List<AppointmentSummaryDTO> appointments = Arrays.asList(
+            new AppointmentSummaryDTO()
+        );
         
-        mockMvc.perform(get("/users/appointments/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].doctorName").value("Dr. Smith"));
+        when(appointmentService.getAppointmentSummaries(1)).thenReturn(appointments);
+
+        ResponseEntity<List<AppointmentSummaryDTO>> response = userController.getUpcomingAppointments(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(appointments, response.getBody());
     }
 
     @Test
-    void cancelAppointment_shouldReturnConfirmation() throws Exception {
-        mockMvc.perform(patch("/users/cancelappointment/5"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("successfully cancelled Appointment"));
+    void cancelAppointment_Success() {
+        doNothing().when(userService).cancelAppointment(1);
+
+        ResponseEntity<String> response = userController.cancelAppointment(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("successfully cancelled Appointment", response.getBody());
     }
 
     @Test
-    void changePassword_successful() throws Exception {
-        when(userService.changePassword(1, "oldpass", "newpass")).thenReturn(true);
+    void changePassword_Success() {
+        when(userService.changePassword(1, "oldPass", "newPass")).thenReturn(true);
 
-        mockMvc.perform(patch("/users/changepassword/1/oldpass/newpass"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Password changed successfully"));
+        ResponseEntity<String> response = userController.changePassword(1, "oldPass", "newPass");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Password changed successfully", response.getBody());
     }
 
     @Test
-    void deleteAccount_shouldReturnSuccess() throws Exception {
-        mockMvc.perform(delete("/users/deleteuser/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Successfully deleted user"));
+    void deleteAccount_Success() {
+        doNothing().when(userService).deleteAccount(1);
+
+        ResponseEntity<String> response = userController.deleteAccount(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Successfully deleted user", response.getBody());
     }
 
     @Test
-    void bookAppointment_shouldReturnSuccessMessage() throws Exception {
+    void bookAppointment_Success() {
         Appointment appointment = new Appointment();
         when(userService.bookAppointment(any(Appointment.class))).thenReturn(true);
 
-        mockMvc.perform(post("/users/bookappointment")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(appointment)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Your appointment is successfully booked"));
+        ResponseEntity<String> response = userController.bookAppointment(appointment);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Your appointment is successfully booked", response.getBody());
+    }
+
+    @Test
+    void getAllUsersCount_Success() {
+        List<User> users = Arrays.asList(new User(), new User());
+        when(userService.getAllUsers()).thenReturn(users);
+
+        ResponseEntity<Integer> response = userController.getAllUsersCount();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(2, response.getBody());
+    }
+
+    @Test
+    void changePassword_InvalidCurrentPassword() {
+        when(userService.changePassword(1, "wrongPass", "newPass")).thenReturn(false);
+
+        ResponseEntity<String> response = userController.changePassword(1, "wrongPass", "newPass");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Invalid current password", response.getBody());
+    }
+
+    @Test
+    void bookAppointment_Failure() {
+        Appointment appointment = new Appointment();
+        when(userService.bookAppointment(any(Appointment.class))).thenReturn(false);
+
+        ResponseEntity<String> response = userController.bookAppointment(appointment);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Failed to book appointment", response.getBody());
+    }
+
+    @Test
+    void submitFeedback_ServerError() {
+        FeedBack feedback = new FeedBack();
+        feedback.setFeedback("Test feedback");
+        
+        when(feedBackService.addFeedBack(any(FeedBack.class)))
+            .thenThrow(new RuntimeException());
+
+        ResponseEntity<String> response = userController.submitFeedback(feedback);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("Failed to submit feedback", response.getBody());
     }
 }
