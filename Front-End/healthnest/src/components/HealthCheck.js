@@ -22,7 +22,7 @@ const HealthCheck = ({ name, description }) => {
         navigate("/user/remedies");
         break;
       case "View Appointments":
-        navigate("/login");
+        navigate("user/appointments");
         break;
       default:
         navigate("/aboutus");
