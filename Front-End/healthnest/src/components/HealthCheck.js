@@ -19,10 +19,10 @@ const HealthCheck = ({ name, description }) => {
 
     switch (name) {
       case "Health Checkup":
-        navigate("/suggestions");
+        navigate("/user/remedies");
         break;
       case "View Appointments":
-        navigate("/login");
+        navigate("user/appointments");
         break;
       default:
         navigate("/aboutus");

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.healthnest.repository.AppointmentRepository;
@@ -23,12 +24,16 @@ public class UserService {
 	UserRepository userRepository;
 	@Autowired
 	AppointmentRepository appointmentRepository;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public void createUser(User user) {
 		validateUser(user);
 		if (isUserAlreadyRegistered(user.getEmail())) {
 			throw new IllegalArgumentException("User already exists!");
 		}
+		// Encode the password here
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
 	}
 	
@@ -61,18 +66,32 @@ public class UserService {
 	}
 
 	public boolean editProfile(User user, Integer userId) {
-		User existingUser = userRepository.findById(userId)
-	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-		
-		existingUser.setName(user.getName());
-		existingUser.setName(user.getName());
-		existingUser.setPhoneNo(user.getPhoneNo());
-		existingUser.setEmail(user.getEmail());
-		existingUser.setDateOfBirth(user.getDateOfBirth());
-		existingUser.setGender(user.getGender());
-		userRepository.save(existingUser);
-		return true;
-	}
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        if (user.getName() == null || user.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("User name cannot be empty");
+        }
+        if (user.getEmail() == null || !user.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+        if (user.getPhoneNo() != null && !user.getPhoneNo().matches("\\d{10}")) {
+            throw new IllegalArgumentException("Invalid phone number format");
+        }
+
+        existingUser.setName(user.getName());
+        existingUser.setName(user.getName());
+        existingUser.setPhoneNo(user.getPhoneNo());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setDateOfBirth(user.getDateOfBirth());
+        existingUser.setGender(user.getGender());
+        userRepository.save(existingUser);
+        return true;
+    }
 
 	public List<User> getAllUsers() {
 		return (List<User>) userRepository.findAll();
@@ -84,17 +103,25 @@ public class UserService {
 	}
 
 	public boolean changePassword(Integer userId, String oldPassword, String newPassword) {
-		User user = userRepository.findById(userId)
-	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
-		
-		if (!user.getPassword().equals(oldPassword)) {
-			throw new IllegalArgumentException("Current password is incorrect");
-		}
-		
-		user.setPassword(newPassword);
-		userRepository.save(user);
-		return true;
-	}
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+
+        if (!bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        if (newPassword.length() < 6) {
+            throw new IllegalArgumentException("New password must be at least 6 characters long");
+        }
+
+        if (oldPassword.equals(newPassword)) {
+            throw new IllegalArgumentException("New password must be different from the current password");
+        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
+    }
 
 	public void deleteAccount(Integer userId) {
 	    if (!userRepository.existsById(userId)) {
@@ -109,14 +136,15 @@ public class UserService {
 	}
 
 	public String login(String email, String password) {
-	    return userRepository.findByEmail(email)
-	        .map(user -> {
-	            if (!user.getPassword().equals(password)) {
-	                throw new AuthenticationException("Invalid Password");
-	            }
-	            return "Login successful";
-	        })
+	    User user = userRepository.findByEmail(email)
 	        .orElseThrow(() -> new UserNotFoundException("User doesn't exist"));
+	    
+	    // Compare the raw password with the encoded one in the database
+	    if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+	        throw new AuthenticationException("Invalid Password");
+	    }
+	    
+	    return "Login successful";
 	}
 
 	public Integer getUserId(String email) {
