@@ -105,6 +105,7 @@ const Home = () => {
         <div className="col-md-3">
           <HealthCheck name={names[2]} description={description[2]} />
         </div>
+        <h2 style={{textAlign:"center"}}>HealthNest at a Glance</h2>
         <section className="statistics-section">
                 <div className="statistics-grid">
                     {statisticsData.map((stat, index) => (

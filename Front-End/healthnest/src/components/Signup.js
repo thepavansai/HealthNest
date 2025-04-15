@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
 import axios from 'axios';
-import { Form, Button, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import './SignUp.css';
+import React, { useState } from 'react';
+import {
+  FaCalendarAlt,
+  FaEnvelope,
+  FaEye,
+  FaEyeSlash,
+  FaLock,
+  FaPhone,
+  FaUser
+} from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 import Footer from "./Footer";
 import Header from "./Header";
+import './SignUp.css';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     name: '',
     gender: '',
@@ -19,66 +27,110 @@ const SignUp = () => {
     phoneNo: ''
   });
 
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const handleChange = (e) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const validateForm = () => {
+  const validateStep1 = () => {
     if (!/^[A-Za-z\s]{3,}$/.test(formData.name)) {
-      setError("Name should contain only letters and be at least 3 characters long");
-      return false;
-    }
-
-    if (!formData.gender) {
-      setError("Please select a gender");
+      setIsError(true);
+      setMessage("Name should contain only letters and be at least 3 characters long");
       return false;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError("Please enter a valid email address");
-      return false;
-    }
-
-    if (!/^\d{10}$/.test(formData.phoneNo)) {
-      setError("Phone number should be 10 digits");
-      return false;
-    }
-
-    const today = new Date();
-    const birthDate = new Date(formData.dateOfBirth);
-    const age = today.getFullYear() - birthDate.getFullYear();
-    if (age < 18 || age > 120) {
-      setError("Age should be between 18 and 120 years");
-      return false;
-    }
-
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.password)) {
-      setError("Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number");
+      setIsError(true);
+      setMessage("Please enter a valid email address");
       return false;
     }
 
     return true;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const validateStep2 = () => {
+    if (!formData.gender) {
+      setIsError(true);
+      setMessage("Please select a gender");
+      return false;
+    }
 
-    if (!validateForm()) {
-      return;
+    if (!/^\d{10}$/.test(formData.phoneNo)) {
+      setIsError(true);
+      setMessage("Phone number should be 10 digits");
+      return false;
+    }
+
+    const today = new Date();
+    const birthDate = new Date(formData.dateOfBirth);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    
+    // Check if birthday hasn't occurred yet this year
+    const hasBirthdayOccurred = 
+      today.getMonth() > birthDate.getMonth() || 
+      (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+    
+    const adjustedAge = hasBirthdayOccurred ? age : age - 1;
+    
+    if (adjustedAge < 18 || adjustedAge > 120) {
+      setIsError(true);
+      setMessage("Age should be between 18 and 120 years");
+      return false;
+    }
+
+    return true;
+  };
+
+  const validateStep3 = () => {
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.password)) {
+      setIsError(true);
+      setMessage("Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number");
+      return false;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      setSuccess('');
+      setIsError(true);
+      setMessage("Passwords do not match");
+      return false;
+    }
+
+    return true;
+  };
+
+  const nextStep = () => {
+    setIsError(false);
+    setMessage('');
+    
+    if (currentStep === 1 && validateStep1()) {
+      setCurrentStep(2);
+    } else if (currentStep === 2 && validateStep2()) {
+      setCurrentStep(3);
+    }
+  };
+
+  const prevStep = () => {
+    setIsError(false);
+    setMessage('');
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateStep3()) {
       return;
     }
 
     try {
+      setMessage("Creating your account...");
+      setIsError(false);
+      
       const response = await axios.post('http://localhost:8080/users/Signup', {
         name: formData.name,
         gender: formData.gender,
@@ -88,132 +140,233 @@ const SignUp = () => {
         phoneNo: formData.phoneNo
       });
 
-      setSuccess(response.data);
-      setError('');
-      navigate("/login");
+      setMessage(response.data || "Registration successful!");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setError(err.response?.data || "Registration failed.");
-      setSuccess('');
+      setIsError(true);
+      setMessage(err.response?.data || "Registration failed. Please try again.");
     }
   };
 
+  const renderStep1 = () => (
+    <>
+      <h3 className="step-title">Personal Information</h3>
+      <div className="form-group">
+        <div className="input-icon-wrapper">
+          <FaUser className="input-icon" />
+          <input 
+            type="text" 
+            name="name" 
+            placeholder="Full Name" 
+            value={formData.name} 
+            onChange={handleChange} 
+            required 
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <div className="input-icon-wrapper">
+          <FaEnvelope className="input-icon" />
+          <input 
+            type="email" 
+            name="email" 
+            placeholder="Email Address" 
+            value={formData.email} 
+            onChange={handleChange} 
+            required 
+          />
+        </div>
+      </div>
+    </>
+  );
+
+  const renderStep2 = () => (
+    <>
+      <h3 className="step-title">Additional Details</h3>
+      <div className="form-group">
+        <label className="gender-label">Gender</label>
+        <div className="gender-options">
+          <label className="gender-option">
+            <input
+              type="radio"
+              name="gender"
+              value="MALE"
+              checked={formData.gender === 'MALE'}
+              onChange={handleChange}
+            />
+            <span>Male</span>
+          </label>
+          <label className="gender-option">
+            <input
+              type="radio"
+              name="gender"
+              value="FEMALE"
+              checked={formData.gender === 'FEMALE'}
+              onChange={handleChange}
+            />
+            <span>Female</span>
+          </label>
+          <label className="gender-option">
+            <input
+              type="radio"
+              name="gender"
+              value="OTHER"
+              checked={formData.gender === 'OTHER'}
+              onChange={handleChange}
+            />
+            <span>Other</span>
+          </label>
+        </div>
+      </div>
+
+      <div className="form-group">
+        <div className="input-icon-wrapper">
+          <FaPhone className="input-icon" />
+          <input 
+            type="tel" 
+            name="phoneNo" 
+            placeholder="Phone Number (10 digits)" 
+            value={formData.phoneNo} 
+            onChange={handleChange} 
+            required 
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <div className="input-icon-wrapper">
+          <FaCalendarAlt className="input-icon" />
+          <input
+            type="date"
+            name="dateOfBirth"
+            value={formData.dateOfBirth}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="date-hint">You must be at least 18 years old</div>
+      </div>
+    </>
+  );
+
+  const renderStep3 = () => (
+    <>
+      <h3 className="step-title">Security</h3>
+      <div className="form-group">
+        <div className="input-icon-wrapper">
+          <FaLock className="input-icon" />
+          <input 
+            type={showPassword ? "text" : "password"} 
+            name="password" 
+            placeholder="Password" 
+            value={formData.password} 
+            onChange={handleChange} 
+            required 
+          />
+          <span 
+            className="password-toggle-icon"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+        <div className="password-requirements">
+          Must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number
+        </div>
+      </div>
+
+      <div className="form-group">
+        <div className="input-icon-wrapper">
+          <FaLock className="input-icon" />
+          <input 
+            type={showConfirmPassword ? "text" : "password"} 
+            name="confirmPassword" 
+            placeholder="Confirm Password" 
+            value={formData.confirmPassword} 
+            onChange={handleChange} 
+            required 
+          />
+          <span 
+            className="password-toggle-icon"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <>
-    <Header/>
-    <div className="signup-wrapper">
-      { }
-      <div className="branding">
-        <h1>HealthNest</h1>
-        <p>Find the right doctor based on your symptoms with our smart healthcare platform.</p>
-      </div>
-      
-      <div className="signup-form">
-        <h2>Sign Up</h2>
-        {error && <Alert variant="danger">{error}</Alert>}
-        {success && <Alert variant="success">{success}</Alert>}
-        
-        <Form onSubmit={handleSubmit}>
-          <Form.Group>
-            <Form.Label>Name</Form.Label>
-            <Form.Control 
-              name="name" 
-              value={formData.name} 
-              onChange={handleChange} 
-              required 
-            />
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Gender</Form.Label>
-            <Form.Select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Gender</option>
-              <option value="MALE">Male</option>
-              <option value="FEMALE">Female</option>
-              <option value="OTHER">Other</option>
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Date of Birth</Form.Label>
-            <Form.Control
-              type="date"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Phone Number</Form.Label>
-            <Form.Control
-              type="tel"
-              name="phoneNo"
-              value={formData.phoneNo}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group>
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="password-field">
-            <Form.Label>Password</Form.Label>
-            <div className="password-input-wrapper">
-              <Form.Control
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-              <span 
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
+      <Header/>
+      <div 
+        className="user-signup-bg"
+        style={{ 
+          backgroundImage: `url(${process.env.PUBLIC_URL + "/images/UserLogin.jpg"})` 
+        }}
+      >
+        <div className="user-signup-container">
+          <div className="signup-card">
+            <h2 className="signup-title">Create Your Account</h2>
+            
+            <div className="progress-steps">
+              <div className={`step-item ${currentStep >= 1 ? 'active' : ''}`}>
+                <div className="step-circle">1</div>
+                <div className="step-text">Basic</div>
+              </div>
+              <div className="step-line"></div>
+              <div className={`step-item ${currentStep >= 2 ? 'active' : ''}`}>
+                <div className="step-circle">2</div>
+                <div className="step-text">Details</div>
+              </div>
+              <div className="step-line"></div>
+              <div className={`step-item ${currentStep >= 3 ? 'active' : ''}`}>
+                <div className="step-circle">3</div>
+                <div className="step-text">Security</div>
+              </div>
             </div>
-          </Form.Group>
+            
+            {message && (
+              <div className={`message-alert ${isError ? 'error' : 'success'}`}>
+                {message}
+              </div>
+            )}
 
-          <Form.Group className="password-field">
-            <Form.Label>Confirm Password</Form.Label>
-            <div className="password-input-wrapper">
-              <Form.Control
-                type={showConfirmPassword ? "text" : "password"}
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-              />
-              <span 
-                className="password-toggle"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              >
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
+            <form onSubmit={currentStep === 3 ? handleSubmit : (e) => e.preventDefault()} className="user-signup-form">
+              {currentStep === 1 && renderStep1()}
+              {currentStep === 2 && renderStep2()}
+              {currentStep === 3 && renderStep3()}
+
+              <div className="form-buttons">
+                {currentStep > 1 && (
+                  <button type="button" className="prev-btn" onClick={prevStep}>
+                    Previous
+                  </button>
+                )}
+                
+                {currentStep < 3 && (
+                  <button type="button" className="next-btn" onClick={nextStep}>
+                    Next
+                  </button>
+                )}
+                
+                {currentStep === 3 && (
+                  <button type="submit" className="signup-btn">
+                    Create Account
+                  </button>
+                )}
+              </div>
+            </form>
+
+            <div className="login-redirect">
+              Already have an account? <Link to="/login">Login</Link>
             </div>
-          </Form.Group>
-
-          <Button type="submit">Sign Up</Button>
-        </Form>
+          </div>
+        </div>
       </div>
-    </div>
-    <Footer/>
+      <Footer/>
     </>
   );
 };
