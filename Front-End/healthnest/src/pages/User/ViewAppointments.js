@@ -13,6 +13,7 @@ const ViewAppointments = () => {
   const [currAppointments, setCurrAppointments] = useState('All Appointments');
   const [ratings, setRatings] = useState({}); 
   const [ratedAppointments, setRatedAppointments] = useState(new Set());
+  const [reviewedAppointments, setReviewedAppointments] = useState([]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -43,6 +44,9 @@ const ViewAppointments = () => {
   );
   const pendingAppointments = appointments.filter(
     appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
+  );
+  const reviewedAppointmentsList = appointments.filter(
+    appointment => appointment.appointmentStatus.toLowerCase() === 'reviewed'
   );
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch =
@@ -97,6 +101,7 @@ const ViewAppointments = () => {
       case 'upcoming': return 'status-upcoming';
       case 'cancelled': return 'status-cancelled';
       case 'pending': return 'status-pending';
+      case 'reviewed': return 'status-reviewed';
       default: return '';
     }
   };
@@ -113,15 +118,28 @@ const ViewAppointments = () => {
     }
     
     try {
-      const response = await axios.patch(`http://localhost:8080/doctor/${doctorId}/rating/${rating}`);
-      if (response.status === 200) {
-        alert('Rating submitted successfully!');
-       
-        setRatings(prev => ({
-          ...prev,
-          [appointmentId]: rating  
-        }));
-        setRatedAppointments(prev => new Set([...prev, appointmentId]));
+      const ratingResponse = await axios.patch(`http://localhost:8080/doctor/${doctorId}/rating/${rating}`);
+      if (ratingResponse.status === 200) {
+        const reviewResponse = await axios.patch(`http://localhost:8080/appointments/${appointmentId}/status/Reviewed`);
+        if (reviewResponse.status === 200) {
+          alert('Rating submitted successfully!');
+         
+          setRatings(prev => ({
+            ...prev,
+            [appointmentId]: rating  
+          }));
+          setRatedAppointments(prev => new Set([...prev, appointmentId]));
+          setAppointments(prevAppointments =>
+            prevAppointments.map(appointment =>
+              appointment.appointmentId === appointmentId
+                ? { ...appointment, appointmentStatus: 'Reviewed' }
+                : appointment
+            )
+          );
+          setReviewedAppointments(prev => [...prev, appointmentId]);
+        } else {
+          alert('Failed to update appointment status. Please try again.');
+        }
       } else {
         alert('Failed to update rating. Please try again.');
       }
@@ -194,6 +212,16 @@ const ViewAppointments = () => {
               <p>Cancelled Appointments</p>
             </div>
           </div>
+          
+          <div className="summary-card">
+            <div className="summary-icon reviewed-icon">
+              <FaStar />
+            </div>
+            <div className="summary-details">
+              <h3>{reviewedAppointmentsList.length}</h3>
+              <p>Reviewed Appointments</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -248,6 +276,14 @@ const ViewAppointments = () => {
             onClick={() => setFilterStatus('cancelled')}
           >
             Cancelled
+          </button>
+          <button
+            className={filterStatus === 'reviewed' ? 'active' : ''}
+            onClick={() => {setFilterStatus('reviewed');
+              setCurrAppointments('Reviewed Appointments')}
+            }
+          >
+            Reviewed
           </button>
         </div>
       </div>
@@ -335,6 +371,9 @@ const ViewAppointments = () => {
                             </button>
                           </div>
                         )}
+                         {appointment.appointmentStatus.toLowerCase() === 'pending' && (
+                          <div></div>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -346,7 +385,7 @@ const ViewAppointments = () => {
       </div>
 
       <div className="appointments-section completed-section">
-        <h2>Completed Appointments</h2>
+        <h2>Completed Appointments Yet to  Give Rating</h2>
         {completedAppointments.length === 0 ? (
           <div className="no-appointments">
             <p>No completed appointments yet</p>

@@ -27,7 +27,7 @@ const AdminLogin = () => {
     }
   };
 
-  // Add this function to components that have logout functionality
+  
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');

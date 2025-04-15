@@ -19,7 +19,7 @@ const ProtectedRoute = ({ children, userType }) => {
   };
 
   if (!isAuthenticated()) {
-    // Redirect to appropriate login page based on user type
+    
     switch(userType) {
       case 'doctor':
         return <Navigate to="/doctor/login" />;

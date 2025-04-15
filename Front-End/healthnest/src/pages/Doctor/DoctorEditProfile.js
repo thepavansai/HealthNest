@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './DoctorEditProfile.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -25,7 +27,7 @@ const DoctorEditProfile = () => {
 
   useEffect(() => {
     
-    axios.get(`http://localhost:8080/doctor/profile/${doctorId}`) // replace with actual endpoint
+    axios.get(`http://localhost:8080/doctor/profile/${doctorId}`) 
       .then(res => {
         const data = res.data;
         console.log(data)
@@ -96,7 +98,8 @@ const DoctorEditProfile = () => {
       navigate("/doctordashboard")
   };
 
-  return (
+  return (<>
+    <Header/>
     <div className="doctor-edit-container">
       <h2 className="edit-title">Edit Profile</h2>
 
@@ -135,6 +138,8 @@ const DoctorEditProfile = () => {
         <button type="submit" className="save-btn">Save Changes</button>
       </form>
     </div>
+    <Footer/>
+    </>
   );
 };
 

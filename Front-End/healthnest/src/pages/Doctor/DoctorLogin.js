@@ -16,13 +16,11 @@ const DoctorLogin = () => {
     e.preventDefault();
     setMessage("");
 
-    
     if (!emailId.trim() || !password.trim()) {
       setIsError(true);
       setMessage("Please fill in all fields");
       return;
     }
-
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(emailId)) {
@@ -30,7 +28,6 @@ const DoctorLogin = () => {
       setMessage("Please enter a valid email address");
       return;
     }
-
 
     if (password.length < 6) {
       setIsError(true);
@@ -45,18 +42,42 @@ const DoctorLogin = () => {
       });
 
       if (res.data.message === "Login successful") {
-        setIsError(false);
-        setMessage("Login successful! Redirecting...");
-        localStorage.setItem("doctorId", res.data.userId);
-        localStorage.setItem("doctorName", res.data.name);
-        setTimeout(() => navigate("/doctor/dashboard"), 500);
+        const doctorId = res.data.userId;
+
+        try {
+          const profileRes = await axios.get(
+            `http://localhost:8080/doctor/profile/${doctorId}`
+          );
+
+          const { status } = profileRes.data;
+
+          if (status === 1) {
+            
+            localStorage.setItem("doctorId", doctorId);
+            localStorage.setItem("doctorName", res.data.name);
+
+            setIsError(false);
+            setMessage("Login successful! Redirecting...");
+            setTimeout(() => navigate("/doctor/dashboard"), 500);
+          } else if (status === 0) {
+            setIsError(true);
+            setMessage("Your account is pending approval by Administration.");
+          } else if (status === -1) {
+            setIsError(true);
+            setMessage("Your application has been rejected by Administration.");
+          }
+        } catch (profileErr) {
+          setIsError(true);
+          setMessage("Error fetching doctor profile. Please try again.");
+          console.error("Profile fetch error:", profileErr);
+        }
       } else {
         setIsError(true);
         setMessage(res.data.message);
       }
     } catch (err) {
       setIsError(true);
-     
+
       if (err.response) {
         switch (err.response.status) {
           case 400:

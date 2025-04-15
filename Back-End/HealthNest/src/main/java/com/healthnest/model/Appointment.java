@@ -30,7 +30,7 @@ public class Appointment {
     private LocalTime appointmentTime;
 
     @NotBlank(message = "Appointment status cannot be blank")
-    @Pattern(regexp = "^(Pending|Upcoming|Cancelled|Completed)$", 
+    @Pattern(regexp = "^(Pending|Upcoming|Cancelled|Completed|Reviewed)$", 
             message = "Status must be one of: Pending, Upcoming, Cancelled, Completed")
     private String appointmentStatus;
 

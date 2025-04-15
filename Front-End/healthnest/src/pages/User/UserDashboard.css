@@ -133,8 +133,8 @@
   width: 200px;
   z-index: 100;
   overflow: hidden;
-  max-height: 200px; /* Add this line */
-  overflow-y: auto; /* Add this line */
+  max-height: 200px; 
+  overflow-y: auto; 
 }
 
 .profile-dropdown-menu button {
@@ -196,7 +196,7 @@
   flex-direction: column;
   opacity: 1;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  max-height: 380px;  
+  max-height: 500px;  
   min-height: 180px;  
 }
 
@@ -411,12 +411,13 @@
 .action-btn.primary {
   background-color: #4f46e5;
   color: white;
-  height: 40px;  
+  height: auto;  
   min-height: 40px;  
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1.25rem;  
+  padding: 0.5rem 1.25rem;  
+  margin-bottom: 0.75rem;
 }
 
 .action-btn.primary:hover {
@@ -433,8 +434,8 @@
 }
 
 .action-btn.tertiary {
-  background-color: #f3f4f6;
-  color: #4b5563;
+  background-color: #f9fafb; 
+  color: #4b5563; 
 }
 
 .action-btn.tertiary:hover {
@@ -499,65 +500,53 @@
   cursor: pointer;
   background: white;
   height: auto;
-  min-height: 180px;  
-  max-height: 280px;  
+  min-height: 200px;  
+  max-height: 300px;  
+  border-radius: 12px; 
 }
 
 .action-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); 
 }
 
 .action-icon {
-  font-size: 2.5rem;
-  color: #4f46e5;
-  display: flex;
-  justify-content: center;
-  margin: 0.5rem 0;
+  font-size: 2rem;
+  color: #4f46e5; 
+  margin-bottom: 0.5rem; 
 }
 
-.book-appointment .action-icon {
-  color: #4f46e5;
+.action-card h3 {
+  font-size: 1.25rem; 
+  margin-bottom: 1rem; 
 }
 
-.view-appointments .action-icon {
-  color: #10b981;
-}
-
-.medical-history .action-icon {
-  color: #6b7280;
-}
-
-.action-card .card-content {
-  text-align: center;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: calc(100% - 60px);  
-}
-
-.action-card p {
-  color: #6b7280;
-  margin: 1rem 0;
-  font-size: 0.9rem;
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.action-card .action-btn {
-  width: 100%;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
+.action-btn {
+  display: inline-block; 
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 500;
-  transition: all 0.3s ease;
+  min-width: 120px; 
+  padding: 0.75rem; 
+  border-radius: 8px;
+  color: white; 
+  transition: background-color 0.2s ease; 
+}
+
+
+.action-card .action-btn.primary {
+  background-color: #4f46e5; 
+}
+
+.action-card .action-btn.tertiary {
+  background-color: #f9fafb; 
+  color: #4b5563; 
+}
+
+
+.action-btn:hover {
+  background-color: #4338ca; 
 }
 
 .action-card .action-btn.primary {
-  margin-top: auto;
   width: 100%;
   height: 40px;
   min-height: 40px;

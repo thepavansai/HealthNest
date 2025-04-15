@@ -47,13 +47,13 @@ const ContentCarousel = ({ items, type }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        margin: '20px', // Add margin around the carousel
-        borderRadius: '15px', // Optional: Add rounded corners
-        backgroundColor: 'rgba(255, 255, 255, 0.9)', // Optional: Background color for the carousel container
+        margin: '20px', 
+        borderRadius: '15px', 
+        backgroundColor: 'rgba(255, 255, 255, 0.9)', 
       }}
     >
       <button className="carousel-arrow left" onClick={prevSlide}>
-        &#8249; {/* Left arrow symbol */}
+        &#8249; {}
       </button>
       
       <div className="row g-4">
@@ -72,8 +72,8 @@ const ContentCarousel = ({ items, type }) => {
                 whileHover={{ scale: 1.02 }}
                 style={{ 
                   backgroundColor: item.color, 
-                  margin: '15px', // Gap around each item
-                  padding: '20px' // Internal padding for each item
+                  margin: '15px', 
+                  padding: '20px' 
                 }}
               >
                 <div className="card-body p-4">
@@ -113,10 +113,10 @@ const ContentCarousel = ({ items, type }) => {
       </div>
 
       <button className="carousel-arrow left" onClick={prevSlide}>
-        &#8249; {/* Left arrow symbol */}
+        &#8249; {}
       </button>
       <button className="carousel-arrow right" onClick={nextSlide}>
-        &#8250; {/* Right arrow symbol */}
+        &#8250; {}
       </button>
 
       <div className="d-flex justify-content-center mt-4">

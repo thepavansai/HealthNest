@@ -517,7 +517,7 @@
     
     .brand-name {
       font-size: 1.25rem;
-      display: block !important; /* Force display */
+      display: block !important; 
     }
     
     .user-info {
@@ -565,7 +565,7 @@
     }
   
     .btn-login .btn-text {
-      display: inline !important; /* Force display */
+      display: inline !important; 
     }
   
     .btn-login .btn-icon {
@@ -580,7 +580,7 @@
     }
 
     .btn-signup .btn-text {
-      display: inline !important; /* Force display */
+      display: inline !important; 
     }
 
     .btn-signup .btn-icon {

@@ -1,54 +1,54 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-
+import AboutUs from './components/AboutUs.js';
+import ContactUs from './components/ContactUs.js';
+import Faq from './components/FAQ.js';
+import ProtectedRoute from './components/ProtectedRoute';
+import Remedies from './components/Remedies.js';
 import SignUp from './components/Signup';
+import TermsOfService from './components/TermsOfService.js';
 import AdminDashboard from './pages/Admin/AdminDashboard';
+import AdminLogin from './pages/Admin/AdminLogin.js';
 import ManageDoctors from './pages/Admin/ManageDoctors';
 import ManageUsers from './pages/Admin/ManageUsers.js';
 import View from './pages/Admin/View.js';
 import ViewFeedback from './pages/Admin/ViewFeedback.js';
-import CheckHealth from './pages/User/CheckHealth';
+import ChangePassword from './pages/Doctor/ChangePassword';
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorEditProfile from './pages/Doctor/DoctorEditProfile';
-import DoctorProfile from './pages/Doctor/DoctorProfile';
-import Home from './pages/Home';
-import UserDashboard from './pages/User/UserDashboard';
-import UserEditProfile from './pages/User/UserEditProfile';
-import ViewAppointments from './pages/User/ViewAppointments';
-import AboutUs from './components/AboutUs.js';
-import ChangePassword from './pages/Doctor/ChangePassword';
 import DoctorLogin from './pages/Doctor/DoctorLogin';
 import DoctorSignup from './pages/Doctor/DoctorSignUp';
-import UserLogin from './pages/User/UserLogin.js';
-import Remedies from './components/Remedies.js';
-import UserFeedback from './pages/User/UserFeedback.js';
 import DoctorViewAppointments from './pages/Doctor/DoctorViewAppointments.js';
-import AdminLogin from './pages/Admin/AdminLogin.js';
+import IncomeDetails from './pages/Doctor/IncomeDetails.js';
+import Home from './pages/Home';
+import CheckHealth from './pages/User/CheckHealth';
 import AnalyticsPage from './pages/Admin/AnalyticsPage.js';
 import UserChangePassword from './pages/User/UserChangePassword.js';
-import ProtectedRoute from './components/ProtectedRoute';
-import Faq from './components/FAQ.js';
-import ContactUs from './components/ContactUs.js';
-import IncomeDetails from './pages/Doctor/IncomeDetails.js';
+import UserDashboard from './pages/User/UserDashboard';
+import UserEditProfile from './pages/User/UserEditProfile';
+import UserFeedback from './pages/User/UserFeedback.js';
+import UserLogin from './pages/User/UserLogin.js';
+import ViewAppointments from './pages/User/ViewAppointments';
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          {/* Public Routes */}
+          {}
           <Route path="/" element={<Home />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path='/faq' element={<Faq />} />
+          <Route path='/terms' element={<TermsOfService/>}/>
           <Route path='/contactus'element={<ContactUs/>} />
-          {/* Authentication Routes */}
+          {}
           <Route path="/login" element={<UserLogin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
           <Route path="/admin/login" element={<AdminLogin />} />
 
-          {/* Protected User Routes */}
+          {}
           <Route path="/user" element={
             <ProtectedRoute userType="user">
               <UserDashboard />
@@ -85,7 +85,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Protected Doctor Routes */}
+          {}
           <Route path="/doctor/dashboard" element={
             <ProtectedRoute userType="doctor">
               <DoctorDashboard />
@@ -111,13 +111,8 @@ function App() {
               <ChangePassword />
             </ProtectedRoute>
           } />
-          <Route path="/doctor/profile/view" element={
-            <ProtectedRoute userType="doctor">
-              <DoctorProfile />
-            </ProtectedRoute>
-          } />
 
-          {/* Protected Admin Routes */}
+        
           <Route path="/admin" element={
             <ProtectedRoute userType="admin">
               <AdminDashboard />

@@ -72,17 +72,17 @@ const FAQ = () => {
     }
   ];
 
-  // Handle click on FAQ item
+  
   const toggleItem = (id) => {
     setOpenItem(openItem === id ? null : id);
   };
 
-  // Handle category change
+  
   const changeCategory = (category) => {
     setActiveCategory(category);
   };
 
-  // Filter FAQs based on search and category
+  
   const filteredFAQs = faqData.filter(faq => {
     const matchesSearch = 
       faq.question.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -93,7 +93,7 @@ const FAQ = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Categories for the filter buttons
+  
   const categories = [
     { id: 'all', name: 'All' },
     { id: 'account', name: 'Account' },

@@ -23,8 +23,9 @@ const DoctorViewAppointments = () => {
         console.log(response.data)
         setAppointments(response.data);
         setCompletedAppointments(response.data.filter(
-          appointment => appointment.appointmentStatus.toLowerCase() === 'completed'
-        ));
+          appointment => appointment.appointmentStatus.toLowerCase() === 'completed' || 
+                         appointment.appointmentStatus.toLowerCase() === 'reviewed'
+      ));
         setUpcomingAppointments(response.data.filter(
           appointment => appointment.appointmentStatus.toLowerCase() === 'upcoming'
         ));
@@ -62,7 +63,7 @@ const DoctorViewAppointments = () => {
       if (response.status === 200) {
         alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
 
-        // Update the state of appointments immediately
+        
         setAppointments((prevAppointments) =>
           prevAppointments.map((appointment) =>
             appointment.appointmentId === appointmentId
@@ -134,7 +135,7 @@ const DoctorViewAppointments = () => {
       if (response.status === 200) {
         alert('Appointment marked as completed successfully!');
 
-        // Update the state of appointments immediately
+        
         setAppointments((prevAppointments) =>
           prevAppointments.map((appointment) =>
             appointment.appointmentId === appointmentId
@@ -143,13 +144,13 @@ const DoctorViewAppointments = () => {
           )
         );
 
-        // Update the completedAppointments state
+        
         setCompletedAppointments((prevCompleted) => [
           ...prevCompleted,
           appointments.find((appointment) => appointment.appointmentId === appointmentId),
         ]);
 
-        // Remove the appointment from upcomingAppointments
+        
         setUpcomingAppointments((prevUpcoming) =>
           prevUpcoming.filter((appointment) => appointment.appointmentId !== appointmentId)
         );
@@ -168,6 +169,7 @@ const DoctorViewAppointments = () => {
       case 'upcoming': return 'status-upcoming';
       case 'cancelled': return 'status-cancelled';
       case 'pending': return 'status-pending';
+      case 'reviewed': return 'status-reviewed'; 
       default: return '';
     }
   };
@@ -201,7 +203,7 @@ const DoctorViewAppointments = () => {
             <div className="summary-icon pending-icon">
               <FaClock />
             </div>
-            <div className="summary-details">
+            <div className="summary-details pending-details">
               <h3>{pendingAppointments.length}</h3>
               <p>Pending Appointments</p>
             </div>
@@ -359,7 +361,7 @@ const DoctorViewAppointments = () => {
                               className="complete-btn"
                               onClick={() => markAsCompleted(appointment.appointmentId)}
                             >
-                              Completed
+                              Complete it
                             </button>
                           </>
                         )}
