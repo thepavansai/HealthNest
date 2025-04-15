@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.dto.UserDTO;
@@ -29,104 +30,107 @@ import com.healthnest.service.UserService;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	@Autowired
-	UserService userService;
-	@Autowired
-	private ModelMapper modelMapper;
-	@Autowired
-	AppointmentService appointmentService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    AppointmentService appointmentService;
     @Autowired
     private FeedBackService feedBackService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@PostMapping("/Signup")
-	public ResponseEntity<String> createAccount(@RequestBody UserDTO userdto) {
-		User user = modelMapper.map(userdto, User.class);
-		if (userService.isUserAlreadyRegistered(user.getEmail())) {
-			return ResponseEntity.badRequest().body("User already registered!");
-		}
-		userService.createUser(user);
-		return ResponseEntity.ok("User registered successfully!");
-	}
-	@PostMapping("/login")
-	public ResponseEntity<HashMap<String, String>> login(@RequestBody User user) {
-	    HashMap<String, String> response = new HashMap<>();
+    @PostMapping("/Signup")
+    public ResponseEntity<String> createAccount(@RequestBody UserDTO userdto) {
+        User user = modelMapper.map(userdto, User.class);
+        if (userService.isUserAlreadyRegistered(user.getEmail())) {
+            return ResponseEntity.badRequest().body("User already registered!");
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userService.createUser(user);
+        return ResponseEntity.ok("User registered successfully!");
+    }
+    @PostMapping("/login")
+    public ResponseEntity<HashMap<String, String>> login(@RequestBody User user) {
+        HashMap<String, String> response = new HashMap<>();
 
-	    String loginResult = userService.login(user.getEmail(), user.getPassword());
+        String loginResult = userService.login(user.getEmail(), user.getPassword());
 
-	    response.put("message", loginResult);
+        response.put("message", loginResult);
 
-	    if ("Login successful".equals(loginResult)) {
-	        String id = userService.getUserId(user.getEmail()).toString();
-	        String name=userService.getUserName(user.getEmail());
-	        response.put("userId", id);
-	        response.put("name", name);
-	        return ResponseEntity.ok(response);
-	    } else {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-	    }
-	}
+        if ("Login successful".equals(loginResult)) {
+            String id = userService.getUserId(user.getEmail()).toString();
+            String name=userService.getUserName(user.getEmail());
+            response.put("userId", id);
+            response.put("name", name);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
 
-	@GetMapping("/userdetails/{userId}")
-	public ResponseEntity<User> getUserDetails(@PathVariable Integer userId) {
-	    User user = userService.getUserDetails(userId);
-	    return ResponseEntity.ok(user);
-	}
+    @GetMapping("/userdetails/{userId}")
+    public ResponseEntity<User> getUserDetails(@PathVariable Integer userId) {
+        User user = userService.getUserDetails(userId);
+        return ResponseEntity.ok(user);
+    }
 
-	@PostMapping("/feeback")
-	public String submitFeedback(@RequestBody FeedBack feedBack) {
-		return feedBackService.addFeedBack(feedBack);
-	}
-	
+    @PostMapping("/feeback")
+    public String submitFeedback(@RequestBody FeedBack feedBack) {
+        return feedBackService.addFeedBack(feedBack);
+    }
+    
 
-	@PatchMapping("/editprofile/{userId}")
-	public ResponseEntity<String> editProfile(@RequestBody User user, @PathVariable Integer userId) {
-		userService.editProfile(user, userId);
-		return ResponseEntity.ok("Profile successfully edited");
-	}
+    @PatchMapping("/editprofile/{userId}")
+    public ResponseEntity<String> editProfile(@RequestBody User user, @PathVariable Integer userId) {
+        userService.editProfile(user, userId);
+        return ResponseEntity.ok("Profile successfully edited");
+    }
 
-	@GetMapping("/appointments/{userId}")
+    @GetMapping("/appointments/{userId}")
     public ResponseEntity<List<AppointmentSummaryDTO>> getUpcomingAppointments(@PathVariable Integer userId) {
         List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId);
         return ResponseEntity.ok(result);
     }
 
-	@PatchMapping("/cancelappointment/{appointmentId}")
-	public ResponseEntity<String> cancelAppointment(@PathVariable Integer appointmentId) {
-		userService.cancelAppointment(appointmentId);
-		return ResponseEntity.ok("successfully cancelled Appointment");
-	}
+    @PatchMapping("/cancelappointment/{appointmentId}")
+    public ResponseEntity<String> cancelAppointment(@PathVariable Integer appointmentId) {
+        userService.cancelAppointment(appointmentId);
+        return ResponseEntity.ok("successfully cancelled Appointment");
+    }
 
-	@PatchMapping("/changepassword/{userid}/{beforepassword}/{changepassword}")
-	public ResponseEntity<String> changePassword(@PathVariable Integer userid, 
-	                                             @PathVariable String beforepassword,
-	                                             @PathVariable String changepassword) {
-	    boolean success = userService.changePassword(userid, beforepassword, changepassword);
-	    if (!success) {
-	        throw new IllegalArgumentException("Invalid current password");
-	    }
-	    return ResponseEntity.ok("Password changed successfully");
-	}
+    @PatchMapping("/changepassword/{userid}/{beforepassword}/{changepassword}")
+    public ResponseEntity<String> changePassword(@PathVariable Integer userid, 
+                                                 @PathVariable String beforepassword,
+                                                 @PathVariable String changepassword) {
+        boolean success = userService.changePassword(userid, beforepassword, changepassword);
+        if (!success) {
+            throw new IllegalArgumentException("Invalid current password");
+        }
+        return ResponseEntity.ok("Password changed successfully");
+    }
 
-	@DeleteMapping("/deleteuser/{userId}")
-	public ResponseEntity<String> deleteAccount(@PathVariable Integer userId) {
-		userService.deleteAccount(userId);
-		return ResponseEntity.ok("Successfully deleted user");
-	}
-	
-	@PostMapping("/bookappointment")
-	public ResponseEntity<String> bookAppointment(@RequestBody Appointment appointment) {
-	    boolean success = userService.bookAppointment(appointment);
-	    if (!success) {
-	        throw new IllegalArgumentException("Unable to book appointment");
-	    }
-	    return ResponseEntity.ok("Your appointment is successfully booked");
-	}
-	
-	@GetMapping("/countallusers")
-	public ResponseEntity<Integer> getAllUsersCount()
-	{
-		return ResponseEntity.ok(userService.getAllUsers().size());
-	}
-	
-	
+    @DeleteMapping("/deleteuser/{userId}")
+    public ResponseEntity<String> deleteAccount(@PathVariable Integer userId) {
+        userService.deleteAccount(userId);
+        return ResponseEntity.ok("Successfully deleted user");
+    }
+    
+    @PostMapping("/bookappointment")
+    public ResponseEntity<String> bookAppointment(@RequestBody Appointment appointment) {
+        boolean success = userService.bookAppointment(appointment);
+        if (!success) {
+            throw new IllegalArgumentException("Unable to book appointment");
+        }
+        return ResponseEntity.ok("Your appointment is successfully booked");
+    }
+    
+    @GetMapping("/countallusers")
+    public ResponseEntity<Integer> getAllUsersCount()
+    {
+        return ResponseEntity.ok(userService.getAllUsers().size());
+    }
+    
+    
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.healthnest.repository.AppointmentRepository;
@@ -23,12 +24,15 @@ public class UserService {
 	UserRepository userRepository;
 	@Autowired
 	AppointmentRepository appointmentRepository;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public void createUser(User user) {
 		validateUser(user);
 		if (isUserAlreadyRegistered(user.getEmail())) {
 			throw new IllegalArgumentException("User already exists!");
 		}
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
 	}
 	
@@ -87,11 +91,11 @@ public class UserService {
 		User user = userRepository.findById(userId)
 	            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 		
-		if (!user.getPassword().equals(oldPassword)) {
+		if (!bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
 			throw new IllegalArgumentException("Current password is incorrect");
 		}
 		
-		user.setPassword(newPassword);
+		user.setPassword(bCryptPasswordEncoder.encode(newPassword));
 		userRepository.save(user);
 		return true;
 	}
@@ -111,7 +115,7 @@ public class UserService {
 	public String login(String email, String password) {
 	    return userRepository.findByEmail(email)
 	        .map(user -> {
-	            if (!user.getPassword().equals(password)) {
+	            if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
 	                throw new AuthenticationException("Invalid Password");
 	            }
 	            return "Login successful";
