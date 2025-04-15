@@ -22,6 +22,7 @@ import DoctorViewAppointments from './pages/Doctor/DoctorViewAppointments.js';
 import IncomeDetails from './pages/Doctor/IncomeDetails.js';
 import Home from './pages/Home';
 import CheckHealth from './pages/User/CheckHealth';
+import AnalyticsPage from './pages/Admin/AnalyticsPage.js';
 import UserChangePassword from './pages/User/UserChangePassword.js';
 import UserDashboard from './pages/User/UserDashboard';
 import UserEditProfile from './pages/User/UserEditProfile';
@@ -120,6 +121,11 @@ function App() {
           <Route path="/admin/doctors" element={
             <ProtectedRoute userType="admin">
               <ManageDoctors />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/analytics" element={
+            <ProtectedRoute userType="admin">
+              <AnalyticsPage />
             </ProtectedRoute>
           } />
           <Route path="/admin/users" element={
