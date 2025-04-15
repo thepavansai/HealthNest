@@ -64,8 +64,10 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
         setLoading(false);
         return;
       }
-    } else if (paymentMethod === 'upi' && !upiId) {
-      setError('Please enter your UPI ID');
+    } else if (paymentMethod === 'upi') {
+      onPaymentSuccess();
+      alert('Payment successful! Thank you for your payment.');
+      onClose();
       setLoading(false);
       return;
     }
@@ -74,13 +76,9 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
       // Simulate payment processing
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // Call the success callback
       onPaymentSuccess();
 
-      // Display success message
       alert('Payment successful! Thank you for your payment.');
-
-      // Close the modal
       onClose();
     } catch (err) {
       setError('Payment failed. Please try again.');

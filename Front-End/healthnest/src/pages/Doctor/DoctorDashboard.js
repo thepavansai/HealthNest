@@ -8,9 +8,9 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2'; // Import Chart.js for analytics
-import { CSVLink } from 'react-csv'; // Import CSV export functionality
-import jsPDF from 'jspdf'; // Import jsPDF for PDF export
+
+import { CSVLink } from 'react-csv'; 
+import jsPDF from 'jspdf';
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -40,9 +40,8 @@ const DoctorDashboard = () => {
   const [totalIncome, setTotalIncome] = useState(0);
   const [estimatedPayout, setEstimatedPayout] = useState(0);
   const [totalAppointments, setTotalAppointments] = useState(0);
-  const [completedAppointmentsCount, setCompletedAppointmentsCount] = useState(0);
-  const [upcomingAppointmentsCount, setUpcomingAppointmentsCount] = useState(0);
-  const [appointmentTrends, setAppointmentTrends] = useState([]);
+
+
 
   const doctorId = localStorage.getItem("doctorId");
 
@@ -185,7 +184,7 @@ const DoctorDashboard = () => {
       <main className="doctor-dashboard-container">
         <div className="welcome-section">
           <div className="welcome-content">
-            <h1>Welcome back, {doctorData.doctorName || 'Doctor'} <span>👋</span></h1>
+            <h1>Welcome back, {doctorData.doctorName || 'Doctor'}</h1>
             <p className="subtitle">Here’s what’s happening with your practice today.</p>
           </div>
 
