@@ -70,12 +70,25 @@ class UserControllerTest {
     void createAccount_Success() {
         when(modelMapper.map(testUserDTO, User.class)).thenReturn(testUser);
         when(userService.isUserAlreadyRegistered(anyString())).thenReturn(false);
-        when(bCryptPasswordEncoder.encode(anyString())).thenReturn("encodedPassword");
+        doNothing().when(userService).createUser(any(User.class));
 
         ResponseEntity<String> response = userController.createAccount(testUserDTO);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("User registered successfully!", response.getBody());
+        verify(userService).createUser(testUser);
+    }
+
+    @Test
+    void createAccount_UserAlreadyExists() {
+        when(modelMapper.map(testUserDTO, User.class)).thenReturn(testUser);
+        when(userService.isUserAlreadyRegistered(anyString())).thenReturn(true);
+
+        ResponseEntity<String> response = userController.createAccount(testUserDTO);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("User already registered!", response.getBody());
+        verify(userService, never()).createUser(any(User.class));
     }
 
     @Test
