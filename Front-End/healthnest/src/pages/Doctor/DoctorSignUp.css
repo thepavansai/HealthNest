@@ -5,29 +5,54 @@
   align-items: center;
   min-height: 100vh;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+  z-index: 2;
+  position: relative;
 }
-/* 
+
+/* Full screen container with background image */
 .doctor-signup-bg {
-  height: 100vh;
-  width: 100%;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
+}
+/* Optional white or dark overlay for readability */
+.doctor-signup-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.4); /* adjust to 0.3 or 0.5 for lighter/darker effect */
+  z-index: 1;
+}
+
+
+.doctor-signup-overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: center; 
-  align-items: center;     
-} */
+  align-items: center;
+  padding: 2rem;
+}
 
 .signup-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 550px;
-  padding: 30px;
-  position: relative;
-  overflow: hidden;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 40px;
+  width: 500px; /* 🔄 Increase from 400px to 500px or more */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  color: #333;
+  transition: width 0.3s ease;
+
 }
 
 .signup-card::before {
@@ -118,7 +143,7 @@
 .doctor-signup-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 1px;
 }
 
 .form-group {
@@ -131,11 +156,16 @@
   align-items: center;
 }
 
+
+
 .input-icon {
   position: absolute;
   left: 12px;
+  top: 20px;
   color: #95a5a6;
+  transform: rotateY(180deg);
 }
+
 
 .doctor-signup-form input[type="text"],
 .doctor-signup-form input[type="email"],
@@ -242,12 +272,14 @@
 
 .prev-btn, .next-btn {
   flex: 1;
-  padding: 12px;
+  padding:8px  12px;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
+  
+  
 }
 
 .prev-btn {

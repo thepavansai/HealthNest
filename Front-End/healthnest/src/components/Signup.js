@@ -207,16 +207,6 @@ const SignUp = () => {
             />
             <span>Female</span>
           </label>
-          <label className="gender-option">
-            <input
-              type="radio"
-              name="gender"
-              value="OTHER"
-              checked={formData.gender === 'OTHER'}
-              onChange={handleChange}
-            />
-            <span>Other</span>
-          </label>
         </div>
       </div>
 
