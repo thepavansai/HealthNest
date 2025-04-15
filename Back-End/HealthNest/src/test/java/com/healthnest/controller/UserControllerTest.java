@@ -86,8 +86,8 @@ class UserControllerTest {
 
         ResponseEntity<String> response = userController.createAccount(testUserDTO);
 
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertEquals("User already exists", response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("User already registered!", response.getBody());
         verify(userService, never()).createUser(any(User.class));
     }
 
