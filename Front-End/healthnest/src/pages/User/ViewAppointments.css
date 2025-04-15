@@ -66,8 +66,12 @@
   color: #2eb85c;
 }
 
+.summary-card:nth-child(4) {
+  border-top: 4px solid #6c757d;
+}
+
 .summary-card:nth-child(4) .summary-icon {
-   background-color: rgba(108, 117, 125, 0.1);
+  background-color: rgba(108, 117, 125, 0.1);
   color: #6c757d;
 }
 
@@ -78,6 +82,15 @@
 .summary-card:nth-child(5) .summary-icon {
   background-color: rgba(220, 53, 69, 0.1);
   color: #dc3545;
+}
+
+.summary-card:nth-child(6) {
+  border-top: 4px solid #456acd;
+}
+
+.summary-card:nth-child(6) .summary-icon {
+  background-color: rgba(69, 106, 205, 0.1);
+  color: #456acd;
 }
 
 .summary-details h3 {
@@ -257,9 +270,15 @@
   color: #dc3545;
 }
 
-.status-pending {
+
+.status-badge.status-pending {
   background-color: rgba(108, 117, 125, 0.1);
   color: #6c757d;
+}
+
+.status-reviewed {
+  background-color: #456acd; /* Example: Light green */
+  color: white;
 }
 
 .action-buttons {

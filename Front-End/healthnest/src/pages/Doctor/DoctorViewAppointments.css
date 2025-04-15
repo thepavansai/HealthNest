@@ -73,6 +73,27 @@
     color: #6c757d;
     font-size: 14px;
   }
+  .summary-card.completed {
+    background: rgba(46, 184, 92, 0.1); /* Light green background */
+}
+
+.summary-card.pending {
+    background: rgba(128, 128, 128, 0.1); /* Light grey background */
+}
+
+.summary-details h3 {
+    color: #2a3547; /* Keep this color for headings */
+}
+
+.summary-details.completed-details h3,
+.summary-details.completed-details p {
+  color: green;
+}
+
+.summary-details.pending-details h3,
+.summary-details.pending-details p {
+  color: grey;
+}
   
   .appointments-filter {
     display: flex;
@@ -239,6 +260,11 @@
   .status-pending {
     background-color: rgba(158, 30, 11, 0);
     color:grey;
+  }
+
+  .status-reviewed {
+    background-color: rgba(69, 106, 205, 0.1);
+    color: #456acd;
   }
   
   .action-buttons {
