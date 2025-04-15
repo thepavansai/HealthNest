@@ -73,7 +73,9 @@ const DoctorDashboard = () => {
       setAppointments(allAppointments);
 
       // Filter appointments into Completed and Upcoming
-      const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed');
+      const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
+          || appointment.appointmentStatus === 'Reviewed'
+        );
       const upcoming = allAppointments.filter(appointment => appointment.appointmentStatus === 'Upcoming');
       console.log("Completed Appointments:", completed);
       console.log("Upcoming Appointments:", upcoming);
@@ -82,7 +84,7 @@ const DoctorDashboard = () => {
       setUpcomingAppointments(upcoming);
 
       // Calculate total income and estimated payout using consultation fee
-      const income = completed.length * consultationFee;
+      const income = completed.length  * consultationFee;
       const payout = upcoming.length * consultationFee;
 
       setTotalIncome(income);
