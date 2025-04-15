@@ -31,9 +31,8 @@ const HappyPatients = () => {
 
   if (loading) {
     return (
-      <div className="loading-spinner">
-        <div className="spinner"></div>
-        <p>Loading feedbacks...</p>
+      <div className="loading-message text-center p-4">
+        Loading feedbacks...
       </div>
     );
   }

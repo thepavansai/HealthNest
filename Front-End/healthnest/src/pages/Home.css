@@ -148,3 +148,10 @@
   .carousel-arrow.right {
     right: 10px; 
   }
+
+  .loading-message {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 1.1rem;
+  }
