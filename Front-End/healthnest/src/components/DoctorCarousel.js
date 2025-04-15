@@ -58,7 +58,7 @@ const DoctorCarousel = () => {
   useEffect(() => {
     axios.get('http://localhost:8080/admin/doctors')
       .then(res => {
-        const availableDoctors = res.data;
+        const availableDoctors = res.data.filter(doctor => doctor.status === 1);
         setDoctors(availableDoctors);
       })
       .catch(err => {
