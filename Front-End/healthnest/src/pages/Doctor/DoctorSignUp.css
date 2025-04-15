@@ -44,16 +44,15 @@
 }
 
 .signup-card {
-  background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: white;
-    padding: 1.2rem;
-    
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 400px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 40px;
+  width: 500px; /* 🔄 Increase from 400px to 500px or more */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  color: #333;
+  transition: width 0.3s ease;
+
 }
 
 .signup-card::before {
@@ -157,11 +156,16 @@
   align-items: center;
 }
 
+
+
 .input-icon {
   position: absolute;
   left: 12px;
+  top: 20px;
   color: #95a5a6;
+  transform: rotateY(180deg);
 }
+
 
 .doctor-signup-form input[type="text"],
 .doctor-signup-form input[type="email"],
