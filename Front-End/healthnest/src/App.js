@@ -1,33 +1,33 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-
+import AboutUs from './components/AboutUs.js';
+import ContactUs from './components/ContactUs.js';
+import Faq from './components/FAQ.js';
+import ProtectedRoute from './components/ProtectedRoute';
+import Remedies from './components/Remedies.js';
 import SignUp from './components/Signup';
+import TermsOfService from './components/TermsOfService.js';
 import AdminDashboard from './pages/Admin/AdminDashboard';
+import AdminLogin from './pages/Admin/AdminLogin.js';
 import ManageDoctors from './pages/Admin/ManageDoctors';
 import ManageUsers from './pages/Admin/ManageUsers.js';
 import View from './pages/Admin/View.js';
 import ViewFeedback from './pages/Admin/ViewFeedback.js';
-import CheckHealth from './pages/User/CheckHealth';
+import ChangePassword from './pages/Doctor/ChangePassword';
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorEditProfile from './pages/Doctor/DoctorEditProfile';
-import Home from './pages/Home';
-import UserDashboard from './pages/User/UserDashboard';
-import UserEditProfile from './pages/User/UserEditProfile';
-import ViewAppointments from './pages/User/ViewAppointments';
-import AboutUs from './components/AboutUs.js';
-import ChangePassword from './pages/Doctor/ChangePassword';
 import DoctorLogin from './pages/Doctor/DoctorLogin';
 import DoctorSignup from './pages/Doctor/DoctorSignUp';
-import UserLogin from './pages/User/UserLogin.js';
-import Remedies from './components/Remedies.js';
-import UserFeedback from './pages/User/UserFeedback.js';
 import DoctorViewAppointments from './pages/Doctor/DoctorViewAppointments.js';
-import AdminLogin from './pages/Admin/AdminLogin.js';
-import UserChangePassword from './pages/User/UserChangePassword.js';
-import ProtectedRoute from './components/ProtectedRoute';
-import Faq from './components/FAQ.js';
-import ContactUs from './components/ContactUs.js';
 import IncomeDetails from './pages/Doctor/IncomeDetails.js';
+import Home from './pages/Home';
+import CheckHealth from './pages/User/CheckHealth';
+import UserChangePassword from './pages/User/UserChangePassword.js';
+import UserDashboard from './pages/User/UserDashboard';
+import UserEditProfile from './pages/User/UserEditProfile';
+import UserFeedback from './pages/User/UserFeedback.js';
+import UserLogin from './pages/User/UserLogin.js';
+import ViewAppointments from './pages/User/ViewAppointments';
 
 function App() {
   return (
@@ -38,6 +38,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path='/faq' element={<Faq />} />
+          <Route path='/terms' element={<TermsOfService/>}/>
           <Route path='/contactus'element={<ContactUs/>} />
           {/* Authentication Routes */}
           <Route path="/login" element={<UserLogin />} />
