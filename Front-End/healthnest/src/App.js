@@ -24,6 +24,7 @@ import Remedies from './components/Remedies.js';
 import UserFeedback from './pages/User/UserFeedback.js';
 import DoctorViewAppointments from './pages/Doctor/DoctorViewAppointments.js';
 import AdminLogin from './pages/Admin/AdminLogin.js';
+import AnalyticsPage from './pages/Admin/AnalyticsPage.js';
 import UserChangePassword from './pages/User/UserChangePassword.js';
 import ProtectedRoute from './components/ProtectedRoute';
 import Faq from './components/FAQ.js';
@@ -125,6 +126,11 @@ function App() {
           <Route path="/admin/doctors" element={
             <ProtectedRoute userType="admin">
               <ManageDoctors />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/analytics" element={
+            <ProtectedRoute userType="admin">
+              <AnalyticsPage />
             </ProtectedRoute>
           } />
           <Route path="/admin/users" element={
