@@ -36,7 +36,7 @@ const Home = () => {
 
   const fetchHealthTips = async (customHeight = '', customWeight = '') => {
       try {
-          setLoading(true);
+        setLoading(true);
           const tips = await getHealthTips(customHeight || height, customWeight || weight);
           setHealthTips(tips);
           setError(null);
@@ -129,8 +129,8 @@ const Home = () => {
                 transition={{ duration: 0.8, delay: 0.6 }}
             >
                 {loading ? (
-                    <div className="loading-spinner">
-                        <div className="spinner"></div>
+                    <div className="loading-message" style={{ textAlign: 'center', padding: '40px' }}>
+                        Loading health tips...
                     </div>
                 ) : error ? (
                     <div className="error-message">
@@ -162,6 +162,6 @@ const Home = () => {
   };
   
   export default Home;
-  
+
 
 
