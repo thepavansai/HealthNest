@@ -1,4 +1,4 @@
-/* AdminDashboard.css */
+
 
 .admin-dashboard-container {
   min-height: 100vh;
@@ -12,7 +12,7 @@
   padding: 2rem;
 }
 
-/* Hero Section */
+
 .admin-hero-section {
   background: linear-gradient(135deg, #4776e6 0%, #8e54e9 100%);
   border-radius: 16px;
@@ -65,14 +65,14 @@
   max-width: 600px;
 }
 
-/* Dashboard Content Layout */
+
 .admin-dashboard-content {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 2rem;
 }
 
-/* Sidebar Profile */
+
 .admin-sidebar {
   margin-bottom: 0.1rem;
 }
@@ -175,8 +175,8 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   z-index: 10;
   overflow: hidden;
-  max-height: 200px; /* Add this line */
-  overflow-y: auto; /* Add this line */
+  max-height: 200px; 
+  overflow-y: auto; 
 }
 
 .admin-dropdown-item {
@@ -202,14 +202,14 @@
   color: #e53935;
 }
 
-/* Main Content Section */
+
 .admin-main-content {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-/* Stats Grid */
+
 .admin-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -272,7 +272,7 @@
   font-size: 0.9rem;
 }
 
-/* Action Cards */
+
 .admin-actions-section {
   background-color: #fff;
   border-radius: 16px;
@@ -368,7 +368,7 @@
   color: #666;
 }
 
-/* Recent Activities */
+
 .admin-recent-activities {
   background-color: #fff;
   border-radius: 16px;
@@ -445,7 +445,7 @@
   color: #999;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1200px) {
   .admin-stats-grid,
   .admin-actions-grid {
@@ -523,6 +523,6 @@
 
 .admin-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Example for responsive stat cards */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
   gap: 20px;
 }

@@ -133,8 +133,8 @@
   width: 200px;
   z-index: 100;
   overflow: hidden;
-  max-height: 200px; /* Add this line */
-  overflow-y: auto; /* Add this line */
+  max-height: 200px; 
+  overflow-y: auto; 
 }
 
 .profile-dropdown-menu button {
@@ -500,40 +500,40 @@
   cursor: pointer;
   background: white;
   height: auto;
-  min-height: 200px;  /* Adjusted */
-  max-height: 300px;  /* Adjusted */
-  border-radius: 12px; /* Ensure round edges for better look */
+  min-height: 200px;  
+  max-height: 300px;  
+  border-radius: 12px; 
 }
 
 .action-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Hover shadow effect */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); 
 }
 
 .action-icon {
   font-size: 2rem;
-  color: #4f46e5; /* Using primary theme color */
-  margin-bottom: 0.5rem; /* Spacing */
+  color: #4f46e5; 
+  margin-bottom: 0.5rem; 
 }
 
 .action-card h3 {
-  font-size: 1.25rem; /* Increase header size for emphasis */
-  margin-bottom: 1rem; /* Spacing */
+  font-size: 1.25rem; 
+  margin-bottom: 1rem; 
 }
 
 .action-btn {
-  display: inline-block; /* Ensure button is inline-block */
+  display: inline-block; 
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 500;
-  min-width: 120px; /* Adjustable button width */
-  padding: 0.75rem; /* Consistent padding for all buttons */
+  min-width: 120px; 
+  padding: 0.75rem; 
   border-radius: 8px;
-  color: white; /* Change text color to white for contrast */
-  transition: background-color 0.2s ease; /* Smooth transition */
+  color: white; 
+  transition: background-color 0.2s ease; 
 }
 
-/* Adjust action button styles */
+
 .action-card .action-btn.primary {
-  background-color: #4f46e5; /* Ensure the color is consistent */
+  background-color: #4f46e5; 
 }
 
 .action-card .action-btn.tertiary {
@@ -541,9 +541,9 @@
   color: #4b5563; 
 }
 
-/* Hover effects consistency */
+
 .action-btn:hover {
-  background-color: #4338ca; /* For primary button */
+  background-color: #4338ca; 
 }
 
 .action-card .action-btn.primary {

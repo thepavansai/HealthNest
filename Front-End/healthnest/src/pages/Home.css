@@ -2,7 +2,7 @@
     padding: 20px;
   }
   
-  /* Hero Section */
+  
   .hero-section {
     background: linear-gradient(135deg,#4f46e5, #4f46e5 100%);
     color: white;
@@ -112,20 +112,20 @@
     }
   }
 
-  /* Ensure the carousel container has relative positioning */
+  
   .carousel-container {
     position: relative;
   }
 
-  /* Style for carousel arrows */
+  
   .carousel-arrow {
     position: absolute;
-    top: 50%; /* Center vertically */
+    top: 50%; 
     transform: translateY(-50%);
-    background-color: #007bff; /* Consistent blue color */
+    background-color: #007bff; 
     color: #fff;
     border: none;
-    border-radius: 50%; /* Ensure the arrow is a perfect circle */
+    border-radius: 50%; 
     width: 40px;
     height: 40px;
     display: flex;
@@ -137,14 +137,14 @@
   }
   
   .carousel-arrow:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    transform: translateY(-50%) scale(1.1); /* Slight zoom effect */
+    background-color: #0056b3; 
+    transform: translateY(-50%) scale(1.1); 
   }
   
   .carousel-arrow.left {
-    left: 10px; /* Adjust for left arrow */
+    left: 10px; 
   }
   
   .carousel-arrow.right {
-    right: 10px; /* Adjust for right arrow */
+    right: 10px; 
   }
