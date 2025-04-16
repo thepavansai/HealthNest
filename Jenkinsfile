@@ -33,7 +33,7 @@ pipeline {
    			}
         stage('Maven Build') { 
             steps {
-                bat 'mvn clean install'
+                sh 'mvn clean install'
                   }
             }
         stage('Build Docker image'){
@@ -48,12 +48,12 @@ pipeline {
         }
         stage('Docker Push'){
             steps {
-                bat 'docker push gowthamthotakuri/healthnest'
+                sh 'docker push gowthamthotakuri/healthnest'
             }
         }
         stage('Docker deploy'){
             steps {
-                bat 'docker run -itd -p  8080:8080 healthnest'
+                sh 'docker run -itd -p  8080:8080 healthnest'
              }
         }
     
