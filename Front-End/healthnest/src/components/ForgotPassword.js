@@ -282,7 +282,7 @@ const ForgotPassword = () => {
                       checked={userType === 'patient'} 
                       onChange={() => setUserType('patient')}
                     />
-                    <label htmlFor="patient">Patient</label>
+                    <label htmlFor="patient">User</label>
                   </div>
                   <div className="checkbox-wrapper">
                     <input 
