@@ -95,7 +95,7 @@ const DoctorEditProfile = () => {
         setIsError(true);
         setMessage("Error updating profile.");
       });
-      navigate("/doctordashboard")
+      navigate("/doctor/dashboard")
   };
 
   return (<>
