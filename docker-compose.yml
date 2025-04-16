@@ -1,0 +1,37 @@
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  spring-app:
+    build: ./Back-End/HealthNest
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/mydb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+  frontend:
+   build: ./Front-End/healthnest
+   container_name: react-app
+   restart: always
+   depends_on:
+    - spring-app
+   ports:
+   - "3000:3000"
+   stdin_open: true
+   tty: true
+
+volumes:
+ mysql_data:
+
