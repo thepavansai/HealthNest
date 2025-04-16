@@ -77,33 +77,33 @@ public class UserServiceTest {
 
     @Test
     void testCreateUser_NewUser() {
-        // Arrange
-        String originalPassword = sampleUser.getPassword(); // Store original password
+        
+        String originalPassword = sampleUser.getPassword(); 
         String encodedPassword = "encodedPassword";
         
         lenient().when(userRepository.findByEmail(sampleUser.getEmail())).thenReturn(Optional.empty());
-        // Mock the encode call with the original password
+        
         lenient().when(bCryptPasswordEncoder.encode(eq(originalPassword))).thenReturn(encodedPassword);
         when(bCryptPasswordEncoder.encode(anyString())).thenReturn("encodedPassword");
         
-        // Act
+        
         userService.createUser(sampleUser);
 
-        // Assert
-        // Verify that encode was called with the original password using eq()
+        
+        
         verify(bCryptPasswordEncoder).encode(eq(originalPassword)); 
-        // Verify that the user saved has the encoded password set
+        
         verify(userRepository).save(argThat(savedUser -> 
-            savedUser.getPassword().equals(encodedPassword) // Compare with the encoded password
+            savedUser.getPassword().equals(encodedPassword) 
         ));
     }
 
     @Test 
     void testCreateUser_ShortPassword() {
-        // Arrange
+        
         sampleUser.setPassword("123"); 
 
-        // Act & Assert
+        
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> userService.createUser(sampleUser));
                 
@@ -113,10 +113,10 @@ public class UserServiceTest {
 
     @Test
     void testCreateUser_InvalidPhoneNumber() {
-        // Arrange
+        
         sampleUser.setPhoneNo("123abc");
 
-        // Act & Assert
+        
         Exception exception = assertThrows(IllegalArgumentException.class, 
                 () -> userService.createUser(sampleUser));
                 
@@ -126,10 +126,10 @@ public class UserServiceTest {
 
     @Test
     void testCreateUser_NullPassword() {
-        // Arrange
+        
         sampleUser.setPassword(null);
 
-        // Act & Assert 
+        
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> userService.createUser(sampleUser));
                 
@@ -139,10 +139,10 @@ public class UserServiceTest {
 
     @Test
     void testCreateUser_NullEmail() {
-        // Arrange
+        
         sampleUser.setEmail(null);
 
-        // Act & Assert
+        
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> userService.createUser(sampleUser));
                 
