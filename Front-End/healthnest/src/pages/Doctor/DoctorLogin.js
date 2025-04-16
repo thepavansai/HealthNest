@@ -158,6 +158,11 @@ const DoctorLogin = () => {
             <div className="signup-link">
               Don’t have an account? <a href="/doctor/signup">Register</a>
             </div>
+            <div className="forgot-password-link">
+              <small>Forgot your password?
+                <a href="/forgot-password"> Reset it </a>
+              </small>
+            </div>
           </form>
         </div>
       </div>

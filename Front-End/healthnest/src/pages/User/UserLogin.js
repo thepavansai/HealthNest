@@ -121,6 +121,11 @@ const Login = () => {
                 Don&apos;t have an account? <a href="/signup">Register</a>
               </small>
             </div>
+            <div className="forgot-password-link">
+              <small>Forgot your password?
+                <a href="/forgot-password"> Reset it </a>
+              </small>
+            </div>
             <div className="login-links">
               <a href="/doctor/login">I&apos;m a Doctor</a>
               <a href="/admin/login">I&apos;m an Admin</a>
