@@ -114,7 +114,7 @@ const DoctorEditProfile = () => {
         <input type="email" name="email" placeholder="Email ID" value={formData.email} onChange={handleChange} required />
         <input type="text" name="experience" placeholder="Experience (in years)" value={formData.experience} onChange={handleChange} required />
         <input type="text" name="hospitalName" placeholder="Hospital Name" value={formData.hospitalName} onChange={handleChange} required />
-        <input type="text" name="specialization" placeholder="Specialization" value={formData.specializedrole} onChange={handleChange} required />
+        <input type="text" name="specializedrole" placeholder="Specialization" value={formData.specializedrole} onChange={handleChange} required />
         <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required />
         <input type="number" name="consultationFee" placeholder="Consultation Fee" value={formData.consultationFee} onChange={handleChange} required />
 
