@@ -71,7 +71,7 @@ const SignUp = () => {
     const birthDate = new Date(formData.dateOfBirth);
     const age = today.getFullYear() - birthDate.getFullYear();
     
-    // Check if birthday hasn't occurred yet this year
+    
     const hasBirthdayOccurred = 
       today.getMonth() > birthDate.getMonth() || 
       (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());

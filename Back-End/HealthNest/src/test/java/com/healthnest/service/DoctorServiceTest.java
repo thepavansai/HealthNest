@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.healthnest.dto.DoctorDTO;
@@ -23,6 +24,9 @@ class DoctorServiceTest {
 
     @Mock
     private DoctorRepository doctorRepository;
+
+    @Spy
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @InjectMocks
     private DoctorService doctorService;
@@ -580,5 +584,54 @@ class DoctorServiceTest {
         assertEquals("Doctor not found with id: 1", exception.getMessage());
         verify(doctorRepository).findById(1L);
         verify(doctorRepository, never()).save(any(Doctor.class));
+    }
+
+    @Test
+    void testSetNewPassword_Success() {
+        // Arrange
+        String email = "doctor@example.com";
+        String newPassword = "newPassword123";
+        
+        when(doctorRepository.findByEmailId(email)).thenReturn(Optional.of(testDoctor));
+        
+        // Act
+        boolean result = doctorService.setNewPassword(email, newPassword);
+        
+        // Assert
+        assertTrue(result);
+        assertTrue(passwordEncoder.matches(newPassword, testDoctor.getPassword()));
+        verify(doctorRepository).save(testDoctor);
+    }
+    
+    @Test
+    void testSetNewPassword_DoctorNotFound() {
+        // Arrange
+        String email = "nonexistent@example.com";
+        String newPassword = "newPassword123";
+        
+        when(doctorRepository.findByEmailId(email)).thenReturn(Optional.empty());
+        
+        // Act & Assert
+        DoctorNotFoundException exception = assertThrows(DoctorNotFoundException.class, 
+            () -> doctorService.setNewPassword(email, newPassword));
+        
+        assertEquals("Doctor not found with email: " + email, exception.getMessage());
+        verify(doctorRepository, never()).save(any());
+    }
+    
+    @Test
+    void testSetNewPassword_PasswordTooShort() {
+        // Arrange
+        String email = "doctor@example.com";
+        String newPassword = "short"; // Less than 6 characters
+        
+        when(doctorRepository.findByEmailId(email)).thenReturn(Optional.of(testDoctor));
+        
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
+            () -> doctorService.setNewPassword(email, newPassword));
+        
+        assertEquals("New password must be at least 6 characters long", exception.getMessage());
+        verify(doctorRepository, never()).save(any());
     }
 }

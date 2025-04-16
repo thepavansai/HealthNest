@@ -1,15 +1,18 @@
 package com.healthnest.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,5 +104,50 @@ public class DoctorController {
         String result = doctorService.changePassword(doctorId, oldPassword, newPassword);
         return ResponseEntity.ok(result);
     }
-    
+
+    @PostMapping("/setnewpassword")
+    public ResponseEntity<String> setNewPassword(@RequestBody HashMap<String, String> request) {
+        String email = request.get("email");
+        String newPassword = request.get("newPassword");
+      
+        
+        if (email == null || email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            return ResponseEntity.badRequest().body("Invalid email format");
+        }
+        
+        if (newPassword == null || newPassword.length() < 6) {
+            return ResponseEntity.badRequest().body("Password must be at least 6 characters long");
+        }
+        
+        try {
+            boolean passwordSet = doctorService.setNewPassword(email, newPassword);
+            if (passwordSet) {
+                return ResponseEntity.ok("Password has been updated successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update password");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Failed to set new password: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/check-email")
+    public ResponseEntity<String> checkEmailExists(@RequestBody HashMap<String, String> request) {
+        String email = request.get("email");
+        
+        if (email == null || email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            return ResponseEntity.badRequest().body("Invalid email format");
+        }
+        
+        try {
+            boolean exists = doctorService.isDoctorEmailRegistered(email);
+            if (exists) {
+                return ResponseEntity.ok("Email exists");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error checking email: " + e.getMessage());
+        }
+    }
 }

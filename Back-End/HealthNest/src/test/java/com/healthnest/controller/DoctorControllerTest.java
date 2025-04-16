@@ -17,19 +17,47 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.HashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.healthnest.exception.DoctorNotFoundException;
+
+@WebMvcTest(DoctorController.class)
 public class DoctorControllerTest {
 
-    private DoctorController doctorController;
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockBean
     private DoctorService doctorService;
+
+    private HashMap<String, String> requestBody;
+
+    private DoctorController doctorController;
     private ModelMapper modelMapper;
 
     @BeforeEach
     void setUp() throws Exception {
+        requestBody = new HashMap<>();
+        requestBody.put("email", "doctor@example.com");
+        requestBody.put("newPassword", "newPassword123");
+
         doctorService = mock(DoctorService.class);
         modelMapper = mock(ModelMapper.class);
         doctorController = new DoctorController();
 
-        
         Field doctorServiceField = DoctorController.class.getDeclaredField("doctorService");
         doctorServiceField.setAccessible(true);
         doctorServiceField.set(doctorController, doctorService);
@@ -139,5 +167,98 @@ public class DoctorControllerTest {
     void testChangePassword_TooShort() {
         assertThrows(IllegalArgumentException.class, () -> 
             doctorController.changePassword(1L, "oldPass", "short"));
+    }
+
+    @Test
+    void testSetNewPassword_Success() throws Exception {
+        when(doctorService.setNewPassword("doctor@example.com", "newPassword123")).thenReturn(true);
+
+        mockMvc.perform(post("/doctor/setnewpassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Password has been updated successfully"));
+
+        verify(doctorService).setNewPassword("doctor@example.com", "newPassword123");
+    }
+
+    @Test
+    void testSetNewPassword_DoctorNotFound() throws Exception {
+        when(doctorService.setNewPassword("doctor@example.com", "newPassword123"))
+                .thenThrow(new DoctorNotFoundException("Doctor not found with email: doctor@example.com"));
+
+        mockMvc.perform(post("/doctor/setnewpassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().string("Failed to set new password: Doctor not found with email: doctor@example.com"));
+
+        verify(doctorService).setNewPassword("doctor@example.com", "newPassword123");
+    }
+
+    @Test
+    void testSetNewPassword_InvalidEmail() throws Exception {
+        requestBody.put("email", "invalid-email");
+
+        mockMvc.perform(post("/doctor/setnewpassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid email format"));
+
+        verify(doctorService, never()).setNewPassword(anyString(), anyString());
+    }
+
+    @Test
+    void testSetNewPassword_EmptyEmail() throws Exception {
+        requestBody.put("email", "");
+
+        mockMvc.perform(post("/doctor/setnewpassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid email format"));
+
+        verify(doctorService, never()).setNewPassword(anyString(), anyString());
+    }
+
+    @Test
+    void testSetNewPassword_PasswordTooShort() throws Exception {
+        requestBody.put("newPassword", "short");
+
+        mockMvc.perform(post("/doctor/setnewpassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Password must be at least 6 characters long"));
+
+        verify(doctorService, never()).setNewPassword(anyString(), anyString());
+    }
+
+    @Test
+    void testSetNewPassword_EmptyPassword() throws Exception {
+        requestBody.put("newPassword", "");
+
+        mockMvc.perform(post("/doctor/setnewpassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Password must be at least 6 characters long"));
+
+        verify(doctorService, never()).setNewPassword(anyString(), anyString());
+    }
+
+    @Test
+    void testSetNewPassword_ServerError() throws Exception {
+        when(doctorService.setNewPassword("doctor@example.com", "newPassword123"))
+                .thenThrow(new RuntimeException("Database error"));
+
+        mockMvc.perform(post("/doctor/setnewpassword")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().string("Failed to set new password: Database error"));
+
+        verify(doctorService).setNewPassword("doctor@example.com", "newPassword123");
     }
 }

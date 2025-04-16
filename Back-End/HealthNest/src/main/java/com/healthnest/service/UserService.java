@@ -164,4 +164,15 @@ public class UserService {
 			throw new RuntimeException("Failed to delete all users: " + e.getMessage());
 		}
 	}
+	
+	public boolean setNewPassword(String email, String newPassword) {
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));	
+		if (newPassword.length() < 6) {
+			throw new IllegalArgumentException("New password must be at least 6 characters long");
+		}
+		user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+		userRepository.save(user);
+		return true;
+	}
 }

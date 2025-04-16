@@ -29,6 +29,7 @@ import UserEditProfile from './pages/User/UserEditProfile';
 import UserFeedback from './pages/User/UserFeedback.js';
 import UserLogin from './pages/User/UserLogin.js';
 import ViewAppointments from './pages/User/ViewAppointments';
+import ForgotPassword from './components/ForgotPassword';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           {}
           <Route path="/login" element={<UserLogin />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/doctor/login" element={<DoctorLogin />} />
           <Route path="/doctor/signup" element={<DoctorSignup />} />
           <Route path="/admin/login" element={<AdminLogin />} />

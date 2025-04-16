@@ -478,4 +478,55 @@ public class UserServiceTest {
 
         assertThrows(RuntimeException.class, () -> userService.getAllUsers());
     }
+
+    @Test
+    void testSetNewPassword_Success() {
+        // Arrange
+        String email = "test@example.com";
+        String newPassword = "newPassword123";
+        String encodedPassword = "encodedNewPassword";
+        
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(sampleUser));
+        when(bCryptPasswordEncoder.encode(newPassword)).thenReturn(encodedPassword);
+        
+        // Act
+        boolean result = userService.setNewPassword(email, newPassword);
+        
+        // Assert
+        assertTrue(result);
+        assertEquals(encodedPassword, sampleUser.getPassword());
+        verify(userRepository).save(sampleUser);
+    }
+    
+    @Test
+    void testSetNewPassword_UserNotFound() {
+        // Arrange
+        String email = "nonexistent@example.com";
+        String newPassword = "newPassword123";
+        
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+        
+        // Act & Assert
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, 
+            () -> userService.setNewPassword(email, newPassword));
+        
+        assertEquals("User not found with email: " + email, exception.getMessage());
+        verify(userRepository, never()).save(any());
+    }
+    
+    @Test
+    void testSetNewPassword_PasswordTooShort() {
+        // Arrange
+        String email = "test@example.com";
+        String newPassword = "short"; // Less than 6 characters
+        
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(sampleUser));
+        
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
+            () -> userService.setNewPassword(email, newPassword));
+        
+        assertEquals("New password must be at least 6 characters long", exception.getMessage());
+        verify(userRepository, never()).save(any());
+    }
 }

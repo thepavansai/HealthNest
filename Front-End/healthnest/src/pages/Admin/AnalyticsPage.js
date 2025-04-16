@@ -36,7 +36,7 @@ const AnalyticsPage = () => {
         const doctors = doctorsResponse.data;
         const users = usersResponse.data;
 
-        // Appointments Graph Data (Last 7 Days)
+        
         const today = new Date();
         const last7Days = Array.from({ length: 7 }, (_, i) => {
           const date = new Date(today);
@@ -60,7 +60,7 @@ const AnalyticsPage = () => {
           ],
         });
 
-        // Highest Consulted Doctor
+        
         const doctorAppointmentsCount = appointments.reduce((acc, appointment) => {
           acc[appointment.doctorName] = (acc[appointment.doctorName] || 0) + 1;
           return acc;
@@ -78,7 +78,7 @@ const AnalyticsPage = () => {
           consultations: doctorAppointmentsCount[mostConsultedDoctorName],
         });
 
-        // Highest Consulted User
+        
         const userAppointmentsCount = appointments.reduce((acc, appointment) => {
           acc[appointment.userName] = (acc[appointment.userName] || 0) + 1;
           return acc;
@@ -136,22 +136,22 @@ const AnalyticsPage = () => {
                 scales: {
                   x: {
                     ticks: {
-                      autoSkip: false, // Ensure all x-axis labels are shown
-                      maxRotation: 0, // Keep labels horizontal
-                      padding: 10, // Add padding between labels
+                      autoSkip: false, 
+                      maxRotation: 0, 
+                      padding: 10, 
                     },
                     grid: {
-                      display: false, // Remove grid lines for x-axis
+                      display: false, 
                     },
                   },
                   y: {
                     beginAtZero: true,
-                    max: 10, // Set the maximum value for the y-axis
+                    max: 10, 
                     ticks: {
-                      stepSize:5, // Adjust step size for better scaling
+                      stepSize:5, 
                     },
                     grid: {
-                      color: '#e0e0e0', // Light gray grid lines
+                      color: '#e0e0e0', 
                     },
                   },
                 },
@@ -161,7 +161,7 @@ const AnalyticsPage = () => {
                     position: 'top',
                   },
                   tooltip: {
-                    enabled: true, // Enable tooltips for better interactivity
+                    enabled: true, 
                   },
                 },
               }}

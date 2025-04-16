@@ -207,6 +207,52 @@ public class UserController {
     {
         return ResponseEntity.ok(userService.getAllUsers().size());
     }
-    
-    
+   
+
+    @PostMapping("/setnewpassword")
+    public ResponseEntity<String> setNewPassword(@RequestBody HashMap<String, String> request) {
+        String email = request.get("email");
+        String newPassword = request.get("newPassword");
+        
+        if (email == null || email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            return ResponseEntity.badRequest().body("Invalid email format");
+        }
+        
+        if (newPassword == null || newPassword.length() < 6) {
+            return ResponseEntity.badRequest().body("Password must be at least 6 characters long");
+        }
+        
+        try {
+            boolean passwordSet = userService.setNewPassword(email, newPassword);
+            if (passwordSet) {
+                return ResponseEntity.ok("Password has been updated successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update password");
+            }
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Failed to set new password: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/check-email")
+    public ResponseEntity<String> checkEmailExists(@RequestBody HashMap<String, String> request) {
+        String email = request.get("email");
+        
+        if (email == null || email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            return ResponseEntity.badRequest().body("Invalid email format");
+        }
+        
+        try {
+            boolean exists = userService.isUserAlreadyRegistered(email);
+            if (exists) {
+                return ResponseEntity.ok("Email exists");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error checking email: " + e.getMessage());
+        }
+    }
 }

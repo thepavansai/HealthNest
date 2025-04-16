@@ -184,4 +184,27 @@ public class DoctorService {
         doctorRepository.save(doctor);
         return "Password changed successfully";
     }
+    
+    public boolean setNewPassword(String email, String newPassword) {
+        Doctor doctor = doctorRepository.findByEmailId(email)
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with email: " + email));
+        
+        if (newPassword.length() < 6) {
+            throw new IllegalArgumentException("New password must be at least 6 characters long");
+        }
+        String hashedNewPassword = passwordEncoder.encode(newPassword);
+        doctor.setPassword(hashedNewPassword);
+        doctorRepository.save(doctor);
+        return true;
+    }
+    
+ 
+    public boolean isDoctorEmailRegistered(String email) {
+        try {
+            // Use the repository to check if a doctor with this email exists
+            return doctorRepository.findByEmailId(email).isPresent();
+        } catch (Exception e) {
+            throw new RuntimeException("Error checking if doctor email exists", e);
+        }
+    }
 }
