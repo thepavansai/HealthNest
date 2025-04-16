@@ -32,7 +32,6 @@ public class UserService {
 		if (isUserAlreadyRegistered(user.getEmail())) {
 			throw new IllegalArgumentException("User already exists!");
 		}
-		// Encode the password here
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
 	}
@@ -139,7 +138,7 @@ public class UserService {
 	    User user = userRepository.findByEmail(email)
 	        .orElseThrow(() -> new UserNotFoundException("User doesn't exist"));
 	    
-	    // Compare the raw password with the encoded one in the database
+	   
 	    if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
 	        throw new AuthenticationException("Invalid Password");
 	    }

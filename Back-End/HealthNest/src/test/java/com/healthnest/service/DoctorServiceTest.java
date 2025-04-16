@@ -1,249 +1,585 @@
 package com.healthnest.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.lang.reflect.Field;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.healthnest.dto.DoctorDTO;
-import com.healthnest.dto.enums.Gender;
 import com.healthnest.exception.DoctorNotFoundException;
 import com.healthnest.model.Doctor;
 import com.healthnest.repository.DoctorRepository;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 class DoctorServiceTest {
-
-    @InjectMocks
-    private DoctorService doctorService;
 
     @Mock
     private DoctorRepository doctorRepository;
 
+    @InjectMocks
+    private DoctorService doctorService;
+    
+    private Doctor testDoctor;
+    private DoctorDTO testDoctorDTO;
+    
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        testDoctor = new Doctor();
+        testDoctor.setDoctorId(1);
+        testDoctor.setDoctorName("Dr. Test");
+        testDoctor.setEmailId("test@example.com");
+        testDoctor.setDocPhnNo("1234567890");
+        testDoctor.setConsultationFee(500.0);
+        testDoctor.setRating(4.5F);
+        testDoctor.setPassword("password");
+        testDoctor.setSpecializedrole("Cardiology");
+        testDoctor.setAvailability("Available");
+        testDoctor.setHospitalName("Test Hospital");
+        testDoctor.setExperience(5);
+        testDoctor.setStatus(1);
+        
+        testDoctorDTO = new DoctorDTO();
+        testDoctorDTO.setDoctorName("Dr. Updated");
+        testDoctorDTO.setEmailId("updated@example.com");
+        testDoctorDTO.setDocPhnNo("9876543210");
+        testDoctorDTO.setConsultationFee(600.0);
+        testDoctorDTO.setSpecializedrole("Neurology");
+        testDoctorDTO.setAvailability("Unavailable");
+        testDoctorDTO.setHospitalName("Updated Hospital");
+        testDoctorDTO.setExperience(10);
     }
-
+    
     @Test
-    void testAddDoctor_NewDoctor() {
-        Doctor doctor = new Doctor();
-        doctor.setDoctorName("Dr. John");
-        doctor.setEmailId("john@example.com");
-
-        when(doctorRepository.existsByEmailId("john@example.com")).thenReturn(false);
-        when(doctorRepository.save(any(Doctor.class))).thenReturn(doctor);
-
-        String result = doctorService.addDoctor(doctor);
+    void testAddDoctor_Success() {
+        when(doctorRepository.existsByEmailId(anyString())).thenReturn(false);
+        when(doctorRepository.save(any(Doctor.class))).thenReturn(testDoctor);
+        
+        String result = doctorService.addDoctor(testDoctor);
+        
         assertEquals("Saved Successfully", result);
+        verify(doctorRepository).existsByEmailId(testDoctor.getEmailId());
+        verify(doctorRepository).save(testDoctor);
     }
-
+    
     @Test
-    void testAddDoctor_ExistingDoctor() {
-        Doctor doctor = new Doctor();
-        doctor.setDoctorName("Dr. John");
-        doctor.setEmailId("john@example.com");
-
-        when(doctorRepository.existsByEmailId("john@example.com")).thenReturn(true);
-
-        assertThrows(IllegalArgumentException.class, () -> doctorService.addDoctor(doctor));
+    void testAddDoctor_DuplicateEmail() {
+        when(doctorRepository.existsByEmailId(anyString())).thenReturn(true);
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            doctorService.addDoctor(testDoctor);
+        });
+        
+        assertEquals("Doctor with the same email already exists", exception.getMessage());
+        verify(doctorRepository).existsByEmailId(testDoctor.getEmailId());
+        verify(doctorRepository, never()).save(any(Doctor.class));
     }
-
+    
     @Test
-    void testGetDoctorProfile() {
-        Doctor doctor = new Doctor();
-        doctor.setDoctorName("Dr. Smith");
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-
+    void testValidateDoctor_NullDoctor() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            doctorService.addDoctor(null);
+        });
+        
+        assertEquals("Doctor cannot be null", exception.getMessage());
+    }
+    
+    @Test
+    void testValidateDoctor_EmptyName() {
+        testDoctor.setDoctorName("");
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            doctorService.addDoctor(testDoctor);
+        });
+        
+        assertEquals("Doctor name cannot be empty", exception.getMessage());
+    }
+    
+    @Test
+    void testValidateDoctor_InvalidEmail() {
+        testDoctor.setEmailId("invalid-email");
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            doctorService.addDoctor(testDoctor);
+        });
+        
+        assertEquals("Invalid email format", exception.getMessage());
+    }
+    
+    @Test
+    void testValidateDoctor_InvalidPhoneNumber() {
+        testDoctor.setDocPhnNo("123");
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            doctorService.addDoctor(testDoctor);
+        });
+        
+        assertEquals("Phone number must be 10 digits", exception.getMessage());
+    }
+    
+    @Test
+    void testValidateDoctor_NegativeFee() {
+        testDoctor.setConsultationFee(-100.0);
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            doctorService.addDoctor(testDoctor);
+        });
+        
+        assertEquals("Consultation fee cannot be negative", exception.getMessage());
+    }
+    
+    @Test
+    void testValidateDoctor_InvalidRating() {
+        testDoctor.setRating(6.0F);
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            doctorService.addDoctor(testDoctor);
+        });
+        
+        assertEquals("Rating must be between 0 and 5", exception.getMessage());
+    }
+    
+    @Test
+    void testGetDoctorProfile_Success() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        
         Doctor result = doctorService.getDoctorProfile(1L);
-        assertEquals("Dr. Smith", result.getDoctorName());
+        
+        assertEquals(testDoctor, result);
+        verify(doctorRepository).findById(1L);
     }
-
+    
     @Test
-    void testUpdateDoctorProfile_AllFields() {
-        DoctorDTO dto = new DoctorDTO();
-        dto.setDoctorName("Updated Name");
-        dto.setHospitalName("Updated Hospital");
-        dto.setExperience(15);
-        dto.setGender(Gender.MALE);
-        dto.setEmailId("updated@example.com");
-        dto.setPassword("newpass123");
-        dto.setSpecializedrole("Cardiologist");
-        dto.setDocPhnNo("9876543210");
-        dto.setConsultationFee(750.0);
-        dto.setRating(4);
-        dto.setAvailability("Available");
-        dto.setStatus(1);
-
-        Doctor existingDoctor = new Doctor();
-        existingDoctor.setDoctorName("Old Name");
-
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(existingDoctor));
-
-        String result = doctorService.updateDoctorProfile(1L, dto);
-        assertEquals("Updated Doctor Profile", result);
-
-        verify(doctorRepository).save(argThat(updated -> 
-            updated.getDoctorName().equals("Updated Name") &&
-            updated.getHospitalName().equals("Updated Hospital") &&
-            updated.getExperience().equals(15)
-            
-        ));
-    }
-
-    @Test
-    void testUpdateDoctorProfile_DoctorNotFound() {
+    void testGetDoctorProfile_NotFound() {
         when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThrows(DoctorNotFoundException.class, () -> doctorService.updateDoctorProfile(1L, new DoctorDTO()));
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.getDoctorProfile(1L);
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).findById(1L);
     }
-
+    
     @Test
-    void testUpdateDoctorAvailability() {
-        Doctor doctor = new Doctor();
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-
-        String result = doctorService.updateDoctorAvailability(1L, "Busy");
+    void testUpdateDoctorProfile_Success() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        
+        String result = doctorService.updateDoctorProfile(1L, testDoctorDTO);
+        
+        assertEquals("Updated Doctor Profile", result);
+        assertEquals(testDoctorDTO.getDoctorName(), testDoctor.getDoctorName());
+        assertEquals(testDoctorDTO.getHospitalName(), testDoctor.getHospitalName());
+        assertEquals(testDoctorDTO.getExperience(), testDoctor.getExperience());
+        assertEquals(testDoctorDTO.getConsultationFee(), testDoctor.getConsultationFee());
+        assertEquals(testDoctorDTO.getEmailId(), testDoctor.getEmailId());
+        assertEquals(testDoctorDTO.getDocPhnNo(), testDoctor.getDocPhnNo());
+        assertEquals(testDoctorDTO.getAvailability(), testDoctor.getAvailability());
+        assertEquals(testDoctorDTO.getSpecializedrole(), testDoctor.getSpecializedrole());
+        
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository).save(testDoctor);
+    }
+    
+    @Test
+    void testUpdateDoctorProfile_NotFound() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.updateDoctorProfile(1L, testDoctorDTO);
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
+    }
+    
+    @Test
+    void testUpdateDoctorAvailability_Success() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        
+        String result = doctorService.updateDoctorAvailability(1L, "Unavailable");
+        
         assertEquals("Availability updated successfully", result);
-        assertEquals("Busy", doctor.getAvailability());
+        assertEquals("Unavailable", testDoctor.getAvailability());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository).save(testDoctor);
     }
-
+    
     @Test
-    void testUpdateConsultationFee() {
-        Doctor doctor = new Doctor();
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-
-        String result = doctorService.updateConsultationFee(1L, 300.0);
+    void testUpdateDoctorAvailability_NotFound() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.updateDoctorAvailability(1L, "Unavailable");
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
+    }
+    
+    @Test
+    void testUpdateConsultationFee_Success() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        
+        String result = doctorService.updateConsultationFee(1L, 800.0);
+        
         assertEquals("Consultation fee updated successfully", result);
-        assertEquals(300.0, doctor.getConsultationFee());
+        assertEquals(800.0, testDoctor.getConsultationFee());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository).save(testDoctor);
     }
-
+    
     @Test
-    void testGetDoctorRating() {
-        Doctor doctor = new Doctor();
-        doctor.setRating(4.5f);
-
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-        Float rating = doctorService.getDoctorRating(1L);
-
-        assertEquals(4.5f, rating);
+    void testUpdateConsultationFee_NotFound() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.updateConsultationFee(1L, 800.0);
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
     }
-
+    
     @Test
-    void testFindDoctorsBySpecialization() {
-        Doctor doc1 = new Doctor();
-        doc1.setSpecializedrole("Cardiologist");
-
-        when(doctorRepository.findBySpecializedroleContaining("Cardio"))
-                .thenReturn(List.of(doc1));
-
-        List<Doctor> doctors = doctorService.findDoctorsBySpecialization("Cardio");
-        assertEquals(1, doctors.size());
+    void testGetDoctorRating_Success() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        
+        Float result = doctorService.getDoctorRating(1L);
+        
+        assertEquals(4.5F, result);
+        verify(doctorRepository).findById(1L);
     }
-
+    
     @Test
-    void testAddSpecialization() {
-        Doctor doctor = new Doctor();
-        doctor.setSpecializedrole("Dermatologist");
-
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-        when(doctorRepository.save(any())).thenReturn(doctor);
-
-        Doctor updated = doctorService.addSpecialization(1L, "Allergist");
-        assertTrue(updated.getSpecializedrole().contains("Allergist"));
+    void testGetDoctorRating_NotFound() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.getDoctorRating(1L);
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).findById(1L);
     }
-
+    
     @Test
-    void testGetAllDoctors() {
-        when(doctorRepository.findAll()).thenReturn(Arrays.asList(new Doctor(), new Doctor()));
-        List<Doctor> doctors = doctorService.getAllDoctors();
-        assertEquals(2, doctors.size());
+    void testFindDoctorsBySpecialization_Success() {
+        List<Doctor> doctors = Arrays.asList(testDoctor);
+        when(doctorRepository.findBySpecializedroleContaining("Cardio")).thenReturn(doctors);
+        
+        List<Doctor> result = doctorService.findDoctorsBySpecialization("Cardio");
+        
+        assertEquals(1, result.size());
+        assertEquals(testDoctor, result.get(0));
+        verify(doctorRepository).findBySpecializedroleContaining("Cardio");
     }
-
+    
     @Test
-    void testDeleteAllDoctors() {
-        when(doctorRepository.findAll()).thenReturn(Arrays.asList(new Doctor()));
-        String response = doctorService.deleteAllDoctors();
-        verify(doctorRepository, times(1)).deleteAll();
-        assertEquals("All doctors and their appointments deleted successfully", response);
+    void testAddSpecialization_Success() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        when(doctorRepository.save(any(Doctor.class))).thenReturn(testDoctor);
+        
+        Doctor result = doctorService.addSpecialization(1L, "Pediatrics");
+        
+        assertEquals("Cardiology, Pediatrics", result.getSpecializedrole());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository).save(testDoctor);
     }
-
+    
     @Test
-    void testGetDoctorPasswordHashByEmailId() {
-        Doctor doctor = new Doctor();
-        doctor.setPassword("hashed123");
-
-        when(doctorRepository.findByEmailId("doc@example.com")).thenReturn(Optional.of(doctor));
-        assertEquals("hashed123", doctorService.getDoctorPasswordHashByEmailId("doc@example.com"));
+    void testAddSpecialization_NotFound() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.addSpecialization(1L, "Pediatrics");
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
     }
-
+    
     @Test
-    void testGetDoctorNameByEmail() {
-        Doctor doctor = new Doctor();
-        doctor.setDoctorName("Dr. A");
-
-        when(doctorRepository.findByEmailId("doc@example.com")).thenReturn(Optional.of(doctor));
-        Doctor result = doctorService.getDoctorNameByEmail("doc@example.com");
-
-        assertEquals("Dr. A", result.getDoctorName());
+    void testGetAllDoctors_Success() {
+        List<Doctor> doctors = Arrays.asList(testDoctor);
+        when(doctorRepository.findAll()).thenReturn(doctors);
+        
+        List<Doctor> result = doctorService.getAllDoctors();
+        
+        assertEquals(1, result.size());
+        assertEquals(testDoctor, result.get(0));
+        verify(doctorRepository).findAll();
     }
-
+    
+    @Test
+    void testDeleteAllDoctors_Success() {
+        doNothing().when(doctorRepository).deleteAll();
+        
+        String result = doctorService.deleteAllDoctors();
+        
+        assertEquals("All doctors and their appointments deleted successfully", result);
+        verify(doctorRepository).deleteAll();
+    }
+    
+    @Test
+    void testDeleteAllDoctors_Exception() {
+        doThrow(new RuntimeException("DB error")).when(doctorRepository).deleteAll();
+        
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            doctorService.deleteAllDoctors();
+        });
+        
+        assertEquals("Failed to delete all doctors: DB error", exception.getMessage());
+        verify(doctorRepository).deleteAll();
+    }
+    
+    @Test
+    void testGetDoctorPasswordHashByEmailId_Success() {
+        when(doctorRepository.findByEmailId("test@example.com")).thenReturn(Optional.of(testDoctor));
+        
+        String result = doctorService.getDoctorPasswordHashByEmailId("test@example.com");
+        
+        assertEquals("password", result);
+        verify(doctorRepository).findByEmailId("test@example.com");
+    }
+    
+    @Test
+    void testGetDoctorPasswordHashByEmailId_NotFound() {
+        when(doctorRepository.findByEmailId("test@example.com")).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.getDoctorPasswordHashByEmailId("test@example.com");
+        });
+        
+        assertEquals("Doctor not found with email: test@example.com", exception.getMessage());
+        verify(doctorRepository).findByEmailId("test@example.com");
+    }
+    
+    @Test
+    void testGetDoctorNameByEmail_Success() {
+        when(doctorRepository.findByEmailId("test@example.com")).thenReturn(Optional.of(testDoctor));
+        
+        Doctor result = doctorService.getDoctorNameByEmail("test@example.com");
+        
+        assertEquals(testDoctor, result);
+        verify(doctorRepository).findByEmailId("test@example.com");
+    }
+    
+    @Test
+    void testGetDoctorNameByEmail_NotFound() {
+        when(doctorRepository.findByEmailId("test@example.com")).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.getDoctorNameByEmail("test@example.com");
+        });
+        
+        assertEquals("Doctor not found with email: test@example.com", exception.getMessage());
+        verify(doctorRepository).findByEmailId("test@example.com");
+    }
+    
+    @Test
+    void testGetDoctorIdByEmail_Success() {
+        when(doctorRepository.findByEmailId("test@example.com")).thenReturn(Optional.of(testDoctor));
+        
+        Doctor result = doctorService.getDoctorIdByEmail("test@example.com");
+        
+        assertEquals(testDoctor, result);
+        verify(doctorRepository).findByEmailId("test@example.com");
+    }
+    
+    @Test
+    void testGetDoctorIdByEmail_NotFound() {
+        when(doctorRepository.findByEmailId("test@example.com")).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.getDoctorIdByEmail("test@example.com");
+        });
+        
+        assertEquals("Doctor not found with email: test@example.com", exception.getMessage());
+        verify(doctorRepository).findByEmailId("test@example.com");
+    }
+    
     @Test
     void testUpdateDoctorStatus_Success() {
-        Doctor doctor = new Doctor();
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
-
-        doctorService.updateDoctorStatus(1L, 1);
-        assertEquals(1, doctor.getStatus());
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        
+        doctorService.updateDoctorStatus(1L, 0);
+        
+        assertEquals(0, testDoctor.getStatus());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository).save(testDoctor);
     }
-
+    
     @Test
     void testUpdateDoctorStatus_NotFound() {
         when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThrows(DoctorNotFoundException.class, () -> doctorService.updateDoctorStatus(1L, 1));
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.updateDoctorStatus(1L, 0);
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
     }
-
+    
+    @Test
+    void testUpdateDoctorRating_NewRating() {
+        testDoctor.setRating(null);
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        
+        String result = doctorService.updateDoctorRating(1L, 4.0F);
+        
+        assertEquals("Rating updated successfully", result);
+        assertEquals(4.0F, testDoctor.getRating());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository).save(testDoctor);
+    }
+    
+    @Test
+    void testUpdateDoctorRating_ZeroRating() {
+        testDoctor.setRating(0F);
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        
+        String result = doctorService.updateDoctorRating(1L, 4.0F);
+        
+        assertEquals("Rating updated successfully", result);
+        assertEquals(4.0F, testDoctor.getRating());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository).save(testDoctor);
+    }
+    
+    @Test
+    void testUpdateDoctorRating_ExistingRating() {
+        testDoctor.setRating(3.0F);
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        
+        String result = doctorService.updateDoctorRating(1L, 5.0F);
+        
+        assertEquals("Rating updated successfully", result);
+        assertEquals(4.0F, testDoctor.getRating()); 
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository).save(testDoctor);
+    }
+    
+    @Test
+    void testUpdateDoctorRating_NotFound() {
+        when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.updateDoctorRating(1L, 4.0F);
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
+    }
+    
+    @Test
+    void testDeleteDoctor_Success() {
+        when(doctorRepository.existsById(1L)).thenReturn(true);
+        doNothing().when(doctorRepository).deleteById(1L);
+        
+        doctorService.deleteDoctor(1L);
+        
+        verify(doctorRepository).existsById(1L);
+        verify(doctorRepository).deleteById(1L);
+    }
+    
+    @Test
+    void testDeleteDoctor_NotFound() {
+        when(doctorRepository.existsById(1L)).thenReturn(false);
+        
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.deleteDoctor(1L);
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).existsById(1L);
+        verify(doctorRepository, never()).deleteById(anyLong());
+    }
+    
     @Test
     void testChangePassword_Success() {
-        Doctor doctor = new Doctor();
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String hashedOldPassword = encoder.encode("oldPassword");
-        doctor.setPassword(hashedOldPassword);
+        BCryptPasswordEncoder encoder = mock(BCryptPasswordEncoder.class);
+        String encodedOldPassword = "encodedOldPassword";
+        testDoctor.setPassword(encodedOldPassword);
         
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        when(encoder.matches("oldPassword", encodedOldPassword)).thenReturn(true);
+        when(encoder.encode("newPassword")).thenReturn("encodedNewPassword");
+        
+        
+        try {
+            Field field = DoctorService.class.getDeclaredField("passwordEncoder");
+            field.setAccessible(true);
+            field.set(doctorService, encoder);
+        } catch (Exception e) {
+            fail("Failed to set passwordEncoder field: " + e.getMessage());
+        }
         
         String result = doctorService.changePassword(1L, "oldPassword", "newPassword");
         
         assertEquals("Password changed successfully", result);
-        assertTrue(encoder.matches("newPassword", doctor.getPassword()));
-        verify(doctorRepository).save(doctor);
+        assertEquals("encodedNewPassword", testDoctor.getPassword());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository).save(testDoctor);
+        verify(encoder).matches("oldPassword", encodedOldPassword);
+        verify(encoder).encode("newPassword");
     }
-
+    
     @Test
-    void testChangePassword_WrongOldPassword() {
-        Doctor doctor = new Doctor();
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String hashedPassword = encoder.encode("correctPassword");
-        doctor.setPassword(hashedPassword);
+    void testChangePassword_IncorrectOldPassword() {
+        BCryptPasswordEncoder encoder = mock(BCryptPasswordEncoder.class);
+        String encodedOldPassword = "encodedOldPassword";
+        testDoctor.setPassword(encodedOldPassword);
         
-        when(doctorRepository.findById(1L)).thenReturn(Optional.of(doctor));
+        when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        when(encoder.matches("wrongPassword", encodedOldPassword)).thenReturn(false);
         
-        assertThrows(IllegalArgumentException.class, () -> 
-            doctorService.changePassword(1L, "wrongPassword", "newPassword"));
+        
+        try {
+            Field field = DoctorService.class.getDeclaredField("passwordEncoder");
+            field.setAccessible(true);
+            field.set(doctorService, encoder);
+        } catch (Exception e) {
+            fail("Failed to set passwordEncoder field: " + e.getMessage());
+        }
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            doctorService.changePassword(1L, "wrongPassword", "newPassword");
+        });
+        
+        assertEquals("Current password is incorrect", exception.getMessage());
+        assertEquals(encodedOldPassword, testDoctor.getPassword());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
+        verify(encoder).matches("wrongPassword", encodedOldPassword);
+        verify(encoder, never()).encode(anyString());
     }
-
+    
     @Test
     void testChangePassword_DoctorNotFound() {
         when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
         
-        assertThrows(DoctorNotFoundException.class, () -> 
-            doctorService.changePassword(1L, "oldPassword", "newPassword"));
+        Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
+            doctorService.changePassword(1L, "oldPassword", "newPassword");
+        });
+        
+        assertEquals("Doctor not found with id: 1", exception.getMessage());
+        verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
     }
 }
