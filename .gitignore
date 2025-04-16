@@ -61,3 +61,4 @@ yarn-debug.log*
 yarn-error.log*
  
 .qodo
+**/.env 

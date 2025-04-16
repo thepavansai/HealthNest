@@ -35,7 +35,7 @@ const AdminDashboard = () => {
 
         const totalConsultations = appointmentsResponse.data.length;
         const totalDoctors = doctorsResponse.data.filter(doctor => doctor.status === 1).length;
-        const totalPatients = usersResponse.data.filter(user => user.role === 'users').length;
+        const totalPatients = usersResponse.data.length;
 
         setStats({
           totalConsultations,

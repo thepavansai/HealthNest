@@ -29,157 +29,246 @@ class AppointmentServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testGetAppointmentSummaries() {
-        List<AppointmentSummaryDTO> mockList = List.of(
-            new AppointmentSummaryDTO(1, 1,"Dr. A", 5, "1234567890", 500.0, 4.5f, "XYZ Hospital",
-                    LocalDate.now(), LocalTime.now(), "Upcoming", "Test appointment"));
-
-        when(appointmentRepository.findAppointmentSummariesByUserId(1)).thenReturn(mockList);
-
-        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(1);
-
-        assertEquals(1, result.size());
-        assertEquals("Dr. A", result.get(0).getDoctorName());
+    private Appointment createValidAppointment(Integer appointmentId, Integer doctorId) {
+        Appointment appointment = new Appointment();
+        appointment.setAppointmentId(appointmentId);
+        appointment.setAppointmentDate(LocalDate.now().plusDays(1));
+        appointment.setAppointmentTime(LocalTime.of(10, 0));
+        appointment.setAppointmentStatus("Pending");
+        appointment.setDescription("Test appointment");
+        Doctor doctor = new Doctor();
+        doctor.setDoctorId(doctorId);
+        appointment.setDoctor(doctor);
+        User user = new User();
+        user.setUserId(1);
+        appointment.setUser(user);
+        return appointment;
     }
 
     @Test
-    void testAcceptAppointment_Success() {
-        Doctor doctor = new Doctor();
-        doctor.setDoctorId(1);
+    void getAppointmentSummaries_shouldReturnList() {
+        List<AppointmentSummaryDTO> dtos = Arrays.asList(new AppointmentSummaryDTO(), new AppointmentSummaryDTO());
+        when(appointmentRepository.findAppointmentSummariesByUserId(1)).thenReturn(dtos);
+        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(1);
+        assertEquals(2, result.size());
+        verify(appointmentRepository).findAppointmentSummariesByUserId(1);
+    }
 
-        User user = new User();
-        user.setUserId(1);
-
-        Appointment appointment = new Appointment();
-        appointment.setAppointmentId(10);
-        appointment.setDoctor(doctor);
-        appointment.setUser(user);
-        appointment.setAppointmentStatus("Pending");
-        appointment.setAppointmentDate(LocalDate.now().plusDays(1));
-        appointment.setAppointmentTime(LocalTime.of(10, 0));
-        appointment.setDescription("Test appointment");
-
-        when(appointmentRepository.findById(10)).thenReturn(Optional.of(appointment));
+    @Test
+    void acceptAppointment_shouldUpdateStatus() {
+        Appointment appointment = createValidAppointment(1, 2);
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
         when(appointmentRepository.save(any())).thenReturn(appointment);
 
-        Appointment result = appointmentService.acceptAppointment(10, 1);
+        Appointment result = appointmentService.acceptAppointment(1, 2);
 
         assertEquals("Upcoming", result.getAppointmentStatus());
+        verify(appointmentRepository).save(appointment);
     }
 
     @Test
-    void testAcceptAppointment_Unauthorized() {
-        Doctor doctor = new Doctor();
-        doctor.setDoctorId(2);
-
-        User user = new User();
-        user.setUserId(1);
-
-        Appointment appointment = new Appointment();
-        appointment.setAppointmentId(11);
-        appointment.setDoctor(doctor);
-        appointment.setUser(user);
-        appointment.setAppointmentStatus("Pending");
-        appointment.setAppointmentDate(LocalDate.now().plusDays(1));
-        appointment.setAppointmentTime(LocalTime.of(10, 0));
-        appointment.setDescription("Test appointment");
-
-        when(appointmentRepository.findById(11)).thenReturn(Optional.of(appointment));
-
-        RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> appointmentService.acceptAppointment(11, 1));
-        assertEquals("You are not authorized to accept this appointment", exception.getMessage());
+    void acceptAppointment_shouldThrowIfNullIds() {
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+            appointmentService.acceptAppointment(null, 1)
+        );
+        assertTrue(ex.getMessage().contains("cannot be null"));
     }
 
     @Test
-    void testRejectAppointment_Success() {
-        Doctor doctor = new Doctor();
-        doctor.setDoctorId(1);
+    void acceptAppointment_shouldThrowIfNotFound() {
+        when(appointmentRepository.findById(1)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(RuntimeException.class, () ->
+            appointmentService.acceptAppointment(1, 2)
+        );
+        assertTrue(ex.getMessage().contains("not found"));
+    }
 
-        Appointment appointment = new Appointment();
-        appointment.setAppointmentId(12);
-        appointment.setDoctor(doctor);
+    @Test
+    void acceptAppointment_shouldThrowIfUnauthorized() {
+        Appointment appointment = createValidAppointment(1, 3);
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        Exception ex = assertThrows(RuntimeException.class, () ->
+            appointmentService.acceptAppointment(1, 2)
+        );
+        assertTrue(ex.getMessage().contains("not authorized"));
+    }
 
-        when(appointmentRepository.findById(12)).thenReturn(Optional.of(appointment));
+    @Test
+    void acceptAppointment_shouldThrowIfInvalidAppointment() {
+        Appointment appointment = createValidAppointment(1, 2);
+        appointment.setAppointmentDate(null);
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+            appointmentService.acceptAppointment(1, 2)
+        );
+        assertTrue(ex.getMessage().contains("date cannot be null"));
+    }
+
+    @Test
+    void acceptAppointment_shouldThrowIfAppointmentDateInPast() {
+        Appointment appointment = createValidAppointment(1, 2);
+        appointment.setAppointmentDate(LocalDate.now().minusDays(1));
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+            appointmentService.acceptAppointment(1, 2)
+        );
+        assertTrue(ex.getMessage().contains("in the past"));
+    }
+
+    @Test
+    void acceptAppointment_shouldThrowIfAppointmentTimeNull() {
+        Appointment appointment = createValidAppointment(1, 2);
+        appointment.setAppointmentTime(null);
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+            appointmentService.acceptAppointment(1, 2)
+        );
+        assertTrue(ex.getMessage().contains("time cannot be null"));
+    }
+
+    @Test
+    void acceptAppointment_shouldThrowIfDescriptionEmpty() {
+        Appointment appointment = createValidAppointment(1, 2);
+        appointment.setDescription("   ");
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+            appointmentService.acceptAppointment(1, 2)
+        );
+        assertTrue(ex.getMessage().contains("description cannot be empty"));
+    }
+
+    @Test
+    void acceptAppointment_shouldThrowIfUserNull() {
+        Appointment appointment = createValidAppointment(1, 2);
+        appointment.setUser(null);
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+            appointmentService.acceptAppointment(1, 2)
+        );
+        assertTrue(ex.getMessage().contains("User cannot be null"));
+    }
+
+    @Test
+    void acceptAppointment_shouldThrowIfDoctorNull() {
+        Appointment appointment = createValidAppointment(1, 2);
+        appointment.setDoctor(null);
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+            appointmentService.acceptAppointment(1, 2)
+        );
+        assertTrue(ex.getMessage().contains("Doctor cannot be null"));
+    }
+
+    @Test
+    void rejectAppointment_shouldUpdateStatus() {
+        Appointment appointment = createValidAppointment(1, 2);
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
         when(appointmentRepository.save(any())).thenReturn(appointment);
 
-        Appointment result = appointmentService.rejectAppointment(12, 1);
+        Appointment result = appointmentService.rejectAppointment(1, 2);
 
         assertEquals("Cancelled", result.getAppointmentStatus());
+        verify(appointmentRepository).save(appointment);
     }
 
     @Test
-    void testGetAppointments() {
-        List<AppointmentShowDTO> dtoList = List.of(
-                new AppointmentShowDTO(1, "Dr. A", "Cardiology", "John Doe", "1234567890", "Upcoming", "Checkup", LocalDate.now(), LocalTime.now())
+    void rejectAppointment_shouldThrowIfNotFound() {
+        when(appointmentRepository.findById(1)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(RuntimeException.class, () ->
+            appointmentService.rejectAppointment(1, 2)
         );
-
-        when(appointmentRepository.findByDoctorIdWithUserName(1)).thenReturn(dtoList);
-
-        List<AppointmentShowDTO> result = appointmentService.getAppointments(1);
-
-        assertEquals(1, result.size());
-        assertEquals("Dr. A", result.get(0).getDoctorName());
+        assertTrue(ex.getMessage().contains("not found"));
     }
 
     @Test
-    void testGetAllAppointments() {
-        when(appointmentRepository.findAllAppointments()).thenReturn(List.of());
+    void rejectAppointment_shouldThrowIfUnauthorized() {
+        Appointment appointment = createValidAppointment(1, 3);
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        Exception ex = assertThrows(RuntimeException.class, () ->
+            appointmentService.rejectAppointment(1, 2)
+        );
+        assertTrue(ex.getMessage().contains("not authorized"));
+    }
 
+    @Test
+    void getAppointments_shouldReturnList() {
+        List<AppointmentShowDTO> dtos = Arrays.asList(new AppointmentShowDTO(), new AppointmentShowDTO());
+        when(appointmentRepository.findByDoctorIdWithUserName(2)).thenReturn(dtos);
+        List<AppointmentShowDTO> result = appointmentService.getAppointments(2);
+        assertEquals(2, result.size());
+        verify(appointmentRepository).findByDoctorIdWithUserName(2);
+    }
+
+    @Test
+    void getAllAppointments_shouldReturnList() {
+        List<AppointmentShowDTO> dtos = Arrays.asList(new AppointmentShowDTO(), new AppointmentShowDTO());
+        when(appointmentRepository.findAllAppointments()).thenReturn(dtos);
         List<AppointmentShowDTO> result = appointmentService.getAllAppointments();
-
-        assertNotNull(result);
+        assertEquals(2, result.size());
+        verify(appointmentRepository).findAllAppointments();
     }
 
     @Test
-    void testDeleteAllAppointments() {
+    void deleteAllAppointments_shouldReturnSuccess() {
         doNothing().when(appointmentRepository).deleteAll();
         String result = appointmentService.deleteAllAppointments();
-        assertEquals("All appointments deleted successfully", result);
-        verify(appointmentRepository, times(1)).deleteAll();
+        assertTrue(result.contains("successfully"));
+        verify(appointmentRepository).deleteAll();
     }
 
     @Test
-    void testDeleteAllAppointments_Error() {
-        doThrow(new RuntimeException("Database error")).when(appointmentRepository).deleteAll();
-        assertThrows(RuntimeException.class, () -> appointmentService.deleteAllAppointments());
-    }
-
-    @Test
-    void testDeleteAppointment_Exists() {
-        when(appointmentRepository.existsById(10)).thenReturn(true);
-        doNothing().when(appointmentRepository).deleteById(10);
-
-        String result = appointmentService.deleteAppointment(10);
-
-        assertEquals("Appointment with ID 10 has been successfully deleted.", result);
-    }
-
-    @Test
-    void testDeleteAppointment_NotExists() {
-        when(appointmentRepository.existsById(99)).thenReturn(false);
-
-        String result = appointmentService.deleteAppointment(99);
-
-        assertEquals("Appointment with ID 99 does not exist.", result);
-    }
-
-    @Test
-    void testGetTodayAppointmentsByDoctor() {
-        LocalDate today = LocalDate.now();
-        List<AppointmentShowDTO> allAppointments = List.of(
-                new AppointmentShowDTO(1, "Dr. A", "General", "John Doe", "9999999999", "Upcoming", "Test",
-                        today, LocalTime.NOON),
-                new AppointmentShowDTO(2, "Dr. A", "General", "Jane Roe", "8888888888", "Upcoming", "Test",
-                        today.minusDays(1), LocalTime.NOON)
+    void deleteAllAppointments_shouldThrowOnException() {
+        doThrow(new RuntimeException("fail")).when(appointmentRepository).deleteAll();
+        Exception ex = assertThrows(RuntimeException.class, () ->
+            appointmentService.deleteAllAppointments()
         );
+        assertTrue(ex.getMessage().contains("Failed to delete"));
+    }
 
-        when(appointmentRepository.findByDoctorIdWithUserName(1)).thenReturn(allAppointments);
+    @Test
+    void deleteAppointment_shouldDeleteIfExists() {
+        when(appointmentRepository.existsById(1)).thenReturn(true);
+        doNothing().when(appointmentRepository).deleteById(1);
+        String result = appointmentService.deleteAppointment(1);
+        assertTrue(result.contains("successfully"));
+        verify(appointmentRepository).deleteById(1);
+    }
 
-        List<AppointmentShowDTO> result = appointmentService.getTodayAppointmentsByDoctor(1, today);
+    @Test
+    void deleteAppointment_shouldReturnNotExistIfMissing() {
+        when(appointmentRepository.existsById(1)).thenReturn(false);
+        String result = appointmentService.deleteAppointment(1);
+        assertTrue(result.contains("does not exist"));
+        verify(appointmentRepository, never()).deleteById(1);
+    }
 
+    @Test
+    void getTodayAppointmentsByDoctor_shouldFilterByDate() {
+        AppointmentShowDTO dto1 = mock(AppointmentShowDTO.class);
+        AppointmentShowDTO dto2 = mock(AppointmentShowDTO.class);
+        LocalDate today = LocalDate.now();
+        when(dto1.getAppointmentDate()).thenReturn(today);
+        when(dto2.getAppointmentDate()).thenReturn(today.plusDays(1));
+        when(appointmentRepository.findByDoctorIdWithUserName(2)).thenReturn(Arrays.asList(dto1, dto2));
+        List<AppointmentShowDTO> result = appointmentService.getTodayAppointmentsByDoctor(2, today);
         assertEquals(1, result.size());
-        assertEquals(today, result.get(0).getAppointmentDate());
+        assertEquals(dto1, result.get(0));
+    }
+
+    @Test
+    void changeStatus_shouldUpdateStatus() {
+        Appointment appointment = createValidAppointment(1, 2);
+        when(appointmentRepository.findById(1)).thenReturn(Optional.of(appointment));
+        String result = appointmentService.changeStatus(1, "Completed");
+        assertEquals("Sucessfully Completed", result);
+        assertEquals("Completed", appointment.getAppointmentStatus());
+    }
+
+    @Test
+    void changeStatus_shouldThrowIfAppointmentNotFound() {
+        when(appointmentRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(NoSuchElementException.class, () ->
+            appointmentService.changeStatus(1, "Completed")
+        );
     }
 }

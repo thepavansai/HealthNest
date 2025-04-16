@@ -1,7 +1,6 @@
 package com.healthnest.controller;
 
 import com.healthnest.dto.DoctorDTO;
-import com.healthnest.exception.AuthenticationException;
 import com.healthnest.exception.DoctorNotFoundException;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;

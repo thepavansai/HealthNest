@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.dto.UserDTO;
@@ -42,8 +41,7 @@ public class UserController {
     AppointmentService appointmentService;
     @Autowired
     private FeedBackService feedBackService;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @PostMapping("/Signup")
     public ResponseEntity<String> createAccount(@RequestBody UserDTO userdto) {
@@ -58,7 +56,6 @@ public class UserController {
             return ResponseEntity.badRequest().body("User already registered!");
         }
         
-        // Do not encode password here - let the service handle it
         try {
             userService.createUser(user);
             return ResponseEntity.ok("User registered successfully!");

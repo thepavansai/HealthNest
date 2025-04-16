@@ -166,7 +166,7 @@ const ManageDoctors = () => {
                       <p><span className="label-email">Email:</span> {doctor.emailId}</p>
                       <p><span className="label-phone">Phone:</span> {doctor.docPhnNo}</p>
                       <p><span className="label-experience">Experience:</span> {doctor.experience} years</p>
-                      <p><span className="label-fee">Fee:</span> ${doctor.consultationFee}</p>
+                      <p><span className="label-fee">Fee:</span> ₹{doctor.consultationFee}</p>
                     </div>
                   </div>
                 </div>
@@ -220,7 +220,7 @@ const ManageDoctors = () => {
                       <td>{doctor.emailId}</td>
                       <td>{doctor.docPhnNo}</td>
                       <td>{doctor.experience} years</td>
-                      <td>${doctor.consultationFee}</td>
+                      <td>₹{doctor.consultationFee}</td>
                       <td>
                         <div className="action-buttons">
                           <button className="approve-btn" onClick={() => handleApproveDoctor(doctor.doctorId)}>

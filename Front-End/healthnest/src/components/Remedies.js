@@ -31,7 +31,7 @@ const Remedies = ({ onSuggest }) => {
         },
         {
           headers: {
-            'Authorization': 'Bearer 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',
+            'Authorization': `Bearer ${process.env.REACT_APP_GROQ_API_KEY}`,
             'Content-Type': 'application/json',
           },
         }
