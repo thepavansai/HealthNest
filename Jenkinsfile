@@ -35,7 +35,7 @@ pipeline {
             }
         stage('Build Docker image'){
            steps {
-                   	    sh 'docker build -t  sampleproject --build-arg VER=1.0 .'
+                   	    sh 'docker build -t  healthnest --build-arg VER=1.0 .'
 		         }
              }
         stage('Docker Login'){
@@ -45,12 +45,12 @@ pipeline {
         }
         stage('Docker Push'){
             steps {
-                bat 'docker push aruna708/sampleproject'
+                bat 'docker push gowthamthotakuri/healthnest'
             }
         }
         stage('Docker deploy'){
             steps {
-                bat 'docker run -itd -p  8086:8086 sampleproject'
+                bat 'docker run -itd -p  8080:8080 healthnest'
              }
         }
     
