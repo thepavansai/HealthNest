@@ -5,7 +5,6 @@ import com.healthnest.dto.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import java.util.List;
 
 @Table(name="User")
 @Entity
