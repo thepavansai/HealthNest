@@ -163,7 +163,8 @@
   left: 12px;
   top: 20px;
   color: #95a5a6;
-  transform: rotateY(180deg);
+  transform: scaleX(-1);
+
 }
 
 

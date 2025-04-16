@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   FaBriefcase,
   FaCalendarAlt,
-  FaDollarSign,
+  FaRupeeSign,
   FaEnvelope,
   FaEye, FaEyeSlash,
   FaHospital,
@@ -308,18 +308,19 @@ const DoctorSignup = () => {
       </div>
 
       <div className="form-group">
-        <div className="input-icon-wrapper">
-          <FaDollarSign className="input-icon" />
-          <input 
-            type="number" 
-            name="consultationFee" 
-            placeholder="Consultation Fee" 
-            value={formData.consultationFee} 
-            onChange={handleChange} 
-            required 
-          />
-        </div>
-      </div>
+  <div className="input-icon-wrapper">
+  <FaRupeeSign className="input-icon scale-x-100" />
+
+    <input 
+      type="number" 
+      name="consultationFee" 
+      placeholder="Consultation Fee" 
+      value={formData.consultationFee} 
+      onChange={handleChange} 
+      required 
+    />
+  </div>
+</div>
 
       <div className="form-group">
         <div className="availability-section">
