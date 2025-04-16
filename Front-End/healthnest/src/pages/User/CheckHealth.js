@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -102,22 +101,22 @@ const CheckHealth = () => {
       const res = await axios.post(
         'https://api.groq.com/openai/v1/chat/completions',
         {
-          model: "llama3-8b-8192",
+          model: "llama3-70b-8192",
           messages: [
             {
               role: "system",
-              content: "The user will give his current health condition(which should be explainatory raather than random hi and other stuff) with appropiate symptoms.prompt should be reasonale  to decide specilist if not ask him to give input again . Suggest a specialist doctor or general physician based on the user's appropiate and accurate input Donot give for random words. Respond with just one word like 'Cardiologist' or 'General physician'. if the user is not clear about the disease, ask them to clarify their symptoms. and give specialist name only when appropiate symptoms are given ask for again to give prompt.",
+              content: "You are a doctor who gives health advice. You will suggest what type of doctor to see based on the symptoms."
             },
             {
               role: "user",
-              content: `I am having ${text}. Suggest me the respective doctor specialist regarding to the disease given. Just return the doctor specialist in one word.`,
-            },
+              content: `I have these symptoms: ${text}. What type of doctor should I see for consultation?`
+            }
           ],
           temperature: 0.7,
         },
         {
           headers: {
-            'Authorization': 'Bearer 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',
+            'Authorization': `Bearer ${process.env.REACT_APP_GROQ_API_KEY}`,
             'Content-Type': 'application/json',
           },
         }
