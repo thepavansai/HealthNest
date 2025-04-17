@@ -12,6 +12,7 @@ services:
       - mysql_data:/var/lib/mysql
   spring-app:
     build: ./Back-End/HealthNest
+    container_name: HealthNest-Spring
     restart: always
     ports:
       - "8080:8080"
@@ -23,7 +24,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: root
   frontend:
    build: ./Front-End/healthnest
-   container_name: react-app
+   container_name: HealthNest-React
    restart: always
    depends_on:
     - spring-app
