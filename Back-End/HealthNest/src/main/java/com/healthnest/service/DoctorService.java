@@ -201,7 +201,7 @@ public class DoctorService {
  
     public boolean isDoctorEmailRegistered(String email) {
         try {
-            // Use the repository to check if a doctor with this email exists
+            
             return doctorRepository.findByEmailId(email).isPresent();
         } catch (Exception e) {
             throw new RuntimeException("Error checking if doctor email exists", e);

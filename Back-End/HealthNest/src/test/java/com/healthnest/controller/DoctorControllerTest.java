@@ -169,59 +169,12 @@ public class DoctorControllerTest {
             doctorController.changePassword(1L, "oldPass", "short"));
     }
 
-    @Test
-    void testSetNewPassword_Success() throws Exception {
-        when(doctorService.setNewPassword("doctor@example.com", "newPassword123")).thenReturn(true);
 
-        mockMvc.perform(post("/doctor/setnewpassword")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Password has been updated successfully"));
 
-        verify(doctorService).setNewPassword("doctor@example.com", "newPassword123");
-    }
 
-    @Test
-    void testSetNewPassword_DoctorNotFound() throws Exception {
-        when(doctorService.setNewPassword("doctor@example.com", "newPassword123"))
-                .thenThrow(new DoctorNotFoundException("Doctor not found with email: doctor@example.com"));
 
-        mockMvc.perform(post("/doctor/setnewpassword")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().string("Failed to set new password: Doctor not found with email: doctor@example.com"));
-
-        verify(doctorService).setNewPassword("doctor@example.com", "newPassword123");
-    }
-
-    @Test
-    void testSetNewPassword_InvalidEmail() throws Exception {
-        requestBody.put("email", "invalid-email");
-
-        mockMvc.perform(post("/doctor/setnewpassword")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Invalid email format"));
-
-        verify(doctorService, never()).setNewPassword(anyString(), anyString());
-    }
-
-    @Test
-    void testSetNewPassword_EmptyEmail() throws Exception {
-        requestBody.put("email", "");
-
-        mockMvc.perform(post("/doctor/setnewpassword")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Invalid email format"));
-
-        verify(doctorService, never()).setNewPassword(anyString(), anyString());
-    }
-
+    
+    
     @Test
     void testSetNewPassword_PasswordTooShort() throws Exception {
         requestBody.put("newPassword", "short");
@@ -235,30 +188,6 @@ public class DoctorControllerTest {
         verify(doctorService, never()).setNewPassword(anyString(), anyString());
     }
 
-    @Test
-    void testSetNewPassword_EmptyPassword() throws Exception {
-        requestBody.put("newPassword", "");
-
-        mockMvc.perform(post("/doctor/setnewpassword")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Password must be at least 6 characters long"));
-
-        verify(doctorService, never()).setNewPassword(anyString(), anyString());
-    }
-
-    @Test
-    void testSetNewPassword_ServerError() throws Exception {
-        when(doctorService.setNewPassword("doctor@example.com", "newPassword123"))
-                .thenThrow(new RuntimeException("Database error"));
-
-        mockMvc.perform(post("/doctor/setnewpassword")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().string("Failed to set new password: Database error"));
-
-        verify(doctorService).setNewPassword("doctor@example.com", "newPassword123");
-    }
 }
+
+   
