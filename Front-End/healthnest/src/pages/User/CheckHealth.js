@@ -105,14 +105,13 @@ const CheckHealth = () => {
           messages: [
             {
               role: "system",
-              content: "You are a doctor who gives health advice. You will suggest what type of doctor to see based on the symptoms."
+              content: "You are a doctor who gives health advice. You will suggest what type of doctor to see based on the symptoms.In only  one word like General.If Symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms. and try seek for moe context",
             },
             {
               role: "user",
               content: `I have these symptoms: ${text}. What type of doctor should I see for consultation?`
             }
           ],
-          temperature: 0.7,
         },
         {
           headers: {

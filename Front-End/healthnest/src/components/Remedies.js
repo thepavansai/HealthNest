@@ -26,8 +26,7 @@ const Remedies = ({ onSuggest }) => {
               role: "user",
               content: `I am having ${text}. Donot show my disase name or speciliasit name. Just show the Suggestions and remedies for my symptoms`,
             },
-          ],
-          temperature: 0.7,
+          ]
         },
         {
           headers: {
