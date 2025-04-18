@@ -109,7 +109,7 @@ const CheckHealth = () => {
             },
             {
               role: "user",
-              content: `I have these symptoms: ${text}. What type of doctor should I see for consultation?`
+              content: `I have these symptoms: ${text}. What type of doctor should I see for consultation? in one word you should suggest the doctor name,like cardiologist,general,dermatologist,gynecologist etc.`
             }
           ],
           temperature: 0.7,
