@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthnest.dto.DoctorDTO;
@@ -149,5 +150,18 @@ public class DoctorController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error checking email: " + e.getMessage());
         }
+    }
+
+   
+    @GetMapping("/nearby")
+    public ResponseEntity<List<DoctorDTO>> getNearbyDoctors(
+            @RequestParam double lat,
+            @RequestParam double lng,
+            @RequestParam double radius) {
+        List<Doctor> nearbyDoctors = doctorService.getNearbyDoctors(lat, lng, radius);
+        List<DoctorDTO> doctorDTOs = nearbyDoctors.stream()
+                .map(doctor -> modelMapper.map(doctor, DoctorDTO.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(doctorDTOs);
     }
 }
