@@ -105,7 +105,7 @@ const CheckHealth = () => {
           messages: [
             {
               role: "system",
-              content: "You are a doctor who gives health advice. You will suggest what type of doctor to see based on the symptoms.In only  one word like General.If Symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms. and try seek for moe context Donot use punctuation marks and do not use any other words. Just give the doctor specialization ",
+              content: "You are a doctor who gives health advice. You will suggest what type of doctor to see based on the symptoms.In only  one word like General.If Symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms. and try to seek for more context Donot use punctuation marks and do not use any other words. Just give the doctor specialization ",
             },
             {
               role: "user",
