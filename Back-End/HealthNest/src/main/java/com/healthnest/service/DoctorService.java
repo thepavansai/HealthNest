@@ -207,4 +207,8 @@ public class DoctorService {
             throw new RuntimeException("Error checking if doctor email exists", e);
         }
     }
+    
+    public List<Doctor> getNearbyDoctors(double latitude, double longitude, double radius) {
+        return doctorRepository.findNearbyDoctors(latitude, longitude, radius);
+    }
 }

@@ -11,6 +11,20 @@ import "./CheckHealth.css";
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const TIME_SLOTS = ['9:00 AM', '11:00 AM', '2:00 PM', '4:00 PM'];
 
+// Haversine formula to calculate distance between two coordinates
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const toRadians = (degrees) => degrees * (Math.PI / 180);
+  const R = 6371; // Radius of the Earth in kilometers
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon1 - lon2);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; // Distance in kilometers
+};
+
 const getNextDays = (availability) => {
   const today = new Date();
   const tomorrow = new Date(today);
@@ -75,6 +89,7 @@ const CheckHealth = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [doctors, setDoctors] = useState([]);
+  const [userLocation, setUserLocation] = useState(null); // Store user's location
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [doctorAppointments, setDoctorAppointments] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -84,6 +99,62 @@ const CheckHealth = () => {
   const doctorRef = useRef(null);
   const carouselRef = useRef(null);
   const navigate = useNavigate();
+
+  // Fetch user's current location
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error fetching user location:", error);
+          toast.error("Unable to fetch your location. Please enable location services.");
+        }
+      );
+    } else {
+      toast.error("Geolocation is not supported by your browser.");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userLocation && aiResponse) {
+      fetchDoctors(aiResponse);
+    }
+  }, [userLocation, aiResponse]);
+
+  const fetchDoctors = async (doctorSuggestion) => {
+    try {
+      const doctorsResponse = await axios.get(`http://localhost:8080/doctor/${doctorSuggestion}`);
+      let doctors = doctorsResponse.data;
+
+      // Filter out doctors without valid latitude and longitude
+      doctors = doctors.filter((doctor) => doctor.latitude && doctor.longitude);
+
+      // If user location is available, calculate distances and sort doctors
+      if (userLocation) {
+        doctors = doctors.map((doctor) => ({
+          ...doctor,
+          distance: calculateDistance(
+            userLocation.latitude,
+            userLocation.longitude,
+            doctor.latitude,
+            doctor.longitude
+          ),
+        }));
+        doctors.sort((a, b) => a.distance - b.distance); // Sort by distance
+      }
+
+      setDoctors(doctors);
+      
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      setDoctors([]);
+    }
+  };
 
   const fetchDoctorAppointments = async (doctorId) => {
     try {
@@ -105,11 +176,12 @@ const CheckHealth = () => {
           messages: [
             {
               role: "system",
+
               content: "You are a doctor who gives health advice. You will suggest what type of doctor to see based on the symptoms.In only  one word like General.If Symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms. and try to seek for more context Donot use punctuation marks and do not use any other words. Just give the doctor specialization ",
             },
             {
               role: "user",
-              content: `I have these symptoms: ${text}. What type of doctor should I see for consultation? in one word you should suggest the doctor name,like cardiologist,general,dermatologist,gynecologist etc.`
+              content: `I have these symptoms: ${text}. What type of doctor should I see for consultation? In one word you should suggest the doctor name, like cardiologist, general, dermatologist, gynecologist, etc.`,
             }
           ],
         },
@@ -124,14 +196,38 @@ const CheckHealth = () => {
       const doctorSuggestion = res.data.choices[0].message.content.trim();
       setAiResponse(doctorSuggestion);
       setShowSuggestions(true);
+
       try {
+        
         const doctorsResponse = await axios.get(`http://localhost:8080/doctor/${doctorSuggestion}`);
-        const doctors = doctorsResponse.data;
+        let doctors = doctorsResponse.data;
+       
+
+        // Filter out doctors without valid latitude and longitude
+        doctors = doctors.filter((doctor) => doctor.latitude && doctor.longitude);
+        
+
+        // If user location is available, calculate distances and sort doctors
+        if (userLocation) {
+          doctors = doctors.map((doctor) => ({
+            ...doctor,
+            distance: calculateDistance(
+              userLocation.latitude,
+              userLocation.longitude,
+              doctor.latitude,
+              doctor.longitude
+            ),
+          }));
+          doctors.sort((a, b) => a.distance - b.distance); // Sort by distance
+        }
+
         setDoctors(doctors);
+        
       } catch (error) {
         console.error("Error fetching doctors:", error);
         setDoctors([]);
       }
+
       setTimeout(() => {
         suggestionsRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 100);
@@ -298,17 +394,18 @@ const CheckHealth = () => {
 
         {showSuggestions && (
           <div className="suggested-doctors-carousel-container" ref={suggestionsRef}>
-            <h2>Suggested Specialists</h2>
+            <h2>Experts Nearby, Just for You</h2>
             <div className="suggested-doctors-carousel">
               <div className="carousel-wrapper" ref={carouselRef}>
                 {doctors.map((doc) => (
-                  doc.status === 1 && (
+                  doc.latitude && doc.longitude && doc.status === 1 && (
                     <div key={doc.doctorId} className="doctor-card-carousel">
                       <h4>{doc.doctorName}</h4>
                       <p><b>{doc.specializedrole}</b></p>
                       <p>Gender: {doc.gender}</p>
                       <p>Experience: {doc.experience} Years</p>
                       <p>Consultation Fee: ₹{doc.consultationFee}</p>
+                      {userLocation && <p>Distance: {doc.distance.toFixed(2)} km</p>}
                       <button onClick={() => handleSelectDoctor(doc)}>Select</button>
                     </div>
                   )
@@ -384,7 +481,6 @@ const CheckHealth = () => {
           </div>
         )}
 
-        {}
         <PaymentModal 
           isOpen={showPaymentModal}
           onClose={() => setShowPaymentModal(false)}
