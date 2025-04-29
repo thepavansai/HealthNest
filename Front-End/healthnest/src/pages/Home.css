@@ -83,32 +83,46 @@
 
   .services-section {
     padding: 40px 0;
-    margin: 30px 0;
+    margin: 30px auto; /* Changed from 30px 0 to center horizontally */
+    max-width: 1200px; /* Added max-width for better control */
+  }
+  
+  .services-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: #333;
   }
   
   .services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 25px;
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 15px;
+    justify-items: center; /* Center items horizontally */
   }
   
-  .service-card {
-    display: flex;
-    justify-content: center;
+  .service-item {
+    width: 100%; /* Ensure each item takes full width of its grid cell */
+    max-width: 350px; /* Limit maximum width for better appearance */
   }
   
   @media (max-width: 992px) {
     .services-grid {
       grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
     }
   }
   
   @media (max-width: 768px) {
     .services-grid {
       grid-template-columns: 1fr;
+      gap: 15px;
+    }
+    
+    .service-item {
+      max-width: 400px; /* Slightly wider on mobile for better readability */
     }
   }
 
