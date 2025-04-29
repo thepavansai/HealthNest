@@ -379,7 +379,7 @@ const DoctorViewAppointments = () => {
                   </div>
                 </div>
                 <div className="completed-details">
-                  <h4>#{appointment.appointmentId} - {appointment.doctorName}</h4>
+                  <h4>{appointment.userName}</h4>
                   <p>Description: {appointment.description}</p>
                   <p>Date: {appointment.appointmentDate}</p>
                 </div>

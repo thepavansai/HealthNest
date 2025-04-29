@@ -403,7 +403,7 @@ const ViewAppointments = () => {
                   </div>
                 </div>
                 <div className="completed-details">
-                  <h4>#{appointment.appointmentId} - {appointment.doctorName}</h4>
+                  <h4>{appointment.doctorName}</h4>
                   <p>Hospital: {appointment.hospitalName}</p>
                   <p>Fee: ₹{appointment.consultationFee}</p>
                 </div>
