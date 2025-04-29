@@ -54,7 +54,7 @@ public class UserService {
 		}
 	}
 	
-	public User getUserDetails(Integer userId) {
+	public User getUserDetails(Long userId) {
 	    return userRepository.findById(userId)
 	            .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 	}
@@ -64,7 +64,7 @@ public class UserService {
 		return user.isPresent();
 	}
 
-	public boolean editProfile(User user, Integer userId) {
+	public boolean editProfile(User user, Long userId) {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
@@ -96,12 +96,12 @@ public class UserService {
 		return (List<User>) userRepository.findAll();
 	}
 
-	public void cancelAppointment(Integer appointmentId) {
+	public void cancelAppointment(Long appointmentId) {
 		Appointment appointment = appointmentRepository.findById(appointmentId).get();
 		appointment.setAppointmentStatus("Cancelled");
 	}
 
-	public boolean changePassword(Integer userId, String oldPassword, String newPassword) {
+	public boolean changePassword(Long userId, String oldPassword, String newPassword) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 
@@ -122,7 +122,7 @@ public class UserService {
         return true;
     }
 
-	public void deleteAccount(Integer userId) {
+	public void deleteAccount(Long userId) {
 	    if (!userRepository.existsById(userId)) {
 	        throw new UserNotFoundException("User not found with id: " + userId);
 	    }
@@ -146,7 +146,7 @@ public class UserService {
 	    return "Login successful";
 	}
 
-	public Integer getUserId(String email) {
+	public Long getUserId(String email) {
 	    return userRepository.findByEmail(email)
 	        .map(User::getUserId)
 	        .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));

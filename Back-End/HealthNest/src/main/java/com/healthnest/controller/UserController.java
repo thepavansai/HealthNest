@@ -97,7 +97,7 @@ public class UserController {
     }
 
     @GetMapping("/userdetails/{userId}")
-    public ResponseEntity<User> getUserDetails(@PathVariable Integer userId) {
+    public ResponseEntity<User> getUserDetails(@PathVariable Long userId) {
         User user = userService.getUserDetails(userId);
         return ResponseEntity.ok(user);
     }
@@ -119,7 +119,7 @@ public class UserController {
     
 
     @PatchMapping("/editprofile/{id}")
-    public ResponseEntity<String> editProfile(@RequestBody User user, @PathVariable int id) {
+    public ResponseEntity<String> editProfile(@RequestBody User user, @PathVariable Long id) {
         if (user == null || user.getName() == null || user.getName().isEmpty()) {
             return ResponseEntity.badRequest().body("Invalid input");
         }
@@ -136,13 +136,13 @@ public class UserController {
     }
 
     @GetMapping("/appointments/{userId}")
-    public ResponseEntity<List<AppointmentSummaryDTO>> getUpcomingAppointments(@PathVariable Integer userId) {
+    public ResponseEntity<List<AppointmentSummaryDTO>> getUpcomingAppointments(@PathVariable Long userId) {
         List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId);
         return ResponseEntity.ok(result);
     }
 
     @PatchMapping("/cancelappointment/{appointmentId}")
-    public ResponseEntity<String> cancelAppointment(@PathVariable Integer appointmentId) {
+    public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId) {
         try {
             userService.cancelAppointment(appointmentId);
             return ResponseEntity.ok("successfully cancelled Appointment");
@@ -154,7 +154,7 @@ public class UserController {
     }
 
     @PatchMapping("/changepassword/{userid}/{beforepassword}/{changepassword}")
-    public ResponseEntity<String> changePassword(@PathVariable Integer userid, 
+    public ResponseEntity<String> changePassword(@PathVariable Long userid, 
                                                  @PathVariable String beforepassword,
                                                  @PathVariable String changepassword) {
         try {
@@ -174,7 +174,7 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteuser/{userId}")
-    public ResponseEntity<String> deleteAccount(@PathVariable Integer userId) {
+    public ResponseEntity<String> deleteAccount(@PathVariable Long userId) {
         try {
             userService.deleteAccount(userId);
             return ResponseEntity.ok("Successfully deleted user");

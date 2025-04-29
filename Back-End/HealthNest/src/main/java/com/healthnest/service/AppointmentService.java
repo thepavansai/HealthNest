@@ -21,11 +21,11 @@ public class AppointmentService {
     @Autowired
     AppointmentRepository appointmentRepository;
 
-    public List<AppointmentSummaryDTO> getAppointmentSummaries(Integer userId) {
+    public List<AppointmentSummaryDTO> getAppointmentSummaries(Long userId) {
         return appointmentRepository.findAppointmentSummariesByUserId(userId);
     }
 
-	public Appointment acceptAppointment(Integer appointmentId, Integer doctorId) {
+	public Appointment acceptAppointment(Long appointmentId, Long doctorId) {  // Changed from Integer to Long
         if (appointmentId == null || doctorId == null) {
             throw new IllegalArgumentException("Appointment ID and Doctor ID cannot be null");
         }
@@ -64,7 +64,7 @@ public class AppointmentService {
         }
     }
 
-	public Appointment rejectAppointment(Integer appointmentId, Integer doctorId) {
+	public Appointment rejectAppointment(Long appointmentId, Long doctorId) {  // Changed from Integer to Long
 		Appointment appointment = appointmentRepository.findById(appointmentId)
 				.orElseThrow(() -> new RuntimeException("Appointment not found"));
 		if (!appointment.getDoctor().getDoctorId().equals(doctorId)) {
@@ -74,7 +74,7 @@ public class AppointmentService {
 		appointment.setAppointmentStatus("Cancelled");
 		return appointmentRepository.save(appointment);
 	}
-	public List<AppointmentShowDTO> getAppointments(Integer doctorId) {
+	public List<AppointmentShowDTO> getAppointments(Long doctorId) {  // Changed from Integer to Long
 		return appointmentRepository.findByDoctorIdWithUserName(doctorId);
 	}
 	public List<AppointmentShowDTO> getAllAppointments(){
@@ -89,7 +89,7 @@ public class AppointmentService {
             throw new RuntimeException("Failed to delete all appointments: " + e.getMessage());
         }
     }
-    public String deleteAppointment(Integer appointmentId) {
+    public String deleteAppointment(Long appointmentId) {  // Changed from Integer to Long
         if (appointmentRepository.existsById(appointmentId)) {
             appointmentRepository.deleteById(appointmentId);
             return "Appointment with ID " + appointmentId + " has been successfully deleted.";
@@ -98,7 +98,7 @@ public class AppointmentService {
         }
     }
 
-	public List<AppointmentShowDTO> getTodayAppointmentsByDoctor(Integer doctorId,LocalDate todaydate) {
+	public List<AppointmentShowDTO> getTodayAppointmentsByDoctor(Long doctorId, LocalDate todaydate) {  // Changed from Integer to Long
 
 
 	        
@@ -110,7 +110,7 @@ public class AppointmentService {
 	                .collect(Collectors.toList());
 	    }
 
-	public String changeStatus(Integer appointmentId,String setStatus) {
+	public String changeStatus(Long appointmentId, String setStatus) {  // Changed from Integer to Long
 		appointmentRepository.findById(appointmentId).get().setAppointmentStatus(setStatus);
 		return "Sucessfully Completed";
 	}
