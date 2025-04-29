@@ -18,15 +18,17 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Table(name = "Doctor")
+@Table(name = "\"doctor\"")
 @Data
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer doctorId;
+    @Column(name="\"doctorId\"")
+    private Long doctorId;  // Changed from Integer to Long
 
     @NotBlank(message = "Doctor name cannot be blank")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+    @Column(name="\"doctorName\"")
     private String doctorName;
 
     @NotNull(message = "Gender cannot be null")
