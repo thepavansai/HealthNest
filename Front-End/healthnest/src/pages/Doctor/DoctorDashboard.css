@@ -130,6 +130,7 @@
 
 .card-header {
   padding: 1.25rem;
+  font-family: 'Poppins', sans-serif;
   border-bottom: 1px solid #f3f4f6;
   display: flex;
   justify-content: space-between;
@@ -144,7 +145,11 @@
 
 .card-content {
   margin-top: 15px;
+  
   flex-grow: 1;
+}
+.card-content h6{
+  font-family: 'Poppins', sans-serif;
 }
 
 
