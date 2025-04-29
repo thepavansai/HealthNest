@@ -137,7 +137,8 @@ const SignUp = () => {
         password: formData.password,
         email: formData.email,
         dateOfBirth: formData.dateOfBirth,
-        phoneNo: formData.phoneNo
+        phoneNo: formData.phoneNo,
+        role: "USER"
       });
 
       setMessage(response.data || "Registration successful!");

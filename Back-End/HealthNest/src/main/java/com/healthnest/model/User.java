@@ -35,5 +35,7 @@ public class User {
 
 	@Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
 	private String phoneNo;
+	
+	private String role;
 
 }

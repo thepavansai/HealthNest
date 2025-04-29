@@ -1,40 +1,67 @@
 package com.healthnest.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.healthnest.repository.AppointmentRepository;
-import com.healthnest.repository.UserRepository;
+import com.healthnest.exception.AuthenticationException;
+import com.healthnest.exception.UserNotFoundException;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.User;
-import com.healthnest.exception.UserNotFoundException;
-import com.healthnest.exception.AuthenticationException;
+import com.healthnest.model.UserPrincipal;
+import com.healthnest.repository.AppointmentRepository;
+import com.healthnest.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class UserService {
+public class UserService implements UserDetailsService {
 
-	@Autowired
-	UserRepository userRepository;
-	@Autowired
-	AppointmentRepository appointmentRepository;
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
-	public void createUser(User user) {
-		validateUser(user);
-		if (isUserAlreadyRegistered(user.getEmail())) {
-			throw new IllegalArgumentException("User already exists!");
-		}
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		userRepository.save(user);
-	}
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Use PasswordEncoder instead of BCryptPasswordEncoder
+//    @Autowired
+//    AuthenticationManager authmanager;
+//    
+    @Autowired
+    private AuthenticationConfiguration authConfig;
+    
+    @Autowired
+    JWTService jwtService;
+
+    @Override
+    public UserDetails loadUserByUsername(String useremail) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(useremail).orElseThrow(() -> 
+            new UsernameNotFoundException("User doesn't exist"));
+        return new UserPrincipal(user);
+    }
+
+    public void createUser(User user) {
+        validateUser(user);
+        if (isUserAlreadyRegistered(user.getEmail())) {
+            throw new IllegalArgumentException("User already exists!");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Use PasswordEncoder
+        userRepository.save(user);
+    }
 	
 	private void validateUser(User user) {
 		if (user == null) {
@@ -105,7 +132,7 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 
-        if (!bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new IllegalArgumentException("Current password is incorrect");
         }
 
@@ -117,7 +144,7 @@ public class UserService {
             throw new IllegalArgumentException("New password must be different from the current password");
         }
 
-        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         return true;
     }
@@ -128,23 +155,89 @@ public class UserService {
 	    }
 	    userRepository.deleteById(userId);
 	}
-	
+
 	public boolean bookAppointment(Appointment appointment) {
         appointmentRepository.save(appointment);
         return true;
 	}
 
-	public String login(String email, String password) {
+//	 public String login(String email, String password) {
+//	        User user = userRepository.findByEmail(email)
+//	            .orElseThrow(() -> new UserNotFoundException("User doesn't exist"));
+//
+//	        if (!passwordEncoder.matches(password, user.getPassword())) {
+//	            throw new AuthenticationException("Invalid Password");
+//	        }
+//	        
+//	        try {
+//	            AuthenticationManager authmanager = authConfig.getAuthenticationManager();
+//	            Authentication authentication = authmanager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+//	        
+//	            if (authentication.isAuthenticated()) {
+//	                System.out.println(jwtService.generateToken(email));
+//	            }
+//	        } catch (Exception e) {
+//	            throw new RuntimeException("Authentication failed", e);
+//	        }
+//
+//	        return "Login successful";
+//	    }
+//	public String login(String email, String password) {
+//	    User user = userRepository.findByEmail(email)
+//	        .orElseThrow(() -> new UserNotFoundException("User doesn't exist"));
+//	    
+//	    if (!passwordEncoder.matches(password, user.getPassword())) {
+//	        throw new AuthenticationException("Invalid Password");
+//	    }
+//	    
+//	    try {
+//	        AuthenticationManager authmanager = authConfig.getAuthenticationManager();
+//	        Authentication authentication = authmanager.authenticate(
+//	            new UsernamePasswordAuthenticationToken(email, password));
+//	        
+//	        if (authentication.isAuthenticated()) {
+//	            String token = jwtService.generateToken(email);
+//	            System.out.println("Generated token: " + token);
+//	            return "Login successful";
+//	        }
+//	    } catch (Exception e) {
+//	        throw new RuntimeException("Authentication failed", e);
+//	    }
+//	    return "Login successful";
+//	}
+//
+//	
+	public Map<String, String> login(String email, String password) {
+	    Map<String, String> response = new HashMap<>();
+	    
 	    User user = userRepository.findByEmail(email)
 	        .orElseThrow(() -> new UserNotFoundException("User doesn't exist"));
 	    
-	   
-	    if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+	    if (!passwordEncoder.matches(password, user.getPassword())) {
 	        throw new AuthenticationException("Invalid Password");
 	    }
 	    
-	    return "Login successful";
+	    try {
+	        AuthenticationManager authmanager = authConfig.getAuthenticationManager();
+	        Authentication authentication = authmanager.authenticate(
+	            new UsernamePasswordAuthenticationToken(email, password));
+	        
+	        if (authentication.isAuthenticated()) {
+	            String token = jwtService.generateToken(email);
+	            System.out.println("Generated token: " + token);
+	            
+	            response.put("message", "Login successful");
+	            response.put("token", token);
+	            return response;
+	        }
+	    } catch (Exception e) {
+	        throw new RuntimeException("Authentication failed", e);
+	    }
+	    
+	    response.put("message", "Login successful");
+	    return response;
 	}
+
 
 	public Integer getUserId(String email) {
 	    return userRepository.findByEmail(email)
@@ -171,7 +264,7 @@ public class UserService {
 		if (newPassword.length() < 6) {
 			throw new IllegalArgumentException("New password must be at least 6 characters long");
 		}
-		user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+		user.setPassword(passwordEncoder.encode(newPassword));
 		userRepository.save(user);
 		return true;
 	}
