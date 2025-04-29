@@ -50,7 +50,10 @@ const HealthCheck = ({ name, description }) => {
         <h5 className="card-title">{name}</h5>
         <p className="card-text">{description}</p>
         <button onClick={handleClick} className="btn btn-primary">
-          Learn more
+          {name === "Health Checkup" ? "Check Health Now" : 
+           name === "View Appointments" ? "View Schedule" : 
+           name === "Join Our Team" ? "Apply Today" : 
+           "Learn More"}
         </button>
       </div>
     </div>
