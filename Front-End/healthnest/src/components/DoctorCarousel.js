@@ -17,7 +17,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { BASE_URL } from '../../config/apiConfig';
+import { BASE_URL } from '../config/apiConfig';
 
 const StyledCarousel = styled(Carousel)`
   .react-multi-carousel-item {

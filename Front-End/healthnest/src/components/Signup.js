@@ -13,7 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Footer from "./Footer";
 import Header from "./Header";
 import './SignUp.css';
-import { BASE_URL } from '../../config/apiConfig';
+import { BASE_URL } from '../config/apiConfig';
 
 const SignUp = () => {
   const navigate = useNavigate();

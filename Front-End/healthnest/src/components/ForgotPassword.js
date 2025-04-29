@@ -8,7 +8,7 @@ import Header from './Header';
 import Footer from './Footer';
 import './ForgotPassword.css';
 import axios from 'axios';
-import { BASE_URL } from '../../config/apiConfig';
+import { BASE_URL } from '../config/apiConfig';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
