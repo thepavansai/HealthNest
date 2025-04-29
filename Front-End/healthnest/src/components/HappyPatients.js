@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./HappyPatients.css";
+import { BASE_URL } from '../../config/apiConfig';
 
 const HappyPatients = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -11,7 +12,7 @@ const HappyPatients = () => {
     const fetchFeedbacks = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:8080/feedback/all");
+        const response = await axios.get(`${BASE_URL}/feedback/all`);
         
         const filteredFeedbacks = response.data.filter(
           (feedback) => feedback.rating === 4 || feedback.rating === 5

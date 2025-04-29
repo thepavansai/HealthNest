@@ -8,6 +8,7 @@ import Header from './Header';
 import Footer from './Footer';
 import './ForgotPassword.css';
 import axios from 'axios';
+import { BASE_URL } from '../../config/apiConfig';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -61,8 +62,8 @@ const ForgotPassword = () => {
       
       
       const checkEndpoint = userType === 'doctor' 
-        ? 'http://localhost:8080/doctor/check-email'
-        : 'http://localhost:8080/users/check-email';
+        ? `${BASE_URL}/doctor/check-email`
+        : `${BASE_URL}/users/check-email`;
       
       const response = await axios.post(checkEndpoint, { 
         email,
@@ -152,8 +153,8 @@ const ForgotPassword = () => {
       
       
       const resetEndpoint = userType === 'doctor' 
-        ? 'http://localhost:8080/doctor/setnewpassword'
-        : 'http://localhost:8080/users/setnewpassword';
+        ? `${BASE_URL}/doctor/setnewpassword`
+        : `${BASE_URL}/users/setnewpassword`;
       
       
       const response = await axios.post(resetEndpoint, {

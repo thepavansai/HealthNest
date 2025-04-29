@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from '../../config/apiConfig';
 import "./UserLogin.css"; 
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
@@ -20,7 +21,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:8080/users/login", {
+      const res = await axios.post(`${BASE_URL}/users/login`, {
         email,
         password,
       });
@@ -28,7 +29,7 @@ const Login = () => {
       if (res.data.message === "Login successful") {
         setIsError(false);
         setMessage("Login successful! Redirecting...");
-        localStorage.setItem("userId", res.data.userId);
+        localStorage.setItem("userId", String(res.data.userId)); // Store as string
         localStorage.setItem("userName", res.data.name);
         setTimeout(() => navigate("/user"), 500);
       } else {

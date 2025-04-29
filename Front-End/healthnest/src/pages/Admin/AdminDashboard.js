@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import './AdminDashboard.css';
+import { BASE_URL } from '../../config/apiConfig';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -28,9 +29,9 @@ const AdminDashboard = () => {
     const fetchDashboardData = async () => {
       try {
         const [appointmentsResponse, doctorsResponse, usersResponse] = await Promise.all([
-          axios.get('http://localhost:8080/admin/appointments'),
-          axios.get('http://localhost:8080/admin/doctors'),
-          axios.get('http://localhost:8080/admin/users'),
+          axios.get(`${BASE_URL}/admin/appointments`),
+          axios.get(`${BASE_URL}/admin/doctors`),
+          axios.get(`${BASE_URL}/admin/users`),
         ]);
 
         const totalConsultations = appointmentsResponse.data.length;

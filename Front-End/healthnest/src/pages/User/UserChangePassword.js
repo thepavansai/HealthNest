@@ -6,6 +6,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BASE_URL } from '../../config/apiConfig';
 
 const UserChangePassword = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const UserChangePassword = () => {
   
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem('userId'); // Already a string
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,7 +59,7 @@ const UserChangePassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!userId) {
       toast.error("Please login to change password");
       navigate('/login');
@@ -67,10 +68,11 @@ const UserChangePassword = () => {
 
     if (validateForm()) {
       setIsSubmitting(true);
-      
+
       try {
+        // Use string userId in API call
         const response = await axios.put(
-          `http://localhost:8080/users/changepassword/${userId}/${formData.currentPassword}/${formData.newPassword}`
+          `${BASE_URL}/users/changepassword/${userId}/${formData.currentPassword}/${formData.newPassword}`
         );
 
         if (response.status === 200) {

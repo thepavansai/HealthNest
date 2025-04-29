@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { BASE_URL } from '../../config/apiConfig';
 import { motion } from 'framer-motion';
 import { FaUserMd, FaEnvelope, FaPhoneAlt, FaUser } from 'react-icons/fa';
 import './AnalyticsPage.css';
@@ -27,9 +28,9 @@ const AnalyticsPage = () => {
     const fetchAnalyticsData = async () => {
       try {
         const [appointmentsResponse, doctorsResponse, usersResponse] = await Promise.all([
-          axios.get('http://localhost:8080/admin/appointments'),
-          axios.get('http://localhost:8080/admin/doctors'),
-          axios.get('http://localhost:8080/admin/users'),
+          axios.get(`${BASE_URL}/admin/appointments`),
+          axios.get(`${BASE_URL}/admin/doctors`),
+          axios.get(`${BASE_URL}/admin/users`),
         ]);
 
         const appointments = appointmentsResponse.data;

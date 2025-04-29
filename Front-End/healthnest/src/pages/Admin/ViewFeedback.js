@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import './ViewFeedback.css';
+ import { BASE_URL } from '../../config/apiConfig';
 
 const ViewFeedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -13,7 +14,7 @@ const ViewFeedback = () => {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/admin/feedbacks');
+        const response = await axios.get(`${BASE_URL}/admin/feedbacks`);
         setFeedbacks(response.data);
         setLoading(false);
       } catch (err) {

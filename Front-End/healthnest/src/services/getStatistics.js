@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const BASE_URL = 'http://localhost:8080';
+import { BASE_URL } from '../config/apiConfig';
 
 export const getStatistics = async () => {
     try {
@@ -27,4 +26,4 @@ export const getStatistics = async () => {
             appointmentCount: 100
         };
     }
-}; 
+};

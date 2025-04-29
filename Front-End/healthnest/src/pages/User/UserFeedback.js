@@ -5,6 +5,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { FaStar } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css';
 import './UserFeedback.css';
+import { BASE_URL } from '../../config/apiConfig';
 
 const UserFeedback = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const UserFeedback = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId'); // Already a string
     const userEmail = localStorage.getItem('userEmail');
 
     if (!userId) {
@@ -35,7 +36,7 @@ const UserFeedback = () => {
       ...prev,
       emailId: userEmail || '',
       user: {
-        userId: parseInt(userId)
+        userId: userId // Use string ID
       }
     }));
   }, [navigate]);
@@ -53,8 +54,9 @@ const UserFeedback = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/feedback/add', formData);
-      
+      // formData already contains userId as string from useEffect
+      const response = await axios.post(`${BASE_URL}/feedback/add`, formData);
+
       if (response.status === 200) {
         setSubmitted(true);
         toast.success('Feedback submitted successfully!');

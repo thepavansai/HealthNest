@@ -4,6 +4,7 @@ import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaStar, FaRegS
 import './ViewAppointments.css';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { BASE_URL } from '../../config/apiConfig';
 
 const ViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -14,12 +15,13 @@ const ViewAppointments = () => {
   const [ratings, setRatings] = useState({}); 
   const [ratedAppointments, setRatedAppointments] = useState(new Set());
   const [reviewedAppointments, setReviewedAppointments] = useState([]);
+  
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8080/users/appointments/${localStorage.getItem('userId')}`);
+        const response = await axios.get(`${BASE_URL}/users/appointments/${localStorage.getItem('userId')}`);
         setAppointments(response.data);
         setLoading(false);
       } catch (error) {
@@ -76,7 +78,7 @@ const ViewAppointments = () => {
       return;
     }
     try {
-      const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
+      const response = await axios.patch(`${BASE_URL}/users/cancelappointment/${appointmentId}`);
       if (response.status === 200) { 
         setAppointments(prevAppointments =>
           prevAppointments.map(appointment =>
@@ -118,9 +120,9 @@ const ViewAppointments = () => {
     }
     
     try {
-      const ratingResponse = await axios.patch(`http://localhost:8080/doctor/${doctorId}/rating/${rating}`);
+      const ratingResponse = await axios.patch(`${BASE_URL}/doctor/${doctorId}/rating/${rating}`);
       if (ratingResponse.status === 200) {
-        const reviewResponse = await axios.patch(`http://localhost:8080/appointments/${appointmentId}/status/Reviewed`);
+        const reviewResponse = await axios.patch(`${BASE_URL}/appointments/${appointmentId}/status/Reviewed`);
         if (reviewResponse.status === 200) {
           alert('Rating submitted successfully!');
          
@@ -189,8 +191,8 @@ const ViewAppointments = () => {
               <FaCalendarCheck />
             </div>
             <div className="summary-details">
-              <h3>{completedAppointments.length}</h3>
-              <p>Completed Appointments</p>
+              <h3>{completedAppointments.length + reviewedAppointments.length}</h3>
+              <p>Completed & Reviewed Appointments</p>
             </div>
           </div>
           <div className="summary-card">
@@ -213,15 +215,15 @@ const ViewAppointments = () => {
             </div>
           </div>
           
-          <div className="summary-card">
+          {/* <div className="summary-card">
             <div className="summary-icon reviewed-icon">
               <FaStar />
             </div>
             <div className="summary-details">
               <h3>{reviewedAppointmentsList.length}</h3>
               <p>Reviewed Appointments</p>
-            </div>
-          </div>
+            </div> 
+          </div>*/}
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import { FaSearch, FaUser } from 'react-icons/fa';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import './ManageUsers.css';
+import { BASE_URL } from '../../config/apiConfig';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -14,7 +15,7 @@ const ManageUsers = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:8080/admin/users');
+        const response = await axios.get(`${BASE_URL}/admin/users`);
         setUsers(response.data);
         setLoading(false);
       } catch (error) {

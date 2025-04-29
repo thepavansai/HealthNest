@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from '../../config/apiConfig';
 import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaClock } from 'react-icons/fa';
 import './DoctorViewAppointments.css';
@@ -14,65 +15,78 @@ const DoctorViewAppointments = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const doctorId = localStorage.getItem("doctorId");
 
   useEffect(() => {
     const fetchAppointments = async () => {
+      if (!doctorId) {
+        console.error("Doctor ID not found.");
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8080/appointments/doctor/${localStorage.getItem('doctorId')}`);
-        console.log(response.data)
-        setAppointments(response.data);
-        setCompletedAppointments(response.data.filter(
-          appointment => appointment.appointmentStatus.toLowerCase() === 'completed' || 
-                         appointment.appointmentStatus.toLowerCase() === 'reviewed'
-      ));
-        setUpcomingAppointments(response.data.filter(
+        const response = await axios.get(`${BASE_URL}/appointments/doctor/${doctorId}`);
+        const fetchedAppointments = response.data.map(app => ({
+          ...app,
+          appointmentId: String(app.appointmentId),
+          userId: String(app.userId)
+        }));
+        setAppointments(fetchedAppointments);
+
+        setCompletedAppointments(fetchedAppointments.filter(
+          appointment => appointment.appointmentStatus.toLowerCase() === 'completed' || appointment.appointmentStatus.toLowerCase() === 'reviewed'
+        ));
+        setUpcomingAppointments(fetchedAppointments.filter(
           appointment => appointment.appointmentStatus.toLowerCase() === 'upcoming'
         ));
-        setCancelledAppointments(response.data.filter(
+        setCancelledAppointments(fetchedAppointments.filter(
           appointment => appointment.appointmentStatus.toLowerCase() === 'cancelled'
         ));
-        setPendingAppointments(response.data.filter(
+        setPendingAppointments(fetchedAppointments.filter(
           appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
         ));
-        setLoading(false);
+
       } catch (error) {
         console.error('Error fetching appointments:', error);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchAppointments();
-  }, []);
+  }, [doctorId]);
 
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch =
-      appointment.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      appointment.description.toLowerCase().includes(searchTerm.toLowerCase());
+      (appointment.userName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (appointment.description?.toLowerCase() || '').includes(searchTerm.toLowerCase());
 
     if (filterStatus === 'all') return matchesSearch;
-    return matchesSearch && appointment.appointmentStatus.toLowerCase() === filterStatus.toLowerCase();
+    return matchesSearch && (appointment.appointmentStatus?.toLowerCase() || '') === filterStatus.toLowerCase();
   });
 
   const handleAppointmentAction = async (appointmentId, action) => {
+    if (!doctorId) {
+        alert("Doctor ID not found. Please login again.");
+        return;
+    }
     try {
       const response = await axios.post(
-        `http://localhost:8080/appointments/${appointmentId}/${action}/${localStorage.getItem("doctorId")}`
+        `${BASE_URL}/appointments/${String(appointmentId)}/${action}/${doctorId}`
       );
 
       if (response.status === 200) {
-        alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
-
-        
-        setAppointments((prevAppointments) =>
-          prevAppointments.map((appointment) =>
-            appointment.appointmentId === appointmentId
-              ? { ...appointment, appointmentStatus: action === 'accept' ? 'upcoming' : 'rejected' }
-              : appointment
+        setAppointments(prev =>
+          prev.map(app =>
+            app.appointmentId === String(appointmentId)
+              ? { ...app, appointmentStatus: action === 'accept' ? 'Upcoming' : 'Cancelled' }
+              : app
           )
         );
+        alert(`Appointment ${action}ed successfully.`);
       } else {
-        alert(`Failed to ${action} appointment. Please try again.`);
+        alert(`Failed to ${action} appointment.`);
       }
     } catch (error) {
       console.error(`Error ${action}ing appointment:`, error);
@@ -96,29 +110,18 @@ const DoctorViewAppointments = () => {
       return;
     }
     try {
-      const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
+      const response = await axios.patch(`${BASE_URL}/users/cancelappointment/${String(appointmentId)}`);
       if (response.status === 200) {
-        
-        if (response.data && response.data.appointmentStatus) {
-          setAppointments(prevAppointments =>
-            prevAppointments.map(appointment =>
-              appointment.appointmentId === appointmentId
-                ? { ...appointment, ...response.data }
-                : appointment
-            )
-          );
-        } else {
-          setAppointments(prevAppointments =>
-            prevAppointments.map(appointment =>
-              appointment.appointmentId === appointmentId
-                ? { ...appointment, appointmentStatus: 'Cancelled' }
-                : appointment
-            )
-          );
-        }
-        alert('Appointment cancelled successfully!');
+        setAppointments(prev =>
+          prev.map(app =>
+            app.appointmentId === String(appointmentId)
+              ? { ...app, appointmentStatus: 'Cancelled' }
+              : app
+          )
+        );
+        alert('Appointment cancelled successfully.');
       } else {
-        alert('Failed to cancel appointment. Please try again.');
+        alert('Failed to cancel appointment.');
       }
     } catch (error) {
       console.error('Error cancelling appointment:', error);
@@ -128,34 +131,18 @@ const DoctorViewAppointments = () => {
 
   const markAsCompleted = async (appointmentId) => {
     try {
-      const response = await axios.patch(
-        `http://localhost:8080/appointments/${appointmentId}/status/Completed`
-      );
-
+      const response = await axios.patch(`${BASE_URL}/appointments/${String(appointmentId)}/status/Completed`);
       if (response.status === 200) {
-        alert('Appointment marked as completed successfully!');
-
-        
-        setAppointments((prevAppointments) =>
-          prevAppointments.map((appointment) =>
-            appointment.appointmentId === appointmentId
-              ? { ...appointment, appointmentStatus: 'completed' }
-              : appointment
+        setAppointments(prev =>
+          prev.map(app =>
+            app.appointmentId === String(appointmentId)
+              ? { ...app, appointmentStatus: 'Completed' }
+              : app
           )
         );
-
-        
-        setCompletedAppointments((prevCompleted) => [
-          ...prevCompleted,
-          appointments.find((appointment) => appointment.appointmentId === appointmentId),
-        ]);
-
-        
-        setUpcomingAppointments((prevUpcoming) =>
-          prevUpcoming.filter((appointment) => appointment.appointmentId !== appointmentId)
-        );
+        alert('Appointment marked as completed.');
       } else {
-        alert('Failed to mark appointment as completed. Please try again.');
+        alert('Failed to mark appointment as completed.');
       }
     } catch (error) {
       console.error('Error marking appointment as completed:', error);
@@ -331,13 +318,13 @@ const DoctorViewAppointments = () => {
                           <>
                             <button
                               className="accept-btn"
-                              onClick={() => handleAppointmentAction(appointment.appointmentId, 'accept')}
+                              onClick={() => handleAppointmentAction(String(appointment.appointmentId), 'accept')}
                             >
                               Accept
                             </button>
                             <button
                               className="reject-btn"
-                              onClick={() => handleAppointmentAction(appointment.appointmentId, 'reject')}
+                              onClick={() => handleAppointmentAction(String(appointment.appointmentId), 'reject')}
                             >
                               Reject
                             </button>
@@ -349,7 +336,7 @@ const DoctorViewAppointments = () => {
                               className="cancel-btn"
                               onClick={() =>
                                 cancelAppointment(
-                                  appointment.appointmentId,
+                                  String(appointment.appointmentId),
                                   appointment.appointmentDate,
                                   appointment.appointmentTime
                                 )
@@ -359,7 +346,7 @@ const DoctorViewAppointments = () => {
                             </button>
                             <button
                               className="complete-btn"
-                              onClick={() => markAsCompleted(appointment.appointmentId)}
+                              onClick={() => markAsCompleted(String(appointment.appointmentId))}
                             >
                               Complete it
                             </button>

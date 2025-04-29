@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FaCalendarAlt } from 'react-icons/fa';
 import './View.css';
 import Header from '../../components/Header';
+import { BASE_URL } from '../../config/apiConfig';
 import Footer from '../../components/Footer';
 
 const View = () => {
@@ -15,7 +16,7 @@ const View = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/admin/appointments');
+        const response = await axios.get(`${BASE_URL}/admin/appointments`);
         const allAppointments = response.data;
         const completed = allAppointments.filter(app => app.status === 'completed');
         const pending = allAppointments.filter(app => app.status !== 'completed');
