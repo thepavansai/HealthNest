@@ -6,29 +6,28 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserPrincipal implements UserDetails {
-    private User user;
+public class DoctorPrincipal implements UserDetails {
+    private Doctor doctor;
     
-    public UserPrincipal(User user) {
-        this.user = user;
+    public DoctorPrincipal(Doctor doctor) {
+        this.doctor = doctor;
     }
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Add "ROLE_" prefix because Spring Security expects it by default
         return Collections.singleton(
-            new SimpleGrantedAuthority("ROLE_USER")
+            new SimpleGrantedAuthority("ROLE_DOCTOR")
         );
     }
     
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return doctor.getPassword();
     }
     
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return doctor.getEmailId();
     }
     
     @Override
@@ -48,6 +47,6 @@ public class UserPrincipal implements UserDetails {
     
     @Override
     public boolean isEnabled() {
-        return true;
+        return doctor.getStatus() == 1; // Only enabled if doctor is approved
     }
 }

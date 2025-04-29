@@ -6,29 +6,30 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserPrincipal implements UserDetails {
-    private User user;
+public class AdminPrincipal implements UserDetails {
+    private String username;
     
-    public UserPrincipal(User user) {
-        this.user = user;
+    public AdminPrincipal(String username) {
+        this.username = username;
     }
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Add "ROLE_" prefix because Spring Security expects it by default
         return Collections.singleton(
-            new SimpleGrantedAuthority("ROLE_USER")
+            new SimpleGrantedAuthority("ROLE_ADMIN")
         );
     }
     
     @Override
     public String getPassword() {
-        return user.getPassword();
+        // For simplicity, hardcoded password
+        // In production, use a proper admin entity with encrypted password
+        return "$2a$10$XptfskLsT1l/bRTLRiiCgejHqOpgXFreUnNUa35gJdCr2v2QbVFzu"; // "admin" encrypted
     }
     
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return username;
     }
     
     @Override

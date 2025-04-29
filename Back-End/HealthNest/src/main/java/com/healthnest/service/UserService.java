@@ -59,7 +59,11 @@ public class UserService implements UserDetailsService {
         if (isUserAlreadyRegistered(user.getEmail())) {
             throw new IllegalArgumentException("User already exists!");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // Use PasswordEncoder
+        // Set default role if not provided
+        if (user.getRole() == null || user.getRole().isEmpty()) {
+            user.setRole("USER");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 	
@@ -207,36 +211,68 @@ public class UserService implements UserDetailsService {
 //	}
 //
 //	
+//	public Map<String, String> login(String email, String password) {
+//	    Map<String, String> response = new HashMap<>();
+//	    
+//	    User user = userRepository.findByEmail(email)
+//	        .orElseThrow(() -> new UserNotFoundException("User doesn't exist"));
+//	    
+//	    if (!passwordEncoder.matches(password, user.getPassword())) {
+//	        throw new AuthenticationException("Invalid Password");
+//	    }
+//	    
+//	    try {
+//	        AuthenticationManager authmanager = authConfig.getAuthenticationManager();
+//	        Authentication authentication = authmanager.authenticate(
+//	            new UsernamePasswordAuthenticationToken(email, password));
+//	        
+//	        if (authentication.isAuthenticated()) {
+//	            String token = jwtService.generateToken(email);
+//	            System.out.println("Generated token: " + token);
+//	            
+//	            response.put("message", "Login successful");
+//	            response.put("token", token);
+//	            return response;
+//	        }
+//	    } catch (Exception e) {
+//	        throw new RuntimeException("Authentication failed", e);
+//	    }
+//	    
+//	    response.put("message", "Login successful");
+//	    return response;
+//	}
 	public Map<String, String> login(String email, String password) {
-	    Map<String, String> response = new HashMap<>();
-	    
-	    User user = userRepository.findByEmail(email)
-	        .orElseThrow(() -> new UserNotFoundException("User doesn't exist"));
-	    
-	    if (!passwordEncoder.matches(password, user.getPassword())) {
-	        throw new AuthenticationException("Invalid Password");
-	    }
-	    
-	    try {
-	        AuthenticationManager authmanager = authConfig.getAuthenticationManager();
-	        Authentication authentication = authmanager.authenticate(
-	            new UsernamePasswordAuthenticationToken(email, password));
-	        
-	        if (authentication.isAuthenticated()) {
-	            String token = jwtService.generateToken(email);
-	            System.out.println("Generated token: " + token);
-	            
-	            response.put("message", "Login successful");
-	            response.put("token", token);
-	            return response;
-	        }
-	    } catch (Exception e) {
-	        throw new RuntimeException("Authentication failed", e);
-	    }
-	    
-	    response.put("message", "Login successful");
-	    return response;
-	}
+        Map<String, String> response = new HashMap<>();
+        
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UserNotFoundException("User doesn't exist"));
+        
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new AuthenticationException("Invalid Password");
+        }
+        
+        try {
+            AuthenticationManager authmanager = authConfig.getAuthenticationManager();
+            Authentication authentication = authmanager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password));
+            
+            if (authentication.isAuthenticated()) {
+                // Generate token with USER role
+                String token = jwtService.generateToken(email, "USER");
+                System.out.println("Generated token: " + token);
+                
+                response.put("message", "Login successful");
+                response.put("token", token);
+                response.put("role", "USER");
+                return response;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Authentication failed", e);
+        }
+        
+        response.put("message", "Login successful");
+        return response;
+    }
 
 
 	public Integer getUserId(String email) {

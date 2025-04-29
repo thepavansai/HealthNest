@@ -60,6 +60,7 @@ public class Doctor {
     private String availability;
     private String hospitalName;
     private Integer status;
+    private String role = "DOCTOR";
 
     // New fields for location
     @NotBlank(message = "Address cannot be blank")

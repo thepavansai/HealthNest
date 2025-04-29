@@ -17,44 +17,49 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	@Autowired
-	private PasswordEncoder passwordencoder;
-	
-	@Autowired
-	private JwtFilter jwtFilter;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private JwtFilter jwtFilter;
+    
     private final UserDetailsService userDetailsService;
-
+    
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
-
     
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
        return http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/users/Signup", "/users/login").permitAll() // Allow public access
-                .anyRequest().authenticated() // Require authentication for all other requests
-            ).httpBasic(Customizer.withDefaults())
-            .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Public endpoints
+                .requestMatchers("/users/Signup", "/users/login", "/doctor-signup", "/doctor-login", "/admin-login").permitAll()
+                .requestMatchers("/users/check-email", "/users/setnewpassword").permitAll()
+                
+                // Admin-only endpoints
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                
+                // Doctor-only endpoints
+                .requestMatchers("/doctors/**").hasRole("DOCTOR")
+                
+                // User-only endpoints
+                .requestMatchers("/users/**").hasRole("USER")
+                
+                // Require authentication for all other requests
+                .anyRequest().authenticated()
+            )
+            .httpBasic(Customizer.withDefaults())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
-
+    
     @Bean
     AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService); // Use UserDetailsService instead of UserService
-        provider.setPasswordEncoder(passwordencoder); // Use BCryptPasswordEncoder
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
-    
-//    @Bean
-//    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
-//    {
-//    	return config.getAuthenticationManager();
-//    }
-    
 }
