@@ -31,7 +31,7 @@ class AppointmentControllerTest {
 
     @Test
     void getTodayAppointmentsByDoctor_shouldReturnAppointments() {
-        Integer doctorId = 1;
+        Long doctorId = 1l;
         LocalDate today = LocalDate.now();
         List<AppointmentShowDTO> dtos = Arrays.asList(new AppointmentShowDTO(), new AppointmentShowDTO());
         when(appointmentService.getTodayAppointmentsByDoctor(doctorId, today)).thenReturn(dtos);
@@ -44,7 +44,7 @@ class AppointmentControllerTest {
 
     @Test
     void getTodayAppointmentsByDoctor_shouldThrowExceptionIfDateNull() {
-        Integer doctorId = 1;
+        Long doctorId=1l;
         assertThrows(IllegalArgumentException.class, () ->
             appointmentController.getTodayAppointmentsByDoctor(doctorId, null)
         );
@@ -52,7 +52,7 @@ class AppointmentControllerTest {
 
     @Test
     void getAppointmentsByDoctor_shouldReturnAppointments() {
-        Integer doctorId = 2;
+    	Long doctorId = 2l;
         List<AppointmentShowDTO> dtos = Collections.singletonList(new AppointmentShowDTO());
         when(appointmentService.getAppointments(doctorId)).thenReturn(dtos);
 
@@ -64,7 +64,7 @@ class AppointmentControllerTest {
 
     @Test
     void acceptAppointment_shouldReturnUpdatedAppointment() {
-        Integer appointmentId = 10, doctorId = 5;
+       Long appointmentId = 10l, doctorId = 5l;
         Appointment appointment = new Appointment();
         when(appointmentService.acceptAppointment(appointmentId, doctorId)).thenReturn(appointment);
 
@@ -76,7 +76,7 @@ class AppointmentControllerTest {
 
     @Test
     void rejectAppointment_shouldReturnUpdatedAppointment() {
-        Integer appointmentId = 11, doctorId = 6;
+        Long appointmentId = 11l, doctorId = 6l;
         Appointment appointment = new Appointment();
         when(appointmentService.rejectAppointment(appointmentId, doctorId)).thenReturn(appointment);
 
@@ -98,7 +98,7 @@ class AppointmentControllerTest {
 
     @Test
     void changeStatus_shouldReturnStatusString() {
-        Integer appointmentId = 7;
+        Long appointmentId = 7l;
         String setStatus = "Completed";
         when(appointmentService.changeStatus(appointmentId, setStatus)).thenReturn("Status Updated");
 
