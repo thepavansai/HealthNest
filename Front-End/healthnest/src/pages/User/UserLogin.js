@@ -28,8 +28,7 @@ const Login = () => {
       if (res.data.message === "Login successful") {
         setIsError(false);
         setMessage("Login successful! Redirecting...");
-        localStorage.setItem("userId", res.data.userId);
-        localStorage.setItem("userName", res.data.name);
+        localStorage.setItem("token", res.data.token);
         setTimeout(() => navigate("/user"), 500);
       } else {
         throw new Error(res.data.message);
