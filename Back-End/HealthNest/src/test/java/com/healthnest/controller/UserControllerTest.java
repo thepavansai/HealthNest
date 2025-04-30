@@ -1,9 +1,16 @@
 package com.healthnest.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,15 +35,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.dto.UserDTO;
-import com.healthnest.dto.enums.Gender;
 import com.healthnest.exception.AuthenticationException;
 import com.healthnest.exception.UserNotFoundException;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.FeedBack;
 import com.healthnest.model.User;
+import com.healthnest.model.enums.Gender;
 import com.healthnest.service.AppointmentService;
 import com.healthnest.service.FeedBackService;
 import com.healthnest.service.UserService;
+
+
+
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
@@ -85,7 +95,7 @@ class UserControllerTest {
         MockitoAnnotations.openMocks(this);
 
         testUser = new User();
-        testUser.setUserId(1);
+        testUser.setUserId(1l);
         testUser.setName("Test User");
         testUser.setEmail("test@example.com");
         testUser.setPassword("password123");
@@ -93,7 +103,7 @@ class UserControllerTest {
         testUser.setGender(Gender.MALE);
 
         testUserDTO = new UserDTO();
-        testUserDTO.setUserId(1);
+        testUserDTO.setUserId(1l);
         testUserDTO.setName("Test User");
         testUserDTO.setEmail("test@example.com");
         testUserDTO.setPassword("password123");
@@ -101,11 +111,11 @@ class UserControllerTest {
         testUserDTO.setGender(Gender.MALE);
 
         testAppointment = new Appointment();
-        testAppointment.setAppointmentId(1);
+        testAppointment.setAppointmentId(1l);
         testAppointment.setUser(testUser);
 
         testFeedback = new FeedBack();
-        testFeedback.setId(1);
+        testFeedback.setId(1l);
         testFeedback.setUser(testUser);
         testFeedback.setFeedback("Great service!");
         testFeedback.setRating(4.5f);
@@ -214,7 +224,7 @@ class UserControllerTest {
     @Test
     void testLogin_Success() {
         when(userService.login(testUser.getEmail(), testUser.getPassword())).thenReturn("Login successful");
-        when(userService.getUserId(testUser.getEmail())).thenReturn(1);
+        when(userService.getUserId(testUser.getEmail())).thenReturn(1l);
         when(userService.getUserName(testUser.getEmail())).thenReturn("Test User");
 
         ResponseEntity<HashMap<String, String>> response = userController.login(testUser);
@@ -301,9 +311,9 @@ class UserControllerTest {
 
     @Test
     void testGetUserDetails_Success() {
-        when(userService.getUserDetails(1)).thenReturn(testUser);
+        when(userService.getUserDetails(1l)).thenReturn(testUser);
 
-        ResponseEntity<User> response = userController.getUserDetails(1);
+        ResponseEntity<User> response = userController.getUserDetails(1l);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(testUser, response.getBody());
@@ -311,9 +321,9 @@ class UserControllerTest {
 
     @Test
     void testGetUserDetails_UserNotFound() {
-        when(userService.getUserDetails(999)).thenThrow(new UserNotFoundException("User not found"));
+        when(userService.getUserDetails(999l)).thenThrow(new UserNotFoundException("User not found"));
 
-        assertThrows(UserNotFoundException.class, () -> userController.getUserDetails(999));
+        assertThrows(UserNotFoundException.class, () -> userController.getUserDetails(999l));
     }
 
     @Test
@@ -376,9 +386,9 @@ class UserControllerTest {
 
     @Test
     void testEditProfile_Success() {
-        when(userService.editProfile(testUser, 1)).thenReturn(true);
+        when(userService.editProfile(testUser, 1l)).thenReturn(true);
 
-        ResponseEntity<String> response = userController.editProfile(testUser, 1);
+        ResponseEntity<String> response = userController.editProfile(testUser, 1l);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Profile successfully edited", response.getBody());
@@ -386,9 +396,9 @@ class UserControllerTest {
 
     @Test
     void testEditProfile_Failed() {
-        when(userService.editProfile(testUser, 1)).thenReturn(false);
+        when(userService.editProfile(testUser, 1l)).thenReturn(false);
 
-        ResponseEntity<String> response = userController.editProfile(testUser, 1);
+        ResponseEntity<String> response = userController.editProfile(testUser, 1l);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Failed to edit profile", response.getBody());
@@ -396,7 +406,7 @@ class UserControllerTest {
 
     @Test
     void testEditProfile_NullUser() {
-        ResponseEntity<String> response = userController.editProfile(null, 1);
+        ResponseEntity<String> response = userController.editProfile(null, 1l);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Invalid input", response.getBody());
@@ -406,7 +416,7 @@ class UserControllerTest {
     void testEditProfile_NullName() {
         testUser.setName(null);
 
-        ResponseEntity<String> response = userController.editProfile(testUser, 1);
+        ResponseEntity<String> response = userController.editProfile(testUser, 1l);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Invalid input", response.getBody());
@@ -416,7 +426,7 @@ class UserControllerTest {
     void testEditProfile_EmptyName() {
         testUser.setName("");
 
-        ResponseEntity<String> response = userController.editProfile(testUser, 1);
+        ResponseEntity<String> response = userController.editProfile(testUser, 1l);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Invalid input", response.getBody());
@@ -424,9 +434,9 @@ class UserControllerTest {
 
     @Test
     void testEditProfile_Exception() {
-        when(userService.editProfile(testUser, 1)).thenThrow(new RuntimeException("Test exception"));
+        when(userService.editProfile(testUser, 1l)).thenThrow(new RuntimeException("Test exception"));
 
-        ResponseEntity<String> response = userController.editProfile(testUser, 1);
+        ResponseEntity<String> response = userController.editProfile(testUser, 1l);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("An error occurred", response.getBody());
@@ -436,12 +446,12 @@ class UserControllerTest {
     void testGetUpcomingAppointments_Success() {
         List<AppointmentSummaryDTO> appointments = new ArrayList<>();
         AppointmentSummaryDTO dto = new AppointmentSummaryDTO();
-        dto.setAppointmentId(1);
+        dto.setAppointmentId(1l);
         appointments.add(dto);
 
-        when(appointmentService.getAppointmentSummaries(1)).thenReturn(appointments);
+        when(appointmentService.getAppointmentSummaries(1l)).thenReturn(appointments);
 
-        ResponseEntity<List<AppointmentSummaryDTO>> response = userController.getUpcomingAppointments(1);
+        ResponseEntity<List<AppointmentSummaryDTO>> response = userController.getUpcomingAppointments(1l);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(appointments, response.getBody());
@@ -451,9 +461,9 @@ class UserControllerTest {
     @Test
     void testGetUpcomingAppointments_EmptyList() {
         List<AppointmentSummaryDTO> appointments = new ArrayList<>();
-        when(appointmentService.getAppointmentSummaries(1)).thenReturn(appointments);
+        when(appointmentService.getAppointmentSummaries(1l)).thenReturn(appointments);
 
-        ResponseEntity<List<AppointmentSummaryDTO>> response = userController.getUpcomingAppointments(1);
+        ResponseEntity<List<AppointmentSummaryDTO>> response = userController.getUpcomingAppointments(1l);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(0, response.getBody().size());
@@ -461,16 +471,16 @@ class UserControllerTest {
 
     @Test
     void testGetUpcomingAppointments_Exception() {
-        when(appointmentService.getAppointmentSummaries(1)).thenThrow(new RuntimeException("Test exception"));
+        when(appointmentService.getAppointmentSummaries(1l)).thenThrow(new RuntimeException("Test exception"));
 
-        assertThrows(RuntimeException.class, () -> userController.getUpcomingAppointments(1));
+        assertThrows(RuntimeException.class, () -> userController.getUpcomingAppointments(1l));
     }
 
     @Test
     void testCancelAppointment_Success() {
-        doNothing().when(userService).cancelAppointment(1);
+        doNothing().when(userService).cancelAppointment(1l);
 
-        ResponseEntity<String> response = userController.cancelAppointment(1);
+        ResponseEntity<String> response = userController.cancelAppointment(1l);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("successfully cancelled Appointment", response.getBody());
@@ -478,9 +488,9 @@ class UserControllerTest {
 
     @Test
     void testCancelAppointment_NotFound() {
-        doThrow(new NoSuchElementException("Not found")).when(userService).cancelAppointment(999);
+        doThrow(new NoSuchElementException("Not found")).when(userService).cancelAppointment(999l);
 
-        ResponseEntity<String> response = userController.cancelAppointment(999);
+        ResponseEntity<String> response = userController.cancelAppointment(999l);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Appointment not found", response.getBody());
@@ -488,9 +498,9 @@ class UserControllerTest {
 
     @Test
     void testCancelAppointment_Exception() {
-        doThrow(new RuntimeException("Test exception")).when(userService).cancelAppointment(1);
+        doThrow(new RuntimeException("Test exception")).when(userService).cancelAppointment(1l);
 
-        ResponseEntity<String> response = userController.cancelAppointment(1);
+        ResponseEntity<String> response = userController.cancelAppointment(1l);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("Failed to cancel appointment", response.getBody());
@@ -498,9 +508,9 @@ class UserControllerTest {
 
     @Test
     void testChangePassword_Success() {
-        when(userService.changePassword(1, "oldPass", "newPass")).thenReturn(true);
+        when(userService.changePassword(1l, "oldPass", "newPass")).thenReturn(true);
 
-        ResponseEntity<String> response = userController.changePassword(1, "oldPass", "newPass");
+        ResponseEntity<String> response = userController.changePassword(1l, "oldPass", "newPass");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Password changed successfully", response.getBody());
@@ -508,9 +518,9 @@ class UserControllerTest {
 
     @Test
     void testChangePassword_Failed() {
-        when(userService.changePassword(1, "wrongPass", "newPass")).thenReturn(false);
+        when(userService.changePassword(1l, "wrongPass", "newPass")).thenReturn(false);
 
-        ResponseEntity<String> response = userController.changePassword(1, "wrongPass", "newPass");
+        ResponseEntity<String> response = userController.changePassword(1l, "wrongPass", "newPass");
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Invalid current password", response.getBody());
@@ -518,10 +528,10 @@ class UserControllerTest {
 
     @Test
     void testChangePassword_UserNotFound() {
-        when(userService.changePassword(999, "oldPass", "newPass"))
+        when(userService.changePassword(999l, "oldPass", "newPass"))
                 .thenThrow(new UserNotFoundException("User not found"));
 
-        ResponseEntity<String> response = userController.changePassword(999, "oldPass", "newPass");
+        ResponseEntity<String> response = userController.changePassword(999l, "oldPass", "newPass");
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("User not found", response.getBody());
@@ -529,10 +539,10 @@ class UserControllerTest {
 
     @Test
     void testChangePassword_IllegalArgument() {
-        when(userService.changePassword(1, "oldPass", "short"))
+        when(userService.changePassword(1l, "oldPass", "short"))
                 .thenThrow(new IllegalArgumentException("Password too short"));
 
-        ResponseEntity<String> response = userController.changePassword(1, "oldPass", "short");
+        ResponseEntity<String> response = userController.changePassword(1l, "oldPass", "short");
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Password too short", response.getBody());
@@ -540,10 +550,10 @@ class UserControllerTest {
 
     @Test
     void testChangePassword_Exception() {
-        when(userService.changePassword(1, "oldPass", "newPass"))
+        when(userService.changePassword(1l, "oldPass", "newPass"))
                 .thenThrow(new RuntimeException("Test exception"));
 
-        ResponseEntity<String> response = userController.changePassword(1, "oldPass", "newPass");
+        ResponseEntity<String> response = userController.changePassword(1l, "oldPass", "newPass");
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("Failed to change password", response.getBody());
@@ -551,9 +561,9 @@ class UserControllerTest {
 
     @Test
     void testDeleteAccount_Success() {
-        doNothing().when(userService).deleteAccount(1);
+        doNothing().when(userService).deleteAccount(1l);
 
-        ResponseEntity<String> response = userController.deleteAccount(1);
+        ResponseEntity<String> response = userController.deleteAccount(1l);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Successfully deleted user", response.getBody());
@@ -561,9 +571,9 @@ class UserControllerTest {
 
     @Test
     void testDeleteAccount_UserNotFound() {
-        doThrow(new UserNotFoundException("User not found")).when(userService).deleteAccount(999);
+        doThrow(new UserNotFoundException("User not found")).when(userService).deleteAccount(999l);
 
-        ResponseEntity<String> response = userController.deleteAccount(999);
+        ResponseEntity<String> response = userController.deleteAccount(999l);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("User not found", response.getBody());
@@ -571,9 +581,9 @@ class UserControllerTest {
 
     @Test
     void testDeleteAccount_Exception() {
-        doThrow(new RuntimeException("Test exception")).when(userService).deleteAccount(1);
+        doThrow(new RuntimeException("Test exception")).when(userService).deleteAccount(1l);
 
-        ResponseEntity<String> response = userController.deleteAccount(1);
+        ResponseEntity<String> response = userController.deleteAccount(1l);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("Failed to delete user", response.getBody());

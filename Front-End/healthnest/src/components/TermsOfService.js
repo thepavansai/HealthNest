@@ -2,6 +2,7 @@ import React from 'react';
 import Footer from './Footer';
 import Header from './Header';
 import './TermsOfService.css';
+import { BASE_URL } from '../config/apiConfig';
 
 const TermsOfService = () => {
   const currentDate = 'April 15, 2025';
@@ -19,7 +20,7 @@ const TermsOfService = () => {
             We are Health Nest, doing business as HN ("<strong>Company</strong>," "<strong>we</strong>," "<strong>us</strong>," "<strong>our</strong>"), a company registered in India at Madhapur, Hyderabad, Telangana 500089.
           </p>
           <p>
-            We operate the website <a href="http://localhost:3000" className="terms-link">HealthNest</a> (the "<strong>Site</strong>"), as well as any other related products and services that refer or link to these legal terms (the "<strong>Legal Terms</strong>") (collectively, the "<strong>Services</strong>").
+            We operate the website <a href={BASE_URL} className="terms-link">HealthNest</a> (the "<strong>Site</strong>"), as well as any other related products and services that refer or link to these legal terms (the "<strong>Legal Terms</strong>") (collectively, the "<strong>Services</strong>").
           </p>
           <p>
             A platform that is used to generate remedies and precautions based on the user symptoms and a platform to book an appointment for the doctor of your choice

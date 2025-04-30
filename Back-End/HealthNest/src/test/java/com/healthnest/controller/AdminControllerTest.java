@@ -60,24 +60,24 @@ class AdminControllerTest {
     @Test
     void testGetAllUsers() {
         User user1 = new User();
-        user1.setUserId(1);
+        user1.setUserId(1l);
         user1.setName("John Doe");
         user1.setEmail("john@example.com");
 
         User user2 = new User();
-        user2.setUserId(2);
+        user2.setUserId(2l);
         user2.setName("Jane Smith");
         user2.setEmail("jane@example.com");
 
         List<User> users = Arrays.asList(user1, user2);
 
         UserDTO dto1 = new UserDTO();
-        dto1.setUserId(1);
+        dto1.setUserId(1l);
         dto1.setName("John Doe");
         dto1.setEmail("john@example.com");
 
         UserDTO dto2 = new UserDTO();
-        dto2.setUserId(2);
+        dto2.setUserId(2l);
         dto2.setName("Jane Smith");
         dto2.setEmail("jane@example.com");
 
@@ -109,11 +109,11 @@ class AdminControllerTest {
     @Test
     void testGetAllDoctors() {
         Doctor doctor = new Doctor();
-        doctor.setDoctorId(1);
+        doctor.setDoctorId(1l);
         doctor.setDoctorName("Dr. Smith");
 
         DoctorDTO doctorDTO = new DoctorDTO();
-        doctorDTO.setDoctorId(1);
+        doctorDTO.setDoctorId(1l);
         doctorDTO.setDoctorName("Dr. Smith");
 
         when(doctorService.getAllDoctors()).thenReturn(List.of(doctor));
@@ -128,7 +128,7 @@ class AdminControllerTest {
     @Test
     void testGetAllAppointments() {
         AppointmentShowDTO dto = new AppointmentShowDTO();
-        dto.setAppointmentId(1);
+        dto.setAppointmentId(1l);
         dto.setDoctorName("Dr. Who");
 
         when(appointmentService.getAllAppointments()).thenReturn(List.of(dto));
@@ -141,8 +141,8 @@ class AdminControllerTest {
 
     @Test
     void testDeleteAppointmentById() {
-        when(appointmentService.deleteAppointment(1)).thenReturn("Appointment deleted");
-        ResponseEntity<String> result = adminController.deleteAppointment(1);
+        when(appointmentService.deleteAppointment(1l)).thenReturn("Appointment deleted");
+        ResponseEntity<String> result = adminController.deleteAppointment(1l);
         assertEquals("Appointment deleted", result.getBody());
     }
 

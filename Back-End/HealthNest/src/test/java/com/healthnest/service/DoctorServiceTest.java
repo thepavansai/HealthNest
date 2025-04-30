@@ -37,7 +37,7 @@ class DoctorServiceTest {
     @BeforeEach
     void setUp() {
         testDoctor = new Doctor();
-        testDoctor.setDoctorId(1);
+        testDoctor.setDoctorId(1l);
         testDoctor.setDoctorName("Dr. Test");
         testDoctor.setEmailId("test@example.com");
         testDoctor.setDocPhnNo("1234567890");
