@@ -11,17 +11,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentSummaryDTO {
-		private Integer appointmentId;
-		private Integer doctorId;
-	 	private String doctorName;
-	    private Integer experience;
-	    private String docPhnNo;
-	    private Double consultationFee;
-	    private Float rating;
-	    private String hospitalName;
-	    private LocalDate appointmentDate;
-	    private LocalTime appointmentTime;
-	    private String appointmentStatus;
-	    private String description;
-
+    private Long appointmentId;  // Changed from Integer to Long
+    private Long doctorId;      // Changed from Integer to Long
+    private String doctorName;
+    private Integer experience;
+    private String docPhnNo;
+    private Double consultationFee;
+    private Float rating;
+    private String hospitalName;
+    private LocalDate appointmentDate;
+    private LocalTime appointmentTime;
+    private String appointmentStatus;
+    private String description;
 }

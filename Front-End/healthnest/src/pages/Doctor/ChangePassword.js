@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './ChangePassword.css';
 import axios from 'axios';
+import { BASE_URL } from '../../config/apiConfig';
 
 const ChangePassword = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ const ChangePassword = () => {
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const doctorId = localStorage.getItem('doctorId');
+  const doctorId = localStorage.getItem('doctorId'); // Already a string
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,13 +57,19 @@ const ChangePassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
+    if (!doctorId) {
+      setErrors({ currentPassword: 'Doctor ID not found. Please login again.' });
+      return;
+    }
+
     if (validateForm()) {
       setIsSubmitting(true);
       
       try {
+        // Use string doctorId in API call
         const response = await axios.put(
-          `http://localhost:8080/doctor/changepassword/${doctorId}/${formData.currentPassword}/${formData.newPassword}`
+          `${BASE_URL}/doctor/changepassword/${doctorId}/${formData.currentPassword}/${formData.newPassword}`
         );
 
         if (response.status === 200) {

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from "sonner";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { BASE_URL } from '../../config/apiConfig';
 import PaymentModal from "../../components/PaymentModal";
 
 import "./CheckHealth.css";
@@ -87,7 +88,7 @@ const CheckHealth = () => {
 
   const fetchDoctorAppointments = async (doctorId) => {
     try {
-      const response = await axios.get(`http://localhost:8080/appointments/doctor/${doctorId}`);
+      const response = await axios.get(`${BASE_URL}/appointments/doctor/${String(doctorId)}`);
       setDoctorAppointments(response.data);
     } catch (error) {
       console.error("Error fetching doctor's appointments:", error);
@@ -125,7 +126,7 @@ const CheckHealth = () => {
       setAiResponse(doctorSuggestion);
       setShowSuggestions(true);
       try {
-        const doctorsResponse = await axios.get(`http://localhost:8080/doctor/${doctorSuggestion}`);
+        const doctorsResponse = await axios.get(`${BASE_URL}/doctor/${doctorSuggestion}`);
         const doctors = doctorsResponse.data;
         setDoctors(doctors);
       } catch (error) {
@@ -172,7 +173,7 @@ const CheckHealth = () => {
     setPaymentComplete(true);
     
     try {
-      const userId = parseInt(localStorage.getItem('userId'));
+      const userId = localStorage.getItem('userId');
       
       if (!userId) {
         console.error('No valid user ID found');
@@ -189,12 +190,12 @@ const CheckHealth = () => {
           userId: userId
         },
         doctor: {
-          doctorId: selectedDoctor.doctorId
+          doctorId: String(selectedDoctor.doctorId)
         }
       };
 
       const response = await axios.post(
-        'http://localhost:8080/users/bookappointment',
+        `${BASE_URL}/users/bookappointment`,
         appointmentData,
         {
           headers: {

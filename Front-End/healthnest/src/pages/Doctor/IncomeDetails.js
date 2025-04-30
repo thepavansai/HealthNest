@@ -3,6 +3,7 @@ import axios from 'axios';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import './IncomeDetails.css';
+import { BASE_URL } from '../../config/apiConfig';
 
 const IncomeDetails = () => {
   const [completedAppointments, setCompletedAppointments] = useState([]);
@@ -10,27 +11,36 @@ const IncomeDetails = () => {
   const [totalIncome, setTotalIncome] = useState(0);
   const [estimatedPayout, setEstimatedPayout] = useState(0);
   const [consultationFee, setConsultationFee] = useState(0);
-  const [activeFilter, setActiveFilter] = useState('earned'); 
+  const [activeFilter, setActiveFilter] = useState('earned');
 
-  const doctorId = localStorage.getItem('doctorId');
+  const doctorId = localStorage.getItem('doctorId'); // Already a string
 
   useEffect(() => {
+    if (!doctorId) {
+        console.error("Doctor ID not found.");
+        // Handle missing ID, maybe redirect to login
+        return;
+    }
     const fetchDoctorProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/doctor/profile/${doctorId}`);
+        // Use string doctorId in API call
+        const response = await axios.get(`${BASE_URL}/doctor/profile/${doctorId}`);
         const doctorProfile = response.data || {};
         setConsultationFee(doctorProfile.consultationFee || 0);
+        // Fetch appointments only after getting the fee
+        fetchAppointments(doctorProfile.consultationFee);
       } catch (err) {
         console.error('Error fetching doctor profile:', err);
       }
     };
 
-    const fetchAppointments = async () => {
+    const fetchAppointments = async (fee) => {
       try {
-        const response = await axios.get(`http://localhost:8080/appointments/doctor/${doctorId}`);
+        // Use string doctorId in API call
+        const response = await axios.get(`${BASE_URL}/doctor/${String(doctorId)}/appointments`); // Explicit string conversion just in case
         const allAppointments = response.data || [];
 
-        
+
         const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
           || appointment.appointmentStatus === 'Reviewed'
         );
@@ -39,9 +49,9 @@ const IncomeDetails = () => {
         setCompletedAppointments(completed);
         setUpcomingAppointments(upcoming);
 
-        
-        const income = completed.length * consultationFee;
-        const payout = upcoming.length * consultationFee;
+
+        const income = completed.length * fee; // Use the passed fee
+        const payout = upcoming.length * fee; // Use the passed fee
 
         setTotalIncome(income);
         setEstimatedPayout(payout);
@@ -50,9 +60,10 @@ const IncomeDetails = () => {
       }
     };
 
-    
-    fetchDoctorProfile().then(fetchAppointments);
-  }, [doctorId, consultationFee]);
+
+    fetchDoctorProfile(); // Start the chain
+    // Removed fetchAppointments from here, it's called inside fetchDoctorProfile's success path
+  }, [doctorId]); // Dependency array is correct
 
   return (
     <div className="income-details-wrapper">
@@ -61,7 +72,6 @@ const IncomeDetails = () => {
       <main className="income-details-container">
         <h1>Income Details</h1>
 
-        {}
         <div className="filter-buttons">
           <button
             className={`filter-button ${activeFilter === 'earned' ? 'active' : ''}`}
@@ -77,7 +87,6 @@ const IncomeDetails = () => {
           </button>
         </div>
 
-        {}
         {activeFilter === 'earned' && (
           <section className="income-section">
             <h2>Total Earned Payments</h2>
@@ -98,7 +107,6 @@ const IncomeDetails = () => {
           </section>
         )}
 
-        {}
         {activeFilter === 'pending' && (
           <section className="income-section">
             <h2>Pending Payments</h2>

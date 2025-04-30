@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from '../../config/apiConfig';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -38,51 +39,50 @@ const DoctorDashboard = () => {
   const [completedAppointments, setCompletedAppointments] = useState([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [totalIncome, setTotalIncome] = useState(0);
+
   const [estimatedPayout, setEstimatedPayout] = useState(0);
   const [totalAppointments, setTotalAppointments] = useState(0);
-
-
 
   const doctorId = localStorage.getItem("doctorId");
 
   useEffect(() => {
     if (doctorId) {
-      
-      axios.get(`http://localhost:8080/doctor/profile/${doctorId}`)
+      axios.get(`${BASE_URL}/doctor/profile/${doctorId}`)
         .then(res => {
           const doctorProfile = res.data || {};
           setDoctorData(doctorProfile);
 
-          
           fetchAppointments(doctorProfile.consultationFee);
         })
         .catch(err => {
           console.error("Error fetching doctor profile:", err);
         })
         .finally(() => setLoading(false));
+    } else {
+      console.error("Doctor ID not found in localStorage.");
+      setLoading(false);
     }
   }, [doctorId]);
 
   const fetchAppointments = async (consultationFee) => {
+    if (!doctorId) return;
     try {
-      const response = await axios.get(`http://localhost:8080/appointments/doctor/${doctorId}`);
+      const response = await axios.get(`${BASE_URL}/appointments/doctor/${doctorId}`);
       const allAppointments = response.data;
-      console.log("All Appointments:", allAppointments);
+      
       setTotalAppointments(allAppointments.length);
       setAppointments(allAppointments);
 
-      
       const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
           || appointment.appointmentStatus === 'Reviewed'
         );
       const upcoming = allAppointments.filter(appointment => appointment.appointmentStatus === 'Upcoming');
-      console.log("Completed Appointments:", completed);
-      console.log("Upcoming Appointments:", upcoming);
+    
+    
 
       setCompletedAppointments(completed);
       setUpcomingAppointments(upcoming);
 
-      
       const income = completed.length  * consultationFee;
       const payout = upcoming.length * consultationFee;
 
@@ -102,7 +102,6 @@ const DoctorDashboard = () => {
     setShowIncome(prev => !prev);
   };
 
-  
   const csvHeaders = [
     { label: 'Patient Name', key: 'userName' },
     { label: 'Date', key: 'appointmentDate' },
@@ -119,7 +118,6 @@ const DoctorDashboard = () => {
     fee: doctorData.consultationFee, 
   }));
 
-  
   const generatePDF = () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -127,16 +125,13 @@ const DoctorDashboard = () => {
     const lineHeight = 10;
     let y = 20;
 
-    
     doc.setFont('times', 'normal');
 
-    
     doc.setFontSize(14);
     doc.setFont('times', 'bold');
     doc.text('Appointments Report', pageWidth / 2, y, { align: 'center' });
     y += lineHeight * 2;
 
-    
     doc.setFontSize(12);
     doc.setFont('times', 'bold');
     doc.text('S.No', margin, y);
@@ -147,7 +142,6 @@ const DoctorDashboard = () => {
     doc.text('Fee', margin + 170, y);
     y += lineHeight;
 
-    
     doc.setFont('times', 'normal');
     appointments.forEach((appointment, index) => {
       if (y > doc.internal.pageSize.getHeight() - margin) {
@@ -164,7 +158,6 @@ const DoctorDashboard = () => {
       y += lineHeight;
     });
 
-    
     doc.save('appointments_report.pdf');
   };
 

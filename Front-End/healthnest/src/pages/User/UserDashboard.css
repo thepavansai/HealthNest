@@ -221,12 +221,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
   position: relative;
   background: white;
 }
 
 .card-header h3 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+ 
   font-size: 1.15rem;
   font-weight: 400;
   margin: 0;

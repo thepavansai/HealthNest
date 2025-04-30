@@ -8,12 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedBackDTO {
-    private Integer feedBackId;
-    private Integer userId;
+    private Long feedBackId;  // Changed from Integer to Long
+    private Long userId;     // Changed from Integer to Long
     private String userName;
     private String userEmail;
     private String feedback;
     private Float rating;
 
 }
-  

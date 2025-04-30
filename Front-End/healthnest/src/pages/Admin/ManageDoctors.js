@@ -4,6 +4,7 @@ import { FaCheckCircle, FaSearch, FaTimesCircle, FaUserMd, FaUserPlus } from 're
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import './ManageDoctors.css';
+import { BASE_URL } from '../../config/apiConfig';
 
 const ManageDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -17,9 +18,13 @@ const ManageDoctors = () => {
     const fetchDoctors = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:8080/admin/doctors');
-        const active = response.data.filter(doctor => doctor.status === 1);
-        const pending = response.data.filter(doctor => doctor.status === 0);
+        const response = await axios.get(`${BASE_URL}/admin/doctors`);
+        const processedDoctors = response.data.map(doc => ({
+          ...doc,
+          doctorId: String(doc.doctorId)
+        }));
+        const active = processedDoctors.filter(doctor => doctor.status === 1);
+        const pending = processedDoctors.filter(doctor => doctor.status === 0);
         setDoctors(active);
         setPendingDoctors(pending);
         setLoading(false);
@@ -33,12 +38,12 @@ const ManageDoctors = () => {
 
   const handleApproveDoctor = async (doctorId) => {
     try {
-      await axios.put(`http://localhost:8080/admin/doctors/${doctorId}/accept`);
-      const approvedDoctor = pendingDoctors.find(doctor => doctor.doctorId === doctorId);
+      await axios.put(`${BASE_URL}/admin/doctors/${String(doctorId)}/accept`);
+      const approvedDoctor = pendingDoctors.find(doctor => doctor.doctorId === String(doctorId));
       if (approvedDoctor) {
         const updatedDoctor = { ...approvedDoctor, status: 1 };
         setDoctors([...doctors, updatedDoctor]);
-        setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== doctorId));
+        setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== String(doctorId)));
       }
     } catch (error) {
       console.error('Error approving doctor:', error);
@@ -47,14 +52,15 @@ const ManageDoctors = () => {
 
   const handleRejectDoctor = async (doctorId) => {
     try {
-      await axios.put(`http://localhost:8080/admin/doctors/${doctorId}/reject`);
-      setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== doctorId));
+      await axios.put(`${BASE_URL}/admin/doctors/${String(doctorId)}/reject`);
+      setPendingDoctors(pendingDoctors.filter(doctor => doctor.doctorId !== String(doctorId)));
     } catch (error) {
       console.error('Error rejecting doctor:', error);
     }
   };
+
   const handleFlipCard = (doctorId) => {
-    setFlippedDoctorId(flippedDoctorId === doctorId ? null : doctorId);
+    setFlippedDoctorId(flippedDoctorId === String(doctorId) ? null : String(doctorId));
   };
 
   const filteredDoctors = doctors.filter(doctor => {
@@ -138,9 +144,9 @@ const ManageDoctors = () => {
             <div className="doctors-grid">
               {filteredDoctors.map(doctor => (
                 <div
-                  className={`flip-card ${flippedDoctorId === doctor.doctorId ? 'flipped' : ''}`}
-                  key={doctor.doctorId}
-                  onClick={() => handleFlipCard(doctor.doctorId)}
+                  className={`flip-card ${flippedDoctorId === String(doctor.doctorId) ? 'flipped' : ''}`}
+                  key={String(doctor.doctorId)}
+                  onClick={() => handleFlipCard(String(doctor.doctorId))}
                 >
                   <div className="flip-card-inner">
                     <div className="flip-card-front">
@@ -199,7 +205,7 @@ const ManageDoctors = () => {
                 </thead>
                 <tbody>
                   {filteredPendingDoctors.map(doctor => (
-                    <tr key={doctor.doctorId}>
+                    <tr key={String(doctor.doctorId)}>
                       <td>
                         <div className="doctor-name-cell">
                           {doctor.profileImage ? (
@@ -223,10 +229,10 @@ const ManageDoctors = () => {
                       <td>₹{doctor.consultationFee}</td>
                       <td>
                         <div className="action-buttons">
-                          <button className="approve-btn" onClick={() => handleApproveDoctor(doctor.doctorId)}>
+                          <button className="approve-btn" onClick={() => handleApproveDoctor(String(doctor.doctorId))}>
                             <FaCheckCircle /> Approve
                           </button>
-                          <button className="reject-btn" onClick={() => handleRejectDoctor(doctor.doctorId)}>
+                          <button className="reject-btn" onClick={() => handleRejectDoctor(String(doctor.doctorId))}>
                             <FaTimesCircle /> Reject
                           </button>
                         </div>

@@ -17,12 +17,12 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Entity
-@Table(name = "Appointments")
+@Table(name = "\"appointments\"")  // Fixed table name with quotes and lowercase
 @Data
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer appointmentId;
+    private Long appointmentId;  // Changed from Integer to Long
 
     @NotNull
     private LocalDate appointmentDate;
@@ -38,11 +38,11 @@ public class Appointment {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "\"user_id\"", nullable = false)  // Fixed column name with quotes
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id", nullable = false)
+    @JoinColumn(name = "\"doctor_id\"", nullable = false)  // Fixed column name with quotes
     private Doctor doctor;
 
 }

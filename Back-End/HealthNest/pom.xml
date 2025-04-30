@@ -66,9 +66,18 @@
 		    <artifactId>javax.transaction-api</artifactId>
 		    <version>1.3</version>
 		</dependency>
+		<!-- Remove MySQL Driver -->
+		<!-- 
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency> 
+		-->
+		<!-- Add PostgreSQL Driver -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

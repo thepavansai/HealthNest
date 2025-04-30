@@ -93,18 +93,27 @@ const Home = () => {
                     </p>
                 </div>
             </motion.div>
-        <div className="container mt-5 pt-4"> { }
-      <div className="row justify-content-center gap-3 mt-4">
-      <h2 style={{ textAlign: "center" }}>Our Featured Services</h2>
-        <div className="col-md-3">
-          <HealthCheck name={names[0]} description={description[0]} />
-        </div>
-        <div className="col-md-3">
-          <HealthCheck name={names[1]} description={description[1]} />
-        </div>
-        <div className="col-md-3">
-          <HealthCheck name={names[2]} description={description[2]} />
-        </div>
+        <motion.div 
+          className="container services-section"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="services-title">Our Featured Services</h2>
+          <div className="services-grid">
+            {names.map((name, index) => (
+              <motion.div 
+                key={index}
+                className="service-item"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+              >
+                <HealthCheck name={name} description={description[index]} />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
         <h2 style={{textAlign:"center"}}>HealthNest at a Glance</h2>
         <section className="statistics-section">
                 <div className="statistics-grid">
@@ -148,15 +157,11 @@ const Home = () => {
                 )}
             </motion.div>
 
-        <DoctorCarousel></DoctorCarousel>
-      </div>
-
+        <DoctorCarousel />
       
           <HappyPatients />
 
-    </div>
-    <Footer></Footer>
-    
+        <Footer />
       </div>
     );
   };

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from '../../config/apiConfig';
 import "./DoctorLogin.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -36,24 +37,25 @@ const DoctorLogin = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:8080/doctor-login", {
+      const res = await axios.post(`${BASE_URL}/doctor-login`, {
         emailId,
         password,
       });
 
       if (res.data.message === "Login successful") {
-        const doctorId = res.data.userId;
+        const doctorId = String(res.data.userId); // Convert to string
 
         try {
           const profileRes = await axios.get(
-            `http://localhost:8080/doctor/profile/${doctorId}`
+            // Use string doctorId in API call
+            `${BASE_URL}/doctor/profile/${doctorId}`
           );
 
           const { status } = profileRes.data;
 
           if (status === 1) {
-            
-            localStorage.setItem("doctorId", doctorId);
+
+            localStorage.setItem("doctorId", doctorId); // Store as string
             localStorage.setItem("doctorName", res.data.name);
 
             setIsError(false);

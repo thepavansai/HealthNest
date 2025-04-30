@@ -13,6 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Footer from "./Footer";
 import Header from "./Header";
 import './SignUp.css';
+import { BASE_URL } from '../config/apiConfig';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -131,7 +132,7 @@ const SignUp = () => {
       setMessage("Creating your account...");
       setIsError(false);
       
-      const response = await axios.post('http://localhost:8080/users/Signup', {
+      const response = await axios.post(`${BASE_URL}/users/Signup`, {
         name: formData.name,
         gender: formData.gender,
         password: formData.password,

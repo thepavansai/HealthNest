@@ -4,6 +4,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import './UserDashboard.css';
 import axios from 'axios';
+import { BASE_URL } from '../../config/apiConfig';
 import { FaCalendarCheck, FaUserEdit, FaComment, FaSignOutAlt, FaHeartbeat, FaClipboardList, FaKey } from 'react-icons/fa';
 
 const UserDashboard = () => {
@@ -21,17 +22,13 @@ const UserDashboard = () => {
   useEffect(() => {
     if (userId) {
       setLoading(true);
-      
-      
-      const getUserDetails = axios.get(`http://localhost:8080/users/userdetails/${userId}`);
-      
-    
-      const getUserAppointments = axios.get(`http://localhost:8080/users/appointments/${userId}`);
-      
+
+      const getUserDetails = axios.get(`${BASE_URL}/users/userdetails/${userId}`);
+      const getUserAppointments = axios.get(`${BASE_URL}/users/appointments/${userId}`);
+
       Promise.all([getUserDetails, getUserAppointments])
         .then(([userRes, appointmentsRes]) => {
           setUserData(userRes.data);
-       
           setAppointments(appointmentsRes.data || []);
         })
         .catch((err) => {
@@ -142,10 +139,10 @@ const UserDashboard = () => {
 </p>
 
 <p className="appointment-doctor">
-  Dr. {appointments
+  {appointments
     .filter(appointment => appointment.appointmentStatus === 'Upcoming')
     .slice(0, 1)
-    .map(appointment => appointment.doctorName)[0] || "No upcoming appointments"}
+    .map(appointment =>"Dr. "+ appointment.doctorName)[0] || "No upcoming appointments"}
 </p>
 
                 </div>

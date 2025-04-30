@@ -4,9 +4,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import { BASE_URL } from '../../config/apiConfig';
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
 
 const DoctorEditProfile = () => {
   const [formData, setFormData] = useState({
@@ -19,20 +19,23 @@ const DoctorEditProfile = () => {
     consultationFee: '',
     availability: [],
   });
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
-  const doctorId = localStorage.getItem("doctorId");
-  console.log(doctorId)
+  const doctorId = localStorage.getItem("doctorId"); // Already a string
+ 
 
   useEffect(() => {
-    
-    axios.get(`http://localhost:8080/doctor/profile/${doctorId}`) 
-      .then(res => {
-        const data = res.data;
-        console.log(data)
-
-     
+    const fetchDoctorData = async () => {
+      if (!doctorId) {
+        setMessage("Doctor ID not found. Please login again.");
+        setIsError(true);
+        return;
+      }
+      try {
+        const response = await axios.get(`${BASE_URL}/doctor/${doctorId}`);
+        const data = response.data;
+      
         const availabilityDays = daysOfWeek.filter((day, index) => data.availability[index] === '1');
 
         setFormData({
@@ -45,11 +48,13 @@ const DoctorEditProfile = () => {
           consultationFee: data.consultationFee || '',
           availability: availabilityDays,
         });
-      })
-      .catch(() => {
+      } catch (error) {
         setIsError(true);
         setMessage("Failed to load profile.");
-      });
+      }
+    };
+
+    fetchDoctorData();
   }, [doctorId]);
 
   const handleChange = (e) => {
@@ -67,8 +72,13 @@ const DoctorEditProfile = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!doctorId) {
+      setMessage("Doctor ID not found. Cannot update profile.");
+      setIsError(true);
+      return;
+    }
 
     const binaryAvailability = daysOfWeek.map(day =>
       formData.availability.includes(day) ? '1' : '0'
@@ -85,21 +95,20 @@ const DoctorEditProfile = () => {
       availability: binaryAvailability,
     };
 
-    axios.put(`http://localhost:8080/doctor/profile/${localStorage.getItem("doctorId")}`, payload)
-      .then(() => {
-        setIsError(false);
-        localStorage.setDoctorName(payload.name);
-        setMessage("Profile updated successfully!");
-      })
-      .catch(() => {
-        setIsError(true);
-        setMessage("Error updating profile.");
-      });
-      navigate("/doctor/dashboard")
+    try {
+      const response = await axios.put(`${BASE_URL}/doctor/${doctorId}`, payload);
+      setIsError(false);
+      localStorage.setItem("doctorName", payload.doctorName); // Corrected: Use setItem
+      setMessage("Profile updated successfully!");
+      setTimeout(() => navigate("/doctor/dashboard"), 1500); // Consider delaying navigation slightly to allow user to see message
+    } catch (error) {
+      setIsError(true);
+      setMessage("Error updating profile.");
+    }
   };
 
   return (<>
-    <Header/>
+    <Header />
     <div className="doctor-edit-container">
       <h2 className="edit-title">Edit Profile</h2>
 
@@ -138,8 +147,8 @@ const DoctorEditProfile = () => {
         <button type="submit" className="save-btn">Save Changes</button>
       </form>
     </div>
-    <Footer/>
-    </>
+    <Footer />
+  </>
   );
 };
 

@@ -26,7 +26,7 @@ public class AppointmentController {
     
     @GetMapping("/doctor/{doctorId}/date/{todaydate}")
     public ResponseEntity<List<AppointmentShowDTO>> getTodayAppointmentsByDoctor(
-        @PathVariable Integer doctorId,
+        @PathVariable Long doctorId,
         @PathVariable LocalDate todaydate
     ) {
         if (todaydate == null) {
@@ -37,14 +37,14 @@ public class AppointmentController {
     }
 
     @GetMapping("/doctor/{doctorId}")
-    public ResponseEntity<List<AppointmentShowDTO>> getAppointmentsByDoctor(@PathVariable Integer doctorId) {
+    public ResponseEntity<List<AppointmentShowDTO>> getAppointmentsByDoctor(@PathVariable Long doctorId) {
         List<AppointmentShowDTO> appointments = appointmentService.getAppointments(doctorId);
         return ResponseEntity.ok(appointments);
     }
     @PostMapping("/{appointmentId}/accept/{doctorId}")
     public ResponseEntity<Appointment> acceptAppointment(
-            @PathVariable Integer appointmentId,
-            @PathVariable Integer doctorId) {
+            @PathVariable Long appointmentId,
+            @PathVariable Long doctorId) {
 
         Appointment updatedAppointment = appointmentService.acceptAppointment(appointmentId, doctorId);
         return ResponseEntity.ok(updatedAppointment);
@@ -52,8 +52,8 @@ public class AppointmentController {
 
     @PostMapping("/{appointmentId}/reject/{doctorId}")
     public ResponseEntity<Appointment> rejectAppointment(
-            @PathVariable Integer appointmentId,
-            @PathVariable Integer doctorId) {
+            @PathVariable Long appointmentId,
+            @PathVariable Long doctorId) {
 
         Appointment updatedAppointment = appointmentService.rejectAppointment(appointmentId, doctorId);
         return ResponseEntity.ok(updatedAppointment);
@@ -64,7 +64,7 @@ public class AppointmentController {
 		return ResponseEntity.ok(appointmentService.getAllAppointments().size());
 	}
     @PatchMapping("/{appointmentId}/status/{setStatus}")
-    public ResponseEntity<String> changeStatus(@PathVariable Integer appointmentId,@PathVariable String setStatus)
+    public ResponseEntity<String> changeStatus(@PathVariable Long appointmentId, @PathVariable String setStatus)
     {
     	return ResponseEntity.ok(appointmentService.changeStatus(appointmentId,setStatus));
     }

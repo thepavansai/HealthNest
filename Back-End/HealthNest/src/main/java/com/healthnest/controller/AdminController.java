@@ -85,7 +85,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/appointments/{id}")
-    public ResponseEntity<String> deleteAppointment(@PathVariable("id") Integer appointmentId) {
+    public ResponseEntity<String> deleteAppointment(@PathVariable("id") Long appointmentId) {  // Changed from Integer to Long
         String result = appointmentService.deleteAppointment(appointmentId);
         return ResponseEntity.ok(result);
     }
@@ -119,7 +119,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {  // Changed from Integer to Long
         try {
             userService.deleteAccount(userId);
             return ResponseEntity.ok("User deleted successfully");

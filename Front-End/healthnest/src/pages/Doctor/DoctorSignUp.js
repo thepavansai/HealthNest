@@ -15,6 +15,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import { BASE_URL } from '../../config/apiConfig';
 import './DoctorSignUp.css';
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -178,7 +179,7 @@ const DoctorSignup = () => {
     try {
       setMessage("Creating your account...");
       setIsError(false);
-      const res = await axios.post("http://localhost:8080/doctor-signup", payload);
+      const res = await axios.post(`${BASE_URL}/doctor-signup`, payload);
       if (res.status === 200) {
         setMessage("Successfully signed up! Kindly Please wait for the Admin Approval");
         setTimeout(() => navigate("/doctor/login"), 2000);

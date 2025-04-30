@@ -4,6 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./UserEditProfile.css";
+import { BASE_URL } from '../../config/apiConfig';
 
 const UserEditProfile = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const UserEditProfile = () => {
   const [dateOfBirth, setDateOfBirth] = useState("");
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
+    const storedUserId = localStorage.getItem("userId"); // Already a string
     if (!storedUserId) {
       toast.error("User ID not found. Please login again.");
       navigate("/login");
@@ -25,10 +26,11 @@ const UserEditProfile = () => {
 
     setUserId(storedUserId);
 
-    axios.get(`http://localhost:8080/users/userdetails/${storedUserId}`)
+    // Use string userId in API call
+    axios.get(`${BASE_URL}/users/userdetails/${storedUserId}`)
       .then((response) => {
         if (response.data) {
-          console.log(response.data);
+        
           const userData = response.data;
           setName(userData.name);
           setEmail(userData.email);
@@ -55,7 +57,7 @@ const UserEditProfile = () => {
     e.preventDefault();
 
     const updatedUser = {
-      userId,
+      userId: userId, // Send as string
       name,
       email,
       phoneNo,
@@ -64,7 +66,8 @@ const UserEditProfile = () => {
     };
 
     axios
-      .patch(`http://localhost:8080/users/editprofile/${userId}`, updatedUser)
+      // Use string userId in API call
+      .patch(`${BASE_URL}/users/editprofile/${userId}`, updatedUser)
       .then(() => {
         localStorage.setItem('userName', updatedUser.name);
         toast.success("Profile updated successfully!", {
