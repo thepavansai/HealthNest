@@ -27,7 +27,7 @@ import com.healthnest.service.DoctorService;
 import com.healthnest.service.FeedBackService;
 import com.healthnest.service.UserService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://health-nest.netlify.app/"})
 @RestController
 @RequestMapping("/admin")
 public class AdminController {

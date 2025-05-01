@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.model.Appointment;
 import com.healthnest.service.AppointmentService;
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://health-nest.netlify.app/"})
 @RestController
 @RequestMapping("/appointments")
 public class AppointmentController {
