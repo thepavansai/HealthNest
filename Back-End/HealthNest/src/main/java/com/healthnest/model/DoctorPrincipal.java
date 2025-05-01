@@ -49,4 +49,9 @@ public class DoctorPrincipal implements UserDetails {
     public boolean isEnabled() {
         return doctor.getStatus() == 1; // Only enabled if doctor is approved
     }
+    
+    // Add this method to get the doctor object
+    public Doctor getDoctor() {
+        return doctor;
+    }
 }

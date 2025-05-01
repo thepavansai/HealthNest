@@ -2,6 +2,7 @@ package com.healthnest.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.model.Appointment;
+import com.healthnest.model.User;
 import com.healthnest.repository.AppointmentRepository;
+import com.healthnest.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -20,6 +23,10 @@ public class AppointmentService {
 
     @Autowired
     AppointmentRepository appointmentRepository;
+    @Autowired	
+     UserRepository userRepository;
+
+  
 
     public List<AppointmentSummaryDTO> getAppointmentSummaries(Integer userId) {
         return appointmentRepository.findAppointmentSummariesByUserId(userId);
@@ -114,7 +121,59 @@ public class AppointmentService {
 		appointmentRepository.findById(appointmentId).get().setAppointmentStatus(setStatus);
 		return "Sucessfully Completed";
 	}
-		
-	}
 
+	 public boolean isAppointmentForDoctor(Integer appointmentId, Integer doctorId) {
+	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+	        
+	        if (appointmentOpt.isPresent()) {
+	            Appointment appointment = appointmentOpt.get();
+	            return appointment.getDoctor().getDoctorId().equals(doctorId);
+	        }
+	        
+	        return false;
+	    }
+
+	    /**
+	     * Checks if an appointment belongs to a user with the given email
+	     * 
+	     * @param appointmentId the ID of the appointment to check
+	     * @param email the email of the user to verify against
+	     * @return true if the appointment belongs to the user with the given email, false otherwise
+	     */
+	    public boolean isAppointmentForUserEmail(Integer appointmentId, String email) {
+	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+	        Optional<User> userOpt = userRepository.findByEmail(email);
+	        
+	        if (appointmentOpt.isPresent() && userOpt.isPresent()) {
+	            Appointment appointment = appointmentOpt.get();
+	            User user = userOpt.get();
+	            
+	            return appointment.getUser().getUserId().equals(user.getUserId());
+	        }
+	        
+	        return false;
+	    }
+	    public boolean updateAppointmentStatus(Integer appointmentId, String newStatus) {
+	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+	        
+	        if (appointmentOpt.isPresent()) {
+	            Appointment appointment = appointmentOpt.get();
+	            appointment.setAppointmentStatus(newStatus);
+	            appointmentRepository.save(appointment);
+	            return true;
+	        }
+	        
+	        return false;
+	    }
+
+		public boolean isUserEmailMatching(Integer userId, String email) {
+			return userRepository.findById(userId).get().getEmail().equals(email);
+		}
+
+		 public List<AppointmentShowDTO> getAppointmentsByDoctorId(Integer doctorId) {
+		        // Convert Long to Integer since your repository uses Integer
+		        Integer doctorIdInt = doctorId.intValue();
+		        return appointmentRepository.findByDoctorIdWithUserName(doctorIdInt);
+		    }
+}
 

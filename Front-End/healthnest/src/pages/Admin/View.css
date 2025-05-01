@@ -260,3 +260,45 @@
     font-size: 0.9rem;
   }
 }
+
+/* Add this to your existing View.css file */
+
+.summary-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.summary-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  min-width: 200px;
+  flex: 1;
+}
+
+.summary-icon {
+  font-size: 2rem;
+  margin-right: 15px;
+  color: #4a90e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(74, 144, 226, 0.1);
+}
+
+.summary-content {
+  flex: 1;
+}
+
+.summary-content .count {
+  font-size: 2rem;
+  font-weight: bold;
+}

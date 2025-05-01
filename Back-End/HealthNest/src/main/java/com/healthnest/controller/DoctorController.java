@@ -43,17 +43,19 @@ public class DoctorController {
     public ResponseEntity<DoctorDTO> getDoctorProfile(
             @PathVariable Long id,
             @RequestHeader("Authorization") String authHeader) {
-        
+                
         try {
             // Extract token from Authorization header
             String token = authHeader.substring(7);
             String email = jwtService.extractUserEmail(token);
             String role = jwtService.extractUserRole(token);
             
+            System.out.println("Accessing profile with role: " + role + " for doctor ID: " + id);
+            
             // If user is a doctor, verify they're accessing their own profile
             if ("DOCTOR".equals(role)) {
                 Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
-                if (!authenticatedDoctor.getDoctorId().equals(id)) {
+                if (!authenticatedDoctor.getDoctorId().equals(id.intValue())) {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
                 }
             }
@@ -62,6 +64,7 @@ public class DoctorController {
             DoctorDTO doctorDTO = modelMapper.map(doctorService.getDoctorProfile(id), DoctorDTO.class);
             return ResponseEntity.ok(doctorDTO);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -150,7 +153,16 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+@GetMapping("/all")
+public ResponseEntity<List<DoctorDTO>> getAllDoctors()
+{
+	  
+    List<Doctor> doctors = doctorService.getAllDoctors();
+    List<DoctorDTO> doctorDTOs = doctors.stream()
+            .map(doctor -> modelMapper.map(doctor, DoctorDTO.class))
+            .collect(Collectors.toList());
+    return ResponseEntity.ok(doctorDTOs);
+}
     @PatchMapping("/{id}/rating/{rating}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> updateDoctorRating(
@@ -175,9 +187,28 @@ public class DoctorController {
         }
     }
 
+//    @GetMapping("/{specialization}")
+//    public ResponseEntity<List<DoctorDTO>> getDoctorsBySpecialization(@PathVariable String specialization) {
+//        try {
+//            List<Doctor> doctors = doctorService.findDoctorsBySpecialization(specialization);
+//            List<DoctorDTO> doctorDTOs = doctors.stream()
+//                    .map(doctor -> modelMapper.map(doctor, DoctorDTO.class))
+//                    .collect(Collectors.toList());
+//            return ResponseEntity.ok(doctorDTOs);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
     @GetMapping("/{specialization}")
-    public ResponseEntity<List<DoctorDTO>> getDoctorsBySpecialization(@PathVariable String specialization) {
+    @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'ADMIN')")
+    public ResponseEntity<List<DoctorDTO>> getDoctorsBySpecialization(
+            @PathVariable String specialization,
+            @RequestHeader("Authorization") String authHeader) {
         try {
+            // Extract and validate token
+            String token = authHeader.substring(7);
+            // You can use jwtService to validate the token if needed
+            
             List<Doctor> doctors = doctorService.findDoctorsBySpecialization(specialization);
             List<DoctorDTO> doctorDTOs = doctors.stream()
                     .map(doctor -> modelMapper.map(doctor, DoctorDTO.class))
@@ -187,6 +218,7 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
     @PutMapping("/{doctorId}/{specialization}")
     @PreAuthorize("hasRole('DOCTOR')")

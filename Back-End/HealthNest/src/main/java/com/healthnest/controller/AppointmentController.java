@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.healthnest.dto.AppointmentShowDTO;
+import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.exception.AppointmentNotFoundException;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.Doctor;
@@ -50,7 +51,7 @@ public class AppointmentController {
             String email = jwtService.extractUserEmail(token);
             
             // Verify that the doctor is accessing their own appointments
-            Doctor authenticatedDoctor = doctorService.getDoctorByEmail(email);
+            Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
             if (!authenticatedDoctor.getDoctorId().equals(Long.valueOf(doctorId))) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
@@ -68,9 +69,35 @@ public class AppointmentController {
         }
     }
 
+//    @GetMapping("/doctor/{doctorId}")
+//    @PreAuthorize("hasAnyRole('DOCTOR', 'USER')")
+//    public ResponseEntity<List<AppointmentShowDTO>> getAppointmentsByDoctor(
+//            @PathVariable Integer doctorId,
+//            @RequestHeader("Authorization") String authHeader) {
+//            
+//        try {
+//            // Extract token from Authorization header
+//            String token = authHeader.substring(7);
+//            String email = jwtService.extractUserEmail(token);
+//            String role = jwtService.extractUserRole(token);
+//                    
+//            // If it's a doctor, verify they're accessing their own appointments
+//            if ("DOCTOR".equals(role)) {
+//                Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
+//                if (!authenticatedDoctor.getDoctorId().equals(Long.valueOf(doctorId))) {
+//                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//                }
+//            }
+//                    
+//            List<AppointmentShowDTO> appointments = appointmentService.getAppointments(doctorId);
+//            return ResponseEntity.ok(appointments);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
     @GetMapping("/doctor/{doctorId}")
     @PreAuthorize("hasRole('DOCTOR')")
-    public ResponseEntity<List<AppointmentShowDTO>> getAppointmentsByDoctor(
+    public ResponseEntity<List<AppointmentShowDTO>> getDoctorAppointments(
             @PathVariable Integer doctorId,
             @RequestHeader("Authorization") String authHeader) {
         
@@ -80,17 +107,19 @@ public class AppointmentController {
             String email = jwtService.extractUserEmail(token);
             
             // Verify that the doctor is accessing their own appointments
-            Doctor authenticatedDoctor = doctorService.getDoctorByEmail(email);
-            if (!authenticatedDoctor.getDoctorId().equals(Long.valueOf(doctorId))) {
+            Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
+            if (!authenticatedDoctor.getDoctorId().equals(doctorId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
             
-            List<AppointmentShowDTO> appointments = appointmentService.getAppointments(doctorId);
+            List<AppointmentShowDTO> appointments = appointmentService.getAppointmentsByDoctorId(doctorId);
             return ResponseEntity.ok(appointments);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
     @PostMapping("/{appointmentId}/accept/{doctorId}")
     @PreAuthorize("hasRole('DOCTOR')")
@@ -105,7 +134,7 @@ public class AppointmentController {
             String email = jwtService.extractUserEmail(token);
             
             // Verify that the doctor is accepting their own appointment
-            Doctor authenticatedDoctor = doctorService.getDoctorByEmail(email);
+            Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
             if (!authenticatedDoctor.getDoctorId().equals(Long.valueOf(doctorId))) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
@@ -132,8 +161,8 @@ public class AppointmentController {
             String email = jwtService.extractUserEmail(token);
             
             // Verify that the doctor is rejecting their own appointment
-            Doctor authenticatedDoctor = doctorService.getDoctorByEmail(email);
-            if (!authenticatedDoctor.getDoctorId().equals(Long.valueOf(doctorId))) {
+            Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
+            if (authenticatedDoctor.getDoctorId()!=doctorId){
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
             
@@ -155,6 +184,29 @@ public class AppointmentController {
         }
     }
 
+   
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<AppointmentSummaryDTO>> getUserAppointments(
+            @PathVariable Integer userId,
+            @RequestHeader("Authorization") String authHeader) {
+        
+        try {
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String email = jwtService.extractUserEmail(token);
+            
+            // Verify that the user is accessing their own appointments
+            if (!appointmentService.isUserEmailMatching(userId, email)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+            
+            List<AppointmentSummaryDTO> appointments = appointmentService.getAppointmentSummaries(userId);
+            return ResponseEntity.ok(appointments);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @PatchMapping("/{appointmentId}/status/{setStatus}")
     @PreAuthorize("hasAnyRole('USER', 'DOCTOR', 'ADMIN')")
     public ResponseEntity<String> changeStatus(
@@ -181,49 +233,35 @@ public class AppointmentController {
                 }
             } else if ("DOCTOR".equals(role)) {
                 // Doctors can only update appointments assigned to them
-                Doctor authenticatedDoctor = doctorService.getDoctorByEmail(email);
+                Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
                 if (!appointmentService.isAppointmentForDoctor(appointmentId, authenticatedDoctor.getDoctorId().intValue())) {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only update appointments assigned to you");
                 }
                 
                 // Doctors can update to CONFIRMED, COMPLETED, or CANCELLED
-                if (!("CONFIRMED".equalsIgnoreCase(setStatus) || 
-                      "COMPLETED".equalsIgnoreCase(setStatus) || 
-                      "CANCELLED".equalsIgnoreCase(setStatus))) {
+                if (!("CONFIRMED".equalsIgnoreCase(setStatus) ||
+                       "COMPLETED".equalsIgnoreCase(setStatus) ||
+                       "CANCELLED".equalsIgnoreCase(setStatus))) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid status value");
                 }
-            }
-            // Admin can update any appointment to any status
-            
-            return ResponseEntity.ok(appointmentService.changeStatus(appointmentId, setStatus));
-        } catch (AppointmentNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update appointment status: " + e.getMessage());
-        }
-    }
-    
-    @GetMapping("/user/{userId}")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<AppointmentShowDTO>> getUserAppointments(
-            @PathVariable Integer userId,
-            @RequestHeader("Authorization") String authHeader) {
-        
-        try {
-            // Extract token from Authorization header
-            String token = authHeader.substring(7);
-            String email = jwtService.extractUserEmail(token);
-            
-            // Verify that the user is accessing their own appointments
-            if (!appointmentService.isUserEmailMatching(userId, email)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            } else if (!"ADMIN".equals(role)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized role");
             }
             
-            List<AppointmentShowDTO> appointments = appointmentService.getAppointmentsByUserId(userId);
-            return ResponseEntity.ok(appointments);
+            // Update the appointment status
+            boolean updated = appointmentService.updateAppointmentStatus(appointmentId, setStatus.toUpperCase());
+            
+            if (updated) {
+                return ResponseEntity.ok("Appointment status updated successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Appointment not found");
+            }
+            
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error updating appointment status: " + e.getMessage());
         }
     }
+
 }
 

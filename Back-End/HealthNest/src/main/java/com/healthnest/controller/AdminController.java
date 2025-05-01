@@ -84,7 +84,7 @@ public class AdminController {
     @GetMapping("/doctors")
     public ResponseEntity<List<DoctorDTO>> getAllDoctors(@RequestHeader("Authorization") String authHeader) {
         try {
-            // Verify admin role
+//             Verify admin role
             String token = authHeader.substring(7);
             String role = jwtService.extractUserRole(token);
             
@@ -195,15 +195,15 @@ public class AdminController {
     }
 
     @GetMapping("/feedbacks")
-    public ResponseEntity<List<FeedBackDTO>> getAllFeedBacks(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<List<FeedBackDTO>> getAllFeedBacks() {
         try {
             // Verify admin role
-            String token = authHeader.substring(7);
-            String role = jwtService.extractUserRole(token);
-            
-            if (!"ADMIN".equals(role)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
+//            String token = authHeader.substring(7);
+//            String role = jwtService.extractUserRole(token);
+//            
+//            if (!"ADMIN".equals(role)) {
+//                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//            }
             
             List<FeedBackDTO> feedbacks = feedBackService.getAllFeedBack();
             return ResponseEntity.ok(feedbacks);

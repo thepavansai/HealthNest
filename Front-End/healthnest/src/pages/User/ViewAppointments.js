@@ -11,7 +11,7 @@ const ViewAppointments = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [currAppointments, setCurrAppointments] = useState('All Appointments');
-  const [ratings, setRatings] = useState({}); 
+  const [ratings, setRatings] = useState({});
   const [ratedAppointments, setRatedAppointments] = useState(new Set());
   const [reviewedAppointments, setReviewedAppointments] = useState([]);
 
@@ -19,7 +19,20 @@ const ViewAppointments = () => {
     const fetchAppointments = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8080/users/appointments/${localStorage.getItem('userId')}`);
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        
+        // Include the token in the Authorization header
+        const response = await axios.get(
+          `http://localhost:8080/users/appointments/${userId}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
+        );
+        
         setAppointments(response.data);
         setLoading(false);
       } catch (error) {
@@ -59,25 +72,33 @@ const ViewAppointments = () => {
 
 
   const cancelAppointment = async (appointmentId, appointmentDate, appointmentTime) => {
-
     const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
     const currentTime = new Date();
-
     if (appointmentDateTime < currentTime) {
       alert('You cannot cancel an appointment that has already passed.');
       return;
     }
     const timeDifferenceInMilliseconds = appointmentDateTime - currentTime;
-
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 3600);
-
     if (timeDifferenceInHours < 3) {
       alert('You cannot cancel an appointment less than 3 hours before it starts.');
       return;
     }
     try {
-      const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
-      if (response.status === 200) { 
+      // Get the token from localStorage
+      const token = localStorage.getItem('token');
+      
+      const response = await axios.patch(
+        `http://localhost:8080/users/cancelappointment/${appointmentId}`,
+        {},  // Empty body for PATCH request
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      
+      if (response.status === 200) {
         setAppointments(prevAppointments =>
           prevAppointments.map(appointment =>
             appointment.appointmentId === appointmentId
@@ -111,22 +132,42 @@ const ViewAppointments = () => {
       alert('Please select a rating first');
       return;
     }
-
     if (ratedAppointments.has(appointmentId)) {
       alert('You have already submitted a rating for this appointment');
       return;
     }
     
     try {
-      const ratingResponse = await axios.patch(`http://localhost:8080/doctor/${doctorId}/rating/${rating}`);
+      // Get the token from localStorage
+      const token = localStorage.getItem('token');
+      
+      const ratingResponse = await axios.patch(
+        `http://localhost:8080/doctor/${doctorId}/rating/${rating}`,
+        {},  // Empty body for PATCH request
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      
       if (ratingResponse.status === 200) {
-        const reviewResponse = await axios.patch(`http://localhost:8080/appointments/${appointmentId}/status/Reviewed`);
+        const reviewResponse = await axios.patch(
+          `http://localhost:8080/appointments/${appointmentId}/status/Reviewed`,
+          {},  // Empty body for PATCH request
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
+        );
+        
         if (reviewResponse.status === 200) {
           alert('Rating submitted successfully!');
-         
+          
           setRatings(prev => ({
             ...prev,
-            [appointmentId]: rating  
+            [appointmentId]: rating
           }));
           setRatedAppointments(prev => new Set([...prev, appointmentId]));
           setAppointments(prevAppointments =>

@@ -15,17 +15,58 @@ const DoctorViewAppointments = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
 
+  // useEffect(() => {
+  //   const fetchAppointments = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await axios.get(`http://localhost:8080/appointments/doctor/${localStorage.getItem('doctorId')}`);
+  //       console.log(response.data)
+  //       setAppointments(response.data);
+  //       setCompletedAppointments(response.data.filter(
+  //         appointment => appointment.appointmentStatus.toLowerCase() === 'completed' || 
+  //                        appointment.appointmentStatus.toLowerCase() === 'reviewed'
+  //     ));
+  //       setUpcomingAppointments(response.data.filter(
+  //         appointment => appointment.appointmentStatus.toLowerCase() === 'upcoming'
+  //       ));
+  //       setCancelledAppointments(response.data.filter(
+  //         appointment => appointment.appointmentStatus.toLowerCase() === 'cancelled'
+  //       ));
+  //       setPendingAppointments(response.data.filter(
+  //         appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
+  //       ));
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error('Error fetching appointments:', error);
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchAppointments();
+  // }, []);
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8080/appointments/doctor/${localStorage.getItem('doctorId')}`);
-        console.log(response.data)
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        
+        // Make the request with the Authorization header
+        const response = await axios.get(
+          `http://localhost:8080/appointments/doctor/${localStorage.getItem('doctorId')}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
+        );
+        
+        console.log(response.data);
         setAppointments(response.data);
         setCompletedAppointments(response.data.filter(
-          appointment => appointment.appointmentStatus.toLowerCase() === 'completed' || 
-                         appointment.appointmentStatus.toLowerCase() === 'reviewed'
-      ));
+          appointment => appointment.appointmentStatus.toLowerCase() === 'completed' ||
+                        appointment.appointmentStatus.toLowerCase() === 'reviewed'
+        ));
         setUpcomingAppointments(response.data.filter(
           appointment => appointment.appointmentStatus.toLowerCase() === 'upcoming'
         ));
@@ -41,9 +82,10 @@ const DoctorViewAppointments = () => {
         setLoading(false);
       }
     };
-
+  
     fetchAppointments();
   }, []);
+  
 
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch =
@@ -54,16 +96,45 @@ const DoctorViewAppointments = () => {
     return matchesSearch && appointment.appointmentStatus.toLowerCase() === filterStatus.toLowerCase();
   });
 
-  const handleAppointmentAction = async (appointmentId, action) => {
-    try {
-      const response = await axios.post(
-        `http://localhost:8080/appointments/${appointmentId}/${action}/${localStorage.getItem("doctorId")}`
-      );
+  // const handleAppointmentAction = async (appointmentId, action) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `http://localhost:8080/appointments/${appointmentId}/${action}/${localStorage.getItem("doctorId")}`
+  //     );
 
-      if (response.status === 200) {
-        alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
+  //     if (response.status === 200) {
+  //       alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
 
         
+  //       setAppointments((prevAppointments) =>
+  //         prevAppointments.map((appointment) =>
+  //           appointment.appointmentId === appointmentId
+  //             ? { ...appointment, appointmentStatus: action === 'accept' ? 'upcoming' : 'rejected' }
+  //             : appointment
+  //         )
+  //       );
+  //     } else {
+  //       alert(`Failed to ${action} appointment. Please try again.`);
+  //     }
+  //   } catch (error) {
+  //     console.error(`Error ${action}ing appointment:`, error);
+  //     alert(`Error ${action}ing appointment. Please try again later.`);
+  //   }
+  // };
+  const handleAppointmentAction = async (appointmentId, action) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        `http://localhost:8080/appointments/${appointmentId}/${action}/${localStorage.getItem("doctorId")}`,
+        {},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      if (response.status === 200) {
+        alert(`Appointment ${action === 'accept' ? 'accepted' : 'rejected'} successfully!`);
         setAppointments((prevAppointments) =>
           prevAppointments.map((appointment) =>
             appointment.appointmentId === appointmentId
@@ -79,26 +150,77 @@ const DoctorViewAppointments = () => {
       alert(`Error ${action}ing appointment. Please try again later.`);
     }
   };
+  
+  // const cancelAppointment = async (appointmentId, appointmentDate, appointmentTime) => {
+  //   const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
+  //   const currentTime = new Date();
 
+  //   if (appointmentDateTime < currentTime) {
+  //     alert('You cannot cancel an appointment that has already passed.');
+  //     return;
+  //   }
+  //   const timeDifferenceInMilliseconds = appointmentDateTime - currentTime;
+  //   const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 3600);
+
+  //   if (timeDifferenceInHours < 3) {
+  //     alert('You cannot cancel an appointment less than 3 hours before it starts.');
+  //     return;
+  //   }
+  //   try {
+  //     const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
+  //     if (response.status === 200) {
+        
+  //       if (response.data && response.data.appointmentStatus) {
+  //         setAppointments(prevAppointments =>
+  //           prevAppointments.map(appointment =>
+  //             appointment.appointmentId === appointmentId
+  //               ? { ...appointment, ...response.data }
+  //               : appointment
+  //           )
+  //         );
+  //       } else {
+  //         setAppointments(prevAppointments =>
+  //           prevAppointments.map(appointment =>
+  //             appointment.appointmentId === appointmentId
+  //               ? { ...appointment, appointmentStatus: 'Cancelled' }
+  //               : appointment
+  //           )
+  //         );
+  //       }
+  //       alert('Appointment cancelled successfully!');
+  //     } else {
+  //       alert('Failed to cancel appointment. Please try again.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error cancelling appointment:', error);
+  //     alert('Error cancelling appointment. Please try again later.');
+  //   }
+  // };
   const cancelAppointment = async (appointmentId, appointmentDate, appointmentTime) => {
     const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
     const currentTime = new Date();
-
     if (appointmentDateTime < currentTime) {
       alert('You cannot cancel an appointment that has already passed.');
       return;
     }
     const timeDifferenceInMilliseconds = appointmentDateTime - currentTime;
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 3600);
-
     if (timeDifferenceInHours < 3) {
       alert('You cannot cancel an appointment less than 3 hours before it starts.');
       return;
     }
     try {
-      const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
+      const token = localStorage.getItem('token');
+      const response = await axios.patch(
+        `http://localhost:8080/users/cancelappointment/${appointmentId}`,
+        {},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
       if (response.status === 200) {
-        
         if (response.data && response.data.appointmentStatus) {
           setAppointments(prevAppointments =>
             prevAppointments.map(appointment =>
@@ -125,17 +247,57 @@ const DoctorViewAppointments = () => {
       alert('Error cancelling appointment. Please try again later.');
     }
   };
+  
+  // const markAsCompleted = async (appointmentId) => {
+  //   try {
+  //     const response = await axios.patch(
+  //       `http://localhost:8080/appointments/${appointmentId}/status/Completed`
+  //     );
 
-  const markAsCompleted = async (appointmentId) => {
-    try {
-      const response = await axios.patch(
-        `http://localhost:8080/appointments/${appointmentId}/status/Completed`
-      );
-
-      if (response.status === 200) {
-        alert('Appointment marked as completed successfully!');
+  //     if (response.status === 200) {
+  //       alert('Appointment marked as completed successfully!');
 
         
+  //       setAppointments((prevAppointments) =>
+  //         prevAppointments.map((appointment) =>
+  //           appointment.appointmentId === appointmentId
+  //             ? { ...appointment, appointmentStatus: 'completed' }
+  //             : appointment
+  //         )
+  //       );
+
+        
+  //       setCompletedAppointments((prevCompleted) => [
+  //         ...prevCompleted,
+  //         appointments.find((appointment) => appointment.appointmentId === appointmentId),
+  //       ]);
+
+        
+  //       setUpcomingAppointments((prevUpcoming) =>
+  //         prevUpcoming.filter((appointment) => appointment.appointmentId !== appointmentId)
+  //       );
+  //     } else {
+  //       alert('Failed to mark appointment as completed. Please try again.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error marking appointment as completed:', error);
+  //     alert('Error marking appointment as completed. Please try again later.');
+  //   }
+  // };
+  const markAsCompleted = async (appointmentId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.patch(
+        `http://localhost:8080/appointments/${appointmentId}/status/Completed`,
+        {},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      if (response.status === 200) {
+        alert('Appointment marked as completed successfully!');
         setAppointments((prevAppointments) =>
           prevAppointments.map((appointment) =>
             appointment.appointmentId === appointmentId
@@ -143,14 +305,10 @@ const DoctorViewAppointments = () => {
               : appointment
           )
         );
-
-        
         setCompletedAppointments((prevCompleted) => [
           ...prevCompleted,
           appointments.find((appointment) => appointment.appointmentId === appointmentId),
         ]);
-
-        
         setUpcomingAppointments((prevUpcoming) =>
           prevUpcoming.filter((appointment) => appointment.appointmentId !== appointmentId)
         );
@@ -162,6 +320,7 @@ const DoctorViewAppointments = () => {
       alert('Error marking appointment as completed. Please try again later.');
     }
   };
+  
 
   const getStatusClass = (status) => {
     switch (status.toLowerCase()) {

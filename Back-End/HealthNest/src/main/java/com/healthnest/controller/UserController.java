@@ -31,7 +31,7 @@ import com.healthnest.service.FeedBackService;
 import com.healthnest.service.JWTService;
 import com.healthnest.service.UserService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -349,11 +349,10 @@ public class UserController {
     }
         
     @GetMapping("/countallusers")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Integer> getAllUsersCount(
-            @RequestHeader("Authorization") String authHeader) {
+
+    public ResponseEntity<Integer> getAllUsersCount(){
         
-        System.out.println("Auth header in getAllUsersCount: " + authHeader);
+       // System.out.println("Auth header in getAllUsersCount: " + authHeader);
         
         // This endpoint should only be accessible to admins
         // The @PreAuthorize annotation ensures this
