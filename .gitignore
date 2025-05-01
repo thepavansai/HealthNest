@@ -62,3 +62,7 @@ yarn-error.log*
  
 .qodo
 **/.env 
+
+# Local Netlify folder
+.netlify
+*.yml
