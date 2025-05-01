@@ -372,6 +372,11 @@
     margin-top: 10px; /* Additional spacing on mobile */
   }
 
+  .profile-widget {
+    align-self: flex-end;  /* Align to the right side */
+    margin-top: 10px;
+  }
+
   .dashboard-grid {
     grid-template-columns: 1fr;
     margin: 15px 0;
@@ -470,17 +475,21 @@
   
   /* Fix for profile dropdown on mobile */
   .profile-widget {
-    width: 100%;
+    width: auto;
+    align-self: flex-end;
   }
   
   .profile-info {
-    width: 100%;
+    width: auto;
+    max-width: 180px;
     justify-content: space-between;
   }
   
   .profile-dropdown-menu {
-    width: 100%;
+    width: auto;
+    min-width: 180px;
     max-width: 250px;
+    right: 0;
   }
   
   /* Adjust export buttons spacing */
