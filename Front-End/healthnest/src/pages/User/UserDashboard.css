@@ -593,62 +593,127 @@
 
  
 @media (max-width: 768px) {
-  .action-card {
-    margin-bottom: 1rem;
+  .dashboard-container {
+    margin-top: 64px; /* Space for the fixed header */
   }
-  
-  .action-card .card-content {
-    padding: 1.5rem 1rem;
-  }
-}
 
- 
-@media (max-width: 1024px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
   .user-dashboard-new {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
   .welcome-section {
     flex-direction: column;
     align-items: flex-start;
-    padding: 1.5rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
   }
   
   .profile-widget {
     align-self: flex-end;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
   }
   
   .dashboard-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .welcome-content h1 {
-    font-size: 1.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .user-dashboard-new {
-    padding: 1rem;
+    gap: 1rem;
+    margin-top: 1.25rem;
   }
   
   .welcome-content h1 {
     font-size: 1.5rem;
   }
   
-  .action-buttons {
+  .subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .card-header {
+    padding: 1rem;
+  }
+  
+  .card-content {
+    padding: 1rem;
+  }
+  
+  .profile-card {
+    grid-row: auto;
+    max-height: none;
+  }
+  
+  .action-card .action-btn.primary,
+  .action-card .action-btn.tertiary {
+    min-height: 38px;
+    padding: 0.4rem 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-dashboard-new {
+    padding: 0.75rem;
+  }
+  
+  .welcome-content h1 {
+    font-size: 1.35rem;
+  }
+  
+  .subtitle {
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+  }
+  
+  .card-header, .card-content {
+    padding: 0.85rem;
+  }
+  
+  .card-icon, .action-icon {
+    font-size: 1.75rem;
+  }
+  
+  .dashboard-card {
+    min-height: 150px;
   }
   
   .profile-image {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
+  }
+  
+  .user-details h4 {
+    font-size: 1.25rem;
+  }
+  
+  .btn-primary, .action-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .welcome-section {
+    padding: 1rem;
+  }
+  
+  .welcome-content h1 {
+    font-size: 1.25rem;
+  }
+  
+  .profile-dropdown-menu {
+    max-width: 180px;
+    right: -10px;
+  }
+  
+  .card-icon, .action-icon {
+    font-size: 1.5rem;
+    margin-right: 0.75rem;
+  }
+  
+  .appointment-count h2, .health-stats h2 {
+    font-size: 1.5rem;
   }
 }
