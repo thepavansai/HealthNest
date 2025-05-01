@@ -151,7 +151,7 @@ const ViewFeedback = () => {
           ) : (
             feedbacks.map(feedback => (
               <div
-                key={feedback.id}
+                key={feedback.feedBackId}
                 className={`feedback-card ${feedback.status === 'new' ? 'new' : ''}`}
                 onClick={() => openFeedbackDetail(feedback)}
               >

@@ -17,15 +17,27 @@ const UserEditProfile = () => {
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+
     if (!storedUserId) {
       toast.error("User ID not found. Please login again.");
       navigate("/login");
       return;
     }
 
+    if (!token) {
+      toast.error("Authentication token not found. Please login again.");
+      navigate("/login");
+      return;
+    }
+
     setUserId(storedUserId);
 
-    axios.get(`http://localhost:8080/users/userdetails/${storedUserId}`)
+    axios.get(`http://localhost:8080/users/userdetails/${storedUserId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then((response) => {
         if (response.data) {
           console.log(response.data);
@@ -40,9 +52,14 @@ const UserEditProfile = () => {
         }
       })
       .catch((error) => {
+        console.error("Error fetching user details:", error);
         const errorMessage = error.response?.data?.message || "Failed to fetch user details";
         toast.error(errorMessage);
-        if (error.response?.status === 401) {
+        
+        // If unauthorized or token expired, redirect to login
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          toast.error("Session expired. Please login again.");
+          localStorage.removeItem("token"); // Clear invalid token
           navigate("/login");
         }
       })
@@ -53,6 +70,13 @@ const UserEditProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      toast.error("Authentication token not found. Please login again.");
+      navigate("/login");
+      return;
+    }
 
     const updatedUser = {
       userId,
@@ -64,7 +88,11 @@ const UserEditProfile = () => {
     };
 
     axios
-      .patch(`http://localhost:8080/users/editprofile/${userId}`, updatedUser)
+      .patch(`http://localhost:8080/users/editprofile/${userId}`, updatedUser, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       .then(() => {
         localStorage.setItem('userName', updatedUser.name);
         toast.success("Profile updated successfully!", {
@@ -72,8 +100,16 @@ const UserEditProfile = () => {
           autoClose: 1500,
         });
       })
-      .catch(() => {
-        toast.error("Failed to update profile.");
+      .catch((error) => {
+        console.error("Error updating profile:", error);
+        
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          toast.error("Session expired. Please login again.");
+          localStorage.removeItem("token"); // Clear invalid token
+          navigate("/login");
+        } else {
+          toast.error("Failed to update profile.");
+        }
       });
   };
 
@@ -100,7 +136,6 @@ const UserEditProfile = () => {
                 required
               />
             </div>
-
             <div className="form-group mb-3">
               <label>Email</label>
               <input
@@ -111,7 +146,6 @@ const UserEditProfile = () => {
                 required
               />
             </div>
-
             <div className="form-group mb-3">
               <label>Phone Number</label>
               <input
@@ -122,7 +156,6 @@ const UserEditProfile = () => {
                 required
               />
             </div>
-
             <div className="form-group mb-3">
               <label>Gender</label>
               <select
@@ -137,7 +170,6 @@ const UserEditProfile = () => {
                 <option value="OTHER">Other</option>
               </select>
             </div>
-
             <div className="form-group mb-3">
               <label>Date of Birth</label>
               <input
@@ -149,10 +181,16 @@ const UserEditProfile = () => {
                 required
               />
             </div>
-
             <div className="d-grid gap-2">
               <button type="submit" className="btn btn-success">
                 Save Changes
+              </button>
+              <button 
+                type="button" 
+                className="btn btn-secondary"
+                onClick={() => navigate("/user")}
+              >
+                Cancel
               </button>
             </div>
           </form>

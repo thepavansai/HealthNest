@@ -248,7 +248,7 @@ const View = () => {
                     <th>Specialization</th>
                     <th>Date & Time</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
@@ -264,15 +264,7 @@ const View = () => {
                            (appointment.appointmentStatus || appointment.status || 'Unknown').slice(1)}
                         </span>
                       </td>
-                      <td>
-                        <button
-                          className="delete-btn"
-                          onClick={() => handleDeleteAppointment(appointment.appointmentId)}
-                          title="Delete Appointment"
-                        >
-                          <FaTrash />
-                        </button>
-                      </td>
+                      
                     </tr>
                   ))}
                 </tbody>
@@ -331,7 +323,7 @@ const View = () => {
                     <th>Specialization</th>
                     <th>Date & Time</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                   
                   </tr>
                 </thead>
                 <tbody>
@@ -346,15 +338,7 @@ const View = () => {
                           Cancelled
                         </span>
                       </td>
-                      <td>
-                        <button
-                          className="delete-btn"
-                          onClick={() => handleDeleteAppointment(appointment.appointmentId)}
-                          title="Delete Appointment"
-                        >
-                          <FaTrash />
-                        </button>
-                      </td>
+                   
                     </tr>
                   ))}
                 </tbody>

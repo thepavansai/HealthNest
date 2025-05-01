@@ -273,47 +273,93 @@ const CheckHealth = () => {
     }
   };
   
-  const fetchDoctorAppointments = async (doctorId) => {
-    try {
-      // Get the token from localStorage
-      const token = localStorage.getItem('token');
+  // const fetchDoctorAppointments = async (doctorId) => {
+  //   try {
+  //     // Get the token from localStorage
+  //     const token = localStorage.getItem('token');
       
-      // Make sure we have a token
-      if (!token) {
-        console.error("No authentication token found");
-        toast.error("Please log in to view appointments");
-        return;
-      }
+  //     // Make sure we have a token
+  //     if (!token) {
+  //       console.error("No authentication token found");
+  //       toast.error("Please log in to view appointments");
+  //       return;
+  //     }
       
-      const response = await axios.get(
-        `http://localhost:8080/appointments/doctor/${doctorId}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
+  //     const response = await axios.get(
+  //       `http://localhost:8080/appointments/doctor/${doctorId}`,
+  //       {
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`
+  //         }
+  //       }
+  //     );
       
-      setDoctorAppointments(response.data);
-    } catch (error) {
-      console.error("Error fetching doctor's appointments:", error);
+  //     setDoctorAppointments(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching doctor's appointments:", error);
       
-      // Handle different error scenarios
-      if (error.response) {
-        if (error.response.status === 401) {
-          toast.error("You are not authorized to view these appointments");
-        } else if (error.response.status === 403) {
-          toast.error("You don't have permission to view these appointments");
-        } else {
-          toast.error("Failed to fetch appointments");
-        }
-      } else {
-        toast.error("Network error. Please try again later.");
-      }
+  //     // Handle different error scenarios
+  //     if (error.response) {
+  //       if (error.response.status === 401) {
+  //         toast.error("You are not authorized to view these appointments");
+  //       } else if (error.response.status === 403) {
+  //         toast.error("You don't have permission to view these appointments");
+  //       } else {
+  //         toast.error("Failed to fetch appointments");
+  //       }
+  //     } else {
+  //       toast.error("Network error. Please try again later.");
+  //     }
+  //   }
+  // };
+  
+  // In the fetchDoctorAppointments function, modify the error handling:
+
+const fetchDoctorAppointments = async (doctorId) => {
+  try {
+    // Get the token from localStorage
+    const token = localStorage.getItem('token');
+    
+    // Make sure we have a token
+    if (!token) {
+      console.error("No authentication token found");
+      toast.error("Please log in to view appointments");
+      return;
     }
-  };
-  
-  
+    
+    const response = await axios.get(
+      `http://localhost:8080/appointments/doctor/${doctorId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+    
+    setDoctorAppointments(response.data);
+  } catch (error) {
+    console.error("Error fetching doctor's appointments:", error);
+    
+    // Set empty appointments array to prevent further errors
+    setDoctorAppointments([]);
+    
+    // Handle different error scenarios
+    if (error.response) {
+      if (error.response.status === 401) {
+        toast.error("You are not authorized to view these appointments");
+      } else if (error.response.status === 403) {
+        toast.error("You don't have permission to view these appointments");
+      } else if (error.response.status === 500) {
+        toast.error("Server error. Appointments may not be available at this time.");
+      } else {
+        toast.error("Failed to fetch appointments");
+      }
+    } else {
+      toast.error("Network error. Please try again later.");
+    }
+  }
+};
+
   
 
   const handleSymptomSubmit = async () => {
@@ -462,13 +508,23 @@ const CheckHealth = () => {
   };
   
 
+  // const isSlotBooked = (date, slot) => {
+  //   return doctorAppointments.some(appointment => 
+  //     appointment.appointmentDate === formatDate(selectedDay, date) &&
+  //     appointment.appointmentTime === formatTime(slot)
+  //   );
+  // };
   const isSlotBooked = (date, slot) => {
+    if (!doctorAppointments || doctorAppointments.length === 0) {
+      return false; // If no appointments data, assume slot is available
+    }
+    
     return doctorAppointments.some(appointment => 
       appointment.appointmentDate === formatDate(selectedDay, date) &&
       appointment.appointmentTime === formatTime(slot)
     );
   };
-
+  
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex > 0 ? prevIndex - 1 : doctors.length - 1

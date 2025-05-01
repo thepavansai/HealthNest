@@ -153,18 +153,83 @@ public class AppointmentService {
 	        
 	        return false;
 	    }
+//	    public boolean updateAppointmentStatus(Integer appointmentId, String newStatus) {
+//	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+//	        
+//	        if (appointmentOpt.isPresent()) {
+//	            Appointment appointment = appointmentOpt.get();
+//	            appointment.setAppointmentStatus(newStatus);
+//	            appointmentRepository.save(appointment);
+//	            return true;
+//	        }
+//	        
+//	        return false;
+//	    
+//	    public boolean updateAppointmentStatus(Integer appointmentId, String newStatus) {
+//	        try {
+//	            // Add logging
+//	            System.out.println("Updating appointment " + appointmentId + " to status " + newStatus);
+//	            
+//	            Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+//	            
+//	            if (appointmentOpt.isPresent()) {
+//	                Appointment appointment = appointmentOpt.get();
+//	                
+//	                // Log current status
+//	                System.out.println("Current status: " + appointment.getAppointmentStatus());
+//	                
+//	                appointment.setAppointmentStatus(newStatus);
+//	                appointmentRepository.save(appointment);
+//	                
+//	                // Log after update
+//	                System.out.println("Status updated successfully");
+//	                return true;
+//	            } else {
+//	                System.out.println("Appointment not found with ID: " + appointmentId);
+//	                return false;
+//	            }
+//	        } catch (Exception e) {
+//	            // Log the exception
+//	            System.err.println("Error updating appointment status: " + e.getMessage());
+//	            e.printStackTrace();
+//	            throw e; // Re-throw to be handled by the controller
+//	        }
+//	    }
 	    public boolean updateAppointmentStatus(Integer appointmentId, String newStatus) {
-	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
-	        
-	        if (appointmentOpt.isPresent()) {
-	            Appointment appointment = appointmentOpt.get();
-	            appointment.setAppointmentStatus(newStatus);
-	            appointmentRepository.save(appointment);
-	            return true;
+	        try {
+	            // Add logging
+	            System.out.println("Updating appointment " + appointmentId + " to status " + newStatus);
+	            
+	            Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+	            
+	            if (appointmentOpt.isPresent()) {
+	                Appointment appointment = appointmentOpt.get();
+	                
+	                // Log current status
+	                System.out.println("Current status: " + appointment.getAppointmentStatus());
+	                
+	                // Convert status to proper case format (first letter uppercase, rest lowercase)
+	                String formattedStatus = newStatus.substring(0, 1).toUpperCase() + 
+	                                        newStatus.substring(1).toLowerCase();
+	                
+	                appointment.setAppointmentStatus(formattedStatus);
+	                appointmentRepository.save(appointment);
+	                
+	                // Log after update
+	                System.out.println("Status updated successfully");
+	                return true;
+	            } else {
+	                System.out.println("Appointment not found with ID: " + appointmentId);
+	                return false;
+	            }
+	        } catch (Exception e) {
+	            // Log the exception
+	            System.err.println("Error updating appointment status: " + e.getMessage());
+	            e.printStackTrace();
+	            throw e; // Re-throw to be handled by the controller
 	        }
-	        
-	        return false;
 	    }
+
 
 		public boolean isUserEmailMatching(Integer userId, String email) {
 			return userRepository.findById(userId).get().getEmail().equals(email);

@@ -16,7 +16,6 @@ const UserFeedback = () => {
       userId: ''
     }
   });
-
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null); 
   const navigate = useNavigate();
@@ -24,8 +23,9 @@ const UserFeedback = () => {
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     const userEmail = localStorage.getItem('userEmail');
+    const token = localStorage.getItem('token');
 
-    if (!userId) {
+    if (!userId || !token) {
       toast.error('Please login to submit feedback');
       navigate('/login');
       return;
@@ -51,23 +51,50 @@ const UserFeedback = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error('Authentication token not found. Please login again.');
+      navigate('/login');
+      return;
+    }
 
+    setSubmitted(true);
+    
     try {
-      const response = await axios.post('http://localhost:8080/feedback/add', formData);
+      // Note: The endpoint in your code is /feedback/add but in the controller it's /users/feeback
+      // I'm using the endpoint from your controller
+      const response = await axios.post(
+        'http://localhost:8080/users/feeback', 
+        formData,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
       
       if (response.status === 200) {
-        setSubmitted(true);
         toast.success('Feedback submitted successfully!');
         setTimeout(() => navigate('/user'), 2000);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to submit feedback');
+      console.error("Error submitting feedback:", error);
+      
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        toast.error("Session expired. Please login again.");
+        localStorage.removeItem("token"); // Clear invalid token
+        navigate('/login');
+      } else {
+        toast.error(error.response?.data || 'Failed to submit feedback');
+      }
+    } finally {
+      setSubmitted(false);
     }
   };
 
   const StarRating = ({ rating, onRatingChange }) => {
     const [hover, setHover] = useState(null);
-
     const stars = useMemo(() => {
       return [...Array(5)].map((_, index) => {
         const ratingValue = index + 1;
@@ -122,7 +149,6 @@ const UserFeedback = () => {
               rows={5}
               required
             />
-
             <div className="rating-section">
               <label>Rate your experience:</label>
               <StarRating
@@ -131,7 +157,6 @@ const UserFeedback = () => {
               />
               <div className="rating-value">Your Rating: {formData.rating}</div>
             </div>
-
             <button 
               type="submit" 
               className="feedback-button"
