@@ -1,15 +1,6 @@
 /* DoctorSignUp.css */
-.doctor-signup-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 40px 20px;
-  z-index: 2;
-  position: relative;
-}
 
-/* Full screen container with background image */
+/* Base styles */
 .doctor-signup-bg {
   background-size: cover;
   background-position: center;
@@ -20,7 +11,7 @@
   justify-content: center;
   position: relative;
 }
-/* Optional white or dark overlay for readability */
+
 .doctor-signup-bg::before {
   content: '';
   position: absolute;
@@ -28,31 +19,31 @@
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.4); /* adjust to 0.3 or 0.5 for lighter/darker effect */
+  background-color: rgba(255, 255, 255, 0.4);
   z-index: 1;
 }
 
-
-.doctor-signup-overlay {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.1);
+.doctor-signup-container {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
-  padding: 2rem;
+  min-height: 100vh;
+  padding: 40px 20px;
+  z-index: 2;
+  position: relative;
+  width: 100%; /* Make container full width by default */
 }
 
 .signup-card {
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(10px);
   border-radius: 16px;
-  padding: 40px;
-  width: 500px; /* 🔄 Increase from 400px to 500px or more */
+  padding: 30px; /* Adjust padding for smaller screens */
+  width: 90%; /* Adjust width for smaller screens */
+  max-width: 500px; /* Maintain a maximum width for larger screens */
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   color: #333;
   transition: width 0.3s ease;
-
 }
 
 .signup-card::before {
@@ -63,20 +54,21 @@
   width: 100%;
   height: 8px;
   background: linear-gradient(90deg, #5956F4, #ffffff);
+  border-radius: 16px 16px 0 0; /* Match card border radius */
 }
 
 .signup-title {
-  font-size: 28px;
+  font-size: 24px; /* Adjust font size for smaller screens */
   color: #2c3e50;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px; /* Adjust margin for smaller screens */
   font-weight: 600;
 }
 
 .step-title {
-  font-size: 20px;
+  font-size: 18px; /* Adjust font size for smaller screens */
   color: #5956F4;
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Adjust margin for smaller screens */
   font-weight: 500;
 }
 
@@ -84,8 +76,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding: 0 20px;
+  margin-bottom: 25px; /* Adjust margin for smaller screens */
+  padding: 0 10px; /* Adjust padding for smaller screens */
 }
 
 .step-item {
@@ -100,20 +92,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: 30px; /* Adjust size for smaller screens */
+  height: 30px; /* Adjust size for smaller screens */
   border-radius: 50%;
   background-color: #e0e0e0;
   color: #777;
   font-weight: bold;
   transition: all 0.3s ease;
-  margin-bottom: 8px;
+  margin-bottom: 5px; /* Adjust margin for smaller screens */
+  font-size: 14px; /* Adjust font size for smaller screens */
 }
 
 .step-text {
-  font-size: 12px;
+  font-size: 10px; /* Adjust font size for smaller screens */
   color: #777;
   transition: all 0.3s ease;
+  text-align: center; /* Center text below smaller circles */
 }
 
 .step-item.active .step-circle {
@@ -128,10 +122,10 @@
 
 .step-line {
   flex-grow: 1;
-  height: 3px;
+  height: 2px; /* Adjust height for smaller screens */
   background-color: #e0e0e0;
-  margin: 0 10px;
-  margin-top: -28px; /* Position lines to align with circles */
+  margin: 0 5px; /* Adjust margin for smaller screens */
+  margin-top: -22px; /* Adjust position for smaller circles */
   position: relative;
   z-index: 0;
 }
@@ -143,11 +137,11 @@
 .doctor-signup-form {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 8px; /* Adjust gap for smaller screens */
 }
 
 .form-group {
-  margin-bottom: 10px;
+  margin-bottom: 8px; /* Adjust margin for smaller screens */
 }
 
 .input-icon-wrapper {
@@ -156,17 +150,14 @@
   align-items: center;
 }
 
-
-
 .input-icon {
   position: absolute;
-  left: 12px;
-  top: 20px;
+  left: 10px; /* Adjust position for smaller screens */
+  top: 16px; /* Adjust position for smaller screens */
   color: #95a5a6;
   transform: scaleX(-1);
-
+  font-size: 16px; /* Adjust icon size */
 }
-
 
 .doctor-signup-form input[type="text"],
 .doctor-signup-form input[type="email"],
@@ -174,43 +165,46 @@
 .doctor-signup-form input[type="number"],
 .doctor-signup-form input[type="password"] {
   width: 100%;
-  padding: 12px 12px 12px 40px;
+  padding: 10px 10px 10px 35px; /* Adjust padding for smaller screens and icon */
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 14px; /* Adjust font size for smaller screens */
   transition: border 0.3s ease;
 }
 
 .doctor-signup-form input:focus {
   border-color: #5956F4;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 0 2px rgba(89, 86, 244, 0.2); /* Use primary color for focus */
 }
 
 .password-toggle-icon {
   position: absolute;
-  right: 12px;
+  right: 10px; /* Adjust position for smaller screens */
   color: #95a5a6;
   cursor: pointer;
+  font-size: 16px; /* Adjust icon size */
 }
 
 .password-requirements {
-  font-size: 12px;
+  font-size: 10px; /* Adjust font size for smaller screens */
   color: #7f8c8d;
-  margin-top: 5px;
-  padding-left: 40px;
+  margin-top: 3px; /* Adjust margin for smaller screens */
+  padding-left: 35px; /* Align with input text */
 }
 
 .gender-label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 5px; /* Adjust margin for smaller screens */
   font-weight: 500;
   color: #2c3e50;
+  font-size: 14px; /* Adjust font size for smaller screens */
 }
 
 .gender-options {
   display: flex;
-  gap: 20px;
+  gap: 10px; /* Adjust gap for smaller screens */
+  flex-direction: row; /* Ensure horizontal layout on larger screens */
 }
 
 .gender-option {
@@ -218,43 +212,47 @@
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  font-size: 14px; /* Adjust font size for smaller screens */
 }
 
 .availability-section {
-  margin-top: 10px;
+  margin-top: 8px; /* Adjust margin for smaller screens */
 }
 
 .availability-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 5px; /* Adjust gap for smaller screens */
+  margin-bottom: 8px; /* Adjust margin for smaller screens */
 }
 
 .calendar-icon {
   color: #5956F4;
+  font-size: 16px; /* Adjust icon size */
 }
 
 .availability-section label {
   font-weight: 500;
   color: #2c3e50;
+  font-size: 14px; /* Adjust font size for smaller screens */
 }
 
 .availability-checkboxes {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 8px;
+  gap: 8px; /* Adjust gap for smaller screens */
+  margin-top: 5px; /* Adjust margin for smaller screens */
 }
 
 .day-checkbox {
   display: flex;
   align-items: center;
   background-color: #f5f7fa;
-  padding: 8px 12px;
+  padding: 6px 10px; /* Adjust padding for smaller screens */
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 12px; /* Adjust font size for smaller screens */
 }
 
 .day-checkbox:hover {
@@ -262,25 +260,26 @@
 }
 
 .day-checkbox input {
-  margin-right: 5px;
+  margin-right: 3px; /* Adjust margin for smaller screens */
 }
 
 .form-buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 8px; /* Adjust gap for smaller screens */
+  margin-top: 15px; /* Adjust margin for smaller screens */
+  flex-direction: column; /* Stack buttons on smaller screens */
 }
 
-.prev-btn, .next-btn {
-  flex: 1;
-  padding:8px  12px;
+.prev-btn,
+.next-btn,
+.signup-btn {
+  padding: 10px 15px; /* Adjust padding for smaller screens */
   border: none;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 14px; /* Adjust font size for smaller screens */
   cursor: pointer;
   transition: all 0.3s ease;
-  
-  
+  width: 100%; /* Make buttons full width on smaller screens */
 }
 
 .prev-btn {
@@ -298,20 +297,13 @@
 }
 
 .next-btn:hover {
-  background-color: #5956F4;
+  background-color: #4a47d3; /* Darker shade on hover */
 }
 
 .signup-btn {
-  width: 100%;
-  padding: 12px;
   background-color: #2ecc71;
   color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .signup-btn:hover {
@@ -319,28 +311,30 @@
 }
 
 .message-alert {
-  padding: 10px 15px;
+  padding: 8px 12px; /* Adjust padding for smaller screens */
   border-radius: 6px;
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Adjust margin for smaller screens */
   text-align: center;
+  font-size: 12px; /* Adjust font size for smaller screens */
 }
 
 .message-alert.error {
   background-color: #ffecee;
   color: #e74c3c;
-  border-left: 4px solid #e74c3c;
+  border-left: 3px solid #e74c3c; /* Adjust border width */
 }
 
 .message-alert.success {
   background-color: #e7f9ef;
   color: #27ae60;
-  border-left: 4px solid #27ae60;
+  border-left: 3px solid #27ae60; /* Adjust border width */
 }
 
 .login-redirect {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 15px; /* Adjust margin for smaller screens */
   color: #7f8c8d;
+  font-size: 12px; /* Adjust font size for smaller screens */
 }
 
 .login-redirect a {
@@ -353,30 +347,139 @@
   text-decoration: underline;
 }
 
-@media (max-width: 600px) {
+/* Media query for larger screens (min-width: 601px) */
+@media (min-width: 601px) {
   .signup-card {
-    padding: 20px;
+    padding: 40px;
+    width: 500px;
+  }
+
+  .signup-title {
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
+
+  .step-title {
+    font-size: 20px;
+    margin-bottom: 20px;
   }
 
   .progress-steps {
-    padding: 0;
+    padding: 0 20px;
+    margin-bottom: 30px;
+  }
+
+  .step-circle {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+    font-size: 16px;
   }
 
   .step-text {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .step-line {
-    margin: 0 5px;
+    height: 3px;
+    margin: 0 10px;
     margin-top: -28px;
   }
 
-  .gender-options {
-    flex-direction: column;
+  .doctor-signup-form {
     gap: 10px;
   }
 
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  .input-icon {
+    left: 12px;
+    top: 18px;
+    font-size: 18px;
+  }
+
+  .doctor-signup-form input[type="text"],
+  .doctor-signup-form input[type="email"],
+  .doctor-signup-form input[type="tel"],
+  .doctor-signup-form input[type="number"],
+  .doctor-signup-form input[type="password"] {
+    padding: 12px 12px 12px 40px;
+    font-size: 16px;
+  }
+
+  .password-toggle-icon {
+    right: 12px;
+    font-size: 18px;
+  }
+
+  .password-requirements {
+    font-size: 12px;
+    margin-top: 5px;
+    padding-left: 40px;
+  }
+
+  .gender-label {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .gender-options {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .gender-option {
+    font-size: 16px;
+  }
+
+  .availability-header {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .calendar-icon {
+    font-size: 18px;
+  }
+
+  .availability-section label {
+    font-size: 16px;
+  }
+
+  .availability-checkboxes {
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .day-checkbox {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
   .form-buttons {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .prev-btn,
+  .next-btn,
+  .signup-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    width: auto; /* Allow buttons to size based on content */
+    flex-grow: 1; /* Distribute space evenly */
+  }
+
+  .message-alert {
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .login-redirect {
+    font-size: 14px;
+    margin-top: 20px;
   }
 }
