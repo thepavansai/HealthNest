@@ -17,7 +17,7 @@ import com.healthnest.exception.AuthenticationException;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://health-nest.netlify.app")
 @RestController
 public class AuthenticationController {
 

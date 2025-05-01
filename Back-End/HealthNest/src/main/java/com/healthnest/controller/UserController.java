@@ -29,7 +29,7 @@ import com.healthnest.service.AppointmentService;
 import com.healthnest.service.UserService;
 import com.healthnest.exception.AuthenticationException;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://health-nest.netlify.app")
 @RestController
 @RequestMapping("/users")
 public class UserController {

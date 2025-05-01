@@ -10,7 +10,7 @@ import com.healthnest.dto.FeedBackDTO;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://health-nest.netlify.app")
 @RequestMapping("/feedback")
 public class FeedbackController {
 
