@@ -313,22 +313,22 @@ const ViewAppointments = () => {
               <tbody>
                 {filteredAppointments.map(appointment => (
                   <tr key={appointment.appointmentId}>
-                    <td>{appointment.appointmentId}</td>
-                    <td>Dr. {appointment.doctorName}</td>
-                    <td>{appointment.hospitalName}</td>
-                    <td>
+                    <td data-label="ID">{appointment.appointmentId}</td>
+                    <td data-label="Doctor">Dr. {appointment.doctorName}</td>
+                    <td data-label="Hospital">{appointment.hospitalName}</td>
+                    <td data-label="Date & Time">
                       <div className="appointment-time">
                         <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
                         <span>{appointment.appointmentTime}</span>
                       </div>
                     </td>
-                    <td>₹{appointment.consultationFee}</td>
-                    <td>
+                    <td data-label="Fee">₹{appointment.consultationFee}</td>
+                    <td data-label="Status">
                       <span className={`status-badge ${getStatusClass(appointment.appointmentStatus)}`}>
                         {appointment.appointmentStatus}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Actions">
                       <div className="action-buttons">
                         {appointment.appointmentStatus.toLowerCase() === 'upcoming' && (
                           <button
