@@ -65,4 +65,7 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
-*.yml
+
+
+# Docker
+docker-compose.yml
