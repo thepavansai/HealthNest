@@ -393,16 +393,122 @@
   }
   
   @media (max-width: 768px) {
+    .view-appointments-container {
+      padding: 16px; /* Reduce padding */
+    }
+  
+    .appointments-header h1 {
+      font-size: 24px; /* Reduce heading size */
+      margin-bottom: 16px;
+    }
+  
+    .appointments-summary {
+      gap: 12px; /* Reduce gap */
+      margin-bottom: 20px;
+    }
+  
+    .summary-card {
+      min-width: 100%;
+      padding: 16px; /* Reduce padding */
+    }
+  
+    .summary-icon {
+      width: 40px; /* Smaller icon */
+      height: 40px;
+      font-size: 18px;
+      margin-right: 12px;
+    }
+  
+    .summary-details h3 {
+      font-size: 20px; /* Smaller font */
+    }
+  
+    .summary-details p {
+      font-size: 13px; /* Smaller font */
+    }
+  
     .appointments-filter {
       flex-direction: column;
       align-items: stretch;
+      gap: 12px; /* Adjust gap */
+      margin-bottom: 20px;
     }
-    
-    .summary-card {
-      min-width: 100%;
+  
+    .search-container input {
+      padding: 10px 12px 10px 35px; /* Adjust padding */
+      font-size: 13px;
     }
-    
+  
+    .search-icon {
+      left: 10px; /* Adjust icon position */
+    }
+  
+    .filter-buttons {
+      justify-content: center; /* Center buttons when wrapped */
+      gap: 8px;
+    }
+  
+    .filter-buttons button {
+      padding: 8px 12px; /* Smaller buttons */
+      font-size: 13px;
+    }
+  
+    .appointments-section {
+      padding: 16px; /* Reduce padding */
+      margin-bottom: 20px;
+    }
+  
+    .appointments-section h2 {
+      font-size: 18px; /* Smaller section heading */
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+    }
+  
+    .appointments-table th,
+    .appointments-table td {
+      padding: 12px 10px; /* Reduce table padding */
+      font-size: 13px; /* Smaller table font */
+    }
+  
+    .patient-email,
+    .appointment-time span {
+      font-size: 11px; /* Smaller secondary text */
+    }
+  
+    .status-badge {
+      padding: 4px 8px; /* Smaller badge */
+      font-size: 11px;
+    }
+  
+    .action-buttons {
+      gap: 6px; /* Reduce gap */
+      flex-wrap: wrap; /* Allow buttons to wrap */
+    }
+  
+    .action-buttons button {
+      padding: 5px 10px; /* Smaller action buttons */
+      font-size: 11px;
+    }
+  
+    .complete-btn {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+    }
+  
     .completed-appointments {
       grid-template-columns: 1fr;
+      gap: 16px; /* Adjust gap */
+    }
+  
+    .completed-card {
+      padding: 12px; /* Reduce padding */
+    }
+  
+    .completed-details h4 {
+      font-size: 15px; /* Adjust font size */
+    }
+  
+    .completed-details p {
+      font-size: 13px; /* Adjust font size */
     }
   }
