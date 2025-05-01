@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import {
   FaBriefcase,
   FaCalendarAlt,
-  FaRupeeSign,
   FaEnvelope,
   FaEye, FaEyeSlash,
   FaHospital,
   FaLock,
   FaPhone,
+  FaRupeeSign,
   FaUser,
   FaUserMd
 } from 'react-icons/fa';
@@ -136,7 +136,7 @@ const DoctorSignup = () => {
   const nextStep = () => {
     setIsError(false);
     setMessage('');
-    
+
     if (currentStep === 1 && validateStep1()) {
       setCurrentStep(2);
     } else if (currentStep === 2 && validateStep2()) {
@@ -152,7 +152,7 @@ const DoctorSignup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateStep3()) {
       return;
     }
@@ -194,43 +194,49 @@ const DoctorSignup = () => {
     <>
       <h3 className="step-title">Personal Information</h3>
       <div className="form-group">
+        <label htmlFor="name" className="form-label">Full Name</label>
         <div className="input-icon-wrapper">
           <FaUser className="input-icon" />
-          <input 
-            type="text" 
-            name="name" 
-            placeholder="Full Name" 
-            value={formData.name} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="e.g., Aarogya"
+            value={formData.name}
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
 
       <div className="form-group">
+        <label htmlFor="email" className="form-label">Email Address</label>
         <div className="input-icon-wrapper">
           <FaEnvelope className="input-icon" />
-          <input 
-            type="email" 
-            name="email" 
-            placeholder="Email Address" 
-            value={formData.email} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="e.g., aarogya@gmail.com"
+            value={formData.email}
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
 
       <div className="form-group">
+        <label htmlFor="phone" className="form-label">Phone Number (10 digits)</label>
         <div className="input-icon-wrapper">
           <FaPhone className="input-icon" />
-          <input 
-            type="tel" 
-            name="phone" 
-            placeholder="Phone Number (10 digits)" 
-            value={formData.phone} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="e.g., 9876543210"
+            value={formData.phone}
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
@@ -267,61 +273,68 @@ const DoctorSignup = () => {
     <>
       <h3 className="step-title">Professional Details</h3>
       <div className="form-group">
+        <label htmlFor="experience" className="form-label">Experience (in years)</label>
         <div className="input-icon-wrapper">
           <FaBriefcase className="input-icon" />
-          <input 
-            type="text" 
-            name="experience" 
-            placeholder="Experience (in years)" 
-            value={formData.experience} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="text"
+            id="experience"
+            name="experience"
+            placeholder="e.g., 5"
+            value={formData.experience}
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
 
       <div className="form-group">
+        <label htmlFor="hospitalName" className="form-label">Hospital Name</label>
         <div className="input-icon-wrapper">
           <FaHospital className="input-icon" />
-          <input 
-            type="text" 
-            name="hospitalName" 
-            placeholder="Hospital Name" 
-            value={formData.hospitalName} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="text"
+            id="hospitalName"
+            name="hospitalName"
+            placeholder="e.g., General Hospital"
+            value={formData.hospitalName}
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
 
       <div className="form-group">
+        <label htmlFor="specializedrole" className="form-label">Specialization</label>
         <div className="input-icon-wrapper">
           <FaUserMd className="input-icon" />
-          <input 
-            type="text" 
-            name="specializedrole" 
-            placeholder="Specialization" 
-            value={formData.specializedrole} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="text"
+            id="specializedrole"
+            name="specializedrole"
+            placeholder="e.g., Cardiologist"
+            value={formData.specializedrole}
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
 
       <div className="form-group">
-  <div className="input-icon-wrapper">
-  <FaRupeeSign className="input-icon scale-x-100" />
-
-    <input 
-      type="number" 
-      name="consultationFee" 
-      placeholder="Consultation Fee" 
-      value={formData.consultationFee} 
-      onChange={handleChange} 
-      required 
-    />
-  </div>
-</div>
+        <label htmlFor="consultationFee" className="form-label">Consultation Fee</label>
+        <div className="input-icon-wrapper">
+          <FaRupeeSign className="input-icon scale-x-100" />
+          <input
+            type="number"
+            id="consultationFee"
+            name="consultationFee"
+            placeholder="e.g., 500"
+            value={formData.consultationFee}
+            onChange={handleChange}
+            required
+          />
+        </div>
+      </div>
 
       <div className="form-group">
         <div className="availability-section">
@@ -352,17 +365,19 @@ const DoctorSignup = () => {
     <>
       <h3 className="step-title">Security</h3>
       <div className="form-group">
+        <label htmlFor="password" className="form-label">Password</label>
         <div className="input-icon-wrapper">
           <FaLock className="input-icon" />
-          <input 
-            type={showPassword ? "text" : "password"} 
-            name="password" 
-            placeholder="Password" 
-            value={formData.password} 
-            onChange={handleChange} 
-            required 
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            name="password"
+            placeholder="Enter password"
+            value={formData.password}
+            onChange={handleChange}
+            required
           />
-          <span 
+          <span
             className="password-toggle-icon"
             onClick={() => setShowPassword(!showPassword)}
           >
@@ -375,17 +390,19 @@ const DoctorSignup = () => {
       </div>
 
       <div className="form-group">
+        <label htmlFor="confirmPassword" className="form-label">Confirm Password:</label>
         <div className="input-icon-wrapper">
           <FaLock className="input-icon" />
-          <input 
-            type={showConfirmPassword ? "text" : "password"} 
-            name="confirmPassword" 
-            placeholder="Confirm Password" 
-            value={formData.confirmPassword} 
-            onChange={handleChange} 
-            required 
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
           />
-          <span 
+          <span
             className="password-toggle-icon"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
@@ -408,7 +425,7 @@ const DoctorSignup = () => {
       <div className="doctor-signup-container">
         <div className="signup-card">
           <h2 className="signup-title">Doctor Registration</h2>
-          
+
           <div className="progress-steps">
             <div className={`step-item ${currentStep >= 1 ? 'active' : ''}`}>
               <div className="step-circle">1</div>
@@ -425,7 +442,7 @@ const DoctorSignup = () => {
               <div className="step-text">Security</div>
             </div>
           </div>
-          
+
           {message && (
             <div className={`message-alert ${isError ? 'error' : 'success'}`}>
               {message}
@@ -443,13 +460,13 @@ const DoctorSignup = () => {
                   Previous
                 </button>
               )}
-              
+
               {currentStep < 3 && (
                 <button type="button" className="next-btn" onClick={nextStep}>
                   Next
                 </button>
               )}
-              
+
               {currentStep === 3 && (
                 <button type="submit" className="signup-btn">
                   Create Account
