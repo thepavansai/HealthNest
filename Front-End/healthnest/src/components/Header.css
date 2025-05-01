@@ -6,6 +6,7 @@
     z-index: 1000;
     width: 100%;
     padding: 0.5rem;
+    height: 64px; /* Set explicit height */
   }
   
   .header-container {
