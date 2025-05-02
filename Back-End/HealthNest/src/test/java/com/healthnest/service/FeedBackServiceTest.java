@@ -32,13 +32,13 @@ public class FeedBackServiceTest {
 
         
         User mockUser = new User();
-        mockUser.setUserId(101);
+        mockUser.setUserId(101l);
         mockUser.setName("Test User");
         mockUser.setEmail("testuser@example.com");
 
       
         sampleFeedBack = new FeedBack();
-        sampleFeedBack.setId(1);
+        sampleFeedBack.setId(1l);
         sampleFeedBack.setFeedback("Excellent service!");
         sampleFeedBack.setEmailId("testuser@example.com");
         sampleFeedBack.setUser(mockUser);
@@ -56,8 +56,8 @@ public class FeedBackServiceTest {
 
     @Test
     void testGetAllFeedBack() {
-        FeedBackDTO dto1 = new FeedBackDTO(1, 101, "Alice", "alice@example.com", "Awesome support!", 4.5f);
-        FeedBackDTO dto2 = new FeedBackDTO(2, 102, "Bob", "bob@example.com", "Very satisfied", 3.5f);
+        FeedBackDTO dto1 = new FeedBackDTO(1l, 101l, "Alice", "alice@example.com", "Awesome support!", 4.5f);
+        FeedBackDTO dto2 = new FeedBackDTO(2l, 102l, "Bob", "bob@example.com", "Very satisfied", 3.5f);
 
         List<FeedBackDTO> feedbackList = Arrays.asList(dto1, dto2);
 

@@ -39,16 +39,16 @@ class FeedbackControllerTest {
     @BeforeEach
     void setUp() {
         User user = new User();
-        user.setUserId(1);
+        user.setUserId(1l);
         user.setName("Test User");
 
         sampleFeedback = new FeedBack();
-        sampleFeedback.setId(1);
+        sampleFeedback.setId(1l);
         sampleFeedback.setFeedback("Great service!");
         sampleFeedback.setRating(4.5f);
         sampleFeedback.setUser(user);
 
-        sampleFeedbackDTO = new FeedBackDTO(1, 1, "Test User", "test@example.com", "Great service!", 4.5f);
+        sampleFeedbackDTO = new FeedBackDTO(1l, 1l, "Test User", "test@example.com", "Great service!", 4.5f);
     }
 
     @Test

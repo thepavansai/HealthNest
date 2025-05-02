@@ -73,7 +73,7 @@ class AuthenticationControllerTest {
         String hashed = new BCryptPasswordEncoder().encode("password");
 
         Doctor mockDoctor = new Doctor();
-        mockDoctor.setDoctorId(1);
+        mockDoctor.setDoctorId(1l);
         mockDoctor.setDoctorName("Dr. Smith");
 
         when(doctorService.getDoctorPasswordHashByEmailId("test@example.com")).thenReturn(hashed);
@@ -84,7 +84,7 @@ class AuthenticationControllerTest {
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("Login successful", responseBody.get("message"));
-        assertEquals(1, responseBody.get("userId"));
+        assertEquals(1l, responseBody.get("userId"));
         assertEquals("Dr. Smith", responseBody.get("name"));
     }
 

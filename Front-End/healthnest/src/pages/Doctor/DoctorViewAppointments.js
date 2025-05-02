@@ -297,22 +297,22 @@ const DoctorViewAppointments = () => {
               <tbody>
                 {filteredAppointments.map(appointment => (
                   <tr key={appointment.appointmentId}>
-                    <td>{appointment.appointmentId}</td>
-                    <td>{appointment.userName}</td>
-                    <td>{appointment.description}</td>
-                    <td>
+                    <td data-label="ID">{appointment.appointmentId}</td>
+                    <td data-label="Patient Name">{appointment.userName}</td>
+                    <td data-label="Description">{appointment.description}</td>
+                    <td data-label="Date & Time">
                       <div className="appointment-time">
                         <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
                         <span>{appointment.appointmentTime}</span>
                       </div>
                     </td>
-                    <td>+91-{appointment.userPhoneNo}</td>
-                    <td>
+                    <td data-label="Phone Number">+91-{appointment.userPhoneNo}</td>
+                    <td data-label="Status">
                       <span className={`status-badge ${getStatusClass(appointment.appointmentStatus)}`}>
                         {appointment.appointmentStatus}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Actions">
                       <div className="action-buttons">
                         {appointment.appointmentStatus.toLowerCase() === 'pending' && (
                           <>

@@ -4,19 +4,23 @@
   color: #374151;
   max-width: 1400px;
   margin: 0 auto;
+  margin-top: 80px; /* Add space below header */
+  position: relative;
+  z-index: 1; /* Ensure proper stacking context */
 }
 
- 
 .welcome-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  background: linear-gradient(135deg, #059669, #10b981);
+  background: linear-gradient(135deg, #4338ca, #4f46e5); /* Changed from green to purple */
   border-radius: 16px;
   padding: 2rem 3rem;
   color: white;
-  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.15);
+  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.15); /* Updated shadow color */
+  position: relative; /* Ensure proper stacking */
+  z-index: 2; /* Higher than container but lower than dropdown */
 }
 
 .welcome-content h1 {
@@ -36,7 +40,6 @@
   margin-top: 0.5rem;
 }
 
- 
 .profile-widget {
   position: relative;
 }
@@ -99,8 +102,6 @@
   margin-right: 0.75rem;
 }
 
- 
-
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
@@ -108,8 +109,6 @@
   margin: 20px; 
   align-items: start; 
 }
-
- 
 
 .dashboard-card {
   background-color: #fff;
@@ -127,7 +126,6 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-
 .card-header {
   padding: 1.25rem;
   font-family: 'Poppins', sans-serif;
@@ -142,48 +140,64 @@
   color: #333;
 }
 
-
 .card-content {
-  margin-top: 15px;
-  
+  margin-top: 25px; /* Increased from 15px to prevent header overlap */
+  padding: 0 1.25rem 1.25rem;
   flex-grow: 1;
 }
-.card-content h6{
+.card-content h6 {
   font-family: 'Poppins', sans-serif;
+  margin-bottom: 8px; /* Increased from 4px for better spacing */
+  color: #444;
 }
 
+/* Style for individual appointment items */
+.appointment-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-top: 5px; /* Add top padding to create space */
+}
+.appointment-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+.appointment-item .card-icon {
+  margin-bottom: 8px;
+  color: #4f46e5; /* Changed from green (#10b981) to purple theme color */
+}
+.appointment-item h6 {
+  font-weight: 600;
+}
+.appointment-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  overflow: hidden; /* Prevent text overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+}
 
 .view-all-button {
   display: inline-block;
-  padding: 10px 15px;
-  background-color: #007bff;
+  padding: 10px 18px;
+  background-color: #4f46e5; /* Changed from green (#10b981) to purple */
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
   text-align: center;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
 }
 
 .view-all-button:hover {
-  background-color: #0056b3;
+  background-color: #4338ca; /* Changed from dark green to dark purple */
+  transform: translateY(-2px); /* Slight lift effect */
 }
 
- 
-.card-icon {
-  font-size: 2rem;
-  margin-right: 1rem;
-  color: #10b981;
-}
-.pulse {
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
 .appointment-count, .health-stats {
   display: flex;
   align-items: center;
@@ -196,7 +210,6 @@
   margin: 0;
 }
 
- 
 .next-appointment {
   background-color: #f9fafb;
   padding: 0.75rem;
@@ -210,7 +223,6 @@
   font-size: 0.95rem;
 }
 
- 
 .action-buttons {
   display: flex;
   justify-content: space-between;
@@ -241,10 +253,10 @@
   background-color: #4338ca;
 }
 .action-btn.secondary {
-  background-color: #10b981;
+  background-color: #4f46e5; /* Changed from green to purple */
 }
 .action-btn.secondary:hover {
-  background-color: #059669;
+  background-color: #4338ca; /* Changed from dark green to dark purple */
 }
 .action-btn.tertiary {
   background-color: #e5e7eb;
@@ -253,8 +265,6 @@
 .action-btn.tertiary:hover {
   background-color: #d1d5db;
 }
-
- 
 
 .income-card {
   background-color: #fff;
@@ -272,7 +282,7 @@
 }
 
 .card-content {
-  margin-top: 15px;
+  margin-top: 25px; /* Increased from 15px to prevent header overlap */
 }
 
 .password-input {
@@ -285,36 +295,40 @@
 }
 
 .show-income-button,
-.view-details-button {
+.view-details-button,
+.export-button {
   display: inline-block;
-  padding: 10px 15px;
-  background-color: #007bff;
+  padding: 10px 18px;
+  background-color: #4f46e5; /* Changed from green (#10b981) to purple */
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   margin-top: 10px;
-  transition: background-color 0.3s ease;
+  text-decoration: none;
 }
 
 .show-income-button:hover,
-.view-details-button:hover {
-  background-color: #0056b3;
+.view-details-button:hover,
+.export-button:hover {
+  background-color: #4338ca; /* Changed from dark green to dark purple */
+  transform: translateY(-2px);
 }
-
 
 .toggle-income-button {
   background: none;
   border: none;
-  color: #007bff;
+  color: #4f46e5; /* Changed from green to purple */
   font-size: 1.2rem;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .toggle-income-button:hover {
-  color: #0056b3;
+  color: #4338ca; /* Changed from dark green to dark purple */
 }
 
 .error-message {
@@ -322,7 +336,6 @@
   font-size: 0.9rem;
   margin-top: 5px;
 }
-
 
 .export-data-card {
   background-color: #fff;
@@ -334,24 +347,155 @@
   margin-top: 20px; 
 }
 
-
-.export-button {
-  display: inline-block;
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-align: center;
-  margin: 10px; 
-  text-decoration: none; 
-  transition: background-color 0.3s ease;
+.export-data-card .card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.export-button:hover {
-  background-color: #0056b3;
+.export-data-card .export-button {
+  margin: 8px 0;
+  width: 100%; /* Full width buttons for consistency */
+}
+
+@media (max-width: 768px) {
+  .doctor-dashboard-container {
+    padding: 1.5rem 1rem;
+    margin-top: 70px; /* Adjust space for mobile header */
+  }
+
+  .welcome-section {
+    padding: 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-top: 10px; /* Additional spacing on mobile */
+  }
+
+  .profile-widget {
+    align-self: flex-end;  /* Align to the right side */
+    margin-top: 10px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    margin: 15px 0;
+    gap: 15px;
+  }
+
+  .card-header {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .card-header h3 {
+    margin-bottom: 10px;
+  }
+  
+  .toggle-income-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+  
+  /* Ensure text doesn't overlap with header */
+  .dashboard-card {
+    padding: 15px;
+    position: relative;
+    margin-bottom: 15px;
+  }
+  
+  /* Fix card height issues */
+  .appointment-item {
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .card-content {
+    margin-top: 20px;
+    padding: 0 0.75rem 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .doctor-dashboard-container {
+    padding: 1rem 0.5rem;
+    margin-top: 60px; /* Further adjustment for smaller screens */
+  }
+  
+  .welcome-section {
+    margin-top: 5px;
+    padding: 1.25rem;
+  }
+  
+  .welcome-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    margin-top: 0.3rem;
+  }
+  
+  .card-header h3 {
+    font-size: 1.2rem;
+  }
+  
+  .card-content h6 {
+    font-size: 0.95rem;
+  }
+  
+  /* Optimize buttons for small screens */
+  .view-all-button,
+  .show-income-button,
+  .view-details-button,
+  .export-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    margin-top: 15px;
+  }
+  
+  .dashboard-card {
+    margin-bottom: 20px;
+    padding: 12px;
+  }
+  
+  /* Better spacing for appointment items */
+  .appointment-item {
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+  
+  .appointment-item p {
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+  
+  /* Fix for profile dropdown on mobile */
+  .profile-widget {
+    width: auto;
+    align-self: flex-end;
+  }
+  
+  .profile-info {
+    width: auto;
+    max-width: 180px;
+    justify-content: space-between;
+  }
+  
+  .profile-dropdown-menu {
+    width: auto;
+    min-width: 180px;
+    max-width: 250px;
+    right: 0;
+  }
+  
+  /* Adjust export buttons spacing */
+  .export-data-card .export-button {
+    margin-top: 12px;
+  }
 }
 
 

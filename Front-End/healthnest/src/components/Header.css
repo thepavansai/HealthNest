@@ -6,6 +6,7 @@
     z-index: 1000;
     width: 100%;
     padding: 0.5rem;
+    height: 64px; /* Set explicit height */
   }
   
   .header-container {
@@ -521,20 +522,42 @@
     }
     
     .user-info {
-      max-width: 150px;
+      max-width: none; 
       padding: 0.75rem;
       background: none;
-      text-align: center;
-      justify-content: center;
+      text-align: left; 
+      justify-content: flex-start; 
+      gap: 0.3rem; /* Slightly reduced gap for icon */
+      align-items: center; /* Vertically align items */
     }
     
     .user-greeting {
-      display: none;
+      display: inline-block; /* Give the element space */
+      width: 1.1em; /* Approx width of the icon */
+      height: 1.1em; /* Approx height of the icon */
+      line-height: 1.1em; /* Help vertical alignment */
+      font-size: 0; /* Hide the original text "Welcome," */
+      color: #4b5563; /* Icon color - adjust as needed */
+      position: relative; /* For positioning the pseudo-element */
+      vertical-align: middle; /* Align with the username */
+    }
+
+    .user-info .user-greeting::before { 
+      content: '\f007'; 
+      font-family: 'Font Awesome 6 Free'; 
+      font-weight: 900; 
+      font-size: 1rem; 
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: inline-block; 
     }
     
     .user-name {
-      max-width: 150px;
+      max-width: 140px; /* Adjust max-width as needed */
       font-size: 0.875rem;
+      vertical-align: middle; /* Align with the icon */
     }
     
     .user-name-display {

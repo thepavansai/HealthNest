@@ -24,7 +24,7 @@ import com.healthnest.service.DoctorService;
 
 @RestController
 @RequestMapping("/doctor")
-@CrossOrigin(origins = "http://localhost:3000") 
+@CrossOrigin(origins = "https://health-nest.netlify.app") 
 public class DoctorController {
 
     @Autowired
