@@ -12,8 +12,11 @@ const IncomeDetails = () => {
   const [estimatedPayout, setEstimatedPayout] = useState(0);
   const [consultationFee, setConsultationFee] = useState(0);
   const [activeFilter, setActiveFilter] = useState('earned');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const doctorId = localStorage.getItem('doctorId'); // Already a string
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     if (!doctorId) {
@@ -24,28 +27,49 @@ const IncomeDetails = () => {
     const fetchDoctorProfile = async () => {
       try {
         // Use string doctorId in API call
-        const response = await axios.get(`${BASE_URL}/doctor/profile/${doctorId}`);
+        setLoading(true);
+        const response = await axios.get(
+          `${BASE_URL}/doctor/profile/${doctorId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
         const doctorProfile = response.data || {};
         setConsultationFee(doctorProfile.consultationFee || 0);
         // Fetch appointments only after getting the fee
         fetchAppointments(doctorProfile.consultationFee);
+        return doctorProfile;
       } catch (err) {
         console.error('Error fetching doctor profile:', err);
+        setError('Failed to load doctor profile. Please try again later.');
+        return null;
       }
     };
 
     const fetchAppointments = async (fee) => {
       try {
-        // Use string doctorId in API call
-        const response = await axios.get(`${BASE_URL}/doctor/${String(doctorId)}/appointments`); // Explicit string conversion just in case
+        const response = await axios.get(
+          `${BASE_URL}/appointments/doctor/${doctorId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
         const allAppointments = response.data || [];
 
 
         const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
           || appointment.appointmentStatus === 'Reviewed'
         );
-        const upcoming = allAppointments.filter(appointment => appointment.appointmentStatus === 'Upcoming');
-
+        
+        const upcoming = allAppointments.filter(appointment => 
+          appointment.appointmentStatus === 'Upcoming' ||
+          appointment.appointmentStatus === 'upcoming'
+        );
+        
         setCompletedAppointments(completed);
         setUpcomingAppointments(upcoming);
 
@@ -55,8 +79,11 @@ const IncomeDetails = () => {
 
         setTotalIncome(income);
         setEstimatedPayout(payout);
+        setLoading(false);
       } catch (err) {
         console.error('Error fetching appointments:', err);
+        setError('Failed to load appointments. Please try again later.');
+        setLoading(false);
       }
     };
 
@@ -68,7 +95,6 @@ const IncomeDetails = () => {
   return (
     <div className="income-details-wrapper">
       <Header />
-
       <main className="income-details-container">
         <h1>Income Details</h1>
 
@@ -127,7 +153,6 @@ const IncomeDetails = () => {
           </section>
         )}
       </main>
-
       <Footer />
     </div>
   );

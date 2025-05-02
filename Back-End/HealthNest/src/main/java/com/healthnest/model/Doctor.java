@@ -62,5 +62,12 @@ public class Doctor {
     private String availability;
     private String hospitalName;
     private Integer status;
+    private String role = "DOCTOR";
 
+    // New fields for location
+    @NotBlank(message = "Address cannot be blank")
+    private String address; // Full address of the doctor
+
+    private Double latitude; // Latitude of the doctor's location
+    private Double longitude; // Longitude of the doctor's location
 }

@@ -19,38 +19,68 @@ const AdminDashboard = () => {
     totalPatients: 0,
   });
   const [greeting, setGreeting] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Check if user is logged in as admin
+    const token = localStorage.getItem('token');
+    const userRole = localStorage.getItem('userRole');
+    
+    if (!token || userRole !== 'ADMIN') {
+      navigate('/login');
+      return;
+    }
+
     const hour = new Date().getHours();
     if (hour < 12) setGreeting('Good Morning');
     else if (hour < 16) setGreeting('Good Afternoon');
     else setGreeting('Good Evening');
 
+    // Fetch data from backend
     const fetchDashboardData = async () => {
       try {
+        setLoading(true);
+        setError(null);
+        
+        // Configure axios with the auth token
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        };
+
+        // Fetch appointments, users, and doctors in parallel
+       
         const [appointmentsResponse, doctorsResponse, usersResponse] = await Promise.all([
-          axios.get(`${BASE_URL}/admin/appointments`),
-          axios.get(`${BASE_URL}/admin/doctors`),
-          axios.get(`${BASE_URL}/admin/users`),
+          axios.get(`${BASE_URL}/admin/appointments`,config),
+          axios.get(`${BASE_URL}/admin/doctors`,config),
+          axios.get(`${BASE_URL}/admin/users`,config),
         ]);
-
-        const totalConsultations = appointmentsResponse.data.length;
-        const totalDoctors = doctorsResponse.data.filter(doctor => doctor.status === 1).length;
-        const totalPatients = usersResponse.data.length;
-
+        console.log(doctorsResponse.data);
+const activeDoctors= doctorsResponse.data.filter(doctor => doctor.status === 1);
+        // Update stats with real data
         setStats({
-          totalConsultations,
-          totalDoctors,
-          totalPatients,
+          totalConsultations: appointmentsResponse.data.length || 0,
+          totalDoctors: activeDoctors.length || 0,
+          totalPatients: usersResponse.data.length || 0,
         });
-
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+        setError("Failed to load dashboard data. Please try again later.");
+        
+        // If unauthorized, redirect to login
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          localStorage.clear();
+          navigate('/login');
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchDashboardData();
-  }, []);
+  }, [navigate]);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -77,10 +107,38 @@ const AdminDashboard = () => {
     navigate('users');
   };
 
+  if (loading) {
+    return (
+      <div className="admin-dashboard-container">
+        <Header />
+        <div className="admin-dashboard loading-state">
+          <div className="loading-spinner"></div>
+          <p>Loading dashboard data...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="admin-dashboard-container">
+        <Header />
+        <div className="admin-dashboard error-state">
+          <div className="error-message">
+            <h3>Error</h3>
+            <p>{error}</p>
+            <button onClick={() => window.location.reload()}>Try Again</button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="admin-dashboard-container">
       <Header />
-
       <div className="admin-dashboard">
         <div className="admin-hero-section">
           <div className="admin-hero-content">
@@ -93,7 +151,6 @@ const AdminDashboard = () => {
             </p>
           </div>
         </div>
-
         <div className="admin-dashboard-content">
           <div className="admin-sidebar">
             <div className="admin-profile">
@@ -126,7 +183,6 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
-
           <div className="admin-main-content">
             <div className="admin-stats-grid">
               <div className="admin-stat-card">
@@ -138,7 +194,6 @@ const AdminDashboard = () => {
                   <p>Total Consultations</p>
                 </div>
               </div>
-
               <div className="admin-stat-card">
                 <div className="admin-stat-icon doctors">
                   <FaUserMd />
@@ -148,7 +203,6 @@ const AdminDashboard = () => {
                   <p>Doctors</p>
                 </div>
               </div>
-
               <div className="admin-stat-card">
                 <div className="admin-stat-icon patients">
                   <FaUsers />
@@ -159,7 +213,6 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
-
             <div className="admin-actions-section">
               <h2>Quick Actions</h2>
               <div className="admin-actions-grid">
@@ -170,7 +223,6 @@ const AdminDashboard = () => {
                   <h3>Manage Doctors</h3>
                   <p>Add, update or remove doctors</p>
                 </div>
-
                 <div className="admin-action-card" onClick={handleViewAppointments}>
                   <div className="admin-action-icon">
                     <FaCalendarCheck />
@@ -178,7 +230,6 @@ const AdminDashboard = () => {
                   <h3>View Appointments</h3>
                   <p>Check all scheduled appointments</p>
                 </div>
-
                 <div className="admin-action-card" onClick={handleManageUsers}>
                   <div className="admin-action-icon">
                     <FaUsers />
@@ -186,7 +237,6 @@ const AdminDashboard = () => {
                   <h3>Manage Users</h3>
                   <p>View and manage patient accounts</p>
                 </div>
-
                 <div className="admin-action-card" onClick={handleFeedback}>
                   <div className="admin-action-icon">
                     <FaComments />
@@ -194,7 +244,6 @@ const AdminDashboard = () => {
                   <h3>View Feedbacks</h3>
                   <p>Review patient feedback and ratings</p>
                 </div>
-
                 <div className="admin-action-card" onClick={() => navigate('/admin/analytics')}>
                   <div className="admin-action-icon">
                     <MdDashboard />
@@ -207,7 +256,6 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
-
       <Footer />
     </div>
   );

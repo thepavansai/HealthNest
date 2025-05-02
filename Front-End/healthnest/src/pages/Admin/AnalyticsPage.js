@@ -13,6 +13,7 @@ import {
 import { BASE_URL } from '../../config/apiConfig';
 import { motion } from 'framer-motion';
 import { FaUserMd, FaEnvelope, FaPhoneAlt, FaUser } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import './AnalyticsPage.css';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -23,33 +24,54 @@ const AnalyticsPage = () => {
   const [appointmentsGraphData, setAppointmentsGraphData] = useState({});
   const [highestConsultedDoctor, setHighestConsultedDoctor] = useState(null);
   const [highestConsultedUser, setHighestConsultedUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnalyticsData = async () => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        setError('Authentication required. Please login.');
+        navigate('/login');
+        return;
+      }
+      
+      setLoading(true);
+      
       try {
+        // Configure axios with the authorization header
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        };
+        
         const [appointmentsResponse, doctorsResponse, usersResponse] = await Promise.all([
-          axios.get(`${BASE_URL}/admin/appointments`),
-          axios.get(`${BASE_URL}/admin/doctors`),
-          axios.get(`${BASE_URL}/admin/users`),
+          axios.get(`${BASE_URL}/admin/appointments`, config),
+          axios.get(`${BASE_URL}/admin/doctors`, config),
+          axios.get(`${BASE_URL}/admin/users`, config),
         ]);
-
+        
         const appointments = appointmentsResponse.data;
         const doctors = doctorsResponse.data;
         const users = usersResponse.data;
-
         
+        // Process appointments data for the chart
         const today = new Date();
         const last7Days = Array.from({ length: 7 }, (_, i) => {
           const date = new Date(today);
           date.setDate(today.getDate() - i);
           return date.toISOString().split('T')[0];
         }).reverse();
-
+        
         const appointmentsByDate = last7Days.map(date => ({
           date,
           count: appointments.filter(appointment => appointment.appointmentDate === date).length,
         }));
-
+        
         setAppointmentsGraphData({
           labels: appointmentsByDate.map(data => data.date),
           datasets: [
@@ -60,49 +82,104 @@ const AnalyticsPage = () => {
             },
           ],
         });
-
         
-        const doctorAppointmentsCount = appointments.reduce((acc, appointment) => {
-          acc[appointment.doctorName] = (acc[appointment.doctorName] || 0) + 1;
-          return acc;
-        }, {});
-        const mostConsultedDoctorName = Object.keys(doctorAppointmentsCount).reduce((a, b) =>
-          doctorAppointmentsCount[a] > doctorAppointmentsCount[b] ? a : b
-        );
-        const mostConsultedDoctorDetails = doctors.find(
-          doctor => doctor.doctorName === mostConsultedDoctorName
-        );
-        setHighestConsultedDoctor({
-          name: mostConsultedDoctorDetails.doctorName,
-          emailId: mostConsultedDoctorDetails.emailId,
-          docPhnNo: mostConsultedDoctorDetails.docPhnNo,
-          consultations: doctorAppointmentsCount[mostConsultedDoctorName],
-        });
-
+        // Find the most consulted doctor
+        if (appointments.length > 0 && doctors.length > 0) {
+          const doctorAppointmentsCount = appointments.reduce((acc, appointment) => {
+            acc[appointment.doctorName] = (acc[appointment.doctorName] || 0) + 1;
+            return acc;
+          }, {});
+          
+          if (Object.keys(doctorAppointmentsCount).length > 0) {
+            const mostConsultedDoctorName = Object.keys(doctorAppointmentsCount).reduce((a, b) =>
+              doctorAppointmentsCount[a] > doctorAppointmentsCount[b] ? a : b
+            );
+            
+            const mostConsultedDoctorDetails = doctors.find(
+              doctor => doctor.doctorName === mostConsultedDoctorName
+            );
+            
+            if (mostConsultedDoctorDetails) {
+              setHighestConsultedDoctor({
+                name: mostConsultedDoctorDetails.doctorName,
+                emailId: mostConsultedDoctorDetails.emailId,
+                docPhnNo: mostConsultedDoctorDetails.docPhnNo,
+                consultations: doctorAppointmentsCount[mostConsultedDoctorName],
+              });
+            }
+          }
+        }
         
-        const userAppointmentsCount = appointments.reduce((acc, appointment) => {
-          acc[appointment.userName] = (acc[appointment.userName] || 0) + 1;
-          return acc;
-        }, {});
-        const mostConsultedUserName = Object.keys(userAppointmentsCount).reduce((a, b) =>
-          userAppointmentsCount[a] > userAppointmentsCount[b] ? a : b
-        );
-        const mostConsultedUserDetails = users.find(
-          user => user.name === mostConsultedUserName
-        );
-        setHighestConsultedUser({
-          name: mostConsultedUserDetails.name,
-          email: mostConsultedUserDetails.email,
-          phoneNo: mostConsultedUserDetails.phoneNo,
-          consultations: userAppointmentsCount[mostConsultedUserName],
-        });
+        // Find the most frequent user
+        if (appointments.length > 0 && users.length > 0) {
+          const userAppointmentsCount = appointments.reduce((acc, appointment) => {
+            acc[appointment.userName] = (acc[appointment.userName] || 0) + 1;
+            return acc;
+          }, {});
+          
+          if (Object.keys(userAppointmentsCount).length > 0) {
+            const mostConsultedUserName = Object.keys(userAppointmentsCount).reduce((a, b) =>
+              userAppointmentsCount[a] > userAppointmentsCount[b] ? a : b
+            );
+            
+            const mostConsultedUserDetails = users.find(
+              user => user.name === mostConsultedUserName
+            );
+            
+            if (mostConsultedUserDetails) {
+              setHighestConsultedUser({
+                name: mostConsultedUserDetails.name,
+                email: mostConsultedUserDetails.email,
+                phoneNo: mostConsultedUserDetails.phoneNo,
+                consultations: userAppointmentsCount[mostConsultedUserName],
+              });
+            }
+          }
+        }
+        
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching analytics data:', error);
+        
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          setError('Authentication failed. Please login again.');
+          localStorage.removeItem('token'); // Clear invalid token
+          navigate('/login');
+        } else {
+          setError('Failed to load analytics data. Please try again later.');
+        }
+        
+        setLoading(false);
       }
     };
-
+    
     fetchAnalyticsData();
-  }, []);
+  }, [navigate]);
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="analytics-page">
+          <h2>Loading analytics data...</h2>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div className="analytics-page">
+          <h2>Error</h2>
+          <p>{error}</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -120,7 +197,6 @@ const AnalyticsPage = () => {
         >
           Analytics
         </motion.h1>
-
         <motion.div
           className="analytics-section"
           initial={{ y: 20, opacity: 0 }}
@@ -149,7 +225,7 @@ const AnalyticsPage = () => {
                     beginAtZero: true,
                     max: 10, 
                     ticks: {
-                      stepSize:5, 
+                      stepSize: 5, 
                     },
                     grid: {
                       color: '#e0e0e0', 
@@ -168,10 +244,9 @@ const AnalyticsPage = () => {
               }}
             />
           ) : (
-            <p>No data available</p>
+            <p>No appointment data available</p>
           )}
         </motion.div>
-
         <motion.div
           className="analytics-section"
           initial={{ y: 20, opacity: 0 }}
@@ -196,10 +271,9 @@ const AnalyticsPage = () => {
               </p>
             </div>
           ) : (
-            <p>No data available</p>
+            <p>No doctor data available</p>
           )}
         </motion.div>
-
         <motion.div
           className="analytics-section"
           initial={{ y: 20, opacity: 0 }}
@@ -224,7 +298,7 @@ const AnalyticsPage = () => {
               </p>
             </div>
           ) : (
-            <p>No data available</p>
+            <p>No user data available</p>
           )}
         </motion.div>
       </motion.div>

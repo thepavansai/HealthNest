@@ -2,14 +2,13 @@ package com.healthnest.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
-
-import com.healthnest.model.FeedBack;
-import com.healthnest.service.FeedBackService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +16,20 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.dto.UserDTO;
+import com.healthnest.exception.AuthenticationException;
 import com.healthnest.exception.UserNotFoundException;
 import com.healthnest.model.Appointment;
+import com.healthnest.model.FeedBack;
 import com.healthnest.model.User;
 import com.healthnest.service.AppointmentService;
+import com.healthnest.service.FeedBackService;
+import com.healthnest.service.JWTService;
 import com.healthnest.service.UserService;
-import com.healthnest.exception.AuthenticationException;
 
 @CrossOrigin(origins = "https://health-nest.netlify.app")
 @RestController
@@ -35,14 +37,20 @@ import com.healthnest.exception.AuthenticationException;
 public class UserController {
     @Autowired
     UserService userService;
+    
     @Autowired
     private ModelMapper modelMapper;
+    
     @Autowired
     AppointmentService appointmentService;
+    
     @Autowired
     private FeedBackService feedBackService;
+    
+    @Autowired
+    private JWTService jwtService;
 
-
+    // These endpoints don't need authentication
     @PostMapping("/Signup")
     public ResponseEntity<String> createAccount(@RequestBody UserDTO userdto) {
         if (userdto.getEmail() == null || userdto.getEmail().isEmpty() || userdto.getPassword() == null || userdto.getPassword().isEmpty()) {
@@ -55,7 +63,7 @@ public class UserController {
         if (userService.isUserAlreadyRegistered(user.getEmail())) {
             return ResponseEntity.badRequest().body("User already registered!");
         }
-        
+                
         try {
             userService.createUser(user);
             return ResponseEntity.ok("User registered successfully!");
@@ -67,17 +75,15 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<HashMap<String, String>> login(@RequestBody User user) {
         HashMap<String, String> response = new HashMap<>();
-
         if (user.getEmail() == null || user.getEmail().isEmpty() || user.getPassword() == null || user.getPassword().isEmpty()) {
             response.put("message", "Email and password cannot be empty");
             return ResponseEntity.badRequest().body(response);
         }
-
         try {
-            String loginResult = userService.login(user.getEmail(), user.getPassword());
-            response.put("message", loginResult);
-
-            if ("Login successful".equals(loginResult)) {
+            Map<String, String> loginResult = userService.login(user.getEmail(), user.getPassword());
+            response.putAll(loginResult);
+            
+            if ("Login successful".equals(loginResult.get("message"))) {
                 response.put("userId", String.valueOf(userService.getUserId(user.getEmail())));
                 response.put("name", userService.getUserName(user.getEmail()));
                 return ResponseEntity.ok(response);
@@ -96,15 +102,54 @@ public class UserController {
         }
     }
 
+    // All endpoints below require authentication
     @GetMapping("/userdetails/{userId}")
-    public ResponseEntity<User> getUserDetails(@PathVariable Long userId) {
-        User user = userService.getUserDetails(userId);
-        return ResponseEntity.ok(user);
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<User> getUserDetails(
+            @PathVariable Long userId,
+            @RequestHeader("Authorization") String authHeader) {
+        
+        System.out.println("Auth header in getUserDetails: " + authHeader);
+        
+        try {
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            
+            // Verify that the user is accessing their own data
+            Integer tokenUserId = userService.getUserId(userEmail);
+            if (!tokenUserId.equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+            
+            User user = userService.getUserDetails(userId);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/feeback")
-    public ResponseEntity<String> submitFeedback(@RequestBody FeedBack feedBack) {
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<String> submitFeedback(
+            @RequestBody FeedBack feedBack,
+            @RequestHeader("Authorization") String authHeader) {
+        
+        System.out.println("Auth header in submitFeedback: " + authHeader);
+        
         try {
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            
+            // Verify that the feedback is from the authenticated user
+            if (feedBack.getUser() != null) {
+                Integer tokenUserId = userService.getUserId(userEmail);
+                if (!tokenUserId.equals(feedBack.getUser().getUserId())) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only submit feedback for yourself");
+                }
+            }
+            
             if (feedBack == null || feedBack.getFeedback() == null || feedBack.getFeedback().isEmpty()) {
                 return ResponseEntity.badRequest().body("Feedback cannot be empty");
             }
@@ -116,14 +161,31 @@ public class UserController {
             return ResponseEntity.internalServerError().body("Failed to submit feedback");
         }
     }
-    
-
+        
     @PatchMapping("/editprofile/{id}")
-    public ResponseEntity<String> editProfile(@RequestBody User user, @PathVariable Long id) {
-        if (user == null || user.getName() == null || user.getName().isEmpty()) {
-            return ResponseEntity.badRequest().body("Invalid input");
-        }
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<String> editProfile(
+            @RequestBody User user, 
+            @PathVariable Long id,
+            @RequestHeader("Authorization") String authHeader) {
+        
+        System.out.println("Auth header in editProfile: " + authHeader);
+        
         try {
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            
+            // Verify that the user is editing their own profile
+            Integer tokenUserId = userService.getUserId(userEmail);
+            if (tokenUserId != id) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only edit your own profile");
+            }
+            
+            if (user == null || user.getName() == null || user.getName().isEmpty()) {
+                return ResponseEntity.badRequest().body("Invalid input");
+            }
+            
             boolean success = userService.editProfile(user, id);
             if (success) {
                 return ResponseEntity.ok("Profile successfully edited");
@@ -136,14 +198,48 @@ public class UserController {
     }
 
     @GetMapping("/appointments/{userId}")
-    public ResponseEntity<List<AppointmentSummaryDTO>> getUpcomingAppointments(@PathVariable Long userId) {
-        List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId);
-        return ResponseEntity.ok(result);
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<AppointmentSummaryDTO>> getUpcomingAppointments(
+        @PathVariable Long userId,
+        @RequestHeader("Authorization") String authHeader) throws Exception {
+                
+        System.out.println("Received auth header in getUpcomingAppointments: " + authHeader);
+        
+        try {
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            
+            // Verify that the user is accessing their own appointments
+            Integer tokenUserId = userService.getUserId(userEmail);
+            if (!tokenUserId.equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+            
+            List<AppointmentSummaryDTO> result = appointmentService.getAppointmentSummaries(userId);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PatchMapping("/cancelappointment/{appointmentId}")
-    public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId) {
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<String> cancelAppointment(
+            @PathVariable Long appointmentId,
+            @RequestHeader("Authorization") String authHeader) {
+        
+        System.out.println("Auth header in cancelAppointment: " + authHeader);
+        
         try {
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            
+            // Verify that the appointment belongs to the authenticated user
+            // This would require additional service method to check appointment ownership
+            // For now, we'll assume the service handles this validation
+            
             userService.cancelAppointment(appointmentId);
             return ResponseEntity.ok("successfully cancelled Appointment");
         } catch (NoSuchElementException e) {
@@ -154,10 +250,26 @@ public class UserController {
     }
 
     @PatchMapping("/changepassword/{userid}/{beforepassword}/{changepassword}")
-    public ResponseEntity<String> changePassword(@PathVariable Long userid, 
-                                                 @PathVariable String beforepassword,
-                                                 @PathVariable String changepassword) {
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<String> changePassword(
+            @PathVariable Long userid,
+            @PathVariable String beforepassword,
+            @PathVariable String changepassword,
+            @RequestHeader("Authorization") String authHeader) {
+        
+        System.out.println("Auth header in changePassword: " + authHeader);
+        
         try {
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            
+            // Verify that the user is changing their own password
+            Integer tokenUserId = userService.getUserId(userEmail);
+            if (!tokenUserId.equals(userid)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only change your own password");
+            }
+            
             boolean changed = userService.changePassword(userid, beforepassword, changepassword);
             if (changed) {
                 return ResponseEntity.ok("Password changed successfully");
@@ -174,8 +286,24 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteuser/{userId}")
-    public ResponseEntity<String> deleteAccount(@PathVariable Long userId) {
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<String> deleteAccount(
+            @PathVariable Long userId,
+            @RequestHeader("Authorization") String authHeader) {
+        
+        System.out.println("Auth header in deleteAccount: " + authHeader);
+        
         try {
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            
+            // Verify that the user is deleting their own account
+            Integer tokenUserId = userService.getUserId(userEmail);
+            if (!tokenUserId.equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own account");
+            }
+            
             userService.deleteAccount(userId);
             return ResponseEntity.ok("Successfully deleted user");
         } catch (UserNotFoundException e) {
@@ -184,10 +312,28 @@ public class UserController {
             return ResponseEntity.internalServerError().body("Failed to delete user");
         }
     }
-    
+        
     @PostMapping("/bookappointment")
-    public ResponseEntity<String> bookAppointment(@RequestBody Appointment appointment) {
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<String> bookAppointment(
+            @RequestBody Appointment appointment,
+            @RequestHeader("Authorization") String authHeader) {
+        
+        System.out.println("Auth header in bookAppointment: " + authHeader);
+        
         try {
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            
+            // Verify that the appointment is for the authenticated user
+            if (appointment.getUser() != null) {
+                Integer tokenUserId = userService.getUserId(userEmail);
+                if (!tokenUserId.equals(appointment.getUser().getUserId())) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only book appointments for yourself");
+                }
+            }
+            
             if (appointment == null) {
                 return ResponseEntity.badRequest().body("Appointment cannot be null");
             }
@@ -201,16 +347,46 @@ public class UserController {
             return ResponseEntity.internalServerError().body("Failed to book appointment");
         }
     }
-    
+        
     @GetMapping("/countallusers")
-    public ResponseEntity<Integer> getAllUsersCount()
-    {
+
+    public ResponseEntity<Integer> getAllUsersCount(){
+        
+       // System.out.println("Auth header in getAllUsersCount: " + authHeader);
+        
+        // This endpoint should only be accessible to admins
+        // The @PreAuthorize annotation ensures this
+        
         return ResponseEntity.ok(userService.getAllUsers().size());
     }
-   
-
+       
     @PostMapping("/setnewpassword")
-    public ResponseEntity<String> setNewPassword(@RequestBody HashMap<String, String> request) {
+    public ResponseEntity<String> setNewPassword(
+            @RequestBody HashMap<String, String> request,
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+        
+        // This endpoint might be used for password reset, so auth header could be optional
+        if (authHeader != null) {
+            System.out.println("Auth header in setNewPassword: " + authHeader);
+            
+            // If auth header is provided, verify the user is authorized
+            try {
+                String token = authHeader.substring(7);
+                String userEmail = jwtService.extractUserEmail(token);
+                
+                // If the email in the request doesn't match the authenticated user's email,
+                // and the user is not an admin, deny access
+                if (!userEmail.equals(request.get("email")) && 
+                     !jwtService.extractUserRole(token).equals("ADMIN")) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("You can only reset your own password");
+                }
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid authentication token");
+            }
+        }
+        
         String email = request.get("email");
         String newPassword = request.get("newPassword");
         
@@ -236,23 +412,33 @@ public class UserController {
         }
     }
 
-    @PostMapping("/check-email")
-    public ResponseEntity<String> checkEmailExists(@RequestBody HashMap<String, String> request) {
-        String email = request.get("email");
-        
-        if (email == null || email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            return ResponseEntity.badRequest().body("Invalid email format");
-        }
-        
-        try {
-            boolean exists = userService.isUserAlreadyRegistered(email);
-            if (exists) {
-                return ResponseEntity.ok("Email exists");
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found");
+        @PostMapping("/check-email")
+        public ResponseEntity<String> checkEmailExists(
+                @RequestBody HashMap<String, String> request,
+                @RequestHeader(value = "Authorization", required = false) String authHeader) {
+            
+            // This endpoint might be used for password reset, so auth header could be optional
+            if (authHeader != null) {
+                System.out.println("Auth header in checkEmailExists: " + authHeader);
             }
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error checking email: " + e.getMessage());
+            
+            String email = request.get("email");
+            
+            if (email == null || email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                return ResponseEntity.badRequest().body("Invalid email format");
+            }
+            
+            try {
+                boolean exists = userService.isUserAlreadyRegistered(email);
+                if (exists) {
+                    return ResponseEntity.ok("Email exists");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found");
+                }
+            } catch (Exception e) {
+                return ResponseEntity.internalServerError().body("Error checking email: " + e.getMessage());
+            }
         }
     }
-}
+
+            

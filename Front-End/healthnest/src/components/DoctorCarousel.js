@@ -55,9 +55,13 @@ const DoctorImage = styled('img')`
 const DoctorCarousel = () => {
   const theme = useTheme();
   const [doctors, setDoctors] = useState([]);
-
+  
   useEffect(() => {
-    axios.get(`${BASE_URL}/admin/doctors`)
+    // Get the JWT token from localStorage
+    const token = localStorage.getItem('token');
+    
+    // Make the request with the Authorization header
+    axios.get(`${BASE_URL}/doctor/all`)
       .then(res => {
         const availableDoctors = res.data.filter(doctor => doctor.status === 1);
         setDoctors(availableDoctors);
@@ -69,11 +73,10 @@ const DoctorCarousel = () => {
 
   let maleCounter = 0;
   let femaleCounter = 0;
-
   const getDoctorImage = (doctor) => {
     const gender = doctor.gender === "FEMALE" ? "female" : "male";
     const imageCount = 5; 
-
+    
     let imageNumber;
     if (gender === "female") {
       imageNumber = (femaleCounter % imageCount) + 1;
@@ -82,10 +85,8 @@ const DoctorCarousel = () => {
       imageNumber = (maleCounter % imageCount) + 1;
       maleCounter++;
     }
-
     return `/images/${gender}model${imageNumber}.jpg`;
   };
-
 
   const responsive = {
     desktop: {
@@ -133,7 +134,6 @@ const DoctorCarousel = () => {
         <MedicalServices sx={{ fontSize: 28, color: '#4f46e5' }} /> {}
         Available Doctors
       </Typography>
-
       <StyledCarousel
         responsive={responsive}
         infinite
@@ -162,14 +162,12 @@ const DoctorCarousel = () => {
                 <Typography variant="h6" sx={{ mb: 1, color: '#4f46e5', fontWeight: 500 }}> {}
                   {doctor.doctorName}
                 </Typography>
-
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.5, gap: 0.5 }}>
                   <LocalHospital sx={{ color: '#4f46e5', fontSize: 18 }} /> {}
                   <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
                     {doctor.hospitalName}
                   </Typography>
                 </Box>
-
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
                   <Rating
                     value={doctor.rating}
@@ -177,14 +175,10 @@ const DoctorCarousel = () => {
                     readOnly
                     size="small"
                     icon={<Star sx={{ color: '#FFD700', fontSize: 18 }} />}
-                    emptyIcon={<Star sx={{ color: '#E0E0E0', fontSize: 18 }} 
-                    
-                    />}
-                    
-                  />{doctor.rating}
-                  
-                </Box>
-
+                    emptyIcon={<Star sx={{ color: '#E0E0E0', fontSize: 18 }}
+                                     />}
+                                  />{doctor.rating}
+                              </Box>
                 <Chip
                   label="Available"
                   size="small"
@@ -210,7 +204,6 @@ const CustomDot = ({ onClick, ...rest }) => {
     active,
     carouselState: { currentSlide, deviceType }
   } = rest;
-
   return (
     <button
       className={active ? "active" : "inactive"}

@@ -47,52 +47,121 @@ const DoctorDashboard = () => {
 
   useEffect(() => {
     if (doctorId) {
-      axios.get(`${BASE_URL}/doctor/profile/${doctorId}`)
-        .then(res => {
-          const doctorProfile = res.data || {};
-          setDoctorData(doctorProfile);
-
-          fetchAppointments(doctorProfile.consultationFee);
-        })
-        .catch(err => {
-          console.error("Error fetching doctor profile:", err);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      console.error("Doctor ID not found in localStorage.");
-      setLoading(false);
-    }
-  }, [doctorId]);
-
-  const fetchAppointments = async (consultationFee) => {
-    if (!doctorId) return;
-    try {
-      const response = await axios.get(`${BASE_URL}/appointments/doctor/${doctorId}`);
-      const allAppointments = response.data;
+      const token = localStorage.getItem("token");
       
-      setTotalAppointments(allAppointments.length);
-      setAppointments(allAppointments);
-
-      const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
-          || appointment.appointmentStatus === 'Reviewed'
-        );
-      const upcoming = allAppointments.filter(appointment => appointment.appointmentStatus === 'Upcoming');
-    
-    
-
-      setCompletedAppointments(completed);
-      setUpcomingAppointments(upcoming);
-
-      const income = completed.length  * consultationFee;
-      const payout = upcoming.length * consultationFee;
-
-      setTotalIncome(income);
-      setEstimatedPayout(payout);
-
-    } catch (err) {
-      console.error("Error fetching appointments:", err);
+      axios.get(`${BASE_URL}/doctor/profile/${doctorId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        const doctorProfile = res.data || {};
+        setDoctorData(doctorProfile);
+        fetchAppointments(doctorProfile.consultationFee);
+      })
+      .catch(err => {
+        console.error("Error fetching doctor profile:", err);
+        if (err.response && err.response.status === 401) {
+          // Redirect to login if unauthorized
+          navigate("/login");
+        }
+      })
+      .finally(() => setLoading(false));
     }
-  };
+  }, [doctorId, navigate]);
+  
+  // const fetchAppointments = async (consultationFee) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+    
+  //     const response = await axios.get(`http://localhost:8080/appointments/doctor/${doctorId}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     });
+      
+  //     const allAppointments = response.data;
+  //     console.log("All Appointments:", allAppointments);
+  //     setTotalAppointments(allAppointments.length);
+  //     setAppointments(allAppointments);
+
+      
+  //     const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
+  //         || appointment.appointmentStatus === 'Reviewed'
+  //       );
+  //     const upcoming = allAppointments.filter(appointment => appointment.appointmentStatus === 'Upcoming');
+  //     console.log("Completed Appointments:", completed);
+  //     console.log("Upcoming Appointments:", upcoming);
+
+  //     setCompletedAppointments(completed);
+  //     setUpcomingAppointments(upcoming);
+
+      
+  //     const income = completed.length  * consultationFee;
+  //     const payout = upcoming.length * consultationFee;
+
+  //     setTotalIncome(income);
+  //     setEstimatedPayout(payout);
+
+  //   } catch (err) {
+  //     console.error("Error fetching appointments:", err);
+  //   }
+  // };
+// Update the fetchAppointments function in DoctorDashboard.js
+const fetchAppointments = async (consultationFee) => {
+  try {
+    const token = localStorage.getItem("token");
+    
+    // Make sure token is available
+    if (!token) {
+      console.error("No authentication token found");
+      navigate("/login");
+      return;
+    }
+    
+    const response = await axios.get(`${BASE_URL}/appointments/doctor/${doctorId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    const allAppointments = response.data;
+    console.log("All Appointments:", allAppointments);
+    setTotalAppointments(allAppointments.length);
+    setAppointments(allAppointments);
+    
+    const completed = allAppointments.filter(appointment => 
+      appointment.appointmentStatus === 'Completed' || 
+      appointment.appointmentStatus === 'Reviewed'
+    );
+    const upcoming = allAppointments.filter(appointment => 
+      appointment.appointmentStatus === 'Upcoming'
+    );
+    
+    console.log("Completed Appointments:", completed);
+    console.log("Upcoming Appointments:", upcoming);
+    setCompletedAppointments(completed);
+    setUpcomingAppointments(upcoming);
+    
+    const income = completed.length * consultationFee;
+    const payout = upcoming.length * consultationFee;
+    setTotalIncome(income);
+    setEstimatedPayout(payout);
+  } catch (err) {
+    console.error("Error fetching appointments:", err);
+    
+    // Handle specific error cases
+    if (err.response) {
+      if (err.response.status === 403) {
+        console.error("Access forbidden. You may not have permission to view these appointments.");
+      } else if (err.response.status === 401) {
+        console.error("Authentication expired. Please login again.");
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    }
+  }
+};
 
   const toggleDropdown = () => {
     setShowDropdown(prev => !prev);

@@ -19,6 +19,7 @@ const UserChangePassword = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const userId = localStorage.getItem('userId'); // Already a string
+  const token = localStorage.getItem('token');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,13 +67,25 @@ const UserChangePassword = () => {
       return;
     }
 
+    if (!token) {
+      toast.error("Authentication token not found. Please login again.");
+      navigate('/login');
+      return;
+    }
+
     if (validateForm()) {
       setIsSubmitting(true);
 
       try {
         // Use string userId in API call
-        const response = await axios.put(
-          `${BASE_URL}/users/changepassword/${userId}/${formData.currentPassword}/${formData.newPassword}`
+        const response = await axios.patch(
+          `${BASE_URL}/users/changepassword/${userId}/${formData.currentPassword}/${formData.newPassword}`,
+          {}, // Empty body as data is in URL
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
         );
 
         if (response.status === 200) {
@@ -86,7 +99,15 @@ const UserChangePassword = () => {
           setTimeout(() => navigate('/user'), 2000);
         }
       } catch (error) {
-        toast.error(error.response?.data || 'Failed to update password');
+        console.error("Error updating password:", error);
+        
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          toast.error("Session expired. Please login again.");
+          localStorage.removeItem("token"); // Clear invalid token
+          navigate('/login');
+        } else {
+          toast.error(error.response?.data || 'Failed to update password');
+        }
       } finally {
         setIsSubmitting(false);
       }
