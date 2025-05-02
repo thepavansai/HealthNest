@@ -122,7 +122,7 @@ public class AppointmentService {
 		return "Sucessfully Completed";
 	}
 
-	 public boolean isAppointmentForDoctor(Integer appointmentId, Integer doctorId) {
+	 public boolean isAppointmentForDoctor(Long appointmentId, Integer doctorId) {
 	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
 	        
 	        if (appointmentOpt.isPresent()) {
@@ -140,7 +140,7 @@ public class AppointmentService {
 	     * @param email the email of the user to verify against
 	     * @return true if the appointment belongs to the user with the given email, false otherwise
 	     */
-	    public boolean isAppointmentForUserEmail(Integer appointmentId, String email) {
+	    public boolean isAppointmentForUserEmail(Long appointmentId, String email) {
 	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
 	        Optional<User> userOpt = userRepository.findByEmail(email);
 	        
@@ -195,7 +195,7 @@ public class AppointmentService {
 //	            throw e; // Re-throw to be handled by the controller
 //	        }
 //	    }
-	    public boolean updateAppointmentStatus(Integer appointmentId, String newStatus) {
+	    public boolean updateAppointmentStatus(Long appointmentId, String newStatus) {
 	        try {
 	            // Add logging
 	            System.out.println("Updating appointment " + appointmentId + " to status " + newStatus);
@@ -231,14 +231,12 @@ public class AppointmentService {
 	    }
 
 
-		public boolean isUserEmailMatching(Integer userId, String email) {
+		public boolean isUserEmailMatching(Long userId, String email) {
 			return userRepository.findById(userId).get().getEmail().equals(email);
 		}
 
-		 public List<AppointmentShowDTO> getAppointmentsByDoctorId(Integer doctorId) {
-		        // Convert Long to Integer since your repository uses Integer
-		        Integer doctorIdInt = doctorId.intValue();
-		        return appointmentRepository.findByDoctorIdWithUserName(doctorIdInt);
+		 public List<AppointmentShowDTO> getAppointmentsByDoctorId(Long doctorId) {
+		        return appointmentRepository.findByDoctorIdWithUserName(doctorId);
 		    }
 }
 

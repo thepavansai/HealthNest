@@ -40,7 +40,7 @@ public class FeedbackController {
             String email = jwtService.extractUserEmail(token);
             
             // Verify that the user is submitting feedback as themselves
-            int authenticatedUser = userService.getUserId(email);
+            Long authenticatedUser = userService.getUserId(email);
             if (authenticatedUser != feedback.getId()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only submit feedback as yourself");
             }

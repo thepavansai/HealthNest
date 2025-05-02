@@ -176,7 +176,7 @@ public class AdminController {
 
     @DeleteMapping("/appointments/{id}")
     public ResponseEntity<String> deleteAppointment(
-            @PathVariable("id") Integer appointmentId,
+            @PathVariable("id") Long appointmentId,
             @RequestHeader("Authorization") String authHeader) {
         try {
             // Verify admin role
@@ -280,7 +280,7 @@ public class AdminController {
 
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<String> deleteUser(
-            @PathVariable Integer userId,
+            @PathVariable Long userId,
             @RequestHeader("Authorization") String authHeader) {
         try {
             // Verify admin role

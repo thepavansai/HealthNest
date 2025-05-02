@@ -25,7 +25,7 @@ import com.healthnest.service.AppointmentService;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.JWTService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+
 @CrossOrigin(origins = {"http://localhost:3000", "https://health-nest.netlify.app/"})
 @RestController
 @RequestMapping("/appointments")
@@ -42,7 +42,7 @@ public class AppointmentController {
     @GetMapping("/doctor/{doctorId}/date/{todaydate}")
     @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity<List<AppointmentShowDTO>> getTodayAppointmentsByDoctor(
-            @PathVariable Integer doctorId,
+            @PathVariable Long doctorId,
             @PathVariable LocalDate todaydate,
             @RequestHeader("Authorization") String authHeader) {
         
@@ -99,7 +99,7 @@ public class AppointmentController {
     @GetMapping("/doctor/{doctorId}")
     @PreAuthorize("hasAnyRole('DOCTOR','USER')")
     public ResponseEntity<List<AppointmentShowDTO>> getDoctorAppointments(
-            @PathVariable Integer doctorId,
+            @PathVariable Long doctorId,
             @RequestHeader("Authorization") String authHeader) {
         
         try {
@@ -217,7 +217,7 @@ public class AppointmentController {
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<AppointmentSummaryDTO>> getUserAppointments(
-            @PathVariable Integer userId,
+            @PathVariable Long userId,
             @RequestHeader("Authorization") String authHeader) {
         
         try {

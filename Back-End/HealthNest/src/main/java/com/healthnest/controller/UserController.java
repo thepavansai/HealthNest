@@ -117,7 +117,7 @@ public class UserController {
             String userEmail = jwtService.extractUserEmail(token);
             
             // Verify that the user is accessing their own data
-            Integer tokenUserId = userService.getUserId(userEmail);
+            Long tokenUserId = userService.getUserId(userEmail);
             if (!tokenUserId.equals(userId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
@@ -144,7 +144,7 @@ public class UserController {
             
             // Verify that the feedback is from the authenticated user
             if (feedBack.getUser() != null) {
-                Integer tokenUserId = userService.getUserId(userEmail);
+                Long tokenUserId = userService.getUserId(userEmail);
                 if (!tokenUserId.equals(feedBack.getUser().getUserId())) {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only submit feedback for yourself");
                 }
@@ -177,7 +177,7 @@ public class UserController {
             String userEmail = jwtService.extractUserEmail(token);
             
             // Verify that the user is editing their own profile
-            Integer tokenUserId = userService.getUserId(userEmail);
+            Long tokenUserId = userService.getUserId(userEmail);
             if (tokenUserId != id) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only edit your own profile");
             }
@@ -211,7 +211,7 @@ public class UserController {
             String userEmail = jwtService.extractUserEmail(token);
             
             // Verify that the user is accessing their own appointments
-            Integer tokenUserId = userService.getUserId(userEmail);
+            Long tokenUserId = userService.getUserId(userEmail);
             if (!tokenUserId.equals(userId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
@@ -265,7 +265,7 @@ public class UserController {
             String userEmail = jwtService.extractUserEmail(token);
             
             // Verify that the user is changing their own password
-            Integer tokenUserId = userService.getUserId(userEmail);
+           Long tokenUserId = userService.getUserId(userEmail);
             if (!tokenUserId.equals(userid)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only change your own password");
             }
@@ -299,7 +299,7 @@ public class UserController {
             String userEmail = jwtService.extractUserEmail(token);
             
             // Verify that the user is deleting their own account
-            Integer tokenUserId = userService.getUserId(userEmail);
+           Long tokenUserId = userService.getUserId(userEmail);
             if (!tokenUserId.equals(userId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own account");
             }
@@ -328,7 +328,7 @@ public class UserController {
             
             // Verify that the appointment is for the authenticated user
             if (appointment.getUser() != null) {
-                Integer tokenUserId = userService.getUserId(userEmail);
+                Long tokenUserId = userService.getUserId(userEmail);
                 if (!tokenUserId.equals(appointment.getUser().getUserId())) {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only book appointments for yourself");
                 }
