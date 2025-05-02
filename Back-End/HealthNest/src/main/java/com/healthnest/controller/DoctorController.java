@@ -55,7 +55,7 @@ public class DoctorController {
             // If user is a doctor, verify they're accessing their own profile
             if ("DOCTOR".equals(role)) {
                 Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
-                if (!authenticatedDoctor.getDoctorId().equals(id.intValue())) {
+                if (!authenticatedDoctor.getDoctorId().equals(id)) {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
                 }
             }

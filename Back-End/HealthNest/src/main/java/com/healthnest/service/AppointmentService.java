@@ -122,7 +122,7 @@ public class AppointmentService {
 		return "Sucessfully Completed";
 	}
 
-	 public boolean isAppointmentForDoctor(Long appointmentId, Integer doctorId) {
+	 public boolean isAppointmentForDoctor(Long appointmentId, Long doctorId) {
 	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
 	        
 	        if (appointmentOpt.isPresent()) {
