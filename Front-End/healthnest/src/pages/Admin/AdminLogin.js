@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from '../../config/apiConfig'; // Import BASE_URL
 import "./AdminLogin.css";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
@@ -19,42 +20,59 @@ const AdminLogin = () => {
     setIsLoading(true);
 
     try {
-      // Make API call to backend
-      const response = await axios.post("http://localhost:8080/admin-login", {
+      // Use BASE_URL instead of hardcoded URL
+      const response = await axios.post(`${BASE_URL}/admin-login`, {
         username: userName,
         password: password
       });
-      if(response.data.message === "Admin login successful") {
       
-      // Handle successful login
-      setIsError(false);
-      setMessage("Login successful! Redirecting...");
-      
-      // Store the token and admin info from backend
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("adminId", "admin");
-      localStorage.setItem("userName", userName);
-      localStorage.setItem("userRole", response.data.role);
-      
-      setTimeout(() => navigate("/admin"), 1000);
-    } 
-    else{
-      // Handle login failure
-      setIsError(true);
-      setMessage(response.data.message || "Login failed. Please try again.");
-    }}
-      catch (error) {
-      setIsError(true);
-      setMessage(error.response?.data?.message || "Login failed. Please try again.");
-      
-      // Fallback to mock login for development if needed
-      
-        // Create a mock token
-       
+      if (response.data && response.data.token) {
+        // Handle successful login
+        setIsError(false);
+        setMessage("Login successful! Redirecting...");
         
-        setTimeout(() => navigate("/admin"), 1000);
+        // Store the token and admin info from backend
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("adminId", "admin");
+        localStorage.setItem("userName", userName);
+        
+        // Ensure role is stored in uppercase to match the dashboard check
+        localStorage.setItem("userRole", "ADMIN");
+        
+        // Navigate directly to admin dashboard without setTimeout
+        navigate("/admin");
+      } else {
+        // Handle login failure
+        setIsError(true);
+        setMessage(response.data?.message || "Login failed. Please try again.");
       }
-     finally {
+    } catch (error) {
+      setIsError(true);
+      console.error("Admin login error:", error);
+      
+      if (error.response) {
+        // The server responded with a status code outside the 2xx range
+        switch (error.response.status) {
+          case 401:
+            setMessage("Invalid username or password");
+            break;
+          case 403:
+            setMessage("Access forbidden. Please contact support.");
+            break;
+          case 500:
+            setMessage("Server error. Please try again later.");
+            break;
+          default:
+            setMessage(error.response.data?.message || "Login failed. Please try again.");
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        setMessage("Unable to connect to the server. Please check your internet connection.");
+      } else {
+        // Something happened in setting up the request
+        setMessage("An error occurred. Please try again.");
+      }
+    } finally {
       setIsLoading(false);
     }
   };

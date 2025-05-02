@@ -40,7 +40,7 @@ const ManageDoctors = () => {
     const fetchDoctors = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${BASE_URL}/admin/doctors`);
+        const response = await axios.get(`${BASE_URL}/admin/doctors`, getAuthHeader());
         const processedDoctors = response.data.map(doc => ({
           ...doc,
           doctorId: String(doc.doctorId)

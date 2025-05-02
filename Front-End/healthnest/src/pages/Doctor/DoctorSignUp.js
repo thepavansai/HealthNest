@@ -471,7 +471,6 @@ const DoctorSignup = () => {
             required
           />
           <span
-          <span
             className="password-toggle-icon"
             onClick={() => setShowPassword(!showPassword)}
           >

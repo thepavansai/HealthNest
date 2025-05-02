@@ -36,6 +36,15 @@ const ViewAppointments = () => {
         );
         
         setAppointments(response.data);
+        
+        // Initialize the ratedAppointments set with already reviewed appointments
+        const reviewedIds = new Set(
+          response.data
+            .filter(appt => appt.appointmentStatus.toLowerCase() === 'reviewed')
+            .map(appt => appt.appointmentId)
+        );
+        setRatedAppointments(reviewedIds);
+        
         setLoading(false);
       } catch (error) {
         console.error('Error fetching appointments:', error);
@@ -143,6 +152,7 @@ const ViewAppointments = () => {
       // Get the token from localStorage
       const token = localStorage.getItem('token');
       
+      // First update the doctor's rating
       const ratingResponse = await axios.patch(
         `${BASE_URL}/doctor/${doctorId}/rating/${rating}`,
         {},  // Empty body for PATCH request
@@ -154,34 +164,40 @@ const ViewAppointments = () => {
       );
       
       if (ratingResponse.status === 200) {
-        const reviewResponse = await axios.patch(
-          `${BASE_URL}/appointments/${appointmentId}/status/Reviewed`,
-          {},  // Empty body for PATCH request
-          {
-            headers: {
-              'Authorization': `Bearer ${token}`
+        // Then update the appointment status to reviewed
+        try {
+          const reviewResponse = await axios.patch(
+            `${BASE_URL}/appointments/${appointmentId}/status/Reviewed`,
+            {},  // Empty body for PATCH request
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
             }
-          }
-        );
-        
-        if (reviewResponse.status === 200) {
-          alert('Rating submitted successfully!');
-          
-          setRatings(prev => ({
-            ...prev,
-            [appointmentId]: rating
-          }));
-          setRatedAppointments(prev => new Set([...prev, appointmentId]));
-          setAppointments(prevAppointments =>
-            prevAppointments.map(appointment =>
-              appointment.appointmentId === appointmentId
-                ? { ...appointment, appointmentStatus: 'Reviewed' }
-                : appointment
-            )
           );
-          setReviewedAppointments(prev => [...prev, appointmentId]);
-        } else {
-          alert('Failed to update appointment status. Please try again.');
+          
+          if (reviewResponse.status === 200) {
+            alert('Rating submitted successfully!');
+            
+            // Update state to reflect the changes
+            setRatings(prev => ({
+              ...prev,
+              [appointmentId]: rating
+            }));
+            setRatedAppointments(prev => new Set([...prev, appointmentId]));
+            setAppointments(prevAppointments =>
+              prevAppointments.map(appointment =>
+                appointment.appointmentId === appointmentId
+                  ? { ...appointment, appointmentStatus: 'Reviewed' }
+                  : appointment
+              )
+            );
+          } else {
+            alert('Failed to update appointment status. Please try again.');
+          }
+        } catch (reviewError) {
+          console.error('Error updating appointment status:', reviewError);
+          alert('Error updating appointment status. Please try again later.');
         }
       } else {
         alert('Failed to update rating. Please try again.');

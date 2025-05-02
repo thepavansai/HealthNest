@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaSearch, FaUser } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaSearch, FaUser, FaCalendarAlt, FaVenusMars } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -12,6 +12,7 @@ const ManageUsers = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [flippedUserId, setFlippedUserId] = useState(null);
   const navigate = useNavigate();
 
   // Get auth header for API requests
@@ -56,6 +57,10 @@ const ManageUsers = () => {
 
     fetchUsers();
   }, [navigate]);
+
+  const handleFlipCard = (userId) => {
+    setFlippedUserId(flippedUserId === userId ? null : userId);
+  };
 
   const filteredUsers = users.filter(user => {
     return (
@@ -117,10 +122,10 @@ const ManageUsers = () => {
             <FaSearch className="search-icon" />
             <input
               type="text"
-              placeholder="Search by name or email"
+              placeholder="Search by name, email or phone"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ textAlign: searchTerm ? 'center' : 'center' }}
+              style={{ textAlign: searchTerm ? 'left' : 'center' }}
             />
           </div>
         </div>
@@ -131,46 +136,53 @@ const ManageUsers = () => {
               <p>No users found matching your criteria</p>
             </div>
           ) : (
-            <div className="users-table-container">
-              <table className="users-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Gender</th>
-                    <th>Date Of Birth</th>
-                  
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map(user => (
-                    <tr key={user.userId}>
-                      <td>
-                        <div className="user-name-cell">
+            <div className="users-grid">
+              {filteredUsers.map(user => (
+                <div
+                  className={`flip-card ${flippedUserId === user.userId ? 'flipped' : ''}`}
+                  key={user.userId}
+                  onClick={() => handleFlipCard(user.userId)}
+                >
+                  <div className="flip-card-inner">
+                    <div className="flip-card-front">
+                      <div className="user-header">
+                        <div className="user-avatar">
                           {user.profileImage ? (
-                            <img
-                              src={user.profileImage}
-                              alt={user.name}
-                              className="small-avatar"
-                            />
+                            <img src={user.profileImage} alt={user.name} />
                           ) : (
-                            <div className="small-avatar-placeholder">
+                            <div className="avatar-placeholder">
                               {user.name?.charAt(0) || 'U'}
                             </div>
                           )}
-                          <span>{user.name}</span>
                         </div>
-                      </td>
-                      <td>{user.email}</td>
-                      <td>{user.phoneNo || 'N/A'}</td>
-                      <td>{user.gender || 'N/A'}</td>
-                      <td>{user.dateOfBirth || 'N/A'}</td>
-                     
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                        <h3>{user.name || 'Unknown'}</h3>
+                        <p className="user-email">{user.email}</p>
+                      </div>
+                    </div>
+                    <div className="flip-card-back">
+                      <h3>{user.name || 'Unknown'}</h3>
+                      <div className="flip-card-back-info">
+                        <p>
+                          <FaEnvelope className="info-icon" />
+                          <span className="detail-label">Email:</span> {user.email}
+                        </p>
+                        <p>
+                          <FaPhone className="info-icon" />
+                          <span className="detail-label">Phone:</span> {user.phoneNo || 'N/A'}
+                        </p>
+                        <p>
+                          <FaVenusMars className="info-icon" />
+                          <span className="detail-label">Gender:</span> {user.gender || 'N/A'}
+                        </p>
+                        <p>
+                          <FaCalendarAlt className="info-icon" />
+                          <span className="detail-label">DoB:</span> {user.dateOfBirth || 'N/A'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -178,26 +190,6 @@ const ManageUsers = () => {
       <Footer />
     </>
   );
-
-  // Function to handle user deletion
-  async function handleDeleteUser(userId) {
-    if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
-      try {
-        await axios.delete(`http://localhost:8080/admin/users/${userId}`, getAuthHeader());
-        // Update the users list after successful deletion
-        setUsers(users.filter(user => user.id !== userId));
-      } catch (error) {
-        console.error('Error deleting user:', error);
-        alert('Failed to delete user. Please try again.');
-        
-        // If unauthorized, redirect to login
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-          localStorage.clear();
-          navigate('/login');
-        }
-      }
-    }
-  }
 };
 
 export default ManageUsers;

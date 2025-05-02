@@ -65,9 +65,12 @@ const DoctorEditProfile = () => {
         });
       } catch (error) {
         setIsError(true);
-        setMessage("Failed to load profile.");
+        setMessage("Failed to load doctor data. Please try again later.");
         toast.error("Failed to load profile.");
-      });
+      }
+    };
+    
+    fetchDoctorData();
   }, [doctorId]);
 
   const handleChange = (e) => {

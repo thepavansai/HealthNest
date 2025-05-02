@@ -147,12 +147,13 @@ const View = () => {
     }
   };
 
+  // Update the loading state
   if (loading) {
     return (
       <>
         <Header />
-        <div className="loading-container">
-          <div className="loader"></div>
+        <div className="admin-view-loading">
+          <div className="admin-view-spinner"></div>
           <p>Loading appointments data...</p>
         </div>
         <Footer />
@@ -164,8 +165,8 @@ const View = () => {
     return (
       <>
         <Header />
-        <div className="error-container">
-          <div className="error-message">
+        <div className="admin-view-container">
+          <div className="admin-view-error">
             <h3>Error</h3>
             <p>{error}</p>
             <button onClick={() => window.location.reload()}>Try Again</button>
@@ -179,69 +180,69 @@ const View = () => {
   return (
     <>
       <Header />
-      <div className="view-appointments-container">
-        <header className="appointments-header">
-          <h1>Appointments Dashboard</h1>
-          <div className="summary-cards">
-            <div className="summary-card">
-              <div className="summary-icon">
+      <div className="admin-view-container">
+        <header className="admin-view-header">
+          <h1 className="admin-view-title">Appointments Dashboard</h1>
+          <div className="admin-view-summary-cards">
+            <div className="admin-view-summary-card total">
+              <div className="admin-view-summary-icon total">
                 <FaCalendarAlt />
               </div>
-              <div className="summary-content">
-                <div className="count">{totalAppointments}</div>
-                <h2>Total Appointments</h2>
+              <div className="admin-view-summary-content">
+                <div className="admin-view-summary-count">{totalAppointments}</div>
+                <h2 className="admin-view-summary-title">Total Appointments</h2>
               </div>
             </div>
             
-            <div className="summary-card">
-              <div className="summary-icon">
-                <FaCheckCircle style={{ color: 'green' }} />
+            <div className="admin-view-summary-card completed">
+              <div className="admin-view-summary-icon completed">
+                <FaCheckCircle />
               </div>
-              <div className="summary-content">
-                <div className="count">{completedAppointments.length}</div>
-                <h2>Completed</h2>
-              </div>
-            </div>
-            
-            <div className="summary-card">
-              <div className="summary-icon">
-                <FaClock style={{ color: 'orange' }} />
-              </div>
-              <div className="summary-content">
-                <div className="count">{pendingAppointments.length}</div>
-                <h2>Pending</h2>
+              <div className="admin-view-summary-content">
+                <div className="admin-view-summary-count">{completedAppointments.length}</div>
+                <h2 className="admin-view-summary-title">Completed</h2>
               </div>
             </div>
             
-            <div className="summary-card">
-              <div className="summary-icon">
-                <FaCalendarAlt style={{ color: 'blue' }} />
+            <div className="admin-view-summary-card pending">
+              <div className="admin-view-summary-icon pending">
+                <FaClock />
               </div>
-              <div className="summary-content">
-                <div className="count">{upcomingAppointments.length}</div>
-                <h2>Upcoming</h2>
+              <div className="admin-view-summary-content">
+                <div className="admin-view-summary-count">{pendingAppointments.length}</div>
+                <h2 className="admin-view-summary-title">Pending</h2>
               </div>
             </div>
             
-            <div className="summary-card">
-              <div className="summary-icon">
-                <FaTimesCircle style={{ color: 'red' }} />
+            <div className="admin-view-summary-card upcoming">
+              <div className="admin-view-summary-icon upcoming">
+                <FaCalendarAlt />
               </div>
-              <div className="summary-content">
-                <div className="count">{cancelledAppointments.length}</div>
-                <h2>Cancelled</h2>
+              <div className="admin-view-summary-content">
+                <div className="admin-view-summary-count">{upcomingAppointments.length}</div>
+                <h2 className="admin-view-summary-title">Upcoming</h2>
+              </div>
+            </div>
+            
+            <div className="admin-view-summary-card cancelled">
+              <div className="admin-view-summary-icon cancelled">
+                <FaTimesCircle />
+              </div>
+              <div className="admin-view-summary-content">
+                <div className="admin-view-summary-count">{cancelledAppointments.length}</div>
+                <h2 className="admin-view-summary-title">Cancelled</h2>
               </div>
             </div>
           </div>
         </header>
         
-        <section className="current-appointments">
-          <h2>Pending & Upcoming Appointments</h2>
+        <section className="admin-view-section">
+          <h2 className="admin-view-section-title">Pending & Upcoming Appointments</h2>
           {pendingAppointments.length === 0 && upcomingAppointments.length === 0 ? (
-            <p className="no-data-message">No pending or upcoming appointments found.</p>
+            <p className="admin-view-no-data">No pending or upcoming appointments found.</p>
           ) : (
-            <div className="appointments-table-container">
-              <table className="appointments-table">
+            <div className="admin-view-table-container">
+              <table className="admin-view-table">
                 <thead>
                   <tr>
                     <th>Patient Name</th>
@@ -249,23 +250,21 @@ const View = () => {
                     <th>Specialization</th>
                     <th>Date & Time</th>
                     <th>Status</th>
-                    
                   </tr>
                 </thead>
                 <tbody>
                   {[...pendingAppointments, ...upcomingAppointments].map(appointment => (
                     <tr key={appointment.appointmentId}>
-                      <td>{appointment.userName || 'Unknown'}</td>
-                      <td>{appointment.doctorName || 'Unknown'}</td>
-                      <td>{appointment.doctorSpecialization || 'N/A'}</td>
-                      <td>{formatDateTime(appointment.appointmentDate)}</td>
-                      <td>
+                      <td data-label="Patient Name">{appointment.userName || 'Unknown'}</td>
+                      <td data-label="Doctor">{appointment.doctorName || 'Unknown'}</td>
+                      <td data-label="Specialization">{appointment.doctorSpecialization || 'N/A'}</td>
+                      <td data-label="Date & Time">{formatDateTime(appointment.appointmentDate)}</td>
+                      <td data-label="Status">
                         <span className={`status-badge ${appointment.appointmentStatus?.toLowerCase() || appointment.status?.toLowerCase() || 'unknown'}`}>
                           {(appointment.appointmentStatus || appointment.status || 'Unknown').charAt(0).toUpperCase() + 
                            (appointment.appointmentStatus || appointment.status || 'Unknown').slice(1)}
                         </span>
                       </td>
-                      
                     </tr>
                   ))}
                 </tbody>
@@ -274,13 +273,13 @@ const View = () => {
           )}
         </section>
         
-        <section className="completed-appointments">
-          <h2>Completed Appointments</h2>
+        <section className="admin-view-section">
+          <h2 className="admin-view-section-title">Completed Appointments</h2>
           {completedAppointments.length === 0 ? (
-            <p className="no-data-message">No completed appointments found.</p>
+            <p className="admin-view-no-data">No completed appointments found.</p>
           ) : (
-            <div className="appointments-table-container">
-              <table className="appointments-table">
+            <div className="admin-view-table-container">
+              <table className="admin-view-table">
                 <thead>
                   <tr>
                     <th>Patient Name</th>
@@ -292,14 +291,24 @@ const View = () => {
                 </thead>
                 <tbody>
                   {completedAppointments.map(appointment => (
-                    <tr key={appointment.appointmentId}>
-                      <td>{appointment.userName || 'Unknown'}</td>
-                      <td>{appointment.doctorName || 'Unknown'}</td>
-                      <td>{appointment.doctorSpecialization || 'N/A'}</td>
-                      <td>{formatDateTime(appointment.appointmentDate)}</td>
-                      <td>
-                        <span className="status-badge completed">
-                          Completed
+                    <tr key={appointment.appointmentId || `completed-${Math.random()}`}>
+                      <td data-label="Patient Name">{appointment.userName || 'Unknown'}</td>
+                      <td data-label="Doctor">{appointment.doctorName || 'Unknown'}</td>
+                      <td data-label="Specialization">{appointment.doctorSpecialization || 'N/A'}</td>
+                      <td data-label="Date & Time">{formatDateTime(appointment.appointmentDate)}</td>
+                      <td data-label="Status">
+                        <span 
+                          className={`status-badge ${
+                            appointment.appointmentStatus?.toLowerCase() === 'completed' || 
+                            appointment.status?.toLowerCase() === 'completed' ? 'completed' : 
+                            appointment.appointmentStatus?.toLowerCase() === 'reviewed' || 
+                            appointment.status?.toLowerCase() === 'reviewed' ? 'reviewed' : 
+                            'completed'
+                          }`}
+                        >
+                          {appointment.appointmentStatus === 'COMPLETED' || appointment.status === 'COMPLETED' ? 'Completed' :
+                           appointment.appointmentStatus === 'REVIEWED' || appointment.status === 'REVIEWED' ? 'Reviewed' :
+                           'Completed'}
                         </span>
                       </td>
                     </tr>
@@ -310,13 +319,13 @@ const View = () => {
           )}
         </section>
         
-        <section className="cancelled-appointments">
-          <h2>Cancelled Appointments</h2>
+        <section className="admin-view-section">
+          <h2 className="admin-view-section-title">Cancelled Appointments</h2>
           {cancelledAppointments.length === 0 ? (
-            <p className="no-data-message">No cancelled appointments found.</p>
+            <p className="admin-view-no-data">No cancelled appointments found.</p>
           ) : (
-            <div className="appointments-table-container">
-              <table className="appointments-table">
+            <div className="admin-view-table-container">
+              <table className="admin-view-table">
                 <thead>
                   <tr>
                     <th>Patient Name</th>
@@ -324,22 +333,21 @@ const View = () => {
                     <th>Specialization</th>
                     <th>Date & Time</th>
                     <th>Status</th>
-                   
                   </tr>
                 </thead>
                 <tbody>
                   {cancelledAppointments.map(appointment => (
                     <tr key={appointment.appointmentId}>
-                      <td>{appointment.userName || 'Unknown'}</td>
-                      <td>{appointment.doctorName || 'Unknown'}</td>
-                      <td>{appointment.doctorSpecialization || 'N/A'}</td>
-                      <td>{formatDateTime(appointment.appointmentDate)}</td>
-                      <td>
-                        <span className="status-badge cancelled">
-                          Cancelled
+                      <td data-label="Patient Name">{appointment.userName || 'Unknown'}</td>
+                      <td data-label="Doctor">{appointment.doctorName || 'Unknown'}</td>
+                      <td data-label="Specialization">{appointment.doctorSpecialization || 'N/A'}</td>
+                      <td data-label="Date & Time">{formatDateTime(appointment.appointmentDate)}</td>
+                      <td data-label="Status">
+                        <span className={`status-badge ${appointment.appointmentStatus?.toLowerCase() || appointment.status?.toLowerCase() || 'unknown'}`}>
+                          {(appointment.appointmentStatus || appointment.status || 'Unknown').charAt(0).toUpperCase() + 
+                           (appointment.appointmentStatus || appointment.status || 'Unknown').slice(1)}
                         </span>
                       </td>
-                   
                     </tr>
                   ))}
                 </tbody>
