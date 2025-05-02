@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import { BASE_URL } from '../../config/apiConfig';
 import PaymentModal from "../../components/PaymentModal";
+import { BASE_URL } from '../../config/apiConfig';
 
 import "./CheckHealth.css";
 
@@ -66,7 +66,12 @@ const formatTime = (timeStr) => {
 };
 
 const CheckHealth = () => {
-  const [text, setText] = useState('');
+  // Initialize text state with the symptoms from localStorage if available
+  const [text, setText] = useState(() => {
+    const savedSymptoms = localStorage.getItem('userSymptoms');
+    return savedSymptoms || '';
+  });
+  
   const [aiResponse, setAiResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -85,6 +90,21 @@ const CheckHealth = () => {
   const doctorRef = useRef(null);
   const carouselRef = useRef(null);
   const navigate = useNavigate();
+
+  // Auto-analyze symptoms if coming from Remedies page
+  useEffect(() => {
+    const savedSymptoms = localStorage.getItem('userSymptoms');
+    if (savedSymptoms && savedSymptoms.trim() !== '') {
+      setText(savedSymptoms);
+      // Auto submit after a short delay to ensure component is fully mounted
+      const timer = setTimeout(() => {
+        handleSymptomSubmit();
+        // Clear the localStorage to prevent auto-submission on future visits
+        localStorage.removeItem('userSymptoms');
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const fetchDoctorAppointments = async (doctorId) => {
     try {
@@ -106,7 +126,7 @@ const CheckHealth = () => {
           messages: [
             {
               role: "system",
-              content: "You are a doctor who gives health advice. You will suggest what type of doctor to see based on the symptoms.In only  one word like General.If Symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms. and try to seek for more context Donot use punctuation marks and do not use any other words. Just give the doctor specialization ",
+              content: "You are a doctor who gives health advice.You will suggest what type of doctor to see based on the symptoms.In only  one word like General.If Symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms. and try to seek for more context Donot use punctuation marks and do not use any other words. Just give the doctor specialization ",
             },
             {
               role: "user",
@@ -385,7 +405,7 @@ const CheckHealth = () => {
           </div>
         )}
 
-        {}
+        <>
         <PaymentModal 
           isOpen={showPaymentModal}
           onClose={() => setShowPaymentModal(false)}
@@ -408,6 +428,7 @@ const CheckHealth = () => {
             </div>
           </div>
         )}
+        </>
       </div>
       
       <Footer />
