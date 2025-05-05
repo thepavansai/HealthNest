@@ -40,7 +40,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
        return http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
+            .csrf(Customizer.withDefaults()) // Enable CSRF protection
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints
                 .requestMatchers("/users/Signup", "/users/login", "/doctor-signup", "/doctor-login", "/admin-login","/feedback/all","/doctor/all").permitAll()
