@@ -89,9 +89,9 @@ const SignUp = () => {
   };
 
   const validateStep3 = () => {
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.password)) {
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(formData.password)) {
       setIsError(true);
-      setMessage("Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number");
+      setMessage("Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)");
       return false;
     }
 
@@ -274,7 +274,7 @@ const SignUp = () => {
           </span>
         </div>
         <div className="password-requirements">
-          Must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number
+          Must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)
         </div>
       </div>
 

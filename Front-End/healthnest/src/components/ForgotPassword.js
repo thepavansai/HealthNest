@@ -23,7 +23,7 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(0);
   const [userType, setUserType] = useState('patient'); 
-  const emailForm = useRef();
+
 
   
   const generateOTP = () => {
@@ -142,9 +142,9 @@ const ForgotPassword = () => {
     }
 
     
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-      toast.error('Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number');
+      toast.error('Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)');
       return;
     }
 
@@ -391,7 +391,7 @@ const ForgotPassword = () => {
                   </span>
                 </div>
                 <div className="password-requirements">
-                  Must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number
+                  Must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)
                 </div>
               </div>
               

@@ -41,8 +41,8 @@ const ChangePassword = () => {
     
     if (!formData.newPassword) {
       newErrors.newPassword = 'New password is required';
-    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.newPassword)) {
-      newErrors.newPassword = 'Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number';
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(formData.newPassword)) {
+      newErrors.newPassword = 'Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)';
     }
     
     if (!formData.confirmPassword) {
@@ -150,6 +150,9 @@ const ChangePassword = () => {
                       value={formData.newPassword}
                       onChange={handleChange}
                     />
+                    <small className="form-text text-muted">
+                      Password must contain at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)
+                    </small>
                     {errors.newPassword && (
                       <div className="invalid-feedback">{errors.newPassword}</div>
                     )}
