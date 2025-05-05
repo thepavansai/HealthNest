@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,6 +36,12 @@ public class AuthenticationController {
     
     @Autowired
     private AuthenticationConfiguration authConfig;
+
+    @Value("${admin.username}")
+    private String adminUsername;
+    
+    @Value("${admin.password}")
+    private String adminPassword;
 
     @PostMapping("/doctor-signup")
     public ResponseEntity<String> signUpDoctor(@RequestBody DoctorDTO doctorDTO) {
@@ -94,11 +101,7 @@ public class AuthenticationController {
             throw new IllegalArgumentException("Username and password must not be empty");
         }
         
-        final String ADMIN_USERNAME = "admin";
-        final String ADMIN_PASSWORD = "admin";
-        
-        if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
-            // Generate JWT token with ADMIN role
+        if (username.equals(adminUsername) && password.equals(adminPassword)) {
             String token = jwtService.generateToken(username, "ADMIN");
             
             response.put("message", "Admin login successful");
