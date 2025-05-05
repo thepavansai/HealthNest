@@ -371,22 +371,22 @@ const DoctorViewAppointments = () => {
               <tbody>
                 {filteredAppointments.map(appointment => (
                   <tr key={appointment.appointmentId}>
-                    <td data-label="ID" data-label="ID">{appointment.appointmentId}</td>
-                    <td data-label="Patient Name" data-label="Patient Name">{appointment.userName}</td>
-                    <td data-label="Description" data-label="Description">{appointment.description}</td>
-                    <td data-label="Date & Time" data-label="Date & Time">
+                    <td data-label="ID" >{appointment.appointmentId}</td>
+                    <td data-label="Patient Name">{appointment.userName}</td>
+                    <td data-label="Description" >{appointment.description}</td>
+                    <td data-label="Date & Time" >
                       <div className="doctor-appointment-time">
                         <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
                         <span>{appointment.appointmentTime}</span>
                       </div>
                     </td>
-                    <td data-label="Phone Number" data-label="Phone Number">+91-{appointment.userPhoneNo}</td>
-                    <td data-label="Status" data-label="Status">
+                    <td data-label="Phone Number" >+91-{appointment.userPhoneNo}</td>
+                    <td data-label="Status">
                       <span className={`doctor-status-badge doctor-status-${appointment.appointmentStatus.toLowerCase()}`}>
                         {appointment.appointmentStatus}
                       </span>
                     </td>
-                    <td data-label="Actions" data-label="Actions">
+                    <td data-label="Actions" >
                       <div className="doctor-action-buttons">
                         {appointment.appointmentStatus.toLowerCase() === 'pending' && (
                           <>

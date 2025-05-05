@@ -309,7 +309,7 @@ const fetchDoctorAppointments = async (doctorId) => {
     }
     
     const response = await axios.get(
-      `http://localhost:8080/appointments/doctor/${doctorId}`,
+      `${BASE_URL}/appointments/doctor/${doctorId}`,
       {
         headers: {
           'Authorization': `Bearer ${token}`
