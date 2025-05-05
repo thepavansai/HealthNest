@@ -57,7 +57,7 @@ const AdminDashboard = () => {
           axios.get(`${BASE_URL}/admin/doctors`,config),
           axios.get(`${BASE_URL}/admin/users`,config),
         ]);
-        console.log(doctorsResponse.data);
+        
 const activeDoctors= doctorsResponse.data.filter(doctor => doctor.status === 1);
         // Update stats with real data
         setStats({

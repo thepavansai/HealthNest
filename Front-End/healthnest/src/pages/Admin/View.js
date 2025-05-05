@@ -43,9 +43,7 @@ const View = () => {
         setLoading(true);
         const response = await axios.get(`${BASE_URL}/admin/appointments`, getAuthHeader());
         const allAppointments = response.data;
-        
-        console.log("All appointments:", allAppointments); // Debug log
-        
+         
         // Filter appointments by status - check both status and appointmentStatus fields
         const completed = allAppointments.filter(app => 
           (app.appointmentStatus && app.appointmentStatus.toLowerCase() === 'completed') || 
@@ -77,10 +75,7 @@ const View = () => {
         setCancelledAppointments(cancelled);
         setTotalAppointments(allAppointments.length);
         
-        console.log("Completed:", completed.length);
-        console.log("Pending:", pending.length);
-        console.log("Upcoming:", upcoming.length);
-        console.log("Cancelled:", cancelled.length);
+        
         
         setLoading(false);
       } catch (err) {

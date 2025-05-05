@@ -67,9 +67,16 @@ const ChangePassword = () => {
       setIsSubmitting(true);
       
       try {
+        const token = localStorage.getItem('token');
         // Use string doctorId in API call
-        const response = await axios.put(
-          `${BASE_URL}/doctor/changepassword/${doctorId}/${formData.currentPassword}/${formData.newPassword}`
+        const response = await axios.patch(
+          `${BASE_URL}/doctor/changepassword/${doctorId}/${formData.currentPassword}/${formData.newPassword}`,
+          {}, // empty body
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
         );
 
         if (response.status === 200) {
@@ -86,9 +93,15 @@ const ChangePassword = () => {
           }, 5000);
         }
       } catch (error) {
-        setErrors({
-          currentPassword: error.response?.data || 'Failed to update password. Please try again.'
-        });
+        if (error.response?.status === 401) {
+          setErrors({
+            currentPassword: 'Session expired. Please login again.'
+          });
+        } else {
+          setErrors({
+            currentPassword: error.response?.data || 'Failed to update password. Please try again.'
+          });
+        }
       } finally {
         setIsSubmitting(false);
       }

@@ -2,6 +2,9 @@
   padding: 40px;
   background: #f4f8fb;
   color: #333;
+  /* Add padding-top to push content below the header */
+  /* Adjust the value (e.g., 80px) based on your Header's height */
+  padding-top: 80px;
 }
 
 .about-header {

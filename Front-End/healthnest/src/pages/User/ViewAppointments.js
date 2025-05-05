@@ -219,7 +219,7 @@ const ViewAppointments = () => {
 
   return (<>
   <Header/>
-    <div className="view-appointments-container">
+    <div className="user-view-appointments-container">
       <div className="appointments-header">
         <h1>Appointments Dashboard</h1>
         <div className="appointments-summary">
@@ -248,7 +248,7 @@ const ViewAppointments = () => {
               <FaCalendarCheck />
             </div>
             <div className="summary-details">
-              <h3>{completedAppointments.length + reviewedAppointments.length}</h3>
+              <h3>{completedAppointments.length + reviewedAppointmentsList.length}</h3>
               <p>Completed & Reviewed Appointments</p>
             </div>
           </div>

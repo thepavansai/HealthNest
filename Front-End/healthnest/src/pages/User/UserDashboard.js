@@ -35,7 +35,7 @@ const UserDashboard = () => {
       );
       
       const getUserAppointments = axios.get(
-        `http://localhost:8080/users/appointments/${userId}`, 
+        `${BASE_URL}/users/appointments/${userId}`, 
         { headers }
       );
       

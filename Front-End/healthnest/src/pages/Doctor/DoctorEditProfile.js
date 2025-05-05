@@ -46,7 +46,12 @@ const DoctorEditProfile = () => {
         return;
       }
       try {
-        const response = await axios.get(`${BASE_URL}/doctor/${doctorId}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${BASE_URL}/doctor/profile/${doctorId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         const data = response.data;
       
         const availabilityDays = daysOfWeek.filter((day, index) => data.availability[index] === '1');
@@ -65,13 +70,18 @@ const DoctorEditProfile = () => {
         });
       } catch (error) {
         setIsError(true);
-        setMessage("Failed to load doctor data. Please try again later.");
+        if (error.response?.status === 401) {
+          setMessage("Session expired. Please login again.");
+          setTimeout(() => navigate("/login"), 1500);
+        } else {
+          setMessage("Failed to load doctor data. Please try again later.");
+        }
         toast.error("Failed to load profile.");
       }
     };
     
     fetchDoctorData();
-  }, [doctorId]);
+  }, [doctorId, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -153,14 +163,31 @@ const DoctorEditProfile = () => {
     };
 
     try {
-      const response = await axios.put(`${BASE_URL}/doctor/${doctorId}`, payload);
+      const token = localStorage.getItem('token');
+      const response = await axios.put(
+        `${BASE_URL}/doctor/profile/${doctorId}`, 
+        payload,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
       setIsError(false);
-      localStorage.setItem("doctorName", payload.doctorName); // Corrected: Use setItem
+      localStorage.setItem("doctorName", payload.doctorName);
       setMessage("Profile updated successfully!");
-      setTimeout(() => navigate("/doctor/dashboard"), 1500); // Consider delaying navigation slightly to allow user to see message
+      toast.success("Profile updated successfully!");
+      setTimeout(() => navigate("/doctor/dashboard"), 1500);
     } catch (error) {
+      console.error("Error updating profile:", error);
       setIsError(true);
-      setMessage("Error updating profile.");
+      if (error.response?.status === 401) {
+        setMessage("Session expired. Please login again.");
+        setTimeout(() => navigate("/login"), 1500);
+      } else {
+        setMessage("Error updating profile. Please try again.");
+      }
+      toast.error("Failed to update profile.");
     }
   };
 

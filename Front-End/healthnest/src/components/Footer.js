@@ -32,7 +32,7 @@ const Footer = () => {
               </div>
               <div className="contact-item">
                 <i className="bi bi-envelope"></i>
-                <span>support@mediconnect.com</span>
+                <span>healthnest.contact@gmail.com</span>
               </div>
               <div className="contact-item">
                 <i className="bi bi-geo-alt"></i>

@@ -58,7 +58,7 @@ const DoctorLogin = () => {
         
         try {
           // Step 2: Use token to fetch profile
-          console.log("Fetching profile with token:", token);
+          
           const profileRes = await axios.get(
             // Use string doctorId in API call
             `${BASE_URL}/doctor/profile/${doctorId}`,
@@ -69,7 +69,7 @@ const DoctorLogin = () => {
             }
           );
           
-          console.log("Profile response:", profileRes.data);
+   
           
           const { status } = profileRes.data;
           

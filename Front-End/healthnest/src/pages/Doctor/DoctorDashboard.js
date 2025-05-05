@@ -70,44 +70,7 @@ const DoctorDashboard = () => {
     }
   }, [doctorId, navigate]);
   
-  // const fetchAppointments = async (consultationFee) => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-    
-  //     const response = await axios.get(`http://localhost:8080/appointments/doctor/${doctorId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     });
-      
-  //     const allAppointments = response.data;
-  //     console.log("All Appointments:", allAppointments);
-  //     setTotalAppointments(allAppointments.length);
-  //     setAppointments(allAppointments);
 
-      
-  //     const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
-  //         || appointment.appointmentStatus === 'Reviewed'
-  //       );
-  //     const upcoming = allAppointments.filter(appointment => appointment.appointmentStatus === 'Upcoming');
-  //     console.log("Completed Appointments:", completed);
-  //     console.log("Upcoming Appointments:", upcoming);
-
-  //     setCompletedAppointments(completed);
-  //     setUpcomingAppointments(upcoming);
-
-      
-  //     const income = completed.length  * consultationFee;
-  //     const payout = upcoming.length * consultationFee;
-
-  //     setTotalIncome(income);
-  //     setEstimatedPayout(payout);
-
-  //   } catch (err) {
-  //     console.error("Error fetching appointments:", err);
-  //   }
-  // };
-// Update the fetchAppointments function in DoctorDashboard.js
 const fetchAppointments = async (consultationFee) => {
   try {
     const token = localStorage.getItem("token");
@@ -126,7 +89,7 @@ const fetchAppointments = async (consultationFee) => {
     });
     
     const allAppointments = response.data;
-    console.log("All Appointments:", allAppointments);
+   
     setTotalAppointments(allAppointments.length);
     setAppointments(allAppointments);
     
@@ -138,8 +101,6 @@ const fetchAppointments = async (consultationFee) => {
       appointment.appointmentStatus === 'Upcoming'
     );
     
-    console.log("Completed Appointments:", completed);
-    console.log("Upcoming Appointments:", upcoming);
     setCompletedAppointments(completed);
     setUpcomingAppointments(upcoming);
     
