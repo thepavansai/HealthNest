@@ -42,7 +42,7 @@ const Home = () => {
           setError(null);
       } catch (err) {
           setError('Failed to fetch health tips. Please try again.');
-          console.error('Error fetching health tips:', err);
+         
       } finally {
           setLoading(false);
       }

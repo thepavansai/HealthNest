@@ -16,16 +16,29 @@ const UserDashboard = () => {
     email: '',
   });
   const [appointments, setAppointments] = useState([]);
-
   const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (userId) {
+    if (userId && token) {
       setLoading(true);
-
-      const getUserDetails = axios.get(`${BASE_URL}/users/userdetails/${userId}`);
-      const getUserAppointments = axios.get(`${BASE_URL}/users/appointments/${userId}`);
-
+      
+      // Configure headers with authorization token
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+      
+      // Make authenticated API requests
+      const getUserDetails = axios.get(
+        `${BASE_URL}/users/userdetails/${userId}`, 
+        { headers }
+      );
+      
+      const getUserAppointments = axios.get(
+        `${BASE_URL}/users/appointments/${userId}`, 
+        { headers }
+      );
+      
       Promise.all([getUserDetails, getUserAppointments])
         .then(([userRes, appointmentsRes]) => {
           setUserData(userRes.data);
@@ -33,12 +46,20 @@ const UserDashboard = () => {
         })
         .catch((err) => {
           console.error("Failed to fetch user data", err);
+          // If unauthorized, redirect to login
+          if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+            localStorage.clear();
+            navigate('/login');
+          }
         })
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      // If no userId or token, redirect to login
+      navigate('/login');
     }
-  }, [userId]);
+  }, [userId, token, navigate]);
 
   const toggleDropdown = (e) => {
     e.stopPropagation();
@@ -77,10 +98,9 @@ const UserDashboard = () => {
     <div className="dashboard-container">
       <Header />
       <div className="user-dashboard-new">
-        { }
+        { /* Rest of the component remains the same */ }
         <div className="welcome-section">
           <div className="welcome-content">
-            
             <h1>Welcome back, {userData.name}</h1>
             <p className="subtitle">Manage your healthcare journey with ease</p>
           </div>
@@ -115,9 +135,9 @@ const UserDashboard = () => {
           </div>
         </div>
         
-        { }
+        { /* Rest of the component remains the same */ }
         <div className="dashboard-grid">
-          { }
+          { /* Appointments card */ }
           <div className="dashboard-card appointments-card" onClick={handleViewAppointments}>
             <div className="card-header">
               <h3>Appointments</h3>
@@ -152,8 +172,7 @@ const UserDashboard = () => {
             </div>
           </div>
           
-          
-          { }
+          { /* Health card */ }
           <div className="dashboard-card health-card">
             <div className="card-header">
               <h3>Health Status</h3>
@@ -170,7 +189,7 @@ const UserDashboard = () => {
             </div>
           </div>
           
-          { }
+          { /* Book appointment card */ }
           <div className="dashboard-card action-card book-appointment">
             <div className="card-header">
               <h3>Book Appointment</h3>
@@ -185,8 +204,7 @@ const UserDashboard = () => {
               </button>
             </div>
           </div>
-
-          { }
+          { /* Medical history card */ }
           <div className="dashboard-card action-card medical-history">
             <div className="card-header">
               <h3>Medical History</h3>

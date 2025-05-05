@@ -2,6 +2,7 @@ package com.healthnest.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.model.Appointment;
+import com.healthnest.model.User;
 import com.healthnest.repository.AppointmentRepository;
+import com.healthnest.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -20,6 +23,10 @@ public class AppointmentService {
 
     @Autowired
     AppointmentRepository appointmentRepository;
+    @Autowired	
+     UserRepository userRepository;
+
+  
 
     public List<AppointmentSummaryDTO> getAppointmentSummaries(Long userId) {
         return appointmentRepository.findAppointmentSummariesByUserId(userId);
@@ -114,7 +121,122 @@ public class AppointmentService {
 		appointmentRepository.findById(appointmentId).get().setAppointmentStatus(setStatus);
 		return "Sucessfully Completed";
 	}
-		
-	}
 
+	 public boolean isAppointmentForDoctor(Long appointmentId, Long doctorId) {
+	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+	        
+	        if (appointmentOpt.isPresent()) {
+	            Appointment appointment = appointmentOpt.get();
+	            return appointment.getDoctor().getDoctorId().equals(doctorId);
+	        }
+	        
+	        return false;
+	    }
+
+	    /**
+	     * Checks if an appointment belongs to a user with the given email
+	     * 
+	     * @param appointmentId the ID of the appointment to check
+	     * @param email the email of the user to verify against
+	     * @return true if the appointment belongs to the user with the given email, false otherwise
+	     */
+	    public boolean isAppointmentForUserEmail(Long appointmentId, String email) {
+	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+	        Optional<User> userOpt = userRepository.findByEmail(email);
+	        
+	        if (appointmentOpt.isPresent() && userOpt.isPresent()) {
+	            Appointment appointment = appointmentOpt.get();
+	            User user = userOpt.get();
+	            
+	            return appointment.getUser().getUserId().equals(user.getUserId());
+	        }
+	        
+	        return false;
+	    }
+//	    public boolean updateAppointmentStatus(Integer appointmentId, String newStatus) {
+//	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+//	        
+//	        if (appointmentOpt.isPresent()) {
+//	            Appointment appointment = appointmentOpt.get();
+//	            appointment.setAppointmentStatus(newStatus);
+//	            appointmentRepository.save(appointment);
+//	            return true;
+//	        }
+//	        
+//	        return false;
+//	    
+//	    public boolean updateAppointmentStatus(Integer appointmentId, String newStatus) {
+//	        try {
+//	            // Add logging
+//	            System.out.println("Updating appointment " + appointmentId + " to status " + newStatus);
+//	            
+//	            Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+//	            
+//	            if (appointmentOpt.isPresent()) {
+//	                Appointment appointment = appointmentOpt.get();
+//	                
+//	                // Log current status
+//	                System.out.println("Current status: " + appointment.getAppointmentStatus());
+//	                
+//	                appointment.setAppointmentStatus(newStatus);
+//	                appointmentRepository.save(appointment);
+//	                
+//	                // Log after update
+//	                System.out.println("Status updated successfully");
+//	                return true;
+//	            } else {
+//	                System.out.println("Appointment not found with ID: " + appointmentId);
+//	                return false;
+//	            }
+//	        } catch (Exception e) {
+//	            // Log the exception
+//	            System.err.println("Error updating appointment status: " + e.getMessage());
+//	            e.printStackTrace();
+//	            throw e; // Re-throw to be handled by the controller
+//	        }
+//	    }
+	    public boolean updateAppointmentStatus(Long appointmentId, String newStatus) {
+	        try {
+	            // Add logging
+	            System.out.println("Updating appointment " + appointmentId + " to status " + newStatus);
+	            
+	            Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
+	            
+	            if (appointmentOpt.isPresent()) {
+	                Appointment appointment = appointmentOpt.get();
+	                
+	                // Log current status
+	                System.out.println("Current status: " + appointment.getAppointmentStatus());
+	                
+	                // Convert status to proper case format (first letter uppercase, rest lowercase)
+	                String formattedStatus = newStatus.substring(0, 1).toUpperCase() + 
+	                                        newStatus.substring(1).toLowerCase();
+	                
+	                appointment.setAppointmentStatus(formattedStatus);
+	                appointmentRepository.save(appointment);
+	                
+	                // Log after update
+	                System.out.println("Status updated successfully");
+	                return true;
+	            } else {
+	                System.out.println("Appointment not found with ID: " + appointmentId);
+	                return false;
+	            }
+	        } catch (Exception e) {
+	            // Log the exception
+	            System.err.println("Error updating appointment status: " + e.getMessage());
+	            e.printStackTrace();
+	            throw e; // Re-throw to be handled by the controller
+	        }
+	    }
+
+
+		public boolean isUserEmailMatching(Long userId, String email) {
+			return userRepository.findById(userId).get().getEmail().equals(email);
+		}
+
+		 public List<AppointmentShowDTO> getAppointmentsByDoctorId(Long doctorId) {
+		        return appointmentRepository.findByDoctorIdWithUserName(doctorId);
+		    }
+}
 

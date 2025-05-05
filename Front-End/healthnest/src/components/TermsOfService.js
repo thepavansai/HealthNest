@@ -26,7 +26,7 @@ const TermsOfService = () => {
             A platform that is used to generate remedies and precautions based on the user symptoms and a platform to book an appointment for the doctor of your choice
           </p>
           <p>
-            You can contact us by phone at 9988667777, email at healthnest@gmail.com, or by mail to Madhapur, Hyderabad, Telangana 500089, India.
+            You can contact us by phone at 9988667777, email at healthnest.contact@gmail.com or by mail to Madhapur, Hyderabad, Telangana 500089, India.
           </p>
           <p>
             These Legal Terms constitute a legally binding agreement made between you, whether personally or on behalf of an entity ("<strong>you</strong>"), and Health Nest, concerning your access to and use of the Services. You agree that by accessing the Services, you have read, understood, and agreed to be bound by all of these Legal Terms. IF YOU DO NOT AGREE WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.
@@ -128,7 +128,7 @@ const TermsOfService = () => {
             Telangana 500089<br />
             India<br />
             Phone: 9988667777<br />
-            Email: healthnest@gmail.com
+            Email: healthnest.contact@gmail.com
           </address>
         </section>
       </div>

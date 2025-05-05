@@ -19,6 +19,7 @@ const UserChangePassword = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const userId = localStorage.getItem('userId'); // Already a string
+  const token = localStorage.getItem('token');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,6 +35,7 @@ const UserChangePassword = () => {
     }
   };
 
+  // Update the validateForm function with new password requirements
   const validateForm = () => {
     const newErrors = {};
     
@@ -43,8 +45,8 @@ const UserChangePassword = () => {
     
     if (!formData.newPassword) {
       newErrors.newPassword = 'New password is required';
-    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.newPassword)) {
-      newErrors.newPassword = 'Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number';
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(formData.newPassword)) {
+      newErrors.newPassword = 'Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)';
     }
     
     if (!formData.confirmPassword) {
@@ -66,13 +68,25 @@ const UserChangePassword = () => {
       return;
     }
 
+    if (!token) {
+      toast.error("Authentication token not found. Please login again.");
+      navigate('/login');
+      return;
+    }
+
     if (validateForm()) {
       setIsSubmitting(true);
 
       try {
         // Use string userId in API call
-        const response = await axios.put(
-          `${BASE_URL}/users/changepassword/${userId}/${formData.currentPassword}/${formData.newPassword}`
+        const response = await axios.patch(
+          `${BASE_URL}/users/changepassword/${userId}/${formData.currentPassword}/${formData.newPassword}`,
+          {}, // Empty body as data is in URL
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
         );
 
         if (response.status === 200) {
@@ -86,7 +100,15 @@ const UserChangePassword = () => {
           setTimeout(() => navigate('/user'), 2000);
         }
       } catch (error) {
-        toast.error(error.response?.data || 'Failed to update password');
+        console.error("Error updating password:", error);
+        
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          toast.error("Session expired. Please login again.");
+          localStorage.removeItem("token"); // Clear invalid token
+          navigate('/login');
+        } else {
+          toast.error(error.response?.data || 'Failed to update password');
+        }
       } finally {
         setIsSubmitting(false);
       }
@@ -130,6 +152,9 @@ const UserChangePassword = () => {
                       value={formData.newPassword}
                       onChange={handleChange}
                     />
+                    <small className="form-text text-muted">
+                      Password must contain at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)
+                    </small>
                     {errors.newPassword && (
                       <div className="invalid-feedback">{errors.newPassword}</div>
                     )}

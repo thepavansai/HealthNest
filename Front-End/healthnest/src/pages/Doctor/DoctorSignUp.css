@@ -22,7 +22,6 @@
   background-color: rgba(255, 255, 255, 0.4);
   z-index: 1;
 }
-
 .doctor-signup-container {
   display: flex;
   justify-content: center;
@@ -345,6 +344,124 @@
 
 .login-redirect a:hover {
   text-decoration: underline;
+}
+
+.map-container {
+  margin-top: 20px;
+  position: relative;
+}
+
+.map-search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.mapboxgl-ctrl-geocoder {
+  margin: 10px;
+  max-width: 400px;
+}
+
+.mapboxgl-ctrl {
+  box-shadow: none;
+}
+
+.geo-btn {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.geo-btn:hover {
+  background-color: #0056b3;
+}
+
+.map-instructions {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.marker {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+input[type='text'] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.map-container {
+  margin-top: 20px;
+  position: relative;
+}
+
+.map-search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.mapboxgl-ctrl-geocoder {
+  margin: 10px;
+  max-width: 400px;
+}
+
+.mapboxgl-ctrl {
+  box-shadow: none;
+}
+
+.geo-btn {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.geo-btn:hover {
+  background-color: #0056b3;
+}
+
+.map-instructions {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.marker {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+input[type='text'] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 /* Media query for larger screens (min-width: 601px) */

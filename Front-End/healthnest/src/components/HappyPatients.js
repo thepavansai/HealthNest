@@ -20,7 +20,7 @@ const HappyPatients = () => {
         setFeedbacks(filteredFeedbacks);
         setError(null);
       } catch (err) {
-        console.error("Error fetching feedbacks:", err);
+        
         setError("Failed to fetch feedbacks. Please try again.");
       } finally {
         setLoading(false);
