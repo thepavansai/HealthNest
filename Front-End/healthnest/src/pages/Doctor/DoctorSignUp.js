@@ -230,7 +230,7 @@ const DoctorSignup = () => {
       hospitalName: formData.hospitalName,
       specializedrole: formData.specializedrole,
       docPhnNo: formData.phone,
-      consultationFee: parseFloat(formData.consultationFee),
+      consultationFee:formData.consultationFee,
       password: formData.password,
       availability: binaryAvailability,
       gender: formData.gender,

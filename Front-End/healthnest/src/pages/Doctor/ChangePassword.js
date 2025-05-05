@@ -189,7 +189,7 @@ const ChangePassword = () => {
                 </form>
                 
                 <div className="text-center mt-4">
-                  <a href="/profile" className="text-decoration-none">Back to Profile</a>
+                  <a href="/doctor/dashboard" className="text-decoration-none">Back to Profile</a>
                 </div>
               </div>
             </div>
