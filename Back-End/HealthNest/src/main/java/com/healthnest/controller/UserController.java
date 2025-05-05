@@ -178,7 +178,7 @@ public class UserController {
             
             // Verify that the user is editing their own profile
             Long tokenUserId = userService.getUserId(userEmail);
-            if (tokenUserId != id) {
+            if (!tokenUserId.equals(id)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only edit your own profile");
             }
             
@@ -361,32 +361,7 @@ public class UserController {
     }
        
     @PostMapping("/setnewpassword")
-    public ResponseEntity<String> setNewPassword(
-            @RequestBody HashMap<String, String> request,
-            @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        
-        // This endpoint might be used for password reset, so auth header could be optional
-        if (authHeader != null) {
-            System.out.println("Auth header in setNewPassword: " + authHeader);
-            
-            // If auth header is provided, verify the user is authorized
-            try {
-                String token = authHeader.substring(7);
-                String userEmail = jwtService.extractUserEmail(token);
-                
-                // If the email in the request doesn't match the authenticated user's email,
-                // and the user is not an admin, deny access
-                if (!userEmail.equals(request.get("email")) && 
-                     !jwtService.extractUserRole(token).equals("ADMIN")) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("You can only reset your own password");
-                }
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Invalid authentication token");
-            }
-        }
-        
+    public ResponseEntity<String> setNewPassword(@RequestBody HashMap<String, String> request) {
         String email = request.get("email");
         String newPassword = request.get("newPassword");
         
@@ -441,4 +416,4 @@ public class UserController {
         }
     }
 
-            
+

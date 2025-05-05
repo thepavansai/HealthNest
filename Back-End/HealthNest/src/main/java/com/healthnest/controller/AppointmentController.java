@@ -26,7 +26,7 @@ import com.healthnest.service.DoctorService;
 import com.healthnest.service.JWTService;
 
 
-@CrossOrigin(origins = {"http://localhost:3000", "https://health-nest.netlify.app/"})
+@CrossOrigin(origins = "https://health-nest.netlify.app")
 @RestController
 @RequestMapping("/appointments")
 public class AppointmentController {
@@ -198,7 +198,7 @@ public class AppointmentController {
             System.out.println("User email: " + email + ", role: " + role);
                                 
             // Standardize status format for comparison (convert to uppercase)
-            String statusUpperCase = setStatus.toUpperCase();
+            String statusaUpperCase = setStatus.toUpperCase();
             
             // Verify permissions based on role
             if ("USER".equals(role)) {
@@ -248,6 +248,11 @@ public class AppointmentController {
                     .body("Error updating appointment status: " + e.getMessage());
         }
     }
+
+	public ResponseEntity<List<AppointmentShowDTO>> getAppointmentsByDoctor(Long doctorId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
 

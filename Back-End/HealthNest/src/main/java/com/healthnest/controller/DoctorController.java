@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.healthnest.dto.DoctorDTO;
+import com.healthnest.dto.DoctorSummaryDTO;
 import com.healthnest.exception.DoctorNotFoundException;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
@@ -288,29 +289,7 @@ public ResponseEntity<List<DoctorDTO>> getAllDoctors()
     }
 
     @PostMapping("/setnewpassword")
-    public ResponseEntity<String> setNewPassword(
-            @RequestBody HashMap<String, String> request,
-            @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        
-        // This endpoint might be used for password reset, so auth header could be optional
-        if (authHeader != null) {
-            try {
-                String token = authHeader.substring(7);
-                String userEmail = jwtService.extractUserEmail(token);
-                String role = jwtService.extractUserRole(token);
-                
-                // If the email in the request doesn't match the authenticated user's email,
-                // and the user is not an admin, deny access
-                if (!userEmail.equals(request.get("email")) && !"ADMIN".equals(role)) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("You can only reset your own password");
-                }
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Invalid authentication token");
-            }
-        }
-        
+    public ResponseEntity<String> setNewPassword(@RequestBody HashMap<String, String> request) {
         String email = request.get("email");
         String newPassword = request.get("newPassword");
         
@@ -370,6 +349,25 @@ public ResponseEntity<List<DoctorDTO>> getAllDoctors()
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/summary")
+    public ResponseEntity<List<DoctorSummaryDTO>> getDoctorsSummary() {
+        try {
+            List<Doctor> doctors = doctorService.getAllDoctors();
+            List<DoctorSummaryDTO> doctorSummaries = doctors.stream()
+                    .map(doctor -> new DoctorSummaryDTO(
+                            doctor.getDoctorName(), // Combine first and last name
+                            doctor.getRating(),
+                            doctor.getAddress(), // Make sure Doctor model has getLocation()
+                            doctor.getHospitalName(), // Make sure Doctor model has getHospital()
+                            doctor.getAvailability(), // Make sure Doctor model has getAvailability()
+                            doctor.getSpecializedrole() // Add specialization - Make sure Doctor model has getSpecialization()
+                    ))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(doctorSummaries);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
-    
-    
+
