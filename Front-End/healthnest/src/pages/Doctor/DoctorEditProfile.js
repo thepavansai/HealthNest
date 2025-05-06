@@ -103,12 +103,14 @@ const DoctorEditProfile = () => {
       if (place.geometry) {
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
+        const address = place.formatted_address;
+        
         
         setFormData(prev => ({
           ...prev,
           latitude: lat,
           longitude: lng,
-          address: place.formatted_address
+          address: address
         }));
       }
     }
@@ -136,7 +138,7 @@ const DoctorEditProfile = () => {
         }));
       }
     }).catch(error => {
-      console.error("Error fetching address:", error);
+      
       toast.error("Error fetching address. Please enter it manually.");
     });
   };
@@ -144,6 +146,12 @@ const DoctorEditProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Validate address
+    if (!formData.address || formData.address.trim() === '') {
+      toast.error("Please provide a valid address");
+      return;
+    }
+
     const binaryAvailability = daysOfWeek.map(day =>
       formData.availability.includes(day) ? '1' : '0'
     ).join('');
@@ -157,35 +165,43 @@ const DoctorEditProfile = () => {
       docPhnNo: formData.phone,
       consultationFee: parseFloat(formData.consultationFee),
       availability: binaryAvailability,
-      address: formData.address,
-      latitude: formData.latitude,
-      longitude: formData.longitude,
+      address: formData.address.trim(), // Ensure address is properly trimmed
+      latitude: parseFloat(formData.latitude),
+      longitude: parseFloat(formData.longitude),
     };
 
     try {
       const token = localStorage.getItem('token');
+
+
       const response = await axios.put(
         `${BASE_URL}/doctor/profile/${doctorId}`, 
         payload,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         }
       );
+
+      // Check if response contains updated data
+      if (response.data) {
+      }
+
       setIsError(false);
       localStorage.setItem("doctorName", payload.doctorName);
       setMessage("Profile updated successfully!");
       toast.success("Profile updated successfully!");
       setTimeout(() => navigate("/doctor/dashboard"), 1500);
     } catch (error) {
-      console.error("Error updating profile:", error);
+      console.error("Error updating profile:", error.response?.data || error);
       setIsError(true);
       if (error.response?.status === 401) {
         setMessage("Session expired. Please login again.");
         setTimeout(() => navigate("/login"), 1500);
       } else {
-        setMessage("Error updating profile. Please try again.");
+        setMessage(`Error updating profile: ${error.response?.data?.message || 'Address update failed'}`);
       }
       toast.error("Failed to update profile.");
     }
