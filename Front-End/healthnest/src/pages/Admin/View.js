@@ -94,53 +94,8 @@ const View = () => {
     fetchAppointments();
   }, [navigate]);
 
-  const formatDateTime = (dateTimeString) => {
-    if (!dateTimeString) return 'N/A';
-    
-    const options = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-    
-    try {
-      return new Date(dateTimeString).toLocaleDateString('en-US', options);
-    } catch (error) {
-      console.error('Date formatting error:', error);
-      return dateTimeString;
-    }
-  };
+  
 
-  const handleDeleteAppointment = async (appointmentId) => {
-    if (window.confirm('Are you sure you want to delete this appointment?')) {
-      try {
-        await axios.delete(`http://localhost:8080/admin/appointments/${appointmentId}`, getAuthHeader());
-        // Update the appointments list after successful deletion
-        const updatedAppointments = appointments.filter(app => app.appointmentId !== appointmentId);
-        setAppointments(updatedAppointments);
-        setTotalAppointments(totalAppointments - 1);
-        
-        // Also update the filtered lists
-        setPendingAppointments(pendingAppointments.filter(app => app.appointmentId !== appointmentId));
-        setUpcomingAppointments(upcomingAppointments.filter(app => app.appointmentId !== appointmentId));
-        setCancelledAppointments(cancelledAppointments.filter(app => app.appointmentId !== appointmentId));
-        setCompletedAppointments(completedAppointments.filter(app => app.appointmentId !== appointmentId));
-        
-        alert('Appointment deleted successfully!');
-      } catch (error) {
-        console.error('Error deleting appointment:', error);
-        alert('Failed to delete appointment. Please try again.');
-        
-        // If unauthorized, redirect to login
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-          localStorage.clear();
-          navigate('/login');
-        }
-      }
-    }
-  };
 
   // Update the loading state
   if (loading) {
@@ -253,7 +208,8 @@ const View = () => {
                       <td data-label="Patient Name">{appointment.userName || 'Unknown'}</td>
                       <td data-label="Doctor">{appointment.doctorName || 'Unknown'}</td>
                       <td data-label="Specialization">{appointment.doctorSpecialization || 'N/A'}</td>
-                      <td data-label="Date & Time">{formatDateTime(appointment.appointmentDate)}</td>
+                      <td data-label="Date & Time"> <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
+                      <span>{appointment.appointmentTime}</span></td>
                       <td data-label="Status">
                         <span className={`status-badge ${appointment.appointmentStatus?.toLowerCase() || appointment.status?.toLowerCase() || 'unknown'}`}>
                           {(appointment.appointmentStatus || appointment.status || 'Unknown').charAt(0).toUpperCase() + 
@@ -290,7 +246,8 @@ const View = () => {
                       <td data-label="Patient Name">{appointment.userName || 'Unknown'}</td>
                       <td data-label="Doctor">{appointment.doctorName || 'Unknown'}</td>
                       <td data-label="Specialization">{appointment.doctorSpecialization || 'N/A'}</td>
-                      <td data-label="Date & Time">{formatDateTime(appointment.appointmentDate)}</td>
+                      <td data-label="Date & Time"> <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
+                      <span>{appointment.appointmentTime}</span></td>
                       <td data-label="Status">
                         <span 
                           className={`status-badge ${
@@ -336,7 +293,8 @@ const View = () => {
                       <td data-label="Patient Name">{appointment.userName || 'Unknown'}</td>
                       <td data-label="Doctor">{appointment.doctorName || 'Unknown'}</td>
                       <td data-label="Specialization">{appointment.doctorSpecialization || 'N/A'}</td>
-                      <td data-label="Date & Time">{formatDateTime(appointment.appointmentDate)}</td>
+                      <td data-label="Date & Time"> <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
+                      <span>{appointment.appointmentTime}</span></td>
                       <td data-label="Status">
                         <span className={`status-badge ${appointment.appointmentStatus?.toLowerCase() || appointment.status?.toLowerCase() || 'unknown'}`}>
                           {(appointment.appointmentStatus || appointment.status || 'Unknown').charAt(0).toUpperCase() + 
