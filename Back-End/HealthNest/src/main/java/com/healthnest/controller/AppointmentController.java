@@ -18,7 +18,7 @@ import com.healthnest.model.Appointment;
 import com.healthnest.service.AppointmentService;
 @CrossOrigin(origins = {"http://localhost:3000", "https://health-nest.netlify.app/"})
 @RestController
-@RequestMapping("/appointments")
+@RequestMapping("/v1/appointments")
 public class AppointmentController {
 
     @Autowired
