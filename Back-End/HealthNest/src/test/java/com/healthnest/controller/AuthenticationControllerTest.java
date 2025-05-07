@@ -1,114 +1,266 @@
 package com.healthnest.controller;
 
 import com.healthnest.dto.DoctorDTO;
-import com.healthnest.exception.DoctorNotFoundException;
+import com.healthnest.exception.AuthenticationException;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
+import com.healthnest.service.JWTService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class AuthenticationControllerTest {
 
+    @InjectMocks
     private AuthenticationController authenticationController;
+
+    @Mock
     private DoctorService doctorService;
+
+    @Mock
     private ModelMapper modelMapper;
 
+    @Mock
+    private JWTService jwtService;
+
+    @Mock
+    private AuthenticationConfiguration authConfig;
+
+   private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @BeforeEach
-    void setUp() throws Exception {
-        doctorService = mock(DoctorService.class);
-        modelMapper = mock(ModelMapper.class);
-        authenticationController = new AuthenticationController();
-
-        var doctorServiceField = AuthenticationController.class.getDeclaredField("doctorService");
-        doctorServiceField.setAccessible(true);
-        doctorServiceField.set(authenticationController, doctorService);
-
-        var modelMapperField = AuthenticationController.class.getDeclaredField("modelMapper");
-        modelMapperField.setAccessible(true);
-        modelMapperField.set(authenticationController, modelMapper);
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        
+        // Set admin credentials using ReflectionTestUtils
+        ReflectionTestUtils.setField(authenticationController, "adminUsername", "admin");
+        ReflectionTestUtils.setField(authenticationController, "adminPassword", "adminpass");
     }
 
-    @Test
-    void testSignUpDoctorSuccess() {
-        DoctorDTO dto = new DoctorDTO();
-        dto.setPassword("plainpassword");
+  
 
+    @Test
+    void signUpDoctor_shouldReturnSuccess() {
+        // Arrange
+        DoctorDTO doctorDTO = new DoctorDTO();
+        doctorDTO.setEmailId("doctor@example.com");
+        doctorDTO.setPassword("password123");
+        
         Doctor doctor = new Doctor();
-        doctor.setPassword("hashedPassword");
-
-        when(modelMapper.map(dto, Doctor.class)).thenReturn(doctor);
-        when(doctorService.addDoctor(any(Doctor.class))).thenReturn("Doctor added");
-
-        ResponseEntity<String> response = authenticationController.signUpDoctor(dto);
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals("Doctor added", response.getBody());
+        doctor.setEmailId("doctor@example.com");
+        doctor.setPassword("password123"); // Make sure password is set in the mapped object
+        
+        when(modelMapper.map(doctorDTO, Doctor.class)).thenReturn(doctor);
+        when(doctorService.addDoctor(any(Doctor.class))).thenReturn("Doctor added successfully");
+        
+        // Act
+        ResponseEntity<String> response = authenticationController.signUpDoctor(doctorDTO);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Doctor added successfully", response.getBody());
+        
+        // Capture the doctor object passed to addDoctor
+        ArgumentCaptor<Doctor> doctorCaptor = ArgumentCaptor.forClass(Doctor.class);
+        verify(doctorService).addDoctor(doctorCaptor.capture());
+        
+        Doctor capturedDoctor = doctorCaptor.getValue();
+        assertEquals("doctor@example.com", capturedDoctor.getEmailId());
+        assertNotNull(capturedDoctor.getPassword(), "Password should not be null");
+        assertNotEquals("password123", capturedDoctor.getPassword(), 
+                       "Password should be different from original: " + capturedDoctor.getPassword());
+        
+        // Verify that the password was hashed (check for BCrypt format more flexibly)
+        assertTrue(capturedDoctor.getPassword().startsWith("$2"), 
+                  "Password should be BCrypt hashed and start with $2: " + capturedDoctor.getPassword());
     }
 
+
+
+
     @Test
-    void testSignUpDoctorException() {
-        DoctorDTO dto = new DoctorDTO();
-        when(modelMapper.map(dto, Doctor.class)).thenThrow(new RuntimeException());
-
-        ResponseEntity<String> response = authenticationController.signUpDoctor(dto);
-
-        assertEquals(500, response.getStatusCodeValue());
+    void signUpDoctor_shouldHandleException() {
+        // Arrange
+        DoctorDTO doctorDTO = new DoctorDTO();
+        doctorDTO.setEmailId("doctor@example.com");
+        doctorDTO.setPassword("password123");
+        
+        when(modelMapper.map(doctorDTO, Doctor.class)).thenThrow(new RuntimeException("Mapping error"));
+        
+        // Act
+        ResponseEntity<String> response = authenticationController.signUpDoctor(doctorDTO);
+        
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("An error occurred during signup", response.getBody());
     }
 
     @Test
-    void testDoctorLoginSuccess() {
+    void doctorLogin_shouldReturnSuccessWithToken() {
+        // Arrange
         DoctorDTO doctorDTO = new DoctorDTO();
-        doctorDTO.setEmailId("test@example.com");
-        doctorDTO.setPassword("password");
-
-        String hashed = new BCryptPasswordEncoder().encode("password");
-
-        Doctor mockDoctor = new Doctor();
-        mockDoctor.setDoctorId(1l);
-        mockDoctor.setDoctorName("Dr. Smith");
-
-        when(doctorService.getDoctorPasswordHashByEmailId("test@example.com")).thenReturn(hashed);
-        when(doctorService.getDoctorIdByEmail("test@example.com")).thenReturn(mockDoctor);
-
-        ResponseEntity<Object> response = authenticationController.doctorLogin(doctorDTO);
-        Map<?, ?> responseBody = (Map<?, ?>) response.getBody();
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals("Login successful", responseBody.get("message"));
-        assertEquals(1l, responseBody.get("userId"));
-        assertEquals("Dr. Smith", responseBody.get("name"));
-    }
-
-    @Test
-    void testDoctorLoginInvalidCredentials() {
-        DoctorDTO doctorDTO = new DoctorDTO();
-        doctorDTO.setEmailId("wrong@example.com");
-        doctorDTO.setPassword("wrongpass");
-
-        when(doctorService.getDoctorPasswordHashByEmailId("wrong@example.com"))
-            .thenThrow(new DoctorNotFoundException("Doctor not found with email: wrong@example.com"));
-
-        assertThrows(DoctorNotFoundException.class, () -> {
-            authenticationController.doctorLogin(doctorDTO);
-        });
-    }
-
-    @Test
-    void testDoctorLoginMissingFields() {
-        DoctorDTO doctorDTO = new DoctorDTO();
+        doctorDTO.setEmailId("doctor@example.com");
+        doctorDTO.setPassword("password123");
         
-        assertThrows(IllegalArgumentException.class, () -> {
-            authenticationController.doctorLogin(doctorDTO);
-        });
+        String hashedPassword = passwordEncoder.encode("password123");
+        
+        Doctor doctor = new Doctor();
+        doctor.setDoctorId(1L);
+        doctor.setDoctorName("Dr. Smith");
+        doctor.setEmailId("doctor@example.com");
+        
+        when(doctorService.getDoctorPasswordHashByEmailId("doctor@example.com")).thenReturn(hashedPassword);
+        when(doctorService.getDoctorIdByEmail("doctor@example.com")).thenReturn(doctor);
+        when(jwtService.generateToken("doctor@example.com", "DOCTOR")).thenReturn("jwt-token");
+        
+        // Act
+        ResponseEntity<Map<String, String>> response = authenticationController.doctorLogin(doctorDTO);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        
+        Map<String, String> responseBody = response.getBody();
+        assertEquals("Login successful", responseBody.get("message"));
+        assertEquals("1", responseBody.get("userId"));
+        assertEquals("Dr. Smith", responseBody.get("name"));
+        assertEquals("jwt-token", responseBody.get("token"));
+        assertEquals("DOCTOR", responseBody.get("role"));
     }
 
+    @Test
+    void doctorLogin_shouldRejectInvalidPassword() {
+        // Arrange
+        DoctorDTO doctorDTO = new DoctorDTO();
+        doctorDTO.setEmailId("doctor@example.com");
+        doctorDTO.setPassword("wrongpassword");
+        
+        String hashedPassword = passwordEncoder.encode("password123");
+        
+        when(doctorService.getDoctorPasswordHashByEmailId("doctor@example.com")).thenReturn(hashedPassword);
+        
+        // Act
+        ResponseEntity<Map<String, String>> response = authenticationController.doctorLogin(doctorDTO);
+        
+        // Assert
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Invalid email or password", response.getBody().get("message"));
+    }
+
+    @Test
+    void doctorLogin_shouldRejectEmptyCredentials() {
+        // Arrange
+        DoctorDTO doctorDTO = new DoctorDTO();
+        doctorDTO.setEmailId("");
+        doctorDTO.setPassword("");
+        
+        // Act & Assert
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            authenticationController.doctorLogin(doctorDTO);
+        });
+        
+        assertEquals("Email and password must not be empty", exception.getMessage());
+    }
+
+    @Test
+    void doctorLogin_shouldHandleServiceException() {
+        // Arrange
+        DoctorDTO doctorDTO = new DoctorDTO();
+        doctorDTO.setEmailId("doctor@example.com");
+        doctorDTO.setPassword("password123");
+        
+        when(doctorService.getDoctorPasswordHashByEmailId("doctor@example.com"))
+            .thenThrow(new RuntimeException("Service error"));
+        
+        // Act
+        ResponseEntity<Map<String, String>> response = authenticationController.doctorLogin(doctorDTO);
+        
+        // Assert
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Service error", response.getBody().get("message"));
+    }
+
+    @Test
+    void adminLogin_shouldReturnSuccessWithToken() {
+        // Arrange
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("username", "admin");
+        credentials.put("password", "adminpass");
+        
+        when(jwtService.generateToken("admin", "ADMIN")).thenReturn("admin-jwt-token");
+        
+        // Act
+        ResponseEntity<Map<String, String>> response = authenticationController.adminLogin(credentials);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        
+        Map<String, String> responseBody = response.getBody();
+        assertEquals("Admin login successful", responseBody.get("message"));
+        assertEquals("ADMIN", responseBody.get("role"));
+        assertEquals("admin-jwt-token", responseBody.get("token"));
+    }
+
+    @Test
+    void adminLogin_shouldRejectInvalidCredentials() {
+        // Arrange
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("username", "admin");
+        credentials.put("password", "wrongpassword");
+        
+        // Act & Assert
+        Exception exception = assertThrows(AuthenticationException.class, () -> {
+            authenticationController.adminLogin(credentials);
+        });
+        
+        assertEquals("Invalid credentials", exception.getMessage());
+    }
+
+    @Test
+    void adminLogin_shouldRejectEmptyCredentials() {
+        // Arrange
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("username", null);
+        credentials.put("password", null);
+        
+        // Act & Assert
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            authenticationController.adminLogin(credentials);
+        });
+        
+        assertEquals("Username and password must not be empty", exception.getMessage());
+    }
+
+    @Test
+    void hashPassword_shouldReturnHashedPassword() throws Exception {
+        // This test uses reflection to test the private hashPassword method
+        
+        // Arrange
+        String password = "password123";
+        
+        // Act
+        String hashedPassword = (String) ReflectionTestUtils.invokeMethod(
+            authenticationController, "hashPassword", password);
+        
+        // Assert
+        assertNotNull(hashedPassword);
+        assertNotEquals(password, hashedPassword);
+        assertTrue(passwordEncoder.matches(password, hashedPassword));
+    }
 }
