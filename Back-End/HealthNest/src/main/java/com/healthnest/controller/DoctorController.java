@@ -27,7 +27,7 @@ import com.healthnest.service.DoctorService;
 import com.healthnest.service.JWTService;
 
 @RestController
-@RequestMapping("/doctor")
+@RequestMapping("/v1/doctor")
 @CrossOrigin(origins = "https://health-nest.netlify.app") 
 public class DoctorController {
     @Autowired
