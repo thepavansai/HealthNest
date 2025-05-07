@@ -37,7 +37,7 @@ import com.healthnest.service.UserService;
 
 @CrossOrigin(origins = "https://health-nest.netlify.app")
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/v1/admin")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
     @Autowired
