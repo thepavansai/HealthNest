@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 
 @CrossOrigin(origins = "https://health-nest.netlify.app")
 @RestController
+@RequestMapping("/v1")
 public class AuthenticationController {
     @Autowired
     private DoctorService doctorService;
