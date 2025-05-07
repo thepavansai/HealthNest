@@ -29,7 +29,7 @@ import com.healthnest.service.UserService;
 
 @CrossOrigin(origins = {"http://localhost:3000", "https://health-nest.netlify.app/"})
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/v1/admin")
 public class AdminController {
     @Autowired
     private UserService userService;
