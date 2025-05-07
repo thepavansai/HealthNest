@@ -173,7 +173,7 @@ void tearDown() {
         when(userService.isUserAlreadyRegistered(anyString())).thenReturn(false);
         doNothing().when(userService).createUser(any(User.class));
         
-        mockMvc.perform(post("/users/Signup")
+        mockMvc.perform(post("/v1/users/Signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testUserDTO)))
                 .andDo(print())
@@ -185,7 +185,7 @@ void tearDown() {
     void testCreateAccount_UserAlreadyExists() throws Exception {
         when(userService.isUserAlreadyRegistered(anyString())).thenReturn(true);
         
-        mockMvc.perform(post("/users/Signup")
+        mockMvc.perform(post("/v1/users/Signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testUserDTO)))
                 .andDo(print())
@@ -204,7 +204,7 @@ void tearDown() {
         when(userService.getUserId(anyString())).thenReturn(1L);
         when(userService.getUserName(anyString())).thenReturn("Test User");
         
-        mockMvc.perform(post("/users/login")
+        mockMvc.perform(post("/v1/users/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testUser)))
                 .andDo(print())
@@ -219,7 +219,7 @@ void tearDown() {
     void testGetUserDetails_Success() throws Exception {
         when(userService.getUserDetails(1L)).thenReturn(testUser);
         
-        mockMvc.perform(get("/users/userdetails/1")
+        mockMvc.perform(get("/v1/users/userdetails/1")
                 .header("Authorization", authHeader)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -237,7 +237,7 @@ void tearDown() {
         
         when(feedBackService.addFeedBack(any(FeedBack.class))).thenReturn("Success");
         
-        mockMvc.perform(post("/users/feeback")
+        mockMvc.perform(post("/v1/users/feeback")
                 .header("Authorization", authHeader)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testFeedback)))
@@ -251,7 +251,7 @@ void tearDown() {
     void testEditProfile_Success() throws Exception {
         when(userService.editProfile(any(User.class), eq(1L))).thenReturn(true);
         
-        mockMvc.perform(patch("/users/editprofile/1")
+        mockMvc.perform(patch("/v1/users/editprofile/1")
                 .header("Authorization", authHeader)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testUser)))
@@ -269,7 +269,7 @@ void tearDown() {
         
         when(appointmentService.getAppointmentSummaries(1L)).thenReturn(appointments);
         
-        mockMvc.perform(get("/users/appointments/1")
+        mockMvc.perform(get("/v1/users/appointments/1")
                 .header("Authorization", authHeader))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -280,7 +280,7 @@ void tearDown() {
     void testCancelAppointment_Success() throws Exception {
         doNothing().when(userService).cancelAppointment(1L);
         
-        mockMvc.perform(patch("/users/cancelappointment/1")
+        mockMvc.perform(patch("/v1/users/cancelappointment/1")
                 .header("Authorization", authHeader))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -291,7 +291,7 @@ void tearDown() {
     void testChangePassword_Success() throws Exception {
         when(userService.changePassword(eq(1L), eq("oldPass"), eq("newPass"))).thenReturn(true);
         
-        mockMvc.perform(patch("/users/changepassword/1/oldPass/newPass")
+        mockMvc.perform(patch("/v1/users/changepassword/1/oldPass/newPass")
                 .header("Authorization", authHeader))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -302,7 +302,7 @@ void tearDown() {
     void testDeleteAccount_Success() throws Exception {
         doNothing().when(userService).deleteAccount(1L);
         
-        mockMvc.perform(delete("/users/deleteuser/1")
+        mockMvc.perform(delete("/v1/users/deleteuser/1")
                 .header("Authorization", authHeader))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -313,7 +313,7 @@ void tearDown() {
     void testBookAppointment_Success() throws Exception {
         when(userService.bookAppointment(any(Appointment.class))).thenReturn(true);
         
-        mockMvc.perform(post("/users/bookappointment")
+        mockMvc.perform(post("/v1/users/bookappointment")
                 .header("Authorization", authHeader)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testAppointment)))
@@ -328,7 +328,7 @@ void tearDown() {
         users.add(testUser);
         when(userService.getAllUsers()).thenReturn(users);
         
-        mockMvc.perform(get("/users/countallusers"))
+        mockMvc.perform(get("/v1/users/countallusers"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("1"));
@@ -338,7 +338,7 @@ void tearDown() {
     void testSetNewPassword() throws Exception {
         when(userService.setNewPassword(eq("test@example.com"), eq("newPassword123"))).thenReturn(true);
         
-        mockMvc.perform(post("/users/setnewpassword")
+        mockMvc.perform(post("/v1/users/setnewpassword")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andDo(print())
@@ -350,7 +350,7 @@ void tearDown() {
     void testCheckEmailExists() throws Exception {
         when(userService.isUserAlreadyRegistered("test@example.com")).thenReturn(true);
         
-        mockMvc.perform(post("/users/check-email")
+        mockMvc.perform(post("/v1/users/check-email")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andDo(print())

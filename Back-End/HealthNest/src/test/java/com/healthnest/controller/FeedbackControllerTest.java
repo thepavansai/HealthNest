@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthnest.config.JwtFilter;
 import com.healthnest.dto.FeedBackDTO;
-
 import com.healthnest.model.FeedBack;
 import com.healthnest.model.enums.Gender;
 import com.healthnest.service.FeedBackService;
@@ -125,7 +124,7 @@ public class FeedbackControllerTest {
     void testAddFeedback_Success() throws Exception {
         when(feedBackService.addFeedBack(any(FeedBack.class))).thenReturn("Success");
         
-        mockMvc.perform(post("/feedback/add")
+        mockMvc.perform(post("/v1/feedback/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", AUTH_HEADER)
                 .content(objectMapper.writeValueAsString(validFeedback)))
@@ -139,7 +138,7 @@ public class FeedbackControllerTest {
         when(feedBackService.addFeedBack(any(FeedBack.class)))
             .thenThrow(new IllegalArgumentException("Rating must be between 0 and 5"));
         
-        mockMvc.perform(post("/feedback/add")
+        mockMvc.perform(post("/v1/feedback/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", AUTH_HEADER)
                 .content(objectMapper.writeValueAsString(invalidRatingFeedback)))
@@ -153,7 +152,7 @@ public class FeedbackControllerTest {
         // Set up a scenario where the authenticated user is different from the feedback user
         when(userService.getUserId("test@example.com")).thenReturn(2L);
         
-        mockMvc.perform(post("/feedback/add")
+        mockMvc.perform(post("/v1/feedback/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", AUTH_HEADER)
                 .content(objectMapper.writeValueAsString(validFeedback)))
@@ -167,7 +166,7 @@ public class FeedbackControllerTest {
         when(feedBackService.addFeedBack(any(FeedBack.class)))
                 .thenThrow(new RuntimeException("Service error"));
         
-        mockMvc.perform(post("/feedback/add")
+        mockMvc.perform(post("/v1/feedback/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", AUTH_HEADER)
                 .content(objectMapper.writeValueAsString(validFeedback)))
@@ -181,13 +180,13 @@ public class FeedbackControllerTest {
         List<FeedBackDTO> feedbacks = Arrays.asList(feedbackDTO);
         when(feedBackService.getAllFeedBack()).thenReturn(feedbacks);
         
-        mockMvc.perform(get("/feedback/all"))
+        mockMvc.perform(get("/v1/feedback/all"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].feedBackId").doesNotExist())  // Check that it doesn't exist or is null
-                .andExpect(jsonPath("$[0].userId").value("1"))
+                .andExpect(jsonPath("$[0].feedBackId").value(null))  // Changed from id to feedBackId
+                .andExpect(jsonPath("$[0].userId").value("1"))       // Changed from number to string
                 .andExpect(jsonPath("$[0].userName").value("Test User"))
                 .andExpect(jsonPath("$[0].userEmail").value("test@example.com"))
                 .andExpect(jsonPath("$[0].feedback").value("Great service!"))
@@ -196,12 +195,13 @@ public class FeedbackControllerTest {
 
 
 
+
     
     @Test
     void testGetAllFeedback_ServiceException() throws Exception {
         when(feedBackService.getAllFeedBack()).thenThrow(new RuntimeException("Service error"));
         
-        mockMvc.perform(get("/feedback/all"))
+        mockMvc.perform(get("/v1/feedback/all"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isInternalServerError());
     }
