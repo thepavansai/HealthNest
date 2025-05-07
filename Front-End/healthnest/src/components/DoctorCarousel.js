@@ -166,7 +166,7 @@ const DoctorCarousel = () => {
     const token = localStorage.getItem('token');
     
     setLoading(true);
-    axios.get(`${BASE_URL}/doctor/all`, {
+    axios.get(`${BASE_URL}/doctor/summary`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     })
       .then(res => {
@@ -184,36 +184,17 @@ const DoctorCarousel = () => {
 
   const extractCityName = (address) => {
     if (!address) return "Location Unknown";
-
-    // Split the address string by commas
+    
+ 
     const parts = address.split(',').map(part => part.trim());
-
-    // Check if there are enough parts (at least 3 for city, state/pin, country)
+    
+    
     if (parts.length >= 3) {
-      // The city is typically the part before the last two parts
-      // (e.g., parts[length - 3])
-      const potentialCity = parts[parts.length - 3];
-
-      // Basic validation: ensure it's not empty and looks like a city name
-      if (potentialCity && potentialCity.length > 2 && !/^\d+$/.test(potentialCity)) {
-        // Further clean up common suffixes like "City" if needed, but return the part
-        // Example: If part is "HITEC City", return "HITEC City" or just "HITEC"
-        // For simplicity, we'll return the part as is for now.
-        return potentialCity;
-      }
+      return parts[parts.length - 3];
     }
-
-    // Fallback if the address format is different or shorter
-    // Try the second to last part if only 2 parts exist
-    if (parts.length === 2) {
-      const potentialCity = parts[0];
-       if (potentialCity && potentialCity.length > 2 && !/^\d+$/.test(potentialCity)) {
-         return potentialCity;
-       }
-    }
-
-    // If the logic doesn't find a suitable part, return a default
-    return "Location Unknown";
+    
+    
+    return parts[0] ;
   };
 
   let maleCounter = 0;
@@ -403,7 +384,7 @@ const DoctorCarousel = () => {
                         Rating:
                       </Typography>
                       <Typography variant="body2" sx={{ fontWeight: 'bold', color: '#555' }}>
-                        {doctor.rating || "4.5"}
+                        {doctor.rating ? Number(doctor.rating).toFixed(1) : "4.5"}
                       </Typography>
                     </Box>
                   </RatingContainer>
@@ -416,7 +397,7 @@ const DoctorCarousel = () => {
                   textAlign: 'center',
                   mt: 1
                 }}>
-                  Dr. {doctor.doctorName}
+                  Dr. {doctor.name}
                 </Typography>
                 
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1.5, gap: 0.5 }}>
@@ -468,9 +449,8 @@ const DoctorCarousel = () => {
                       Location:
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.9rem' }}>
-                      {doctor.address 
-                        ? extractCityName(doctor.address) 
-                        : (doctor.location || "Location Unknown")}
+                      { extractCityName(doctor.location) 
+                  }
                     </Typography>
                   </Box>
                 </Box>
@@ -484,7 +464,7 @@ const DoctorCarousel = () => {
                           Specialty:
                         </Typography>
                         <Typography sx={{ fontSize: '0.8rem' }}>
-                          {doctor.specializedrole}
+                          {doctor.specialization || "General Medicine"}
                         </Typography>
                       </Box>
                     }
