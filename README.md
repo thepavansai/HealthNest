@@ -46,7 +46,7 @@ HealthNest is a comprehensive healthcare platform that connects patients with sp
 - JWT authentication
 
 ### Backend
-- Java 11
+- Java 17
 - Spring Boot 2.7.0
 - Spring Security with JWT
 - ModelMapper
@@ -64,7 +64,7 @@ HealthNest is a comprehensive healthcare platform that connects patients with sp
 Node.js >= 14.0.0
 ```
 ```bash:terminal
-Java JDK >= 11
+Java JDK >= 17
 ```
 ```bash:terminal
 MySQL >= 8.0
