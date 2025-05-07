@@ -133,13 +133,6 @@ public class AppointmentService {
 	        return false;
 	    }
 
-	    /**
-	     * Checks if an appointment belongs to a user with the given email
-	     * 
-	     * @param appointmentId the ID of the appointment to check
-	     * @param email the email of the user to verify against
-	     * @return true if the appointment belongs to the user with the given email, false otherwise
-	     */
 	    public boolean isAppointmentForUserEmail(Long appointmentId, String email) {
 	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
 	        Optional<User> userOpt = userRepository.findByEmail(email);
@@ -153,48 +146,7 @@ public class AppointmentService {
 	        
 	        return false;
 	    }
-//	    public boolean updateAppointmentStatus(Integer appointmentId, String newStatus) {
-//	        Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
-//	        
-//	        if (appointmentOpt.isPresent()) {
-//	            Appointment appointment = appointmentOpt.get();
-//	            appointment.setAppointmentStatus(newStatus);
-//	            appointmentRepository.save(appointment);
-//	            return true;
-//	        }
-//	        
-//	        return false;
-//	    
-//	    public boolean updateAppointmentStatus(Integer appointmentId, String newStatus) {
-//	        try {
-//	            // Add logging
-//	            System.out.println("Updating appointment " + appointmentId + " to status " + newStatus);
-//	            
-//	            Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
-//	            
-//	            if (appointmentOpt.isPresent()) {
-//	                Appointment appointment = appointmentOpt.get();
-//	                
-//	                // Log current status
-//	                System.out.println("Current status: " + appointment.getAppointmentStatus());
-//	                
-//	                appointment.setAppointmentStatus(newStatus);
-//	                appointmentRepository.save(appointment);
-//	                
-//	                // Log after update
-//	                System.out.println("Status updated successfully");
-//	                return true;
-//	            } else {
-//	                System.out.println("Appointment not found with ID: " + appointmentId);
-//	                return false;
-//	            }
-//	        } catch (Exception e) {
-//	            // Log the exception
-//	            System.err.println("Error updating appointment status: " + e.getMessage());
-//	            e.printStackTrace();
-//	            throw e; // Re-throw to be handled by the controller
-//	        }
-//	    }
+
 	    public boolean updateAppointmentStatus(Long appointmentId, String newStatus) {
 	        try {
 	            // Add logging
