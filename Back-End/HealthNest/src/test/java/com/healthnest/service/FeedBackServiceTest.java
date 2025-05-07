@@ -3,94 +3,185 @@ package com.healthnest.service;
 import com.healthnest.dto.FeedBackDTO;
 import com.healthnest.model.FeedBack;
 import com.healthnest.model.User;
+import com.healthnest.model.enums.Gender;
 import com.healthnest.repository.FeedBackRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class FeedBackServiceTest {
-
-    @InjectMocks
-    private FeedBackService feedBackService;
 
     @Mock
     private FeedBackRepository feedBackRepository;
 
-    private FeedBack sampleFeedBack;
+    @InjectMocks
+    private FeedBackService feedBackService;
+
+    private FeedBack validFeedback;
+    private User user;
+    private List<FeedBackDTO> feedbackDTOList;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        // Create a valid user
+        user = new User();
+        user.setUserId(1L);
+        user.setName("Test User");
+        user.setEmail("test@example.com");
+        user.setGender(Gender.MALE);
+        user.setPassword("password123");
+        user.setDateOfBirth("1990-01-01");
+        user.setPhoneNo("1234567890");
+        user.setRole("USER");
 
-        
-        User mockUser = new User();
-        mockUser.setUserId(101l);
-        mockUser.setName("Test User");
-        mockUser.setEmail("testuser@example.com");
+        // Create a valid feedback
+        validFeedback = new FeedBack();
+        validFeedback.setId(1L);
+        validFeedback.setFeedback("Great service!");
+        validFeedback.setEmailId("test@example.com");
+        validFeedback.setRating(4.5f);
+        validFeedback.setUser(user);
 
-      
-        sampleFeedBack = new FeedBack();
-        sampleFeedBack.setId(1l);
-        sampleFeedBack.setFeedback("Excellent service!");
-        sampleFeedBack.setEmailId("testuser@example.com");
-        sampleFeedBack.setUser(mockUser);
+        // Create sample feedback DTOs for repository response
+        feedbackDTOList = Arrays.asList(
+            new FeedBackDTO(1L, 1L, "Test User", "test@example.com", "Great service!", 4.5f),
+            new FeedBackDTO(2L, 2L, "Another User", "another@example.com", "Good experience", 3.5f)
+        );
     }
 
     @Test
-    void testAddFeedBack() {
-        when(feedBackRepository.save(sampleFeedBack)).thenReturn(sampleFeedBack);
+    void testAddFeedBack_ValidFeedback() {
+        // Arrange
+        when(feedBackRepository.save(any(FeedBack.class))).thenReturn(validFeedback);
 
-        String result = feedBackService.addFeedBack(sampleFeedBack);
+        // Act
+        String result = feedBackService.addFeedBack(validFeedback);
 
+        // Assert
         assertEquals("Success", result);
-        verify(feedBackRepository, times(1)).save(sampleFeedBack);
+        verify(feedBackRepository, times(1)).save(validFeedback);
+    }
+
+    @Test
+    void testAddFeedBack_NullFeedback() {
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> feedBackService.addFeedBack(null)
+        );
+        assertEquals("Feedback cannot be null", exception.getMessage());
+        verify(feedBackRepository, never()).save(any());
+    }
+
+    @Test
+    void testAddFeedBack_EmptyFeedbackContent() {
+        // Arrange
+        FeedBack emptyContentFeedback = new FeedBack();
+        emptyContentFeedback.setUser(user);
+        emptyContentFeedback.setFeedback("");
+        
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> feedBackService.addFeedBack(emptyContentFeedback)
+        );
+        assertEquals("Feedback content cannot be empty", exception.getMessage());
+        verify(feedBackRepository, never()).save(any());
+    }
+
+    @Test
+    void testAddFeedBack_NullFeedbackContent() {
+        // Arrange
+        FeedBack nullContentFeedback = new FeedBack();
+        nullContentFeedback.setUser(user);
+        nullContentFeedback.setFeedback(null);
+        
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> feedBackService.addFeedBack(nullContentFeedback)
+        );
+        assertEquals("Feedback content cannot be empty", exception.getMessage());
+        verify(feedBackRepository, never()).save(any());
+    }
+
+    @Test
+    void testAddFeedBack_InvalidRating_TooHigh() {
+        // Arrange
+        FeedBack invalidRatingFeedback = new FeedBack();
+        invalidRatingFeedback.setUser(user);
+        invalidRatingFeedback.setFeedback("Good service");
+        invalidRatingFeedback.setRating(6.0f);
+        
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> feedBackService.addFeedBack(invalidRatingFeedback)
+        );
+        assertEquals("Rating must be between 0 and 5", exception.getMessage());
+        verify(feedBackRepository, never()).save(any());
+    }
+
+    @Test
+    void testAddFeedBack_InvalidRating_Negative() {
+        // Arrange
+        FeedBack invalidRatingFeedback = new FeedBack();
+        invalidRatingFeedback.setUser(user);
+        invalidRatingFeedback.setFeedback("Good service");
+        invalidRatingFeedback.setRating(-1.0f);
+        
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> feedBackService.addFeedBack(invalidRatingFeedback)
+        );
+        assertEquals("Rating must be between 0 and 5", exception.getMessage());
+        verify(feedBackRepository, never()).save(any());
+    }
+
+    @Test
+    void testAddFeedBack_NullUser() {
+        // Arrange
+        FeedBack nullUserFeedback = new FeedBack();
+        nullUserFeedback.setFeedback("Good service");
+        nullUserFeedback.setRating(4.0f);
+        nullUserFeedback.setUser(null);
+        
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> feedBackService.addFeedBack(nullUserFeedback)
+        );
+        assertEquals("User cannot be null", exception.getMessage());
+        verify(feedBackRepository, never()).save(any());
     }
 
     @Test
     void testGetAllFeedBack() {
-        FeedBackDTO dto1 = new FeedBackDTO(1l, 101l, "Alice", "alice@example.com", "Awesome support!", 4.5f);
-        FeedBackDTO dto2 = new FeedBackDTO(2l, 102l, "Bob", "bob@example.com", "Very satisfied", 3.5f);
+        // Arrange
+        when(feedBackRepository.findAllFeedBacksDTO()).thenReturn(feedbackDTOList);
 
-        List<FeedBackDTO> feedbackList = Arrays.asList(dto1, dto2);
-
-        when(feedBackRepository.findAllFeedBacksDTO()).thenReturn(feedbackList);
-
+        // Act
         List<FeedBackDTO> result = feedBackService.getAllFeedBack();
 
-        assertNotNull(result);
+        // Assert
         assertEquals(2, result.size());
-
-        assertEquals("Alice", result.get(0).getUserName());
-        assertEquals("bob@example.com", result.get(1).getUserEmail());
-        assertEquals("Awesome support!", result.get(0).getFeedback());
-    }
-
-    @Test
-    void testAddFeedback_InvalidRating() {
-        sampleFeedBack.setRating(6.0f);
-        assertThrows(IllegalArgumentException.class, () -> 
-            feedBackService.addFeedBack(sampleFeedBack));
-    }
-
-    @Test
-    void testAddFeedback_EmptyContent() {
-        sampleFeedBack.setFeedback("");
-        assertThrows(IllegalArgumentException.class, () -> 
-            feedBackService.addFeedBack(sampleFeedBack));
-    }
-
-    @Test
-    void testAddFeedback_NullUser() {
-        sampleFeedBack.setUser(null);
-        assertThrows(IllegalArgumentException.class, () -> 
-            feedBackService.addFeedBack(sampleFeedBack));
+        assertEquals(1L, result.get(0).getFeedBackId());
+        assertEquals("Test User", result.get(0).getUserName());
+        assertEquals("Great service!", result.get(0).getFeedback());
+        assertEquals(4.5f, result.get(0).getRating());
+        
+        verify(feedBackRepository, times(1)).findAllFeedBacksDTO();
     }
 }

@@ -4,8 +4,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -23,11 +23,16 @@ public class HealthNestApplication {
     ModelMapper modelMapper() {
         return new ModelMapper();
     }
+//    @Bean
+//    @Profile("!test") // Only create this bean when not in test profile
+//     ModelMapper modelMapper() {
+//        return new ModelMapper();
+//    }
     
-    @Bean	
-    BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean	
+//    BCryptPasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
     
     @Bean
     public Jackson2ObjectMapperBuilder jacksonBuilder() {

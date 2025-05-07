@@ -5,20 +5,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import com.healthnest.model.FeedBack;
-import com.healthnest.model.User;
 import com.healthnest.service.FeedBackService;
 import com.healthnest.service.JWTService;
 import com.healthnest.service.UserService;
 import com.healthnest.dto.FeedBackDTO;
-
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "https://health-nest.netlify.app")
 @RequestMapping("/v1/feedback")
 public class FeedbackController {
+
     @Autowired
     private FeedBackService feedBackService;
     
@@ -41,7 +39,7 @@ public class FeedbackController {
             
             // Verify that the user is submitting feedback as themselves
             Long authenticatedUser = userService.getUserId(email);
-            if (authenticatedUser != feedback.getId()) {
+            if (feedback.getUser() != null && authenticatedUser != feedback.getUser().getUserId()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only submit feedback as yourself");
             }
             
@@ -65,6 +63,4 @@ public class FeedbackController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    
-   
 }
