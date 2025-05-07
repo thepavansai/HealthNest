@@ -13,8 +13,8 @@ import com.healthnest.dto.FeedBackDTO;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "https://health-nest.netlify.app", allowedHeaders = "*")
-@RequestMapping("/feedback") // Changed to /api/feedback
+@CrossOrigin(origins = "https://health-nest.netlify.app")
+@RequestMapping("/v1/feedback")
 public class FeedbackController {
 
     @Autowired
