@@ -372,7 +372,7 @@ public class DoctorControllerTest {
         when(doctorService.setNewPassword("doctor@example.com", "newPassword123")).thenReturn(true);
         
         // Test via MockMvc
-        mockMvc.perform(post("/doctor/setnewpassword")
+        mockMvc.perform(post("/v1/doctor/setnewpassword")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
@@ -386,7 +386,7 @@ public class DoctorControllerTest {
         requestBody.put("newPassword", "short");
         
         // Test via MockMvc
-        mockMvc.perform(post("/doctor/setnewpassword")
+        mockMvc.perform(post("/v1/doctor/setnewpassword")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isBadRequest())
@@ -403,7 +403,7 @@ public class DoctorControllerTest {
         requestBody.put("newPassword", "newPassword123");
         
         // Test via MockMvc
-        mockMvc.perform(post("/doctor/setnewpassword")
+        mockMvc.perform(post("/v1/doctor/setnewpassword")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isBadRequest())
@@ -422,7 +422,7 @@ public class DoctorControllerTest {
         when(doctorService.isDoctorEmailRegistered("doctor@example.com")).thenReturn(true);
         
         // Test via MockMvc
-        mockMvc.perform(post("/doctor/check-email")
+        mockMvc.perform(post("/v1/doctor/check-email")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
@@ -438,7 +438,7 @@ public class DoctorControllerTest {
         when(doctorService.isDoctorEmailRegistered("nonexistent@example.com")).thenReturn(false);
         
         // Test via MockMvc
-        mockMvc.perform(post("/doctor/check-email")
+        mockMvc.perform(post("/v1/doctor/check-email")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
@@ -452,7 +452,7 @@ public class DoctorControllerTest {
         requestBody.put("email", "invalid-email");
         
         // Test via MockMvc
-        mockMvc.perform(post("/doctor/check-email")
+        mockMvc.perform(post("/v1/doctor/check-email")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isBadRequest())
@@ -467,7 +467,7 @@ public class DoctorControllerTest {
         when(modelMapper.map(testDoctor, DoctorDTO.class)).thenReturn(testDoctorDTO);
         
         // Test via MockMvc
-        mockMvc.perform(get("/doctor/nearby")
+        mockMvc.perform(get("/v1/doctor/nearby")
                 .param("lat", "40.7128")
                 .param("lng", "-74.0060")
                 .param("radius", "5.0"))

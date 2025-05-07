@@ -106,7 +106,7 @@ public class FeedbackControllerTest {
         
      // Set up feedback DTO
         feedbackDTO = new FeedBackDTO();
-        feedbackDTO.setFeedBackId(null);  // Changed from setId to setFeedBackId
+        feedbackDTO.setFeedBackId(1L);  // Changed from setId to setFeedBackId
         feedbackDTO.setUserId(1L);       // Changed from number to string
         feedbackDTO.setUserName("Test User");
         feedbackDTO.setUserEmail("test@example.com");
@@ -185,7 +185,7 @@ public class FeedbackControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].feedBackId").value(null))  // Changed from id to feedBackId
+                .andExpect(jsonPath("$[0].feedBackId").value(1L))  // Changed from id to feedBackId
                 .andExpect(jsonPath("$[0].userId").value("1"))       // Changed from number to string
                 .andExpect(jsonPath("$[0].userName").value("Test User"))
                 .andExpect(jsonPath("$[0].userEmail").value("test@example.com"))
