@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "https://health-nest.netlify.app")
-@RequestMapping("/feedback")
+@RequestMapping("/v1/feedback")
 public class FeedbackController {
     @Autowired
     private FeedBackService feedBackService;
