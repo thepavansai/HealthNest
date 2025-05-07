@@ -14,4 +14,5 @@ public class DoctorSummaryDTO {
     private String hospital;
     private String availability;
     private String specialization;
+    private Integer status;
 }

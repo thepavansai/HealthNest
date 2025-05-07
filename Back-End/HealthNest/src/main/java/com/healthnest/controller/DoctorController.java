@@ -361,7 +361,8 @@ public ResponseEntity<List<DoctorDTO>> getAllDoctors()
                             doctor.getAddress(), // Make sure Doctor model has getLocation()
                             doctor.getHospitalName(), // Make sure Doctor model has getHospital()
                             doctor.getAvailability(), // Make sure Doctor model has getAvailability()
-                            doctor.getSpecializedrole() // Add specialization - Make sure Doctor model has getSpecialization()
+                            doctor.getSpecializedrole(),
+                            doctor.getStatus()// Add specialization - Make sure Doctor model has getSpecialization()
                     ))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(doctorSummaries);
