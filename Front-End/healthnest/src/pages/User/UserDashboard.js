@@ -148,7 +148,7 @@ const UserDashboard = () => {
                 <FaCalendarCheck className="card-icon" />
                 <h2>{appointments.length || 0}</h2>
               </div>
-              <p>Upcoming Appointments</p>
+              <p>Appointments</p>
               {appointments.length > 0 ? (
                 <div className="next-appointment">
                  <p className="appointment-date">

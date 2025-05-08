@@ -27,7 +27,10 @@ const ForgotPassword = () => {
 
   
   const generateOTP = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    const randomNumber = array[0] % 900000 + 100000; // Ensures a 6-digit number
+    return randomNumber.toString();
   };
 
   

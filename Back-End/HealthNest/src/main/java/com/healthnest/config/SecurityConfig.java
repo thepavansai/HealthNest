@@ -43,20 +43,20 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints
-                .requestMatchers("/users/Signup", "/users/login", "/doctor-signup", "/doctor-login", "/admin-login","/feedback/all","/doctor/all").permitAll()
-                .requestMatchers("/users/check-email", "/users/setnewpassword").permitAll()
-                .requestMatchers("/appointments/countall","/users/countallusers","/doctor/countalldoctors").permitAll()
-                .requestMatchers("/doctor/check-email", "/doctor/setnewpassword").permitAll()
+                .requestMatchers("/v1/users/Signup", "/v1/users/login", "/v1/doctor-signup", "/v1/doctor-login", "/v1/admin-login","/v1/feedback/all","/v1/doctor/summary").permitAll()
+                .requestMatchers("/v1/users/check-email", "/v1/users/setnewpassword").permitAll()
+                .requestMatchers("/v1/appointments/countall","/v1/users/countallusers","/v1/doctor/countalldoctors").permitAll()
+                .requestMatchers("/v1/doctor/check-email", "/v1/doctor/setnewpassword").permitAll()
                 
                 // Admin-only endpoints
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/v1/admin/**").hasRole("ADMIN")
                 
                 // Doctor-only endpoints
-                .requestMatchers("/doctor/profile/**").hasAnyRole("DOCTOR", "ADMIN")
-                .requestMatchers("/doctors/**").hasRole("DOCTOR")
+                .requestMatchers("/v1/doctor/profile/**").hasAnyRole("DOCTOR", "ADMIN")
+                .requestMatchers("/v1/doctors/**").hasRole("DOCTOR")
                 
                 // User-only endpoints
-                .requestMatchers("/users/**").hasRole("USER")
+                .requestMatchers("/v1/users/**").hasRole("USER")
                 
                 // Require authentication for all other requests
                 .anyRequest().authenticated()

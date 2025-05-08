@@ -100,7 +100,7 @@ const ViewAppointments = () => {
       const token = localStorage.getItem('token');
       
       const response = await axios.patch(
-        `${BASE_URL}/users/cancelappointment/${appointmentId}`,
+        `${BASE_URL}/appointments/${appointmentId}/status/Cancelled`,
         {},  // Empty body for PATCH request
         {
           headers: {

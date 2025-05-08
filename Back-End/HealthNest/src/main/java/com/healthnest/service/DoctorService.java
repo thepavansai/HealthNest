@@ -60,6 +60,7 @@ public class DoctorService {
     public String updateDoctorProfile(Long doctorId, DoctorDTO doctorDTO) {
         Doctor doctor = doctorRepository.findById(doctorId)
             .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        
         doctor.setDoctorName(doctorDTO.getDoctorName());
         doctor.setHospitalName(doctorDTO.getHospitalName());
         doctor.setExperience(doctorDTO.getExperience());
@@ -68,6 +69,12 @@ public class DoctorService {
         doctor.setDocPhnNo(doctorDTO.getDocPhnNo());
         doctor.setAvailability(doctorDTO.getAvailability());
         doctor.setSpecializedrole(doctorDTO.getSpecializedrole());
+        
+        
+        doctor.setAddress(doctorDTO.getAddress());
+        doctor.setLatitude(doctorDTO.getLatitude());
+        doctor.setLongitude(doctorDTO.getLongitude());
+        
         doctorRepository.save(doctor);
         return "Updated Doctor Profile";
     }
