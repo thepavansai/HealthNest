@@ -47,7 +47,14 @@ public class SecurityConfig {
                 .requestMatchers("/v1/users/check-email", "/v1/users/setnewpassword").permitAll()
                 .requestMatchers("/v1/appointments/countall","/v1/users/countallusers","/v1/doctor/countalldoctors").permitAll()
                 .requestMatchers("/v1/doctor/check-email", "/v1/doctor/setnewpassword").permitAll()
-                
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**",
+                    "/v3/api-docs.yaml",
+                    "/swagger-resources/**",
+                    "/webjars/**"
+                ).permitAll()
                 // Admin-only endpoints
                 .requestMatchers("/v1/admin/**").hasRole("ADMIN")
                 
