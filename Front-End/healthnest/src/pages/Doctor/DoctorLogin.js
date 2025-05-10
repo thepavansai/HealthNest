@@ -36,7 +36,7 @@ const DoctorLogin = () => {
 
     if (password.length < 6) {
       setIsError(true);
-      setMessage("Password must be at least 6 characters long");
+      setMessage("Password must be at least 8 characters long");
       setLoading(false);
       return;
     }
