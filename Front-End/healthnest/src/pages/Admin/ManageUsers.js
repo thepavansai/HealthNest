@@ -108,11 +108,12 @@ const ManageUsers = () => {
           <div className="users-summary">
             <div className="summary-card">
               <div className="summary-icon">
-                <FaUser />
+                <center><FaUser /></center>
               </div>
               <div className="summary-details">
-                <h3>{users.length}</h3>
+                
                 <p>Total Users</p>
+                <center><h3>{users.length}</h3></center>
               </div>
             </div>
           </div>

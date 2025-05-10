@@ -332,7 +332,7 @@
 .login-redirect {
   text-align: center;
   margin-top: 15px; /* Adjust margin for smaller screens */
-  color: #7f8c8d;
+  color: #5956F4;
   font-size: 12px; /* Adjust font size for smaller screens */
 }
 
@@ -535,6 +535,7 @@ input[type='text'] {
     font-size: 12px;
     margin-top: 5px;
     padding-left: 40px;
+    color: #5956F4;
   }
 
   .gender-label {
