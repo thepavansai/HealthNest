@@ -4,7 +4,7 @@
   color: #374151;
   max-width: 1400px;
   margin: 0 auto;
-  margin-top: 80px; /* Add space below header */
+  
   position: relative;
   z-index: 1; /* Ensure proper stacking context */
 }
