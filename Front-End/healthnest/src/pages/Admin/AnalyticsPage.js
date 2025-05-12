@@ -325,10 +325,10 @@ const AnalyticsPage = () => {
 
   // Process doctor ratings data
   const processDoctorRatings = (doctorsData, appointmentsData) => {
-    // Skip if no data
-    if (!doctorsData.length) {
-      return;
-    }
+  // Skip if no data
+  if (!doctorsData.length) {
+    return;
+  }
 
     // Create rating distribution
     const ratingCounts = {
@@ -342,50 +342,51 @@ const AnalyticsPage = () => {
 
     // Count doctors by rating (rounded to nearest integer)
     doctorsData.forEach(doctor => {
-      if (doctor.rating) {
-        const roundedRating = Math.round(doctor.rating);
-        if (roundedRating >= 0 && roundedRating <= 5) {
-          ratingCounts[roundedRating]++;
-        }
+    if (doctor.rating && doctor.rating > 0) {
+      const roundedRating = Math.round(doctor.rating);
+      if (roundedRating >= 1 && roundedRating <= 5) {
+        ratingCounts[roundedRating]++;
       }
-    });
+    }
+  });
 
     // Calculate total doctors with ratings
     const totalRatedDoctors = Object.values(ratingCounts).reduce((sum, count) => sum + count, 0);
     
     // Calculate percentage for each rating
     const ratingDistribution = Object.entries(ratingCounts).map(([rating, count]) => ({
-      rating: parseInt(rating),
-      count,
-      percentage: totalRatedDoctors > 0 ? Math.round((count / totalRatedDoctors) * 100) : 0
-    })).sort((a, b) => b.rating - a.rating); // Sort by rating (highest first)
+    rating: parseInt(rating),
+    count,
+    percentage: totalRatedDoctors > 0 ? Math.round((count / totalRatedDoctors) * 100) : 0
+  })).sort((a, b) => b.rating - a.rating); // Sort by rating (highest first)
 
     // Calculate average rating
-    const totalRatingSum = doctorsData.reduce((sum, doctor) => sum + (doctor.rating || 0), 0);
-    const averageRating = doctorsData.length > 0 
-      ? parseFloat((totalRatingSum / doctorsData.length).toFixed(1)) 
-      : 0;
+    const ratedDoctors = doctorsData.filter(doctor => doctor.rating && doctor.rating > 0);
+  const totalRatingSum = ratedDoctors.reduce((sum, doctor) => sum + doctor.rating, 0);
+  const averageRating = ratedDoctors.length > 0
+    ? parseFloat((totalRatingSum / ratedDoctors.length).toFixed(1))
+    : 0;
 
     // Group doctors by specialty and calculate average rating per specialty
-    const specialtyRatings = {};
-    doctorsData.forEach(doctor => {
-      if (doctor.rating && doctor.specializedrole) {
-        if (!specialtyRatings[doctor.specializedrole]) {
-          specialtyRatings[doctor.specializedrole] = {
-            totalRating: 0,
-            count: 0
-          };
-        }
-        specialtyRatings[doctor.specializedrole].totalRating += doctor.rating;
-        specialtyRatings[doctor.specializedrole].count++;
+     const specialtyRatings = {};
+  doctorsData.forEach(doctor => {
+    if (doctor.rating && doctor.rating > 0 && doctor.specializedrole) {
+      if (!specialtyRatings[doctor.specializedrole]) {
+        specialtyRatings[doctor.specializedrole] = {
+          totalRating: 0,
+          count: 0
+        };
       }
-    });
+      specialtyRatings[doctor.specializedrole].totalRating += doctor.rating;
+      specialtyRatings[doctor.specializedrole].count++;
+    }
+  });
 
     // Calculate average rating per specialty
-    const specialtyAverages = {};
-    Object.entries(specialtyRatings).forEach(([specialty, data]) => {
-      specialtyAverages[specialty] = parseFloat((data.totalRating / data.count).toFixed(1));
-    });
+   const specialtyAverages = {};
+  Object.entries(specialtyRatings).forEach(([specialty, data]) => {
+    specialtyAverages[specialty] = parseFloat((data.totalRating / data.count).toFixed(1));
+  });
 
     // Find highest and lowest rated specialties
     let highestRatedSpecialty = { name: 'N/A', rating: 0 };
@@ -1031,94 +1032,6 @@ const AnalyticsPage = () => {
             </div>
           </motion.div>
 
-<motion.div
-  className="analytics-card health-metrics"
-  initial={{ y: 20, opacity: 0 }}
-  animate={{ y: 0, opacity: 1 }}
-  transition={{ duration: 0.8, delay: 1.1 }}
->
-  <div className="card-header">
-    <h2><FaUserInjured /> Patient Health Metrics</h2>
-  </div>
-  <div className="card-body">
-    {healthMetricsData.commonIssues.length > 0 ? (
-      <>
-        <div className="health-metrics-summary">
-          <h3>Common Health Issues</h3>
-          <p className="metrics-subtitle">
-            Based on analysis of {healthMetricsData.totalAnalyzedAppointments} appointment descriptions
-          </p>
-          
-          <div className="health-issues-chart">
-            {healthMetricsData.commonIssues.map((issue, index) => (
-              <div className="health-issue-item" key={`health-${index}`}>
-                <div className="issue-name">{issue.issue}</div>
-                <div className="issue-bar-container">
-                  <div 
-                    className="issue-bar"
-                    style={{ 
-                      width: `${issue.percentage}%`,
-                      backgroundColor: `hsl(${210 - index * 15}, 80%, 55%)`
-                    }}
-                  ></div>
-                </div>
-                <div className="issue-count">
-                  {issue.count} ({issue.percentage}%)
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        <div className="health-metrics-insights">
-          <div className="insight-box">
-            <h4>Top Health Issue</h4>
-            <p className="insight-value">
-              {healthMetricsData.commonIssues[0]?.issue || 'N/A'}
-            </p>
-            <p className="insight-detail">
-              {healthMetricsData.commonIssues[0]?.percentage || 0}% of appointments
-            </p>
-          </div>
-          
-         
-          
-          <div className="insight-box">
-            <h4>Seasonal Trend</h4>
-            {(() => {
-              // Find month with highest issue count
-              const topIssue = healthMetricsData.commonIssues[0]?.issue;
-              if (!topIssue) return <p className="insight-value">N/A</p>;
-              
-              let maxCount = 0;
-              let maxMonth = 0;
-              
-              Object.entries(healthMetricsData.issuesByMonth).forEach(([month, data]) => {
-                if (data[topIssue] > maxCount) {
-                  maxCount = data[topIssue];
-                  maxMonth = parseInt(month);
-                }
-              });
-              
-              const monthName = new Date(2023, maxMonth - 1, 1).toLocaleString('default', { month: 'long' });
-              
-              return (
-                <>
-                  <p className="insight-value">{monthName}</p>
-                  <p className="insight-detail">
-                    Peak month for {topIssue}
-                  </p>
-                </>
-              );
-            })()}
-          </div>
-        </div>
-      </>
-    ) : (
-      <div className="no-data-message">No health metrics data available</div>
-    )}
-  </div>
-</motion.div>
 
 
           {/* Appointment Time Analysis - Now Dynamic */}

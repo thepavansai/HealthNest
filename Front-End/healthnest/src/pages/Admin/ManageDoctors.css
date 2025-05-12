@@ -579,3 +579,17 @@
   font-weight: bold;
   margin-right: 5px;
 }
+/* Add this to your existing CSS file */
+
+.download-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaEnvelope, FaPhone, FaSearch, FaUser, FaCalendarAlt, FaVenusMars } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaSearch, FaUser, FaCalendarAlt, FaVenusMars, FaDownload } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -62,6 +62,47 @@ const ManageUsers = () => {
     setFlippedUserId(flippedUserId === userId ? null : userId);
   };
 
+  // Function to download user data as CSV
+  const downloadUsersCSV = () => {
+    // Define CSV headers
+    const headers = [
+      'User ID',
+      'Name',
+      'Email',
+      'Phone Number',
+      'Gender',
+      'Date of Birth'
+    ];
+    
+    // Convert user data to CSV rows
+    const csvRows = filteredUsers.map(user => [
+      user.userId,
+      user.name || 'Unknown',
+      user.email || '',
+      user.phoneNo || 'N/A',
+      user.gender || 'N/A',
+      user.dateOfBirth || 'N/A'
+    ]);
+    
+    // Add headers as the first row
+    csvRows.unshift(headers);
+    
+    // Convert each row to CSV format
+    const csvContent = csvRows.map(row => row.join(',')).join('\n');
+    
+    // Create a Blob with the CSV data
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // Create a download link and trigger download
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `users-data-${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const filteredUsers = users.filter(user => {
     return (
       user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -112,6 +153,9 @@ const ManageUsers = () => {
                 <p>Total Users</p>
               </div>
             </div>
+            <button className="download-csv-btn" onClick={downloadUsersCSV}>
+              <FaDownload /> Download CSV
+            </button>
           </div>
         </div>
         <div className="users-filter">

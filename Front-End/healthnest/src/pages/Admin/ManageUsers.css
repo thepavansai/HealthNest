@@ -597,3 +597,63 @@
       grid-template-columns: 1fr;
     }
   }
+  /* Add this new style for the download CSV button */
+.download-csv-btn {
+  background-color: #405de6;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: 45px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.download-csv-btn:hover {
+  background-color: #2a3eb1;
+}
+
+/* Update the users-summary style to align items properly */
+.users-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.summary-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  min-width: 200px;
+  transition: transform 0.2s;
+}
+
+/* Make sure the download button container is removed from the filter section */
+.download-btn-container {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .users-summary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .summary-card, .download-csv-btn {
+    width: 100%;
+  }
+  
+  .download-csv-btn {
+    justify-content: center;
+  }
+}
