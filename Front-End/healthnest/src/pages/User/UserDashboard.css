@@ -24,6 +24,7 @@
   justify-content: center;
   height: 100vh;
   background-color: #f5f7fa;
+  
 }
 
 .spinner {
@@ -715,5 +716,322 @@
   
   .appointment-count h2, .health-stats h2 {
     font-size: 1.5rem;
+  }
+}
+/* Appointments layout with equal size sections */
+.appointments-layout {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.appointment-count-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 1rem;
+}
+
+.appointment-lottie-section {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Reduce the size of the Lottie animation */
+.appointment-lottie-section > div {
+  width: 80% !important; /* Reduce the width of the Lottie container */
+  height: auto !important;
+  max-height: 100px; /* Limit the height */
+}
+
+.appointment-count {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.appointment-count .card-icon {
+  font-size: 1.75rem;
+  color: #4f46e5;
+  margin-right: 0.75rem;
+}
+
+.appointment-count h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 400;
+  margin: 0;
+  color: #1f2937;
+}
+
+.appointment-count-section p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-left: 2.5rem; /* Align with the number */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .appointments-layout {
+    flex-direction: column;
+  }
+  
+  .appointment-count-section, 
+  .appointment-lottie-section {
+    width: 100%;
+    padding-right: 0;
+  }
+  
+  .appointment-lottie-section {
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .appointment-lottie-section > div {
+    width: 60% !important;
+    max-height: 80px;
+  }
+}
+/* Health card specific styling */
+.health-card .card-content {
+  position: relative;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Layout for health stats and text */
+.health-card .health-stats {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  width: 25%; /* Reduced to 25% as requested */
+}
+
+.health-card .card-icon {
+  font-size: 1.75rem;
+  color: #4f46e5;
+  margin-right: 0.75rem;
+}
+
+/* Add pulse animation to heartbeat icon */
+.health-card .card-icon.pulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.health-card h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 400;
+  margin: 0;
+  color: #1f2937;
+}
+
+.health-card p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+  width: 25%; /* Set to 25% as requested */
+  margin-left: 2.5rem; /* Align with the number */
+}
+
+/* Position the Lottie animation */
+.check-health-lottie {
+  position: absolute !important;
+  top: 1.25rem !important; /* Align with "Past Consultations" */
+  right: 1.25rem !important;
+  width: 50% !important; /* Set to 50% as requested */
+  height: auto !important;
+  max-height: 120px;
+  z-index: 1;
+}
+
+/* Style the button */
+.health-card .btn-primary {
+  margin-top: auto;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #4f46e5;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 300;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.health-card .btn-primary:hover {
+  background-color: #4338ca;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .health-card .health-stats,
+  .health-card p {
+    width: 100%;
+  }
+  
+  .check-health-lottie {
+    position: static !important;
+    width: 70% !important;
+    margin: 1rem auto;
+    max-height: 100px;
+  }
+  
+  .health-card .btn-primary {
+    margin-top: 0.5rem;
+  }
+}
+/* Health card Lottie animation */
+.check-health-lottie {
+  position: absolute !important;
+  top: 1.25rem !important;
+  right: 1.25rem !important;
+  width: 50% !important;
+  height: auto !important;
+  max-height: 120px;
+  z-index: 1;
+}
+
+/* Book appointment Lottie animation */
+.book-appointment-lottie {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.book-appointment-lottie > div {
+  width: 80% !important;
+  height: auto !important;
+}
+
+/* Medical history Lottie animation */
+.medical-history-lottie {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.medical-history-lottie > div {
+  width: 80% !important;
+  height: auto !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .check-health-lottie,
+  .book-appointment-lottie > div,
+  .medical-history-lottie > div {
+    position: static !important;
+    width: 70% !important;
+    margin: 1rem auto;
+    max-height: 100px;
+  }
+  
+  .book-appointment-lottie,
+  .medical-history-lottie {
+    height: auto;
+  }
+}
+/* Common card layout for all cards */
+.card-layout {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-info-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 1rem;
+}
+
+.card-lottie-section {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Reduce the size of the Lottie animation */
+.card-lottie-section > div {
+  width: 80% !important;
+  height: auto !important;
+  max-height: 100px;
+}
+
+/* Action icon container */
+.action-icon-container {
+  margin-bottom: 0.5rem;
+}
+
+/* Remove the absolute positioning from health card lottie */
+.check-health-lottie {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 100px;
+  z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-layout {
+    flex-direction: column;
+  }
+  
+  .card-info-section, 
+  .card-lottie-section {
+    width: 100%;
+    padding-right: 0;
+  }
+  
+  .card-lottie-section {
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .card-lottie-section > div {
+    width: 60% !important;
+    max-height: 80px;
+  }
+  
+  /* Adjust health card stats for mobile */
+  .health-card .health-stats,
+  .health-card p {
+    width: auto;
+    margin-left: 0;
   }
 }

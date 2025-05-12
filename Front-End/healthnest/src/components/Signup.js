@@ -56,30 +56,38 @@ const SignUp = () => {
   };
 
   const validateStep2 = () => {
-    if (!formData.gender) {
+    if (!formData.dateOfBirth) {
       setIsError(true);
-      setMessage("Please select a gender");
-      return false;
-    }
-
-    if (!/^\d{10}$/.test(formData.phoneNo)) {
-      setIsError(true);
-      setMessage("Phone number should be 10 digits");
+      setMessage("Please select your date of birth");
       return false;
     }
 
     const today = new Date();
     const birthDate = new Date(formData.dateOfBirth);
+
+    // Check if the date is in the future
+    if (birthDate > today) {
+      setIsError(true);
+      setMessage("You are not allowed to choose a date beyond today's date.");
+      return false;
+    }
+
+    // Calculate age
     const age = today.getFullYear() - birthDate.getFullYear();
-
-
     const hasBirthdayOccurred =
       today.getMonth() > birthDate.getMonth() ||
       (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
-
     const adjustedAge = hasBirthdayOccurred ? age : age - 1;
 
-    if (adjustedAge < 18 || adjustedAge > 120) {
+    // Check if age is less than 18
+    if (adjustedAge < 18) {
+      setIsError(true);
+      setMessage("Your age must be at least 18 years");
+      return false;
+    }
+
+    // Check if age is greater than 120
+    if (adjustedAge > 120) {
       setIsError(true);
       setMessage("Age should be between 18 and 120 years");
       return false;
@@ -242,6 +250,7 @@ const SignUp = () => {
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={handleChange}
+            max={new Date().toISOString().split("T")[0]} // Restrict to today or earlier
             required
           />
         </div>
