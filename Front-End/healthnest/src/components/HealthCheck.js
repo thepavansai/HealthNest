@@ -33,11 +33,11 @@ const HealthCheck = ({ name, description }) => {
   const renderIcon = () => {
     switch (name) {
       case "Health Checkup":
-        return <FaHeartbeat size={30} className="mb-3 text-danger" />;
+        return <><center><FaHeartbeat size={30} className="mb-3 text-danger" /></center></>;
       case "View Appointments":
-        return <FaCalendarAlt size={30} className="mb-3 text-primary" />;
+        return <><center><FaCalendarAlt size={30} className="mb-3 text-primary" /></center></>;
       case "Join Our Team":
-        return <FaUserMd size={30} className="mb-3 text-success" />;
+        return <><center><FaUserMd size={30} className="mb-3 text-success" /></center></>;
       default:
         return null;
     }
