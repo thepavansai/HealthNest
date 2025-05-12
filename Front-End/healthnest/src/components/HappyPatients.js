@@ -39,7 +39,22 @@ const HappyPatients = () => {
   }
 
   if (error) {
-    return <div className="error-message">{error}</div>;
+    return (
+      <div className="error-message text-center p-4">
+        <h2 className="section-title text-center mb-4">Our Happy Patients</h2>
+        {error}
+      </div>
+    );
+  }
+
+  if (feedbacks.length === 0) {
+    return (<>
+      <h2 className="section-title text-center mb-4">Our Happy Patients</h2>
+      <div className="no-feedback-message text-center p-4">
+        No patient feedback available at the moment.
+      </div>
+      </>
+    );
   }
 
   return (
