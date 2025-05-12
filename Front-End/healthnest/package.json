@@ -48,7 +48,8 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "sonner": "^2.0.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "dompurify": "^3.2.5"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -207,7 +207,7 @@ const fetchAppointments = async (consultationFee) => {
       <main className="doctor-dashboard-container">
         <div className="welcome-section">
           <div className="welcome-content">
-            <h1>Welcome back, {doctorData.doctorName || 'Doctor'}</h1>
+            <h1>Welcome , {doctorData.doctorName || 'Doctor'}</h1>
             <p className="subtitle">Here’s what’s happening with your practice today.</p>
           </div>
 
