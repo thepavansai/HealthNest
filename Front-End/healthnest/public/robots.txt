@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /private/
-Sitemap: https://healthnest.com/sitemap.xml
+Sitemap: https://health-nest.netlify.app//sitemap.xml

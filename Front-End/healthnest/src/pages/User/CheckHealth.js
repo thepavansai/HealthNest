@@ -19,7 +19,7 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const toRadians = (degrees) => degrees * (Math.PI / 180);
   const R = 6371; // Radius of the Earth in kilometers
   const dLat = toRadians(lat2 - lat1);
-  const dLon = toRadians(lon1 - lon2);
+  const dLon = toRadians(lon2 - lon1);
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
@@ -489,12 +489,7 @@ const fetchDoctorAppointments = async (doctorId) => {
   };
   
 
-  // const isSlotBooked = (date, slot) => {
-  //   return doctorAppointments.some(appointment => 
-  //     appointment.appointmentDate === formatDate(selectedDay, date) &&
-  //     appointment.appointmentTime === formatTime(slot)
-  //   );
-  // };
+
   const isSlotBooked = (date, slot) => {
     if (!doctorAppointments || doctorAppointments.length === 0) {
       return false; // If no appointments data, assume slot is available
@@ -693,33 +688,52 @@ const fetchDoctorAppointments = async (doctorId) => {
         {showSuggestions && !showLocationSelector && (
           <div className="suggested-doctors-carousel-container" ref={suggestionsRef}>
             <h2>Experts Nearby, Just for You</h2>
-            <div className="suggested-doctors-carousel">
-              <div className="carousel-wrapper" ref={carouselRef}>
-                {doctors.map((doc) => (
-                  doc.latitude && doc.longitude && doc.status === 1 && (
-                    <div key={doc.doctorId} className="doctor-card-carousel">
-                      <h4>{doc.doctorName}</h4>
-                      <p><b>{doc.specializedrole}</b></p>
-                      <p>Gender: {doc.gender}</p>
-                      <p>Experience: {doc.experience} Years</p>
-                      <p>Consultation Fee: ₹{doc.consultationFee}</p>
-                      {userLocation && <p>Distance: {doc.distance.toFixed(2)} km</p>}
-                      <button onClick={() => handleSelectDoctor(doc)}>Select</button>
-                    </div>
-                  )
-                ))}
+            {doctors.length === 0 ? (
+              <div className="no-doctors-message">
+                <p>We apologize for the inconvenience</p>
+                <p>There are currently no specialized doctors available for <b>{aiResponse}</b> category.</p>
+                <div className="remedies-suggestion">
+                  <p>Meanwhile, you can check our remedies section for self-care tips</p>
+                  <button 
+                    className="remedies-link-btn"
+                    onClick={() => {
+                      localStorage.setItem('userSymptoms', text);
+                      navigate('/user/remedies');
+                    }}
+                  >
+                    View Home Remedies
+                  </button>
+                </div>
               </div>
-              {doctors.length > 1 && (
-                <>
-                  <button className="carousel-button prev" onClick={goToPrevious}>
-                    &lt;
-                  </button>
-                  <button className="carousel-button next" onClick={goToNext}>
-                    &gt;
-                  </button>
-                </>
-              )}
-            </div>
+            ) : (
+              <div className="suggested-doctors-carousel">
+                <div className="carousel-wrapper" ref={carouselRef}>
+                  {doctors.map((doc) => (
+                    doc.latitude && doc.longitude && doc.status === 1 && (
+                      <div key={doc.doctorId} className="doctor-card-carousel">
+                        <h4>{doc.doctorName}</h4>
+                        <p><b>{doc.specializedrole}</b></p>
+                        <p>Gender: {doc.gender}</p>
+                        <p>Experience: {doc.experience} Years</p>
+                        <p>Consultation Fee: ₹{doc.consultationFee}</p>
+                        {userLocation && <p>Distance: {doc.distance.toFixed(2)} km</p>}
+                        <button onClick={() => handleSelectDoctor(doc)}>Select</button>
+                      </div>
+                    )
+                  ))}
+                </div>
+                {doctors.length > 1 && (
+                  <>
+                    <button className="carousel-button prev" onClick={goToPrevious}>
+                      &lt;
+                    </button>
+                    <button className="carousel-button next" onClick={goToNext}>
+                      &gt;
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         )}
         
