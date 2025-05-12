@@ -10,6 +10,7 @@ import { getHealthTips } from "../services/getHealthTips";
 import { getStatistics } from "../services/getStatistics";
 import ContentCarousel from "../components/ContentCarousel";
 import HappyPatients from "../components/HappyPatients";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const Home = () => {
   const [statistics, setStatistics] = useState({
@@ -80,19 +81,31 @@ const Home = () => {
       <div>
         
         <Header/>
-        <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
-                className="hero-section"
-            >
-                <div className="hero-content">
-                    <h1 className="hero-title">Welcome to HealthNest</h1>
-                    <p className="hero-description">
-                        Your trusted partner in healthcare. We provide comprehensive medical services with a focus on patient care and well-being.
-                    </p>
-                </div>
-            </motion.div>
+         <motion.div 
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.8 }}
+  className="hero-section"
+>
+  <div className="hero-content">
+    <h1 className="hero-title">Welcome to HealthNest</h1>
+    <div className="hero-row">
+      <div className="hero-left">
+        <DotLottieReact
+          src="https://lottie.host/42017f2d-3a85-4a09-8663-fbccce563c50/wpVD14l9Qq.lottie  "
+          loop
+          autoplay
+        />
+      </div>
+      <div className="hero-right">
+        <p className="hero-description">
+          Your trusted partner in healthcare. We provide comprehensive medical services with a focus on patient care and well-being.
+        </p>
+      </div>
+    </div>
+  </div>
+</motion.div>
+
         <motion.div 
           className="container services-section"
           initial={{ opacity: 0, y: 20 }}
@@ -167,6 +180,3 @@ const Home = () => {
   };
   
   export default Home;
-
-
-

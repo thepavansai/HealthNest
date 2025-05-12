@@ -1,143 +1,1203 @@
 /* Analytics Page Container */
 .analytics-page {
-  padding: 20px;
-  background-color: #f9f9f9;
+  padding: 30px;
+  background-color: #f5f7fa;
   min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Page Title */
-.analytics-page h1 {
+/* Analytics Header */
+.analytics-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.analytics-header h1 {
   font-size: 2.5rem;
-  color: #333;
-  text-align: center;
-  margin-bottom: 30px;
-  animation: slideDown 0.8s ease-in-out; /* Slide-down animation */
+  color: #252733;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
 }
 
-/* Analytics Section */
-.analytics-section {
-  margin-bottom: 30px;
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Full-Width Graph Section */
-.analytics-section canvas {
-  width: 100%; /* Make the graph take the full width */
-  height: 10cm; /* Fix the height to 10cm */
-  display: block;
+.analytics-header p {
+  color: #6b7280;
+  font-size: 1.1rem;
+  max-width: 600px;
   margin: 0 auto;
-  max-height: 10cm; /* Prevent the graph from growing beyond 10cm */
 }
 
-/* Add a wrapper for the graph to control its width */
-.analytics-graph-wrapper {
-  width: 100%; /* Make the graph take full width */
-  overflow-x: auto; /* Enable horizontal scrolling if needed */
+/* KPI Container */
+.kpi-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
-/* Section Titles */
-.analytics-section h2 {
-  font-size: 1.8rem;
-  color: #007bff;
-  margin-bottom: 15px;
-  text-align: center;
+.kpi-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.analytics-section p {
+.kpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.kpi-card:nth-child(1) .kpi-icon {
+  background-color: rgba(66, 133, 244, 0.1);
+  color: #4285f4;
+}
+
+.kpi-card:nth-child(2) .kpi-icon {
+  background-color: rgba(234, 67, 53, 0.1);
+  color: #ea4335;
+}
+
+.kpi-card:nth-child(3) .kpi-icon {
+  background-color: rgba(251, 188, 5, 0.1);
+  color: #fbbc05;
+}
+
+.kpi-card:nth-child(4) .kpi-icon {
+  background-color: rgba(52, 168, 83, 0.1);
+  color: #34a853;
+}
+
+.kpi-content {
+  flex: 1;
+}
+
+.kpi-content h3 {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0 0 5px 0;
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #252733;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.kpi-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 5px 0 0 0;
+}
+
+/* Analytics Grid */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+.analytics-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.analytics-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.card-header h2 {
   font-size: 1.2rem;
-  color: #333;
-  text-align: center;
-  margin-top: 10px;
+  color: #252733;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Most Consulted Card */
-.most-consulted-card {
+.card-header h2 svg {
+  color: #4285f4;
+}
+
+.card-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Chart container */
+.chart-container {
+  height: 100%;
+  width: 100%;
+  min-height: 250px;
+  position: relative;
+}
+
+/* Grid layout for specific cards */
+.appointments-trend {
+  grid-column: span 8;
+  grid-row: span 2;
+}
+
+.status-distribution {
+  grid-column: span 4;
+  grid-row: span 2;
+}
+
+.monthly-trends {
+  grid-column: span 6;
+  grid-row: span 2;
+}
+
+.specialty-distribution {
+  grid-column: span 6;
+  grid-row: span 2;
+}
+
+.user-growth {
+  grid-column: span 6;
+  grid-row: span 2;
+}
+
+.geo-distribution {
+  grid-column: span 6;
+  grid-row: span 2;
+}
+
+.rating-analysis {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+.time-analysis {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+.most-consulted-doctor {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+.most-frequent-user {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+.fee-analysis {
+  grid-column: span 4;
+  grid-row: span 3;
+}
+
+/* No data message */
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6b7280;
+  font-size: 1rem;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Loading spinner */
+.loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  height: 70vh;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #4285f4;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error container */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
   text-align: center;
+  padding: 0 20px;
 }
 
-.most-consulted-card p {
-  margin: 5px 0;
-  font-size: 1rem;
-  color: #333;
-}
-
-.most-consulted-card .icon {
-  font-size: 2rem;
-  color: #007bff;
+.error-container h2 {
+  color: #ea4335;
   margin-bottom: 10px;
 }
 
-.most-consulted-card .icon-small {
-  font-size: 1rem;
-  color: #007bff;
-  margin-right: 5px;
+.error-container p {
+  color: #6b7280;
+  max-width: 500px;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Footer Styling */
-.analytics-page footer {
-  margin-top: 20px;
+/* Doctor and User Profile Cards */
+.doctor-profile, .user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  color: #666;
+}
+
+.doctor-avatar, .user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(66, 133, 244, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.avatar-icon {
+  font-size: 40px;
+  color: #4285f4;
+}
+
+.doctor-details h3, .user-details h3 {
+  font-size: 1.3rem;
+  color: #252733;
+  margin: 0 0 5px 0;
+}
+
+.doctor-specialty {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.doctor-stats, .user-stats {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.doctor-stat, .user-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #252733;
+}
+
+.doctor-contact, .user-contact {
+  margin-top: 10px;
+}
+
+.doctor-contact p, .user-contact p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.contact-icon {
+  color: #4285f4;
+}
+
+/* Rating Distribution */
+.rating-distribution {
+  margin-bottom: 20px;
+}
+
+.rating-bar-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.rating-label {
+  width: 40px;
+  font-size: 0.9rem;
+  color: #6b7280;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.rating-bar-wrapper {
+  flex: 1;
+  height: 12px;
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.rating-bar {
+  height: 100%;
+  background-color: #fbbc05;
+  border-radius: 6px;
+}
+
+.rating-count {
+  width: 30px;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.rating-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avg-rating {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.avg-rating h3 {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0 0 5px 0;
+}
+
+.rating-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #252733;
+}
+
+.star {
+  color: #fbbc05;
+}
+
+.rating-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 15px;
+}
+
+.rating-stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.rating-stat-item h4 {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 5px 0;
+  font-weight: 500;
+}
+
+.rating-stat-item p {
+  font-size: 0.9rem;
+  color: #252733;
+  margin: 0;
+}
+
+/* Time Slot Analysis */
+.time-distribution {
+  margin-bottom: 20px;
+}
+
+.time-slot-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.time-slot-label {
+  width: 140px;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-right: 10px;
+}
+
+.time-slot-bar-wrapper {
+  flex: 1;
+  height: 12px;
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.time-slot-bar {
+  height: 100%;
+  border-radius: 6px;
+}
+
+.time-slot-bar.morning {
+  background-color: #4285f4;
+}
+
+.time-slot-bar.afternoon {
+  background-color: #34a853;
+}
+
+.time-slot-bar.evening {
+  background-color: #fbbc05;
+}
+
+.time-slot-bar.night {
+  background-color: #ea4335;
+}
+
+.time-slot-count {
+  width: 40px;
+  font-size: 0.9rem;
+  color: #6b7280;
+  text-align: right;
+}
+
+.time-insights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.insight-item {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+}
+
+.insight-item h4 {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 5px 0;
+  font-weight: 500;
+}
+
+.insight-item p {
+  font-size: 0.9rem;
+  color: #252733;
+  margin: 0;
+}
+
+/* Geographical Distribution */
+.geo-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.geo-stat-item {
+  text-align: center;
+}
+
+.geo-stat-item h4 {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 5px 0;
+  font-weight: 500;
+}
+
+.geo-stat-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #252733;
+  margin: 0;
+}
+
+.geo-note {
+  text-align: center;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Fee Analysis */
+.fee-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.fee-stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.fee-stat-item h3 {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 5px 0;
+  font-weight: 500;
+}
+
+.fee-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #252733;
+  margin: 0 0 5px 0;
+}
+
+.fee-specialty {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.fee-range h4 {
+  font-size: 1rem;
+  color: #252733;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.fee-range-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
   font-size: 0.9rem;
 }
 
+.range-label {
+  color: #6b7280;
+}
+
+.range-value {
+  color: #252733;
+  font-weight: 500;
+}
+
 /* Responsive Design */
+@media (max-width: 1400px) {
+  .analytics-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+  
+  .appointments-trend {
+    grid-column: span 8;
+  }
+  
+  .status-distribution {
+    grid-column: span 4;
+  }
+  
+  .monthly-trends {
+    grid-column: span 4;
+  }
+  
+  .specialty-distribution {
+    grid-column: span 4;
+  }
+  
+  .user-growth {
+    grid-column: span 4;
+  }
+  
+  .geo-distribution {
+    grid-column: span 4;
+  }
+  
+  .rating-analysis,
+  .time-analysis,
+  .most-consulted-doctor,
+  .most-frequent-user,
+  .fee-analysis {
+    grid-column: span 4;
+  }
+}
+
+@media (max-width: 992px) {
+  .analytics-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .appointments-trend {
+    grid-column: span 6;
+  }
+  
+  .status-distribution,
+  .monthly-trends,
+  .specialty-distribution,
+  .user-growth,
+  .geo-distribution,
+  .rating-analysis,
+  .time-analysis,
+  .most-consulted-doctor,
+  .most-frequent-user,
+  .fee-analysis {
+    grid-column: span 3;
+  }
+}
+
 @media (max-width: 768px) {
-  .analytics-page h1 {
+  .analytics-page {
+    padding: 20px;
+  }
+  
+  .kpi-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .analytics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .appointments-trend,
+  .status-distribution,
+  .monthly-trends,
+  .specialty-distribution,
+  .user-growth,
+  .geo-distribution,
+  .rating-analysis,
+  .time-analysis,
+  .most-consulted-doctor,
+  .most-frequent-user,
+  .fee-analysis {
+    grid-column: span 2;
+  }
+  
+  .time-slot-label {
+    width: 100px;
+  }
+}
+
+@media (max-width: 576px) {
+  .analytics-header h1 {
     font-size: 2rem;
   }
-
-  .analytics-section h2 {
-    font-size: 1.5rem;
+  
+  .kpi-container {
+    grid-template-columns: 1fr;
   }
-
-  .analytics-section p {
-    font-size: 1rem;
+  
+  .analytics-grid {
+    grid-template-columns: 1fr;
   }
-
-  .analytics-section canvas {
-    max-height: 300px; /* Adjust graph size for smaller screens */
+  
+  .appointments-trend,
+  .status-distribution,
+  .monthly-trends,
+  .specialty-distribution,
+  .user-growth,
+  .geo-distribution,
+  .rating-analysis,
+  .time-analysis,
+  .most-consulted-doctor,
+  .most-frequent-user,
+  .fee-analysis {
+    grid-column: span 1;
   }
+  .fee-analysis {
+    grid-column: span 1;
+  }
+  
+  .fee-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .geo-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .rating-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .time-insights {
+    flex-direction: column;
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Print styles */
+@media print {
+  .analytics-page {
+    padding: 0;
+    background-color: white;
+  }
+  
+  .analytics-grid {
+    gap: 10px;
+  }
+  
+  .analytics-card {
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+    break-inside: avoid;
+  }
+  
+  .kpi-card {
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+  }
+}
+/* Health Metrics Styles */
+.health-metrics {
+  grid-column: span 2;
+}
+
+.health-metrics-summary {
+  margin-bottom: 20px;
+}
+
+.health-metrics-summary h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.metrics-subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.health-issues-chart {
+  margin-top: 15px;
+}
+
+.health-issue-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.issue-name {
+  width: 130px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.issue-bar-container {
+  flex-grow: 1;
+  height: 18px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  margin: 0 10px;
+  overflow: hidden;
+}
+
+.issue-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease-in-out;
+}
+
+.issue-count {
+  width: 80px;
+  font-size: 13px;
+  color: #555;
+}
+
+.health-metrics-insights {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.insight-box {
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  padding: 15px;
+  margin: 0 5px;
+  text-align: center;
+}
+
+.insight-box h4 {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.insight-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4285f4;
+  margin-bottom: 5px;
+}
+
+.insight-detail {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Time slot bar colors */
+.time-slot-bar.morning {
+  background: linear-gradient(to right, #fbbc05, #ffd666);
+}
+
+.time-slot-bar.afternoon {
+  background: linear-gradient(to right, #4285f4, #8ab4f8);
+}
+
+.time-slot-bar.evening {
+  background: linear-gradient(to right, #34a853, #7bcfa9);
+}
+
+.time-slot-bar.night {
+  background: linear-gradient(to right, #673ab7, #9a67ea);
+}
+/* Increase size of health metrics card */
+.health-metrics {
+  grid-column: span 2;
+  min-height: 450px; /* Increase minimum height */
+}
+
+/* Make the health metrics card take full width on mobile */
+@media (max-width: 768px) {
+  .health-metrics {
+    grid-column: 1 / -1; /* Span all columns on mobile */
+  }
+}
+
+/* Fix the gap between cards and footer */
+.analytics-page {
+  padding-bottom: 0; /* Remove bottom padding if it exists */
+  margin-bottom: 0; /* Remove bottom margin if it exists */
+}
+
+.analytics-grid {
+  margin-bottom: 0; /* Remove bottom margin */
+  padding-bottom: 40px; /* Add some padding at the bottom */
+}
+
+/* Ensure footer sits directly below content */
+footer {
+  margin-top: 0;
+}
+
+/* Improve spacing in health metrics for larger card */
+.health-metrics-summary {
+  margin-bottom: 30px; /* Increase bottom margin */
+}
+
+.health-issues-chart {
+  margin-top: 20px;
+  margin-bottom: 30px; /* Add bottom margin */
+}
+
+.health-issue-item {
+  margin-bottom: 12px; /* Slightly increase spacing between bars */
+}
+
+.issue-bar-container {
+  height: 22px; /* Make bars taller */
+}
+
+.health-metrics-insights {
+  margin-top: 35px; /* Increase top margin */
+}
+
+.insight-box {
+  padding: 20px; /* Increase padding */
+}
+
+.insight-value {
+  font-size: 18px; /* Increase font size */
+  margin: 10px 0; /* Add more vertical spacing */
+}
+/* Make health metrics card wider */
+.health-metrics {
+  grid-column: span 3; /* Increase from span 2 to span 3 for wider card */
+  min-height: 450px;
+}
+
+/* Adjust the grid layout to accommodate the wider card */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Change to 3 columns instead of 4 if needed */
+  gap: 20px;
+  margin: 20px 0;
+  padding-bottom: 40px;
+}
+
+/* Adjust other cards if needed to maintain layout balance */
+.appointments-trend, 
+.status-distribution,
+.specialty-distribution,
+.rating-analysis,
+.time-analysis {
+  grid-column: span 1; /* Adjust other cards to span 1 column */
+}
+
+/* For larger screens, you might want to keep a 4-column layout but make health metrics span 3 */
+@media (min-width: 1200px) {
+  .analytics-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .health-metrics {
+    grid-column: span 3; /* Span 3 out of 4 columns */
+  }
+  
+  /* You can make some cards span 2 columns to balance the layout */
+  .appointments-trend,
+  .specialty-distribution {
+    grid-column: span 2;
+  }
+}
+
+/* For medium screens */
+@media (max-width: 1199px) and (min-width: 769px) {
+  .analytics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .health-metrics {
+    grid-column: span 3; /* Full width */
+  }
+}
+
+/* For mobile screens */
+@media (max-width: 768px) {
+  .analytics-grid {
+    grid-template-columns: 1fr; /* Single column */
+  }
+  
+  .health-metrics,
+  .appointments-trend,
+  .status-distribution,
+  .specialty-distribution,
+  .rating-analysis,
+  .time-analysis {
+    grid-column: 1 / -1; /* All cards full width */
+  }
+}
+
+/* Enhance the health metrics content for the wider card */
+.health-metrics .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.health-issues-chart {
+  max-width: 800px; /* Limit width for readability */
+  margin: 20px auto;
+}
+
+.health-metrics-insights {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 35px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.insight-box {
+  flex: 0 1 30%; /* Allow boxes to grow but maintain some spacing */
+  padding: 20px;
+  margin: 0 10px;
+}
+/* Restructure the grid layout for 3 cards per row */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
+  gap: 20px; /* Moderate gap between cards */
+  margin: 20px 0;
+  padding-bottom: 40px;
+}
+
+/* Make all cards the same size by default */
+.analytics-card {
+  min-height: 350px; /* Decreased minimum height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make all cards span 1 column by default */
+.appointments-trend, 
+.status-distribution,
+.specialty-distribution,
+.rating-analysis,
+.time-analysis,
+.user-growth,
+.monthly-trends,
+.health-metrics {
+  grid-column: span 1; /* Each card takes exactly 1 column */
+}
+
+/* Card body should take up remaining space */
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px; /* Slightly reduced padding */
+}
+
+/* Card header adjustments for smaller cards */
+.card-header {
+  padding: 12px 15px;
+}
+
+.card-header h2 {
+  font-size: 16px; /* Smaller header text */
+}
+
+/* For tablet screens - 2 cards per row */
+@media (max-width: 992px) and (min-width: 769px) {
+  .analytics-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  }
+  
+  .analytics-card {
+    min-height: 320px; /* Slightly smaller on tablets */
+  }
+}
+
+/* For mobile screens - single column layout */
+@media (max-width: 768px) {
+  .analytics-grid {
+    grid-template-columns: 1fr; /* Single column */
+    gap: 15px; /* Reduced gap for mobile */
+  }
+  
+  /* All cards take full width on mobile */
+  .analytics-card {
+    grid-column: 1; /* Explicitly set to column 1 */
+    min-height: 300px; /* Shorter on mobile */
+  }
+}
+
+/* Adjust health metrics content for smaller card */
+.health-metrics .card-body {
+  padding: 12px;
+}
+
+.health-metrics-summary h3 {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.metrics-subtitle {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.health-issues-chart {
+  margin: 10px 0;
+}
+
+.health-issue-item {
+  margin-bottom: 8px;
+}
+
+.issue-name {
+  width: 100px;
+  font-size: 12px;
+}
+
+.issue-bar-container {
+  height: 16px;
+  margin: 0 8px;
+}
+
+.issue-count {
+  width: 70px;
+  font-size: 12px;
+}
+
+.health-metrics-insights {
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.insight-box {
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.insight-box h4 {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.insight-value {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.insight-detail {
+  font-size: 11px;
+}
+
+/* Fix the gap between cards and footer */
+.analytics-page {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+footer {
+  margin-top: 0;
 }
