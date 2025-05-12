@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaCheckCircle, FaSearch, FaTimesCircle, FaUserMd, FaUserPlus } from 'react-icons/fa';
+import { FaCheckCircle, FaDownload, FaSearch, FaTimesCircle, FaUserMd, FaUserPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -45,6 +45,7 @@ const ManageDoctors = () => {
           ...doc,
           doctorId: String(doc.doctorId)
         }));
+
         const active = processedDoctors.filter(doctor => doctor.status === 1);
         const pending = processedDoctors.filter(doctor => doctor.status === 0);
         setDoctors(active);
@@ -105,6 +106,54 @@ const ManageDoctors = () => {
     setFlippedDoctorId(flippedDoctorId === String(doctorId) ? null : String(doctorId));
   };
 
+  // New function to download doctor data as CSV
+  const downloadDoctorsCSV = () => {
+    // Define which doctors to include based on current view
+    const dataToExport = viewMode === 'all' ? doctors : pendingDoctors;
+    
+    // Define CSV headers
+    const headers = [
+      'Doctor ID',
+      'Name',
+      'Specialty',
+      'Email',
+      'Phone',
+      'Experience (years)',
+      'Consultation Fee',
+      'Status'
+    ];
+    
+    // Convert doctor data to CSV rows
+    const csvRows = dataToExport.map(doctor => [
+      doctor.doctorId,
+      doctor.doctorName || '',
+      doctor.specializedrole || '',
+      doctor.emailId || '',
+      doctor.docPhnNo || '',
+      doctor.experience || '',
+      doctor.consultationFee || '',
+      doctor.status === 1 ? 'Active' : 'Pending'
+    ]);
+    
+    // Add headers as the first row
+    csvRows.unshift(headers);
+    
+    // Convert each row to CSV format
+    const csvContent = csvRows.map(row => row.join(',')).join('\n');
+    
+    // Create a Blob with the CSV data
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    // Create a download link and trigger download
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `doctors-${viewMode === 'all' ? 'active' : 'pending'}-${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const filteredDoctors = doctors.filter(doctor => {
     const matchesSearch =
       (doctor.doctorName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
@@ -155,15 +204,13 @@ const ManageDoctors = () => {
         <div className="doctors-header">
           <h1>Manage Doctors</h1>
           <div className="doctors-summary">
-            <div className="summary-card">
-             
+            <div className="summary-card">              
               <div className="summary-details">
                 <h3>{doctors.length}</h3>
                 <p>Active Doctors</p>
               </div>
             </div>
-            <div className="summary-card">
-              
+            <div className="summary-card">              
               <div className="summary-details">
                 <h3>{pendingDoctors.length}</h3>
                 <p>Pending Requests</p>
@@ -188,6 +235,9 @@ const ManageDoctors = () => {
             </button>
             <button className={viewMode === 'pending' ? 'active' : ''} onClick={() => setViewMode('pending')}>
               Pending Requests {pendingDoctors.length > 0 && <span className="badge">{pendingDoctors.length}</span>}
+            </button>
+            <button className="download-btn" onClick={downloadDoctorsCSV}>
+              <FaDownload /> Download CSV
             </button>
           </div>
         </div>
@@ -287,7 +337,7 @@ const ManageDoctors = () => {
                         <td>
                           <div className="action-buttons">
                             <button 
-                              className="approve-btn" 
+                              className="approve-btn"
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent card flip
                                 handleApproveDoctor(String(doctor.doctorId));
@@ -296,7 +346,7 @@ const ManageDoctors = () => {
                               <FaCheckCircle /> Approve
                             </button>
                             <button 
-                              className="reject-btn" 
+                              className="reject-btn"
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent card flip
                                 handleRejectDoctor(String(doctor.doctorId));
