@@ -4,7 +4,6 @@
   color: #333;
   /* Add padding-top to push content below the header */
   /* Adjust the value (e.g., 80px) based on your Header's height */
-  padding-top: 80px;
 }
 
 .about-header {
@@ -83,48 +82,65 @@
 
 .about-details-split {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   margin: 50px auto;
   max-width: 1200px;
+  padding: 0 20px;
 }
 
 .left-space {
-  width: 50%;
+  display: none; /* Hide on all screens as it's just empty space */
 }
 
 .why-choose-us {
-  width: 1000%;
-  text-align: center;
-  padding-left: 30px;
+  width: 100%;
   text-align: left;
+  padding: 20px;
 }
 
 .why-choose-us h2 {
   font-size: 2rem;
   color: #4f46e5;
-  margin-left: 410px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .why-choose-us ul {
   list-style: none;
   padding: 0;
   font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .why-choose-us ul li {
-  margin: 10px 0;
-  padding-left: 375px;
+  margin: 15px 0;
+  padding-left: 30px;
   position: relative;
 }
 
 .why-choose-us ul li::before {
-  margin-left: 350px;
   content: '✔';
   position: absolute;
   left: 0;
   color: #2ecc71;
+}
+
+/* Add media queries for responsive design */
+@media screen and (max-width: 768px) {
+  .why-choose-us {
+    padding: 15px;
+  }
+  
+  .why-choose-us h2 {
+    font-size: 1.75rem;
+  }
+  
+  .why-choose-us ul li {
+    font-size: 1rem;
+    padding-left: 25px;
+  }
 }
 
 .about-doctors {

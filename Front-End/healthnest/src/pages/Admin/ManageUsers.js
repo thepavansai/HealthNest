@@ -107,9 +107,6 @@ const ManageUsers = () => {
           <h1>Manage Users</h1>
           <div className="users-summary">
             <div className="summary-card">
-              <div className="summary-icon">
-                <FaUser />
-              </div>
               <div className="summary-details">
                 <h3>{users.length}</h3>
                 <p>Total Users</p>

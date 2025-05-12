@@ -21,6 +21,7 @@
   box-shadow: 0 8px 20px rgba(71, 118, 230, 0.15);
   position: relative;
   overflow: hidden;
+  margin-top: 20px;
 }
 
 .admin-hero-section::before {

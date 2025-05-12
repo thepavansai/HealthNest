@@ -1,12 +1,18 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import Footer from './Footer';
 import Header from './Header';
 import './Remedies.css';
 
 const Remedies = ({ onSuggest }) => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState(() => {
+    // Get stored symptoms on component mount
+    const storedSymptoms = localStorage.getItem('userSymptoms');
+    // Clear stored symptoms after retrieving
+    localStorage.removeItem('userSymptoms');
+    return storedSymptoms || '';
+  });
   const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
@@ -160,6 +166,12 @@ const Remedies = ({ onSuggest }) => {
 
     return formattedSections;
   };
+
+  useEffect(() => {
+    if (text && !response) {
+      handleSubmit();
+    }
+  }, []);
 
   return (<>
     <Header />

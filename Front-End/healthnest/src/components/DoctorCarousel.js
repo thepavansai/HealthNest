@@ -419,7 +419,7 @@ const DoctorCarousel = () => {
                       Hospital:
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.9rem' }}>
-                      {doctor.hospitalName || "HealthNest Hospital"}
+                      {doctor.hospital || "HealthNest Hospital"}
                     </Typography>
                   </Box>
                 </Box>

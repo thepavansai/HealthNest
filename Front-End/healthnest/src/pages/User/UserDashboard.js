@@ -103,7 +103,7 @@ const UserDashboard = () => {
       <div className="user-dashboard-new">
         <div className="welcome-section">
           <div className="welcome-content">
-            <h1>Welcome back, {userData.name}</h1>
+            <h1>Welcome , {userData.name}</h1>
             <p className="subtitle">Manage your healthcare journey with ease</p>
           </div>
           <div className="profile-widget">

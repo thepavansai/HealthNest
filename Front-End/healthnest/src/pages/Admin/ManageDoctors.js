@@ -156,18 +156,14 @@ const ManageDoctors = () => {
           <h1>Manage Doctors</h1>
           <div className="doctors-summary">
             <div className="summary-card">
-              <div className="summary-icon">
-                <FaUserMd />
-              </div>
+             
               <div className="summary-details">
                 <h3>{doctors.length}</h3>
                 <p>Active Doctors</p>
               </div>
             </div>
             <div className="summary-card">
-              <div className="summary-icon pending-icon">
-                <FaUserPlus />
-              </div>
+              
               <div className="summary-details">
                 <h3>{pendingDoctors.length}</h3>
                 <p>Pending Requests</p>
