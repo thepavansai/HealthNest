@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Chatbot.css';
 import { FaRobot, FaUser, FaPaperPlane, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 
 const Chatbot = () => {
   const navigate = useNavigate();
@@ -55,11 +56,12 @@ const Chatbot = () => {
     };
     
     // Replace URLs with buttons
-    return text.replace(urlRegex, (url) => {
+    const rawHtml = text.replace(urlRegex, (url) => {
       const path = url.replace('https://health-nest.netlify.app', '');
       const displayName = pathMap[url] || url;
       return `<button class="chatbot-link-button" data-path="${path}">${displayName}</button>`;
     });
+    return DOMPurify.sanitize(rawHtml);
   };
 
   const sendMessage = async () => {
@@ -192,7 +194,7 @@ const Chatbot = () => {
                   dangerouslySetInnerHTML={{ 
                     __html: message.role === 'assistant' 
                       ? formatResponse(message.content) 
-                      : message.content 
+                      : DOMPurify.sanitize(message.content) 
                   }}
                 />
               </div>
