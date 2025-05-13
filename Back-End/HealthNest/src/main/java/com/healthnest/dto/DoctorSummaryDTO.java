@@ -1,5 +1,7 @@
 package com.healthnest.dto;
 
+import com.healthnest.model.enums.Gender;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,11 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor // Generates a no-argument constructor
 @AllArgsConstructor // Generates a constructor with all fields as arguments
 public class DoctorSummaryDTO {
-    private String name;
+  
+	private String name;
     private Float rating;
     private String location;
     private String hospital;
     private String availability;
     private String specialization;
+    private Gender gender;
     private Integer status;
 }

@@ -3,6 +3,7 @@ package com.healthnest.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.DoctorSummaryDTO;
-import com.healthnest.exception.DoctorNotFoundException;
 import com.healthnest.model.Doctor;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.JWTService;
@@ -361,7 +362,9 @@ public ResponseEntity<List<DoctorDTO>> getAllDoctors()
                             doctor.getAddress(), // Make sure Doctor model has getLocation()
                             doctor.getHospitalName(), // Make sure Doctor model has getHospital()
                             doctor.getAvailability(), // Make sure Doctor model has getAvailability()
-                            doctor.getSpecializedrole(),
+                            doctor.getSpecializedrole(), 
+                            doctor.getGender(),
+                            // Make sure Doctor model has getGender()
                             doctor.getStatus()// Add specialization - Make sure Doctor model has getSpecialization()
                     ))
                     .collect(Collectors.toList());
