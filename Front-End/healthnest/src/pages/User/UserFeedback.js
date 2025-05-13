@@ -6,6 +6,9 @@ import { FaStar } from 'react-icons/fa';
 import 'react-toastify/dist/ReactToastify.css';
 import './UserFeedback.css';
 import { BASE_URL } from '../../config/apiConfig';
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+
 
 const UserFeedback = () => {
   const [formData, setFormData] = useState({
@@ -123,6 +126,7 @@ const UserFeedback = () => {
   };
 
   return (
+    <><Header/>
     <div
       className="doctor-login-bg"
       style={{
@@ -169,6 +173,8 @@ const UserFeedback = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

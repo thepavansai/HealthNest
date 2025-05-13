@@ -6,6 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 import "./UserEditProfile.css";
 import { BASE_URL } from '../../config/apiConfig';
 
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+
 const UserEditProfile = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -117,6 +120,7 @@ const UserEditProfile = () => {
   };
 
   return (
+    <><Header/>
     <div className="edit-profile-container">
       <ToastContainer position="top-right" />
       <div className="edit-profile-card">
@@ -200,6 +204,9 @@ const UserEditProfile = () => {
         )}
       </div>
     </div>
+    <Footer/>
+    </>
+    
   );
 };
 
