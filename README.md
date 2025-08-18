@@ -49,13 +49,18 @@ HealthNest is a comprehensive healthcare platform that connects patients with sp
 - Java 17
 - Spring Boot 2.7.0
 - Spring Security with JWT
-- ModelMapper
+- ModelMapperbr
 - BCrypt Password Encoder
 - Maven
 
 ### Database
 - MySQL 8.0
 - JPA/Hibernate
+### Cloud & DevOps
+- Neon (PostgreSQL DBaaS)
+- Docker Image on Render
+- Jenkins (CI/CD)
+  
 
 ## Getting Started
 
