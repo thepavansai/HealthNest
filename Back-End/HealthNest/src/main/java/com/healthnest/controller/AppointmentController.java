@@ -53,7 +53,7 @@ public class AppointmentController {
             
             // Verify that the doctor is accessing their own appointments
             Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
-            if (!authenticatedDoctor.getDoctorId().equals(Long.valueOf(doctorId))) {
+            if (!authenticatedDoctor.getDoctorId().equals(doctorId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
             
