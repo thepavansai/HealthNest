@@ -49,7 +49,7 @@ HealthNest is a comprehensive healthcare platform that connects patients with sp
 - Java 17
 - Spring Boot 2.7.0
 - Spring Security with JWT
-- ModelMapperbr
+- ModelMapper
 - BCrypt Password Encoder
 - Maven
 
