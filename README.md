@@ -1,5 +1,4 @@
-# HealthNest: Your Healthcare Companion - Health Checkup at your fingertips
-
+# HealthNest: Your Healthcare Companion - Health Checkup at your fingertips 
 <p align="center">
   <img src="Front-End/healthnest/public/image.png" alt="HealthNest Logo" width="200">
 </p>
@@ -10,7 +9,8 @@
 
 ## About HealthNest
 HealthNest is a comprehensive healthcare platform that connects patients with specialized doctors based on their symptoms. Our mission is to make healthcare accessible, convenient, and effective for everyone through technology and empathy.
-
+## Status 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/27fd1da3-01a9-425e-97df-beff25314861/deploy-status)](https://app.netlify.com/projects/health-nest/deploys)
 ## Key Features
 
 ### For Patients
