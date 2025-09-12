@@ -224,17 +224,6 @@ const DoctorViewAppointments = () => {
       }
     }
   };
-  
-  const getStatusClass = (status) => {
-    switch (status.toLowerCase()) {
-      case 'completed': return 'status-completed';
-      case 'upcoming': return 'status-upcoming';
-      case 'cancelled': return 'status-cancelled';
-      case 'pending': return 'status-pending';
-      case 'reviewed': return 'status-reviewed'; 
-      default: return '';
-    }
-  };
 
   if (loading) {
     return (

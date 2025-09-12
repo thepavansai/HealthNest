@@ -20,8 +20,7 @@ const UserFeedback = () => {
       userId: ''
     }
   });
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(null); 
+  const [submitted, setSubmitted] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {

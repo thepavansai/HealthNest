@@ -14,7 +14,6 @@ const ViewAppointments = () => {
   const [currAppointments, setCurrAppointments] = useState('All Appointments');
   const [ratings, setRatings] = useState({});
   const [ratedAppointments, setRatedAppointments] = useState(new Set());
-  const [reviewedAppointments, setReviewedAppointments] = useState([]);
   
 
   useEffect(() => {

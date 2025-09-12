@@ -42,7 +42,7 @@ const Chatbot = () => {
 
   const formatResponse = (text) => {
     // Replace URLs with clickable links
-    const urlRegex = /(https:\/\/health-nest\.netlify\.app\/[a-zA-Z0-9\/\-]+)/g;
+    const urlRegex = /(https:\/\/health-nest\.netlify\.app\/[a-zA-Z0-9/-]+)/g;
     
     // Create a map of paths to friendly names
     const pathMap = {
@@ -165,7 +165,7 @@ const Chatbot = () => {
     return () => {
       document.removeEventListener('click', handleLinkButtonClick);
     };
-  }, [navigate]);
+  }, [navigate, handleLinkClick]);
 
   return (
     <div className="chatbot-container">

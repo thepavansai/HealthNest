@@ -22,7 +22,7 @@ const Home = () => {
   const [loadingStats, setLoadingStats] = useState(true);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [height, setHeight] = useState('');
+    const [height] = useState('');
     const [weight, setWeight] = useState('');
     const names = ["Health Checkup", "View Appointments", "Join Our Team"];
     const description = [

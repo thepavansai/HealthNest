@@ -15,7 +15,6 @@ import {
   CardContent,
   Avatar,
   Typography,
-  useTheme,
   Button,
 } from '@mui/material';
 import axios from 'axios';
@@ -157,7 +156,6 @@ const RatingContainer = styled(Box)`
 `;
 
 const DoctorCarousel = () => {
-  const theme = useTheme();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -522,8 +520,7 @@ const DoctorCarousel = () => {
 
 const CustomDot = ({ onClick, ...rest }) => {
   const {
-    active,
-    carouselState: { currentSlide, deviceType }
+    active
   } = rest;
   return (
     <button

@@ -5,6 +5,7 @@ import { FaChevronRight } from 'react-icons/fa';
 const ContentCarousel = ({ items, type }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+
   const itemsPerPage = 3;
 
   const nextSlide = () => {

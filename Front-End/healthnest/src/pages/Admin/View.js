@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaCalendarAlt, FaTrash, FaCheckCircle, FaClock, FaTimesCircle } from 'react-icons/fa';
+import { FaCalendarAlt, FaCheckCircle, FaClock, FaTimesCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './View.css';
 import Header from '../../components/Header';
