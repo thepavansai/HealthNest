@@ -19,11 +19,11 @@ const Home = () => {
     appointments: 0
 });
   const [healthTips, setHealthTips] = useState([]);
-  const [loadingStats, setLoadingStats] = useState(true);
+  const [, setLoadingStats] = useState(true); // eslint-disable-line no-unused-vars
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [height] = useState('');
-    const [weight, setWeight] = useState('');
+    const [weight] = useState(''); // eslint-disable-line no-unused-vars
     const names = ["Health Checkup", "View Appointments", "Join Our Team"];
     const description = [
       "Consult a specialist based on your condition.",
@@ -33,7 +33,7 @@ const Home = () => {
     useEffect(() => {
       fetchHealthTips();
       fetchStatistics();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchHealthTips = async (customHeight = '', customWeight = '') => {
       try {

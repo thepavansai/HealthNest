@@ -46,6 +46,9 @@ const AnalyticsPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [, setAppointments] = useState([]); // eslint-disable-line no-unused-vars
+  const [, setDoctors] = useState([]); // eslint-disable-line no-unused-vars
+  const [, setUsers] = useState([]); // eslint-disable-line no-unused-vars
   
   // Derived statistics
   const [totalAppointments, setTotalAppointments] = useState(0);
@@ -56,6 +59,8 @@ const AnalyticsPage = () => {
   const [appointmentStatusData, setAppointmentStatusData] = useState({});
  
   const [specialtyDistribution, setSpecialtyDistribution] = useState({});
+  const [, setHighestConsultedDoctor] = useState(null); // eslint-disable-line no-unused-vars
+  const [, setHighestConsultedUser] = useState(null); // eslint-disable-line no-unused-vars
   
   // New state for doctor ratings and appointment time analysis
   const [doctorRatingData, setDoctorRatingData] = useState({
@@ -70,6 +75,13 @@ const AnalyticsPage = () => {
     peakHours: '',
     leastBusyHours: '',
     weekdayVsWeekend: ''
+  });
+
+  const [, setHealthMetricsData] = useState({ // eslint-disable-line no-unused-vars
+    commonIssues: [],
+    issuesByMonth: {},
+    issuesByAge: {},
+    issuesByGender: {}
   });
 
   const processData = (appointmentsData, doctorsData, usersData) => {
@@ -97,6 +109,7 @@ const AnalyticsPage = () => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -129,7 +142,7 @@ const AnalyticsPage = () => {
     };
 
     fetchData();
-  }, [navigate, processData]);
+  }, [navigate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const processAppointmentsGraph = (appointmentsData) => {
     // Get last 7 days

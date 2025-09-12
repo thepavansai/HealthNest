@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './Chatbot.css';
 import { FaRobot, FaUser, FaPaperPlane, FaTimes } from 'react-icons/fa';
@@ -34,11 +34,11 @@ const Chatbot = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleLinkClick = (path) => {
+  const handleLinkClick = useCallback((path) => {
     navigate(path);
     // Optionally close the chatbot after navigation
     // setIsOpen(false);
-  };
+  }, [navigate]);
 
   const formatResponse = (text) => {
     // Replace URLs with clickable links

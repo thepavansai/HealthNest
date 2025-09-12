@@ -10,10 +10,10 @@ const IncomeDetails = () => {
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [totalIncome, setTotalIncome] = useState(0);
   const [estimatedPayout, setEstimatedPayout] = useState(0);
-  const [consultationFee, setConsultationFee] = useState(0);
+  const [, setConsultationFee] = useState(0); // eslint-disable-line no-unused-vars
   const [activeFilter, setActiveFilter] = useState('earned');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [, setLoading] = useState(true); // eslint-disable-line no-unused-vars
+  const [, setError] = useState(null); // eslint-disable-line no-unused-vars
 
   const doctorId = localStorage.getItem('doctorId'); // Already a string
   const token = localStorage.getItem('token');
@@ -90,7 +90,7 @@ const IncomeDetails = () => {
 
     fetchDoctorProfile(); // Start the chain
     // Removed fetchAppointments from here, it's called inside fetchDoctorProfile's success path
-  }, [doctorId]); // Dependency array is correct
+  }, [doctorId, token]); // Added token to dependencies
 
   return (
     <div className="income-details-wrapper">

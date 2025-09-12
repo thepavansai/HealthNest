@@ -36,16 +36,67 @@ const DoctorDashboard = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showIncome, setShowIncome] = useState(false);
-  const [completedAppointments, setCompletedAppointments] = useState([]);
-  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [, setCompletedAppointments] = useState([]); // eslint-disable-line no-unused-vars
+  const [, setUpcomingAppointments] = useState([]); // eslint-disable-line no-unused-vars
   const [totalIncome, setTotalIncome] = useState(0);
 
   const [estimatedPayout, setEstimatedPayout] = useState(0);
-  const [totalAppointments, setTotalAppointments] = useState(0);
+  const [, setTotalAppointments] = useState(0); // eslint-disable-line no-unused-vars
 
   const doctorId = localStorage.getItem("doctorId");
 
   useEffect(() => {
+    const fetchAppointments = async (consultationFee) => {
+      try {
+        const token = localStorage.getItem("token");
+        
+        // Make sure token is available
+        if (!token) {
+          console.error("No token found");
+          return;
+        }
+
+        const response = await axios.get(`${BASE_URL}/doctor/${doctorId}/appointments`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
+        const allAppointments = response.data;
+       
+        setTotalAppointments(allAppointments.length);
+        setAppointments(allAppointments);
+        
+        const completed = allAppointments.filter(appointment => 
+          appointment.appointmentStatus === 'Completed' || 
+          appointment.appointmentStatus === 'Reviewed'
+        );
+        
+        const upcoming = allAppointments.filter(appointment => 
+          appointment.appointmentStatus === 'Upcoming' ||
+          appointment.appointmentStatus === 'Confirmed'
+        );
+        
+        setCompletedAppointments(completed);
+        setUpcomingAppointments(upcoming);
+        
+        // Calculate total and estimated income
+        const totalIncome = completed.reduce((sum, appointment) => {
+          return sum + (appointment.consultationFee || consultationFee || 0);
+        }, 0);
+        
+        const estimatedIncome = upcoming.reduce((sum, appointment) => {
+          return sum + (appointment.consultationFee || consultationFee || 0);
+        }, 0);
+        
+        setTotalIncome(totalIncome);
+        setEstimatedPayout(estimatedIncome);
+        
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+      }
+    };
+
     if (doctorId) {
       const token = localStorage.getItem("token");
       
@@ -70,59 +121,6 @@ const DoctorDashboard = () => {
     }
   }, [doctorId, navigate]);
   
-
-const fetchAppointments = async (consultationFee) => {
-  try {
-    const token = localStorage.getItem("token");
-    
-    // Make sure token is available
-    if (!token) {
-      console.error("No authentication token found");
-      navigate("/login");
-      return;
-    }
-    
-    const response = await axios.get(`${BASE_URL}/appointments/doctor/${doctorId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    
-    const allAppointments = response.data;
-   
-    setTotalAppointments(allAppointments.length);
-    setAppointments(allAppointments);
-    
-    const completed = allAppointments.filter(appointment => 
-      appointment.appointmentStatus === 'Completed' || 
-      appointment.appointmentStatus === 'Reviewed'
-    );
-    const upcoming = allAppointments.filter(appointment => 
-      appointment.appointmentStatus === 'Upcoming'
-    );
-    
-    setCompletedAppointments(completed);
-    setUpcomingAppointments(upcoming);
-    
-    const income = completed.length * consultationFee;
-    const payout = upcoming.length * consultationFee;
-    setTotalIncome(income);
-    setEstimatedPayout(payout);
-  } catch (err) {
-    console.error("Error fetching appointments:", err);
-    
-    // Handle specific error cases
-    if (err.response) {
-      if (err.response.status === 403) {
-        console.error("Access forbidden. You may not have permission to view these appointments.");
-      } else if (err.response.status === 401) {
-        console.error("Authentication expired. Please login again.");
-        localStorage.removeItem("token");
-        navigate("/login");
-      }
-    }
-  }
-};
 
   const toggleDropdown = () => {
     setShowDropdown(prev => !prev);

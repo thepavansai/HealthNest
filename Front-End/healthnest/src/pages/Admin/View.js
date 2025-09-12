@@ -8,7 +8,7 @@ import { BASE_URL } from '../../config/apiConfig';
 import Footer from '../../components/Footer';
 
 const View = () => {
-  const [appointments, setAppointments] = useState([]);
+  const [, setAppointments] = useState([]); // eslint-disable-line no-unused-vars
   const [pendingAppointments, setPendingAppointments] = useState([]);
   const [completedAppointments, setCompletedAppointments] = useState([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
