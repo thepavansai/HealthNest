@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaCheckCircle, FaDownload, FaSearch, FaTimesCircle, FaUserMd, FaUserPlus } from 'react-icons/fa';
+import { FaCheckCircle, FaDownload, FaSearch, FaTimesCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaCalendarAlt, FaTrash, FaCheckCircle, FaClock, FaTimesCircle } from 'react-icons/fa';
+import { FaCalendarAlt, FaCheckCircle, FaClock, FaTimesCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import './View.css';
 import Header from '../../components/Header';
@@ -8,7 +8,7 @@ import { BASE_URL } from '../../config/apiConfig';
 import Footer from '../../components/Footer';
 
 const View = () => {
-  const [appointments, setAppointments] = useState([]);
+  const [, setAppointments] = useState([]); // eslint-disable-line no-unused-vars
   const [pendingAppointments, setPendingAppointments] = useState([]);
   const [completedAppointments, setCompletedAppointments] = useState([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);

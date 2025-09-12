@@ -9,7 +9,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
   const [cardName, setCardName] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
-  const [upiId, setUpiId] = useState('');
+
   const [selectedBank, setSelectedBank] = useState('');
   const [bankAccount, setBankAccount] = useState('');
   const [ifscCode, setIfscCode] = useState('');

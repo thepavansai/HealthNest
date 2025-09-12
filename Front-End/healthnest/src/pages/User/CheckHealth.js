@@ -101,7 +101,7 @@ const CheckHealth = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [doctorAppointments, setDoctorAppointments] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [paymentComplete, setPaymentComplete] = useState(false);
+  const [, setPaymentComplete] = useState(false); // eslint-disable-line no-unused-vars
   
   // Location selection states
   const [locationType, setLocationType] = useState('');
@@ -135,7 +135,7 @@ const CheckHealth = () => {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleLocationTypeSelect = (type) => {
     setLocationType(type);
@@ -251,7 +251,7 @@ const CheckHealth = () => {
     if (userLocation && aiResponse) {
       fetchDoctors(aiResponse);
     }
-  }, [userLocation, aiResponse]);
+  }, [userLocation, aiResponse]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchDoctors = async (doctorSuggestion) => {
     try {

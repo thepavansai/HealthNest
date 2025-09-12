@@ -171,7 +171,7 @@ const Remedies = ({ onSuggest }) => {
     if (text && !response) {
       handleSubmit();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <Header />

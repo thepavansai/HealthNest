@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaEnvelope, FaPhone, FaSearch, FaUser, FaCalendarAlt, FaVenusMars, FaDownload } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaSearch, FaCalendarAlt, FaVenusMars, FaDownload } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';

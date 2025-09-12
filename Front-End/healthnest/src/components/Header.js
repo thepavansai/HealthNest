@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaHome, FaInfoCircle, FaSignOutAlt, FaSignInAlt, FaUserPlus, FaBars } from 'react-icons/fa';
+import { FaHome, FaInfoCircle, FaSignOutAlt, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import './Header.css';
 
 const Header = () => {

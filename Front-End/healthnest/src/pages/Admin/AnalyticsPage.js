@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { Bar, Doughnut, Line, Pie } from 'react-chartjs-2';
+import { Bar, Doughnut, Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,11 +24,6 @@ import {
   FaChartLine,
   FaChartPie,
   FaStethoscope,
-  FaClinicMedical,
-  FaUser,
-  FaUserInjured,
-  FaEnvelope,
-  FaPhoneAlt,
 } from 'react-icons/fa';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -51,9 +46,9 @@ const AnalyticsPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [appointments, setAppointments] = useState([]);
-  const [doctors, setDoctors] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [, setAppointments] = useState([]); // eslint-disable-line no-unused-vars
+  const [, setDoctors] = useState([]); // eslint-disable-line no-unused-vars
+  const [, setUsers] = useState([]); // eslint-disable-line no-unused-vars
   
   // Derived statistics
   const [totalAppointments, setTotalAppointments] = useState(0);
@@ -64,9 +59,8 @@ const AnalyticsPage = () => {
   const [appointmentStatusData, setAppointmentStatusData] = useState({});
  
   const [specialtyDistribution, setSpecialtyDistribution] = useState({});
-  const [userGrowthData, setUserGrowthData] = useState({});
-  const [highestConsultedDoctor, setHighestConsultedDoctor] = useState(null);
-  const [highestConsultedUser, setHighestConsultedUser] = useState(null);
+  const [, setHighestConsultedDoctor] = useState(null); // eslint-disable-line no-unused-vars
+  const [, setHighestConsultedUser] = useState(null); // eslint-disable-line no-unused-vars
   
   // New state for doctor ratings and appointment time analysis
   const [doctorRatingData, setDoctorRatingData] = useState({
@@ -83,13 +77,36 @@ const AnalyticsPage = () => {
     weekdayVsWeekend: ''
   });
 
-  const [healthMetricsData, setHealthMetricsData] = useState({
-  commonIssues: [],
-  issuesByMonth: {},
-  issuesByAge: {},
-  issuesByGender: {},
-  totalAnalyzedAppointments: 0
-});
+  const [, setHealthMetricsData] = useState({ // eslint-disable-line no-unused-vars
+    commonIssues: [],
+    issuesByMonth: {},
+    issuesByAge: {},
+    issuesByGender: {}
+  });
+
+  const processData = (appointmentsData, doctorsData, usersData) => {
+    // Basic counts
+    setTotalAppointments(appointmentsData.length);
+    setTotalDoctors(doctorsData.length);
+    setTotalUsers(usersData.length);
+    // Appointment completion rate
+    const completedAppointments = appointmentsData.filter(
+      app => app.appointmentStatus === 'Completed' || app.appointmentStatus === 'Reviewed'
+    ).length;
+    const completionRate = appointmentsData.length > 0 
+      ? (completedAppointments / appointmentsData.length) * 100 
+      : 0;
+    setAppointmentCompletionRate(completionRate);
+    
+    // Process all analytics
+    processAppointmentsGraph(appointmentsData);
+    processAppointmentStatus(appointmentsData);
+    processSpecialtyDistribution(doctorsData);
+    findMostConsultedEntities(appointmentsData, doctorsData, usersData);
+    processDoctorRatings(doctorsData, appointmentsData);
+    processHealthMetrics(appointmentsData, usersData);
+    processAppointmentTimeAnalysis(appointmentsData);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,45 +142,7 @@ const AnalyticsPage = () => {
     };
 
     fetchData();
-  }, [navigate]);
-
-  const processData = (appointmentsData, doctorsData, usersData) => {
-    // Basic counts
-    setTotalAppointments(appointmentsData.length);
-    setTotalDoctors(doctorsData.length);
-    setTotalUsers(usersData.length);
-    // Appointment completion rate
-    const completedAppointments = appointmentsData.filter(
-      app => app.appointmentStatus === 'Completed' || app.appointmentStatus === 'Reviewed'
-    ).length;
-    const completionRate = appointmentsData.length > 0 
-       ? Math.round((completedAppointments / appointmentsData.length) * 100)
-       : 0;
-    setAppointmentCompletionRate(completionRate);
-    // Process appointments for last 7 days
-    processAppointmentsGraph(appointmentsData);
-    
-    // Process appointment status distribution
-    processAppointmentStatus(appointmentsData);
-    
-    // Process monthly trends
-    
-    
-    // Process specialty distribution
-    processSpecialtyDistribution(doctorsData);
-    
-    // Process user growth
-  
-    
-    // Find most consulted doctor and user
-    findMostConsultedEntities(appointmentsData, doctorsData, usersData);
-    
-    // Process doctor ratings
-    processDoctorRatings(doctorsData, appointmentsData);
-    processHealthMetrics(appointmentsData, usersData);
-    // Process appointment time analysis
-    processAppointmentTimeAnalysis(appointmentsData);
-  };
+  }, [navigate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const processAppointmentsGraph = (appointmentsData) => {
     // Get last 7 days
