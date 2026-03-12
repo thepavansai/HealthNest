@@ -7,6 +7,7 @@ import './ViewAppointments.css';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { BASE_URL } from '../../config/apiConfig';
+import { toast } from 'react-toastify';
 
 const ViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
