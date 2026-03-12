@@ -30,6 +30,9 @@ import UserFeedback from './pages/User/UserFeedback.js';
 import UserLogin from './pages/User/UserLogin.js';
 import ViewAppointments from './pages/User/ViewAppointments';
 import ForgotPassword from './components/ForgotPassword';
+ import ViewPrescription from './pages/User/ViewPrescription';
+import WritePrescription from './pages/Doctor/WritePrescription';
+
 
 function App() {
   return (
@@ -138,6 +141,31 @@ function App() {
           <Route path="/admin/appointments" element={
             <ProtectedRoute userType="admin">
               <View />
+            </ProtectedRoute>
+          } />
+         
+
+
+           {/* PRESCRIPTION ROUTES */}
+          
+          {/* 1. For the Doctor to Write the Prescription */}
+          <Route path="/write-prescription/:appointmentId" element={
+            <ProtectedRoute userType="doctor">
+              <WritePrescription />
+            </ProtectedRoute>
+          } />
+
+          {/* 2. For the Doctor to View the Prescription after writing it */}
+          <Route path="/doctor/view-prescription/:appointmentId" element={
+            <ProtectedRoute userType="doctor">
+              <ViewPrescription />
+            </ProtectedRoute>
+          } />
+
+          {/* 3. For the User to View the Prescription */}
+          <Route path="/user/prescription/:appointmentId" element={
+            <ProtectedRoute userType="user">
+              <ViewPrescription />
             </ProtectedRoute>
           } />
           <Route path="/admin/feedback" element={

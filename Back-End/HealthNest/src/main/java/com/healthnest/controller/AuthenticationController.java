@@ -1,6 +1,7 @@
 package com.healthnest.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,5 +162,25 @@ public class AuthenticationController {
     private String hashPassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(password);
+    }
+    
+    @PostMapping("/bulk-doctor-signup")
+    public ResponseEntity<String> bulkSignUpDoctors(@RequestBody List<DoctorDTO> doctorDTOs) {
+        try {
+            int count = 0;
+            for (DoctorDTO doctorDTO : doctorDTOs) {
+                Doctor doctor = modelMapper.map(doctorDTO, Doctor.class);
+                // Hash the password for each doctor
+                doctor.setPassword(hashPassword(doctor.getPassword()));
+                
+                // Save the doctor
+                doctorService.addDoctor(doctor); 
+                count++;
+            }
+            return ResponseEntity.ok("Successfully registered " + count + " doctors.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred during bulk signup: " + e.getMessage());
+        }
     }
 }

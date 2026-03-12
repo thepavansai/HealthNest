@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+// IMPORT USENAVIGATE HERE:
+import { useNavigate } from 'react-router-dom'; 
 import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaStar, FaRegStar } from 'react-icons/fa';
 import './ViewAppointments.css';
 import Header from '../../components/Header';
@@ -14,18 +16,17 @@ const ViewAppointments = () => {
   const [currAppointments, setCurrAppointments] = useState('All Appointments');
   const [ratings, setRatings] = useState({});
   const [ratedAppointments, setRatedAppointments] = useState(new Set());
-  const [reviewedAppointments, setReviewedAppointments] = useState([]);
   
+  // INITIALIZE NAVIGATE HERE:
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         setLoading(true);
-        // Get the token from localStorage
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
         
-        // Include the token in the Authorization header
         const response = await axios.get(
           `${BASE_URL}/users/appointments/${userId}`,
           {
@@ -37,7 +38,6 @@ const ViewAppointments = () => {
         
         setAppointments(response.data);
         
-        // Initialize the ratedAppointments set with already reviewed appointments
         const reviewedIds = new Set(
           response.data
             .filter(appt => appt.appointmentStatus.toLowerCase() === 'reviewed')
@@ -72,6 +72,7 @@ const ViewAppointments = () => {
   const reviewedAppointmentsList = appointments.filter(
     appointment => appointment.appointmentStatus.toLowerCase() === 'reviewed'
   );
+  
   const filteredAppointments = appointments.filter(appointment => {
     const matchesSearch =
       appointment.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -80,7 +81,6 @@ const ViewAppointments = () => {
     if (filterStatus === 'all') return matchesSearch;
     return matchesSearch && appointment.appointmentStatus.toLowerCase() === filterStatus.toLowerCase();
   });
-
 
   const cancelAppointment = async (appointmentId, appointmentDate, appointmentTime) => {
     const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
@@ -96,12 +96,11 @@ const ViewAppointments = () => {
       return;
     }
     try {
-      // Get the token from localStorage
       const token = localStorage.getItem('token');
       
       const response = await axios.patch(
         `${BASE_URL}/appointments/${appointmentId}/status/Cancelled`,
-        {},  // Empty body for PATCH request
+        {}, 
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -149,13 +148,11 @@ const ViewAppointments = () => {
     }
     
     try {
-      // Get the token from localStorage
       const token = localStorage.getItem('token');
       
-      // First update the doctor's rating
       const ratingResponse = await axios.patch(
         `${BASE_URL}/doctor/${doctorId}/rating/${rating}`,
-        {},  // Empty body for PATCH request
+        {}, 
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -164,11 +161,10 @@ const ViewAppointments = () => {
       );
       
       if (ratingResponse.status === 200) {
-        // Then update the appointment status to reviewed
         try {
           const reviewResponse = await axios.patch(
             `${BASE_URL}/appointments/${appointmentId}/status/Reviewed`,
-            {},  // Empty body for PATCH request
+            {}, 
             {
               headers: {
                 'Authorization': `Bearer ${token}`
@@ -179,7 +175,6 @@ const ViewAppointments = () => {
           if (reviewResponse.status === 200) {
             alert('Rating submitted successfully!');
             
-            // Update state to reflect the changes
             setRatings(prev => ({
               ...prev,
               [appointmentId]: rating
@@ -271,16 +266,6 @@ const ViewAppointments = () => {
               <p>Cancelled Appointments</p>
             </div>
           </div>
-          
-          {/* <div className="summary-card">
-            <div className="summary-icon reviewed-icon">
-              <FaStar />
-            </div>
-            <div className="summary-details">
-              <h3>{reviewedAppointmentsList.length}</h3>
-              <p>Reviewed Appointments</p>
-            </div> 
-          </div>*/}
         </div>
       </div>
 
@@ -288,13 +273,12 @@ const ViewAppointments = () => {
         <div className="search-container">
           <FaSearch className="search-icon" />
           <input
-  type="text"
-  placeholder="Search by doctor or description"
-  value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)} 
-  style={{ textAlign: 'center' }}
-/>
-
+            type="text"
+            placeholder="Search by doctor or description"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)} 
+            style={{ textAlign: 'center' }}
+          />
         </div>
 
         <div className="filter-buttons">
@@ -395,6 +379,14 @@ const ViewAppointments = () => {
                             Cancel
                           </button>
                         )}
+                        
+                        {/* Show a completed/reviewed statement instead of a button */}
+                        {appointment.appointmentStatus.toLowerCase() === 'reviewed' && (
+                          <div style={{ color: '#28a745', marginTop: '10px', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+                            <FaCheckCircle /> Successfully Reviewed
+                          </div>
+                        )}
+
                         {appointment.appointmentStatus.toLowerCase() === 'completed' && (
                           <div className="rating-action">
                             <div className="star-rating">

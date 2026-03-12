@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BASE_URL } from '../../config/apiConfig';
 import React, { useEffect, useState } from 'react';
-import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaClock, FaPrescriptionBottleAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaClock, FaPrescriptionBottleAlt, FaStar } from 'react-icons/fa';
 import './DoctorViewAppointments.css';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -353,7 +353,7 @@ const DoctorViewAppointments = () => {
             <p>No appointments found matching your criteria</p>
           </div>
         ) : (
-          <div className="doctor-appointments-table-container">
+         <div className="doctor-appointments-table-container">
             <table className="doctor-appointments-table">
               <thead>
                 <tr>
@@ -428,13 +428,19 @@ const DoctorViewAppointments = () => {
                             </button>
                           </>
                         )}
+                        
+                        {/* REPLACED PRESCRIPTION BUTTON WITH TEXT */}
                         {appointment.appointmentStatus.toLowerCase() === 'completed' && (
-                          <button
-                            className="doctor-prescription-btn"
-                            onClick={() => navigateToPrescription(appointment.appointmentId, appointment.userName)}
-                          >
-                            <FaPrescriptionBottleAlt /> Write Prescription
-                          </button>
+                           <div style={{ color: '#28a745', marginTop: '10px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                             <FaCheckCircle /> Appointment Completed
+                           </div>
+                        )}
+
+                        {/* ADDED REVIEWED STATUS TEXT */}
+                        {appointment.appointmentStatus.toLowerCase() === 'reviewed' && (
+                           <div style={{ color: '#17a2b8', marginTop: '10px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                             <FaStar /> Rated by Patient
+                           </div>
                         )}
                       </div>
                     </td>
@@ -465,12 +471,19 @@ const DoctorViewAppointments = () => {
                   <h4>{appointment.userName}</h4>
                   <p>Description: {appointment.description}</p>
                   <p>Date: {appointment.appointmentDate}</p>
-                  <button
-                    className="doctor-prescription-btn"
-                    onClick={() => navigateToPrescription(appointment.appointmentId, appointment.userName)}
-                  >
-                    <FaPrescriptionBottleAlt /> Write Prescription
-                  </button>
+                  
+                  {/* REPLACED PRESCRIPTION BUTTON WITH TEXT IN THE CARDS TOO */}
+                  {appointment.appointmentStatus.toLowerCase() === 'completed' && (
+                    <div style={{ color: '#28a745', marginTop: '10px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <FaCheckCircle /> Appointment Completed
+                    </div>
+                  )}
+
+                  {appointment.appointmentStatus.toLowerCase() === 'reviewed' && (
+                    <div style={{ color: '#17a2b8', marginTop: '10px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <FaStar /> Rated by Patient
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

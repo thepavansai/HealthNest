@@ -6,7 +6,7 @@ import {
   ArrowForwardIos,
   ArrowBackIos,
   LocationOn,
-  CheckCircle,  // Add this import for the Available status
+  CheckCircle,
 } from '@mui/icons-material';
 import {
   Box,
@@ -170,13 +170,11 @@ const DoctorCarousel = () => {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     })
       .then(res => {
-        
         const availableDoctors = res.data.filter(doctor => doctor.status === 1);
         setDoctors(availableDoctors);
         setLoading(false);
       })
       .catch(err => {
-      
         setError("Failed to load doctors");
         setLoading(false);
       });
@@ -185,33 +183,25 @@ const DoctorCarousel = () => {
   const extractCityName = (address) => {
     if (!address) return "Location Unknown";
     
- 
     const parts = address.split(',').map(part => part.trim());
-    
     
     if (parts.length >= 3) {
       return parts[parts.length - 3];
     }
     
-    
-    return parts[0] ;
+    return parts[0];
   };
 
-  let maleCounter = 0;
-  let femaleCounter = 0;
-  const getDoctorImage = (doctor) => {
-    const gender = doctor.gender === "FEMALE" ? "female" : "male";
-    const imageCount = 5; 
+  // FIX: Using index to determine image consistently without React render bugs
+  const getDoctorImage = (doctor, index) => {
+    // Case-insensitive check
+    const isFemale = doctor.gender?.toUpperCase() === "FEMALE";
+    const genderStr = isFemale ? "female" : "male";
     
-    let imageNumber;
-    if (gender === "female") {
-      imageNumber = (femaleCounter % imageCount) + 1;
-      femaleCounter++;
-    } else {
-      imageNumber = (maleCounter % imageCount) + 1;
-      maleCounter++;
-    }
-    return `/images/${gender}model${imageNumber}.jpg`;
+    // Consistently cycle through 1 to 5 based on the array index
+    const imageNumber = (index % 5) + 1; 
+    
+    return `/images/${genderStr}model${imageNumber}.jpg`;
   };
 
   const responsive = {
@@ -354,16 +344,18 @@ const DoctorCarousel = () => {
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding"
       >
-        {doctors.map(doctor => (
+        {doctors.map((doctor, index) => (
           <Box key={doctor.doctorId} sx={{ p: 1 }}>
             <DoctorCard>
               <ImageContainer>
                 <DoctorImage
-                  src={getDoctorImage(doctor)}
+                  src={getDoctorImage(doctor, index)}
                   alt={doctor.doctorName}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = doctor.gender === "FEMALE"
+                    // FIX: Case insensitive check in fallback
+                    const isFemale = doctor.gender?.toUpperCase() === "FEMALE";
+                    e.target.src = isFemale
                       ? "/images/femalemodel1.jpg"
                       : "/images/malemodel1.jpg";
                   }}
@@ -449,8 +441,7 @@ const DoctorCarousel = () => {
                       Location:
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.9rem' }}>
-                      { extractCityName(doctor.location) 
-                  }
+                      { extractCityName(doctor.location) }
                     </Typography>
                   </Box>
                 </Box>
@@ -523,6 +514,7 @@ const DoctorCarousel = () => {
 const CustomDot = ({ onClick, ...rest }) => {
   const {
     active,
+    // eslint-disable-next-line no-unused-vars
     carouselState: { currentSlide, deviceType }
   } = rest;
   return (

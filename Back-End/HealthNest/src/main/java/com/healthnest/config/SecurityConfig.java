@@ -53,6 +53,7 @@ public class SecurityConfig {
                     "/v3/api-docs/**",
                     "/v3/api-docs.yaml",
                     "/swagger-resources/**",
+                    "/v1/bulk-doctor-signup",
                     "/webjars/**"
                 ).permitAll()
                 // Admin-only endpoints

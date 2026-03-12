@@ -1,0 +1,158 @@
+.prescription-container {
+    padding: 40px 20px;
+    background-color: #f4f7fe;
+    min-height: 80vh;
+}
+
+.prescription-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.prescription-header h2 {
+    color: #0056b3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.patient-details {
+    display: flex;
+    justify-content: space-between;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #0056b3;
+}
+
+.patient-details p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #e0e0e0;
+    margin: 25px 0;
+}
+
+.medicines-section h3, .advice-section h3 {
+    color: #444;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.medicine-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 2fr auto;
+    gap: 12px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.medicine-row input {
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.medicine-row input:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+.remove-med-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-med-btn:hover { background: #c82333; }
+
+.add-med-btn {
+    background: #e8f4fd;
+    color: #0056b3;
+    border: 1px dashed #0056b3;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.add-med-btn:hover {
+    background: #d0e7fa;
+}
+
+.advice-section { margin-top: 30px; }
+
+.advice-section textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    resize: vertical;
+}
+
+.advice-section textarea:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.cancel-btn {
+    background: #f8f9fa;
+    color: #333;
+    border: 1px solid #ced4da;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.submit-prescription-btn {
+    background: #0056b3;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.submit-prescription-btn:hover:not(:disabled) {
+    background: #004494;
+}
+
+.submit-prescription-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}

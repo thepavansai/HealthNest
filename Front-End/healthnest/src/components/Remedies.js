@@ -94,11 +94,11 @@ const Remedies = ({ onSuggest }) => {
       const res = await groqClient.post(
         'https://api.groq.com/openai/v1/chat/completions',
         {
-          model: "llama3-8b-8192",
+          model: "llama-3.1-8b-instant",
           messages: [
             {
               role: "system",
-              content: `You are a helpful health assistant who provides evidence-based suggestions and remedies based on WHO guidelines. 
+              content: `You are a helpful health assistant who provides evidence-based suggestions and remedies based on WHO guidelines.When user gives symptoms only give remedies if otherthen symptoms are given dont give any remedies and suggestions ask for clarity. 
               When a user describes their symptoms, provide clear recommendations following this exact format:
 
               **Suggestions:**

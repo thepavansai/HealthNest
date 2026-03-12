@@ -1,0 +1,133 @@
+.prescription-container {
+    padding: 40px 20px;
+    background-color: #f4f7fe;
+    min-height: 80vh;
+}
+
+.prescription-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.back-btn {
+    background: transparent;
+    border: none;
+    color: #0056b3;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.back-btn:hover {
+    text-decoration: underline;
+}
+
+.prescription-header {
+    margin-bottom: 30px;
+}
+
+.prescription-header h2 {
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.prescription-icon {
+    color: #0056b3;
+}
+
+.patient-details {
+    display: flex;
+    justify-content: space-between;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #0056b3;
+}
+
+.patient-details p {
+    margin: 0;
+    color: #4a5568;
+    font-size: 1.1rem;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #e2e8f0;
+    margin: 30px 0;
+}
+
+.medicines-display-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.doctor-appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.doctor-appointments-table th,
+.doctor-appointments-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.doctor-appointments-table th {
+    background-color: #f8f9fa;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+.doctor-appointments-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.advice-display-section h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.advice-box {
+    background-color: #fffde7;
+    border: 1px solid #ffeeba;
+    padding: 20px;
+    border-radius: 8px;
+    color: #856404;
+    line-height: 1.6;
+}
+
+.error-message {
+    text-align: center;
+    padding: 40px;
+    color: #dc3545;
+}
+
+.error-message h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}

@@ -361,11 +361,11 @@ const fetchDoctorAppointments = async (doctorId) => {
     const res = await groqClient.post(
       'https://api.groq.com/openai/v1/chat/completions',
       {
-        model: "llama3-70b-8192",
+        model: "llama-3.1-8b-instant",
         messages: [
             {
               role: "system",
-              content: "You are a doctor who gives health advice.You will suggest what type of doctor to see based on the symptoms.In only  one word like General.If Symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms. and try to seek for more context Donot use punctuation marks and do not use any other words. Just give the doctor specialization ",
+              content: "You are a doctor who gives health advice.You will suggest what type of doctor to see based on the symptoms.In only  one word like General.If Symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms. and try to seek for more context Donot use punctuation marks and do not use any other words. Just give the doctor specialization also if any random word is given ask for clarity",
             },
             {
               role: "user",
