@@ -23,6 +23,7 @@
     "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.8",
+    "dompurify": "^3.2.5",
     "framer-motion": "^12.6.5",
     "jspdf": "^3.0.1",
     "leaflet": "^1.9.4",
@@ -48,8 +49,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "sonner": "^2.0.3",
-    "web-vitals": "^2.1.4",
-    "dompurify": "^3.2.5"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",

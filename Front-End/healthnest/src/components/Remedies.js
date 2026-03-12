@@ -17,11 +17,81 @@ const Remedies = ({ onSuggest }) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
+  // const handleSubmit = async () => {
+  //   if (!text.trim()) return;
+  //   setIsLoading(true);
+  //   try {
+  //     const res = await axios.post(
+  //       'https://api.groq.com/openai/v1/chat/completions',
+  //       {
+  //         model: "llama3-8b-8192",
+  //         messages: [
+  //           {
+  //             role: "system",
+  //             content: `You are a helpful health assistant who provides evidence-based suggestions and remedies based on WHO guidelines. 
+  //             When a user describes their symptoms, provide clear recommendations following this exact format:
+
+  //             **Suggestions:**
+  //             1. **First suggestion title**: Brief explanation
+  //             2. **Second suggestion title**: Brief explanation
+  //             3. **Third suggestion title**: Brief explanation
+  //             4. **Fourth suggestion title**: Brief explanation
+
+  //             **Remedies:**
+  //             1. **First remedy title**: Brief explanation
+  //             2. **Second remedy title**: Brief explanation 
+  //             3. **Third remedy title**: Brief explanation
+
+  //             Always include a reminder to consult healthcare professionals for persistent symptoms.
+  //             Do not diagnose specific conditions or recommend medications.
+  //             If symptoms are unclear, politely ask for clarification.`
+  //           },
+  //           {
+  //             role: "user",
+  //             content: `I am having ${text}. Please provide suggestions and remedies for my symptoms without mentioning specific disease names or specialist types.`
+  //           },
+  //         ]
+  //       },
+  //       {
+  //         headers: {
+  //           'Authorization': `Bearer ${process.env.REACT_APP_GROQ_API_KEY}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       }
+  //     );
+
+  //     const doctorSuggestion = res.data.choices[0].message.content.trim();
+  //     setResponse(doctorSuggestion);
+
+  //     if (onSuggest) {
+  //       onSuggest(doctorSuggestion);
+  //     }
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     setResponse("Error: " + error.message);
+  //     setIsLoading(false);
+  //   }
+  // };
+
+
+
+
+
+
+
+
   const handleSubmit = async () => {
     if (!text.trim()) return;
+    
+    // DEBUG LOG: This will show in your console now
+    console.log("Remedies - Groq Key Status:", process.env.REACT_APP_GROQ_API_KEY ? "EXISTS" : "MISSING");
+
     setIsLoading(true);
     try {
-      const res = await axios.post(
+      // 1. Create a fresh axios instance to bypass any global "Bearer" tokens
+      const groqClient = axios.create(); 
+
+      const res = await groqClient.post(
         'https://api.groq.com/openai/v1/chat/completions',
         {
           model: "llama3-8b-8192",
@@ -54,6 +124,7 @@ const Remedies = ({ onSuggest }) => {
         },
         {
           headers: {
+            // 2. Pass ONLY the Groq key here
             'Authorization': `Bearer ${process.env.REACT_APP_GROQ_API_KEY}`,
             'Content-Type': 'application/json',
           },
@@ -66,13 +137,13 @@ const Remedies = ({ onSuggest }) => {
       if (onSuggest) {
         onSuggest(doctorSuggestion);
       }
-      setIsLoading(false);
     } catch (error) {
-      setResponse("Error: " + error.message);
+      console.error("Groq API Detail:", error.response?.data);
+      setResponse("Error: " + (error.response?.data?.error?.message || error.message));
+    } finally {
       setIsLoading(false);
     }
   };
-
   // Function to handle specialist consultation
   const handleConsultSpecialist = () => {
     // Store symptoms in localStorage for CheckHealth page to access

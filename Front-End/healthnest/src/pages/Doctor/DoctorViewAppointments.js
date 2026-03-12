@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { BASE_URL } from '../../config/apiConfig';
 import React, { useEffect, useState } from 'react';
-import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaClock } from 'react-icons/fa';
+import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaClock, FaPrescriptionBottleAlt } from 'react-icons/fa';
 import './DoctorViewAppointments.css';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -16,6 +17,7 @@ const DoctorViewAppointments = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const doctorId = localStorage.getItem("doctorId");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -60,7 +62,6 @@ const DoctorViewAppointments = () => {
         setPendingAppointments(fetchedAppointments.filter(
           appointment => appointment.appointmentStatus.toLowerCase() === 'pending'
         ));
-
       } catch (error) {
         console.error('Error fetching appointments:', error);
       } finally {
@@ -71,13 +72,11 @@ const DoctorViewAppointments = () => {
     fetchAppointments();
   }, [doctorId]);
   
-
   const filteredAppointments = appointments.filter(appointment => {
     const searchText = searchTerm.toLowerCase();
     const matchesSearch =
       (appointment.userName?.toLowerCase() || '').includes(searchText) ||
       (appointment.description?.toLowerCase() || '').includes(searchText);
-
     const status = appointment.appointmentStatus?.toLowerCase() || '';
     let matchesStatus = false;
     if (filterStatus === 'all') {
@@ -88,7 +87,6 @@ const DoctorViewAppointments = () => {
     } else {
       matchesStatus = status === filterStatus.toLowerCase();
     }
-
     return matchesSearch && matchesStatus;
   });
 
@@ -176,7 +174,6 @@ const DoctorViewAppointments = () => {
     try {
       const token = localStorage.getItem('token');
   
-
       const response = await axios.patch(
         `${BASE_URL}/appointments/${appointmentId}/status/Completed`,
         {}, // Empty body
@@ -187,7 +184,6 @@ const DoctorViewAppointments = () => {
           }
         }
       );
-
       if (response.status === 200) {
         setAppointments(prev =>
           prev.map(app =>
@@ -223,6 +219,15 @@ const DoctorViewAppointments = () => {
         alert(`Error marking appointment as completed: ${error.message}`);
       }
     }
+  };
+
+  const navigateToPrescription = (appointmentId, patientName) => {
+    navigate(`/write-prescription/${appointmentId}`, { 
+      state: { 
+        patientName,
+        appointmentId
+      } 
+    });
   };
   
   const getStatusClass = (status) => {
@@ -260,7 +265,6 @@ const DoctorViewAppointments = () => {
               <p>Total Appointments</p>
             </div>
           </div>
-
           <div className="doctor-summary-card">
             <div className="doctor-summary-icon doctor-pending-icon">
               <FaClock />
@@ -270,7 +274,6 @@ const DoctorViewAppointments = () => {
               <p>Pending Appointments</p>
             </div>
           </div>
-
           <div className="doctor-summary-card">
             <div className="doctor-summary-icon doctor-upcoming-icon">
               <FaCalendarAlt />
@@ -280,7 +283,6 @@ const DoctorViewAppointments = () => {
               <p>Upcoming Appointments</p>
             </div>
           </div>
-
           <div className="doctor-summary-card">
             <div className="doctor-summary-icon doctor-completed-icon">
               <FaCalendarCheck />
@@ -290,7 +292,6 @@ const DoctorViewAppointments = () => {
               <p>Completed Appointments</p>
             </div>
           </div>
-
           <div className="doctor-summary-card">
             <div className="doctor-summary-icon doctor-cancelled-icon">
               <FaCalendarAlt />
@@ -302,7 +303,6 @@ const DoctorViewAppointments = () => {
           </div>
         </div>
       </div>
-
       <div className="doctor-appointments-filter">
         <div className="doctor-search-container">
           <FaSearch className="doctor-search-icon" />
@@ -313,7 +313,6 @@ const DoctorViewAppointments = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
         <div className="doctor-filter-buttons">
           <button
             className={filterStatus === 'all' ? 'active' : ''}
@@ -347,7 +346,6 @@ const DoctorViewAppointments = () => {
           </button>
         </div>
       </div>
-
       <div className="doctor-appointments-section">
       <h2>{filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} Appointments</h2>
         {filteredAppointments.length === 0 ? (
@@ -430,6 +428,14 @@ const DoctorViewAppointments = () => {
                             </button>
                           </>
                         )}
+                        {appointment.appointmentStatus.toLowerCase() === 'completed' && (
+                          <button
+                            className="doctor-prescription-btn"
+                            onClick={() => navigateToPrescription(appointment.appointmentId, appointment.userName)}
+                          >
+                            <FaPrescriptionBottleAlt /> Write Prescription
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -439,7 +445,6 @@ const DoctorViewAppointments = () => {
           </div>
         )}
       </div>
-
       <div className="doctor-appointments-section doctor-completed-section">
         <h2>Completed Appointments</h2>
         {completedAppointments.length === 0 ? (
@@ -460,6 +465,12 @@ const DoctorViewAppointments = () => {
                   <h4>{appointment.userName}</h4>
                   <p>Description: {appointment.description}</p>
                   <p>Date: {appointment.appointmentDate}</p>
+                  <button
+                    className="doctor-prescription-btn"
+                    onClick={() => navigateToPrescription(appointment.appointmentId, appointment.userName)}
+                  >
+                    <FaPrescriptionBottleAlt /> Write Prescription
+                  </button>
                 </div>
               </div>
             ))}
@@ -467,8 +478,9 @@ const DoctorViewAppointments = () => {
         )}
       </div>
     </div>
-    <Footer></Footer>
- </> );
+    <Footer></Footer> 
+  </>
+  );
 };
 
 export default DoctorViewAppointments;

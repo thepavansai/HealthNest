@@ -14,7 +14,7 @@ import {
   FaUserMd,
 } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
+import { LoadScript, StandaloneSearchBox } from '@react-google-maps/api';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import { BASE_URL } from '../../config/apiConfig';
@@ -48,10 +48,28 @@ const DoctorSignup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
+  const [searchBox, setSearchBox] = useState(null);
+  
+  const onSearchBoxLoad = (ref) => setSearchBox(ref);
+  
+  const onPlacesChanged = () => {
+    if (searchBox) {
+      const places = searchBox.getPlaces();
+      if (places && places.length > 0) {
+        const place = places[0];
+        setFormData((prevState) => ({
+          ...prevState,
+          latitude: place.geometry.location.lat(),
+          longitude: place.geometry.location.lng(),
+          address: place.formatted_address || place.name,
+        }));
+      }
+    }
+  };
 
   const mapContainerStyle = {
     width: '100%',
-    height: '400px',
+    height: '250px', // Reduced from 400px to 250px
   };
 
   const handlePlaceSelect = (autocomplete) => {
@@ -424,32 +442,31 @@ const DoctorSignup = () => {
         </div>
       </div>
 
-      <div className="map-container">
-        <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={libraries}>
-          <Autocomplete
-            onLoad={(autocomplete) => {
-              autocomplete.addListener('place_changed', () => handlePlaceSelect(autocomplete));
+      <div className="form-group">
+        <label className="form-label">Hospital / Clinic Address:</label>
+        <StandaloneSearchBox
+          onLoad={onSearchBoxLoad}
+          onPlacesChanged={onPlacesChanged}
+        >
+          <input
+            type="text"
+            placeholder="Search for your location..."
+            className="map-search-input"
+            defaultValue={formData.address}
+            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+            style={{
+              boxSizing: 'border-box',
+              border: '1px solid #ccc',
+              width: '100%',
+              height: '40px',
+              padding: '0 12px',
+              borderRadius: '5px',
+              fontSize: '14px',
+              outline: 'none',
+              marginTop: '5px'
             }}
-          >
-            <input
-              type="text"
-              placeholder="Search for a location"
-              className="map-search-input"
-            />
-          </Autocomplete>
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            center={{ lat: formData.latitude, lng: formData.longitude }}
-            zoom={5}
-            onClick={handleMapClick}
-          >
-            <Marker
-              position={{ lat: formData.latitude, lng: formData.longitude }}
-              draggable
-              onDragEnd={(event) => handleMapClick(event)}
-            />
-          </GoogleMap>
-        </LoadScript>
+          />
+        </StandaloneSearchBox>
       </div>
     </>
   );
@@ -506,77 +523,80 @@ const DoctorSignup = () => {
     </>
   );
 
-  return (
+return (
     <>
       <Header />
-      <div
-        className="doctor-signup-bg"
-        style={{
-          backgroundImage: `url(${process.env.PUBLIC_URL + '/images/DocSignup.JPG'})`,
-        }}
-      >
-        <div className="doctor-signup-container">
-          <div className="signup-card">
-            <h2 className="signup-title">Doctor Registration</h2>
+      <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY} libraries={libraries}>
+        <div
+          className="doctor-signup-bg"
+          style={{
+            backgroundImage: `url(${process.env.PUBLIC_URL + '/images/DocSignup.JPG'})`,
+          }}
+        >
+          <div className="doctor-signup-container">
+            <div className="signup-card">
+              <h2 className="signup-title">Doctor Registration</h2>
 
-            <div className="progress-steps">
-              <div className={`step-item ${currentStep >= 1 ? 'active' : ''}`}>
-                <div className="step-circle">1</div>
-                <div className="step-text">Personal</div>
+              <div className="progress-steps">
+                <div className={`step-item ${currentStep >= 1 ? 'active' : ''}`}>
+                  <div className="step-circle">1</div>
+                  <div className="step-text">Personal</div>
+                </div>
+                <div className="step-line"></div>
+                <div className={`step-item ${currentStep >= 2 ? 'active' : ''}`}>
+                  <div className="step-circle">2</div>
+                  <div className="step-text">Professional</div>
+                </div>
+                <div className="step-line"></div>
+                <div className={`step-item ${currentStep >= 3 ? 'active' : ''}`}>
+                  <div className="step-circle">3</div>
+                  <div className="step-text">Security</div>
+                </div>
               </div>
-              <div className="step-line"></div>
-              <div className={`step-item ${currentStep >= 2 ? 'active' : ''}`}>
-                <div className="step-circle">2</div>
-                <div className="step-text">Professional</div>
-              </div>
-              <div className="step-line"></div>
-              <div className={`step-item ${currentStep >= 3 ? 'active' : ''}`}>
-                <div className="step-circle">3</div>
-                <div className="step-text">Security</div>
-              </div>
-            </div>
 
-            {message && (
-              <div className={`message-alert ${isError ? 'error' : 'success'}`}>
-                {message}
-              </div>
-            )}
-
-            <form
-              onSubmit={currentStep === 3 ? handleSubmit : (e) => e.preventDefault()}
-              className="doctor-signup-form"
-            >
-              {currentStep === 1 && renderStep1()}
-              {currentStep === 2 && renderStep2()}
-              {currentStep === 3 && renderStep3()}
-
-            <div className="form-buttons">
-              {currentStep > 1 && (
-                <button type="button" className="prev-btn" onClick={prevStep}>
-                  Previous
-                </button>
+              {message && (
+                <div className={`message-alert ${isError ? 'error' : 'success'}`}>
+                  {message}
+                </div>
               )}
 
-              {currentStep < 3 && (
-                <button type="button" className="next-btn" onClick={nextStep}>
-                  Next
-                </button>
-              )}
+              <form
+                onSubmit={currentStep === 3 ? handleSubmit : (e) => e.preventDefault()}
+                className="doctor-signup-form"
+                style={{ maxHeight: '55vh', overflowY: 'auto', paddingRight: '10px' }}
+              >
+                {currentStep === 1 && renderStep1()}
+                {currentStep === 2 && renderStep2()}
+                {currentStep === 3 && renderStep3()}
 
-              {currentStep === 3 && (
-                <button type="submit" className="signup-btn">
-                  Create Account
-                </button>
-              )}
-            </div>
-          </form>
+                <div className="form-buttons">
+                  {currentStep > 1 && (
+                    <button type="button" className="prev-btn" onClick={prevStep}>
+                      Previous
+                    </button>
+                  )}
 
-            <div className="login-redirect">
-              Already have an account? <Link to="/doctor/login">Login</Link>
+                  {currentStep < 3 && (
+                    <button type="button" className="next-btn" onClick={nextStep}>
+                      Next
+                    </button>
+                  )}
+
+                  {currentStep === 3 && (
+                    <button type="submit" className="signup-btn">
+                      Create Account
+                    </button>
+                  )}
+                </div>
+              </form>
+
+              <div className="login-redirect">
+                Already have an account? <Link to="/doctor/login">Login</Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </LoadScript>
       <Footer />
     </>
   );

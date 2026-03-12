@@ -41,11 +41,11 @@ const DoctorLogin = () => {
       return;
     }
 
-    try {
+   try {
       // Step 1: Login and get token
       const res = await axios.post(`${BASE_URL}/doctor-login`, {
-        emailId,
-        password,
+        emailId: emailId, // Change 'email' to 'emailId' to match your DTO
+        password: password,
       });
 
       if (res.data.message === "Login successful") {
@@ -126,7 +126,7 @@ const DoctorLogin = () => {
             setMessage("Invalid email or password.");
             break;
           case 403:
-            setMessage("Access denied. Please contact support.");
+            setMessage("Your registration is being processed. You will be granted access once approved.");
             break;
           case 404:
             setMessage("Account not found. Please register first.");

@@ -344,6 +344,7 @@ const fetchDoctorAppointments = async (doctorId) => {
   
 
   const handleSymptomSubmit = async () => {
+    console.log("Using Groq Key:", process.env.REACT_APP_GROQ_API_KEY ? "EXISTS" : "MISSING");
     if (!text.trim()) return;
     
     if (!locationType) {
@@ -353,12 +354,15 @@ const fetchDoctorAppointments = async (doctorId) => {
     }
     
     setIsLoading(true);
-    try {
-      const res = await axios.post(
-        'https://api.groq.com/openai/v1/chat/completions',
-        {
-          model: "llama3-70b-8192",
-          messages: [
+   try {
+    // Create a fresh instance to bypass global headers
+    const groqClient = axios.create(); 
+
+    const res = await groqClient.post(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        model: "llama3-70b-8192",
+        messages: [
             {
               role: "system",
               content: "You are a doctor who gives health advice.You will suggest what type of doctor to see based on the symptoms.In only  one word like General.If Symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms. and try to seek for more context Donot use punctuation marks and do not use any other words. Just give the doctor specialization ",
@@ -367,15 +371,16 @@ const fetchDoctorAppointments = async (doctorId) => {
               role: "user",
               content: `I have these symptoms: ${text}. What type of doctor should I see for consultation? In one word you should suggest the doctor name, like cardiologist, general, dermatologist, gynecologist, etc.`,
             }
-          ],
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${process.env.REACT_APP_GROQ_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
+         ],
+      },
+      {
+        headers: {
+          // Manually set ONLY what Groq needs
+          'Authorization': `Bearer ${process.env.REACT_APP_GROQ_API_KEY}`,
+          'Content-Type': 'application/json',
         }
-      );
+      }
+    );
       
       const doctorSuggestion = res.data.choices[0].message.content.trim();
       setAiResponse(doctorSuggestion);

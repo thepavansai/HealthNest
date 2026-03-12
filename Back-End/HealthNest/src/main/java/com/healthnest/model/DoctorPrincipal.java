@@ -30,6 +30,7 @@ public class DoctorPrincipal implements UserDetails {
         return doctor.getEmailId();
     }
     
+    
     @Override
     public boolean isAccountNonExpired() {
         return true;

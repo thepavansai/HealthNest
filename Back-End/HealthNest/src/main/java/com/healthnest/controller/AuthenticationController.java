@@ -57,6 +57,40 @@ public class AuthenticationController {
         }
     }
 
+//    @PostMapping("/doctor-login")
+//    public ResponseEntity<Map<String, String>> doctorLogin(@RequestBody DoctorDTO doctor) {
+//        Map<String, String> response = new HashMap<>();
+//        
+//        if (doctor.getEmailId() == null || doctor.getPassword() == null ||
+//            doctor.getEmailId().trim().isEmpty() || doctor.getPassword().trim().isEmpty()) {
+//            throw new IllegalArgumentException("Email and password must not be empty");
+//        }
+//        
+//        try {
+//            String storedHashedPassword = doctorService.getDoctorPasswordHashByEmailId(doctor.getEmailId());
+//            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//            
+//            if (!passwordEncoder.matches(doctor.getPassword(), storedHashedPassword)) {
+//                throw new AuthenticationException("Invalid email or password");
+//            }
+//            
+//            Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(doctor.getEmailId());
+//            
+//            // Generate JWT token with DOCTOR role
+//            String token = jwtService.generateToken(doctor.getEmailId(), "DOCTOR");
+//            
+//            response.put("message", "Login successful");
+//            response.put("userId", String.valueOf(authenticatedDoctor.getDoctorId()));
+//            response.put("name", authenticatedDoctor.getDoctorName());
+//            response.put("token", token);
+//            response.put("role", "DOCTOR");
+//            
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            response.put("message", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+//        }
+//    }
     @PostMapping("/doctor-login")
     public ResponseEntity<Map<String, String>> doctorLogin(@RequestBody DoctorDTO doctor) {
         Map<String, String> response = new HashMap<>();
@@ -76,6 +110,14 @@ public class AuthenticationController {
             
             Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(doctor.getEmailId());
             
+            // --- NEW STATUS CHECK LOGIC ---
+            if (authenticatedDoctor.getStatus() == 0) {
+                response.put("message", "Your account is pending approval. Please wait until the Admin approves you.");
+                // Returning 403 Forbidden is the standard way to say "I know you, but you're not allowed yet"
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+            }
+            // ------------------------------
+
             // Generate JWT token with DOCTOR role
             String token = jwtService.generateToken(doctor.getEmailId(), "DOCTOR");
             

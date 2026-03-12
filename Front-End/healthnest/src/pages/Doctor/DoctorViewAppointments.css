@@ -1289,3 +1289,41 @@
     font-size: 14px;
   }
 }
+/* Add these styles to your existing CSS file */
+
+.doctor-prescription-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.doctor-prescription-btn:hover {
+  background-color: #1565c0;
+}
+
+.doctor-prescription-btn svg {
+  font-size: 16px;
+}
+
+.doctor-completed-details .doctor-prescription-btn {
+  margin-top: 15px;
+}
+
+/* Responsive styles for the prescription button */
+@media (max-width: 768px) {
+  .doctor-prescription-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}
