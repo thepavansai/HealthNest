@@ -30,14 +30,16 @@ import UserFeedback from './pages/User/UserFeedback.js';
 import UserLogin from './pages/User/UserLogin.js';
 import ViewAppointments from './pages/User/ViewAppointments';
 import ForgotPassword from './components/ForgotPassword';
- import ViewPrescription from './pages/User/ViewPrescription';
+import ViewPrescription from './pages/User/ViewPrescription';
 import WritePrescription from './pages/Doctor/WritePrescription';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <ToastContainer />         {/* ← add this */}
         <Routes>
           {}
           <Route path="/" element={<Home />} />

@@ -6,6 +6,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { FaPlus, FaTrash, FaPrescription } from 'react-icons/fa';
 import './WritePrescription.css';
+import { toast } from 'react-toastify';
 
 const WritePrescription = () => {
     const { appointmentId } = useParams();
@@ -55,11 +56,11 @@ const WritePrescription = () => {
                 }
             });
 
-            alert("Prescription saved successfully!");
+            toast.success("Prescription saved successfully!");
             navigate('/doctor/appointments');
         } catch (error) {
             console.error("Error saving prescription:", error);
-            alert("Failed to save prescription. Ensure all fields are valid.");
+            toast.error("Failed to save prescription. Ensure all fields are valid.");
         } finally {
             setIsSubmitting(false);
         }

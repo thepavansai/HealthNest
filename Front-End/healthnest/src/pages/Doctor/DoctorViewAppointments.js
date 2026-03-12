@@ -6,6 +6,8 @@ import './DoctorViewAppointments.css';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify'; 
+
 
 const DoctorViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -92,7 +94,7 @@ const DoctorViewAppointments = () => {
 
   const handleAppointmentAction = async (appointmentId, action) => {
     if (!doctorId) {
-        alert("Doctor ID not found. Please login again.");
+        toast.error("Doctor ID not found. Please login again.");
         return;
     }
     try {
@@ -118,13 +120,13 @@ const DoctorViewAppointments = () => {
               : app
           )
         );
-        alert(`Appointment ${action}ed successfully.`);
+        toast.success(`Appointment ${action}ed successfully.`);
       } else {
-        alert(`Failed to ${action} appointment.`);
+        toast.error(`Failed to ${action} appointment.`);
       }
     } catch (error) {
       console.error(`Error ${action}ing appointment:`, error);
-      alert(`Error ${action}ing appointment. Please try again later.`);
+      toast.error(`Error ${action}ing appointment. Please try again later.`);
     }
   };
   
@@ -132,13 +134,13 @@ const DoctorViewAppointments = () => {
     const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
     const currentTime = new Date();
     if (appointmentDateTime < currentTime) {
-      alert('You cannot cancel an appointment that has already passed.');
+      toast.error('You cannot cancel an appointment that has already passed.');
       return;
     }
     const timeDifferenceInMilliseconds = appointmentDateTime - currentTime;
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 3600);
     if (timeDifferenceInHours < 3) {
-      alert('You cannot cancel an appointment less than 3 hours before it starts.');
+      toast.error('You cannot cancel an appointment less than 3 hours before it starts.');
       return;
     }
     try {
@@ -160,13 +162,13 @@ const DoctorViewAppointments = () => {
               : app
           )
         );
-        alert('Appointment cancelled successfully.');
+        toast.success('Appointment cancelled successfully.');
       } else {
-        alert('Failed to cancel appointment.');
+        toast.error('Failed to cancel appointment.');
       }
     } catch (error) {
       console.error('Error cancelling appointment:', error);
-      alert('Error cancelling appointment. Please try again later.');
+      toast.error('Error cancelling appointment. Please try again later.');
     }
   };
   
@@ -192,10 +194,10 @@ const DoctorViewAppointments = () => {
               : app
           )
         );
-        alert('Appointment marked as completed.');
+        toast.success('Appointment marked as completed.');
       } else {
         // This part might not be reached if axios throws for non-2xx status
-        alert(`Failed to mark appointment as completed. Status: ${response.status}`);
+        toast.error(`Failed to mark appointment as completed. Status: ${response.status}`);
         console.error('Mark as completed failed with status:', response.status, response.data);
       }
     } catch (error) {
@@ -208,15 +210,15 @@ const DoctorViewAppointments = () => {
         console.error('Error Headers:', error.response.headers);
         // Provide more specific feedback if possible
         const errorMsg = error.response.data?.message || error.response.data || `Server responded with ${error.response.status}`;
-        alert(`Error marking appointment as completed: ${errorMsg}`);
+        toast.error(`Error marking appointment as completed: ${errorMsg}`);
       } else if (error.request) {
         // The request was made but no response was received
         console.error('Error Request:', error.request);
-        alert('Error marking appointment as completed: No response from server.');
+        toast.error('Error marking appointment as completed: No response from server.');
       } else {
         // Something happened in setting up the request that triggered an Error
         console.error('Error Message:', error.message);
-        alert(`Error marking appointment as completed: ${error.message}`);
+        toast.error(`Error marking appointment as completed: ${error.message}`);
       }
     }
   };

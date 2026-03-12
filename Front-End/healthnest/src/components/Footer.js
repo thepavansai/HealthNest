@@ -53,7 +53,7 @@ const Footer = () => {
         </div>
         <div className="footer-bottom">
           <hr className="footer-divider" />
-          <p className="copyright">© 2025 HealthNest. All rights reserved.</p>
+         <p className="copyright">© {new Date().getFullYear()} HealthNest. All rights reserved.</p>
         </div>
       </div>
     </footer>

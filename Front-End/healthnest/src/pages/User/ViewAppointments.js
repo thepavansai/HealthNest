@@ -86,13 +86,13 @@ const ViewAppointments = () => {
     const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
     const currentTime = new Date();
     if (appointmentDateTime < currentTime) {
-      alert('You cannot cancel an appointment that has already passed.');
+      toast.error('You cannot cancel an appointment that has already passed.');
       return;
     }
     const timeDifferenceInMilliseconds = appointmentDateTime - currentTime;
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 3600);
     if (timeDifferenceInHours < 3) {
-      alert('You cannot cancel an appointment less than 3 hours before it starts.');
+      toast.error('You cannot cancel an appointment less than 3 hours before it starts.');
       return;
     }
     try {
@@ -116,13 +116,13 @@ const ViewAppointments = () => {
               : appointment
           )
         );
-        alert('Appointment cancelled successfully!');
+        toast.success('Appointment cancelled successfully!');
       } else {
-        alert('Failed to cancel appointment. Please try again.');
+        toast.error('Failed to cancel appointment. Please try again.');
       }
     } catch (error) {
       console.error('Error cancelling appointment:', error);
-      alert('Error cancelling appointment. Please try again later.');
+      toast.error('Error cancelling appointment. Please try again later.');
     }
   };
 
@@ -139,11 +139,11 @@ const ViewAppointments = () => {
 
   const updateRating = async (doctorId, appointmentId, rating) => {
     if (!rating) {
-      alert('Please select a rating first');
+      toast.error('Please select a rating first');
       return;
     }
     if (ratedAppointments.has(appointmentId)) {
-      alert('You have already submitted a rating for this appointment');
+      toast.error('You have already submitted a rating for this appointment');
       return;
     }
     
@@ -173,7 +173,7 @@ const ViewAppointments = () => {
           );
           
           if (reviewResponse.status === 200) {
-            alert('Rating submitted successfully!');
+            toast.success('Rating submitted successfully!');
             
             setRatings(prev => ({
               ...prev,
@@ -188,18 +188,18 @@ const ViewAppointments = () => {
               )
             );
           } else {
-            alert('Failed to update appointment status. Please try again.');
+            toast.error('Failed to update appointment status. Please try again.');
           }
         } catch (reviewError) {
           console.error('Error updating appointment status:', reviewError);
-          alert('Error updating appointment status. Please try again later.');
+          toast.error('Error updating appointment status. Please try again later.');
         }
       } else {
-        alert('Failed to update rating. Please try again.');
+        toast.error('Failed to update rating. Please try again.');
       }
     } catch (error) {
       console.error('Error updating rating:', error);
-      alert('Error updating rating. Please try again later.');
+      toast.error('Error updating rating. Please try again later.');
     }
   };
 

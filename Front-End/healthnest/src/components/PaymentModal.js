@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './PaymentModal.css';
-
+import { toast } from 'react-toastify';          // or from 'sonner' if you’re using that
 
 
 const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
@@ -66,7 +66,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
       }
     } else if (paymentMethod === 'upi') {
       onPaymentSuccess();
-      alert('Payment successful! Thank you for your payment.');
+      toast.success('Payment successful! Thank you for your payment.');
       onClose();
       setLoading(false);
       return;
@@ -78,7 +78,7 @@ const PaymentModal = ({ isOpen, onClose, amount, onPaymentSuccess }) => {
 
       onPaymentSuccess();
 
-      alert('Payment successful! Thank you for your payment.');
+      toast.success('Payment successful! Thank you for your payment.');
       onClose();
     } catch (err) {
       setError('Payment failed. Please try again.');
