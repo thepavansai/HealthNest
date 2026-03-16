@@ -1,5 +1,7 @@
 package com.healthnest.controller;
 
+
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,8 @@ import com.healthnest.service.FeedBackService;
 import com.healthnest.service.JWTService;
 import com.healthnest.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @CrossOrigin(origins = "https://health-nest.netlify.app")
 @RestController
 @RequestMapping("/v1/users")
@@ -123,7 +127,7 @@ public class UserController {
             @PathVariable Long userId,
             @RequestHeader("Authorization") String authHeader) {
         
-        System.out.println("Auth header in getUserDetails: " + authHeader);
+        log.info("Auth header in getUserDetails: " + authHeader);
         
         try {
             // Extract token from Authorization header
@@ -149,7 +153,7 @@ public class UserController {
             @RequestBody FeedBack feedBack,
             @RequestHeader("Authorization") String authHeader) {
         
-        System.out.println("Auth header in submitFeedback: " + authHeader);
+        log.info("Auth header in submitFeedback: " + authHeader);
         
         try {
             // Extract token from Authorization header
@@ -183,7 +187,7 @@ public class UserController {
             @PathVariable Long id,
             @RequestHeader("Authorization") String authHeader) {
         
-        System.out.println("Auth header in editProfile: " + authHeader);
+        log.info("Auth header in editProfile: " + authHeader);
         
         try {
             // Extract token from Authorization header
@@ -217,7 +221,7 @@ public class UserController {
         @PathVariable Long userId,
         @RequestHeader("Authorization") String authHeader) throws Exception {
                 
-        System.out.println("Received auth header in getUpcomingAppointments: " + authHeader);
+        log.info("Received auth header in getUpcomingAppointments: " + authHeader);
         
         try {
             // Extract token from Authorization header
@@ -243,7 +247,7 @@ public class UserController {
             @PathVariable Long appointmentId,
             @RequestHeader("Authorization") String authHeader) {
         
-        System.out.println("Auth header in cancelAppointment: " + authHeader);
+        log.info("Auth header in cancelAppointment: " + authHeader);
         
         try {
             // Extract token from Authorization header
@@ -271,7 +275,7 @@ public class UserController {
             @PathVariable String changepassword,
             @RequestHeader("Authorization") String authHeader) {
         
-        System.out.println("Auth header in changePassword: " + authHeader);
+        log.info("Auth header in changePassword: " + authHeader);
         
         try {
             // Extract token from Authorization header
@@ -305,7 +309,7 @@ public class UserController {
             @PathVariable Long userId,
             @RequestHeader("Authorization") String authHeader) {
         
-        System.out.println("Auth header in deleteAccount: " + authHeader);
+        log.info("Auth header in deleteAccount: " + authHeader);
         
         try {
             // Extract token from Authorization header
@@ -333,7 +337,7 @@ public class UserController {
 //            @RequestBody Appointment appointment,
 //            @RequestHeader("Authorization") String authHeader) {
 //        
-//        System.out.println("Auth header in bookAppointment: " + authHeader);
+//        log.info("Auth header in bookAppointment: " + authHeader);
 //        
 //        try {
 //            // Extract token from Authorization header
@@ -369,7 +373,7 @@ public class UserController {
                 @RequestBody Appointment appointment,
                 @RequestHeader("Authorization") String authHeader) {
 
-            System.out.println("Auth header in bookAppointment: " + authHeader);
+            log.info("Auth header in bookAppointment: " + authHeader);
 
             try {
                 // 1. Synchronous Validation (Executes on Tomcat thread)
@@ -456,7 +460,7 @@ public class UserController {
 
     public ResponseEntity<Integer> getAllUsersCount(){
         
-       // System.out.println("Auth header in getAllUsersCount: " + authHeader);
+       // log.info("Auth header in getAllUsersCount: " + authHeader);
         
         // This endpoint should only be accessible to admins
         // The @PreAuthorize annotation ensures this
@@ -498,7 +502,7 @@ public class UserController {
             
             // This endpoint might be used for password reset, so auth header could be optional
             if (authHeader != null) {
-                System.out.println("Auth header in checkEmailExists: " + authHeader);
+                log.info("Auth header in checkEmailExists: " + authHeader);
             }
             
             String email = request.get("email");

@@ -205,7 +205,7 @@ public class UserService implements UserDetailsService {
             if (authentication.isAuthenticated()) {
                 // Generate token with USER role
                 String token = jwtService.generateToken(email, "USER");
-                System.out.println("Generated token: " + token);
+             
                 
                 response.put("message", "Login successful");
                 response.put("token", token);

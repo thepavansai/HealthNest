@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .requestMatchers("/v1/appointments/countall","/v1/users/countallusers","/v1/doctor/countalldoctors").permitAll()
                 .requestMatchers("/v1/doctor/check-email", "/v1/doctor/setnewpassword").permitAll()
                 .requestMatchers(
+                	"/v3/api-docs",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/v3/api-docs/**",
@@ -74,7 +75,7 @@ public class SecurityConfig {
                 // Require authentication for all other requests
                 .anyRequest().authenticated()
             )
-            .httpBasic(Customizer.withDefaults())
+            .httpBasic(httpBasic -> httpBasic.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();

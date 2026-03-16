@@ -51,7 +51,7 @@ public class DoctorController {
             String email = jwtService.extractUserEmail(token);
             String role = jwtService.extractUserRole(token);
             
-            System.out.println("Accessing profile with role: " + role + " for doctor ID: " + id);
+            log.info("Accessing profile with role: " + role + " for doctor ID: " + id);
             
             // If user is a doctor, verify they're accessing their own profile
             if ("DOCTOR".equals(role)) {

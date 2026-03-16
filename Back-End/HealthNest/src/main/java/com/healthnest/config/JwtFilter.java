@@ -1,9 +1,10 @@
 package com.healthnest.config;
 
+
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +23,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
@@ -39,8 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
         
-        // Debug output to see what's coming in
-        System.out.println("Auth Header: " + authHeader);
+       
         
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -52,7 +53,7 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             userEmail = jwtService.extractUserEmail(jwt);
             String role = jwtService.extractRole(jwt);
-            System.out.println("Extracted role from token: " + role);
+            log.debug("Extracted role from token: " + role);
             
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
@@ -68,13 +69,13 @@ public class JwtFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     
-                    System.out.println("Authentication successful for user: " + userEmail + " with role: " + role);
+                    log.info("Authentication successful for user: " + userEmail + " with role: " + role);
                 } else {
-                    System.out.println("Token validation failed for user: " + userEmail);
+                    log.error("Token validation failed for user: " + userEmail);
                 }
             }
         } catch (Exception e) {
-            System.out.println("JWT processing error: " + e.getMessage());
+            log.error("JWT processing error: " + e.getMessage());
             e.printStackTrace();
         }
         

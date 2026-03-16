@@ -188,14 +188,14 @@ public class AppointmentController {
                     
         try {
             // Add logging to debug the request
-            System.out.println("Received request to update appointment " + appointmentId + " to status " + setStatus);
+            log.info("Received request to update appointment " + appointmentId + " to status " + setStatus);
                     
             // Extract token from Authorization header
             String token = authHeader.substring(7);
             String email = jwtService.extractUserEmail(token);
             String role = jwtService.extractUserRole(token);
                     
-            System.out.println("User email: " + email + ", role: " + role);
+            log.infoln("User email: " + email + ", role: " + role);
                                 
             // Standardize status format for comparison (convert to uppercase)
             String statusaUpperCase = setStatus.toUpperCase();
@@ -216,7 +216,7 @@ public class AppointmentController {
                 // Doctors can only update appointments assigned to them
                 Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
                             
-                System.out.println("Doctor ID: " + authenticatedDoctor.getDoctorId());
+                log.info("Doctor ID: " + authenticatedDoctor.getDoctorId());
                             
                 if (!appointmentService.isAppointmentForDoctor(appointmentId, authenticatedDoctor.getDoctorId())) {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only update appointments assigned to you");

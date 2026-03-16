@@ -150,7 +150,7 @@ public class AppointmentService {
 	    public boolean updateAppointmentStatus(Long appointmentId, String newStatus) {
 	        try {
 	            // Add logging
-	            System.out.println("Updating appointment " + appointmentId + " to status " + newStatus);
+	           log.info("Updating appointment " + appointmentId + " to status " + newStatus);
 	            
 	            Optional<Appointment> appointmentOpt = appointmentRepository.findById(appointmentId);
 	            
@@ -158,7 +158,7 @@ public class AppointmentService {
 	                Appointment appointment = appointmentOpt.get();
 	                
 	                // Log current status
-	                System.out.println("Current status: " + appointment.getAppointmentStatus());
+	                log.info("Current status: " + appointment.getAppointmentStatus());
 	                
 	                // Convert status to proper case format (first letter uppercase, rest lowercase)
 	                String formattedStatus = newStatus.substring(0, 1).toUpperCase() + 
@@ -168,10 +168,10 @@ public class AppointmentService {
 	                appointmentRepository.save(appointment);
 	                
 	                // Log after update
-	                System.out.println("Status updated successfully");
+	                log.info("Status updated successfully");
 	                return true;
 	            } else {
-	                System.out.println("Appointment not found with ID: " + appointmentId);
+	                log.info("Appointment not found with ID: " + appointmentId);
 	                return false;
 	            }
 	        } catch (Exception e) {
