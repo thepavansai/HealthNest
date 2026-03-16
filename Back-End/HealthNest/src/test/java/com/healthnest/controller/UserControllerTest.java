@@ -37,7 +37,6 @@ import com.healthnest.config.TestSecurityConfig;
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.dto.UserDTO;
 import com.healthnest.model.*;
-import com.healthnest.model.enums.Gender;
 import com.healthnest.service.*;
 
 @WebMvcTest(UserController.class)

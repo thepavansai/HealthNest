@@ -25,7 +25,9 @@ import com.healthnest.service.AppointmentService;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.JWTService;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @CrossOrigin(origins = "https://health-nest.netlify.app")
 @RestController
 @RequestMapping("/v1/appointments")
@@ -195,7 +197,7 @@ public class AppointmentController {
             String email = jwtService.extractUserEmail(token);
             String role = jwtService.extractUserRole(token);
                     
-            log.infoln("User email: " + email + ", role: " + role);
+            log.info("User email: " + email + ", role: " + role);
                                 
             // Standardize status format for comparison (convert to uppercase)
             String statusaUpperCase = setStatus.toUpperCase();

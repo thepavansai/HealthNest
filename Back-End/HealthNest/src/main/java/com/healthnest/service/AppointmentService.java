@@ -1,5 +1,7 @@
 package com.healthnest.service;
 
+
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +18,8 @@ import com.healthnest.repository.AppointmentRepository;
 import com.healthnest.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 @Transactional
 public class AppointmentService {

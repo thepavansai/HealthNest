@@ -3036,3 +3036,112 @@ java.lang.RuntimeException: Unexpected database error
 2026-03-16 15:05:53 [main] INFO  c.h.controller.UserController - Auth header in editProfile: Bearer test-jwt-token
 2026-03-16 15:05:53 [main] INFO  c.h.controller.UserController - Auth header in getUserDetails: Bearer test-jwt-token
 2026-03-16 15:05:54 [main] INFO  c.h.controller.UserController - Auth header in submitFeedback: Bearer test-jwt-token
+2026-03-16 15:09:10 [main] INFO  c.h.c.FeedbackControllerTest - Starting FeedbackControllerTest using Java 17.0.17 with PID 33500 (started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
+2026-03-16 15:09:10 [main] DEBUG c.h.c.FeedbackControllerTest - Running with Spring Boot v3.4.5, Spring v6.2.6
+2026-03-16 15:09:10 [main] INFO  c.h.c.FeedbackControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-03-16 15:09:18 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-03-16 15:09:19 [main] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Found 2 UserDetailsService beans, with names [inMemoryUserDetailsManager, com.healthnest.service.UserService#0]. Global Authentication Manager will not use a UserDetailsService for username/password login. Consider publishing a single UserDetailsService bean.
+2026-03-16 15:09:22 [main] INFO  c.h.c.FeedbackControllerTest - Started FeedbackControllerTest in 14.908 seconds (process running for 56.818)
+2026-03-16 15:09:24 [main] WARN  c.h.controller.AdminController - CRITICAL: Admin initiated deletion of ALL users
+2026-03-16 15:09:24 [main] INFO  c.h.controller.AdminController - Successfully deleted all users. Result: All users deleted
+2026-03-16 15:09:24 [main] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-16 15:09:24 [main] ERROR c.h.controller.AdminController - Error occurred while fetching users: 
+java.lang.RuntimeException: Unexpected database error
+	at com.healthnest.service.UserService.getAllUsers(UserService.java:127)
+	at com.healthnest.controller.AdminController.getAllUsers(AdminController.java:39)
+	at com.healthnest.controller.AdminControllerTest.handleException_shouldReturnInternalServerError(AdminControllerTest.java:178)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:767)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$8(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:94)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:52)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:70)
+	at org.eclipse.jdt.internal.junit5.runner.JUnit5TestReference.run(JUnit5TestReference.java:100)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:530)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:758)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:453)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:211)
+2026-03-16 15:09:24 [main] INFO  c.h.controller.AdminController - Admin deleting appointment ID: 1
+2026-03-16 15:09:24 [main] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-16 15:09:25 [main] DEBUG c.h.controller.AdminController - Successfully retrieved 1 doctors
+2026-03-16 15:09:25 [main] INFO  c.h.controller.AdminController - Admin accepting registration for doctor ID: 1
+2026-03-16 15:09:25 [main] INFO  c.h.controller.AdminController - Doctor 1 status updated to ACCEPTED
+2026-03-16 15:09:25 [main] WARN  c.h.controller.AdminController - Admin deleting user account ID: 2
+2026-03-16 15:09:25 [main] WARN  c.h.controller.AdminController - Failed to delete user 2: Not found
+2026-03-16 15:09:25 [main] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-16 15:09:25 [main] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-16 15:09:25 [main] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-16 15:09:25 [main] DEBUG c.h.controller.AdminController - Retrieved 1 total appointments
+2026-03-16 15:09:25 [main] INFO  c.h.controller.AdminController - Admin REJECTING registration for doctor ID: 1
+2026-03-16 15:09:30 [main] INFO  c.h.controller.UserControllerTest - Starting UserControllerTest using Java 17.0.17 with PID 33500 (started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
+2026-03-16 15:09:30 [main] DEBUG c.h.controller.UserControllerTest - Running with Spring Boot v3.4.5, Spring v6.2.6
+2026-03-16 15:09:30 [main] INFO  c.h.controller.UserControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-03-16 15:09:36 [main] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-03-16 15:09:37 [main] INFO  c.h.controller.UserControllerTest - Started UserControllerTest in 7.956 seconds (process running for 71.135)
+2026-03-16 15:09:37 [main] INFO  c.h.controller.UserController - Auth header in deleteAccount: Bearer test-jwt-token
+2026-03-16 15:09:38 [main] INFO  c.h.controller.UserController - Auth header in changePassword: Bearer test-jwt-token
+2026-03-16 15:09:38 [main] INFO  c.h.controller.UserController - Auth header in cancelAppointment: Bearer test-jwt-token
+2026-03-16 15:09:38 [main] INFO  c.h.controller.UserController - Auth header in bookAppointment: Bearer test-jwt-token
+2026-03-16 15:09:38 [main] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer test-jwt-token
+2026-03-16 15:09:38 [main] INFO  c.h.controller.UserController - Auth header in editProfile: Bearer test-jwt-token
+2026-03-16 15:09:38 [main] INFO  c.h.controller.UserController - Auth header in getUserDetails: Bearer test-jwt-token
+2026-03-16 15:09:38 [main] INFO  c.h.controller.UserController - Auth header in submitFeedback: Bearer test-jwt-token

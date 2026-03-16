@@ -1,7 +1,6 @@
 package com.healthnest.controller;
 
 import com.healthnest.dto.*;
-import com.healthnest.exception.DoctorNotFoundException;
 import com.healthnest.exception.UserNotFoundException;
 import com.healthnest.model.Doctor;
 import com.healthnest.model.User;
@@ -15,7 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
