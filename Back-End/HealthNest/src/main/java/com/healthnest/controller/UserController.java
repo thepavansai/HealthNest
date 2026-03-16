@@ -372,10 +372,15 @@ public class UserController {
             System.out.println("Auth header in bookAppointment: " + authHeader);
 
             try {
-                // 1. Synchronous Validation (Executes immediately on Tomcat thread)
+                // 1. Synchronous Validation (Executes on Tomcat thread)
+                if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                    throw new IllegalArgumentException("Missing or invalid Authorization header");
+                }
+
                 String token = authHeader.substring(7);
                 String userEmail = jwtService.extractUserEmail(token);
                 
+                // Validate that the user is booking for themselves
                 if (appointment.getUser() != null) {
                     Long tokenUserId = userService.getUserId(userEmail);
                     if (!tokenUserId.equals(appointment.getUser().getUserId())) {
@@ -386,24 +391,29 @@ public class UserController {
                     }
                 }
 
-                if (appointment.getDoctor() == null || appointment.getAppointmentDate() == null || appointment.getAppointmentTime() == null) {
+                // Basic null checks
+                if (appointment.getDoctor() == null || 
+                    appointment.getAppointmentDate() == null || 
+                    appointment.getAppointmentTime() == null) {
                     return CompletableFuture.completedFuture(
                         ResponseEntity.badRequest().body("Doctor, date, and time must be provided")
                     );
                 }
 
             } catch (Exception e) {
+                // Log the error to see why validation/JWT extraction failed
+                e.printStackTrace(); 
                 return CompletableFuture.completedFuture(
                     ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid authorization token")
                 );
             }
 
-            // 2. Asynchronous Processing (Offloaded to our custom thread pool)
+            // 2. Asynchronous Processing (Offloaded to our custom 'bookingThreadPool')
             return CompletableFuture.supplyAsync(() -> {
                 
-                // Assuming getDoctorId() exists in our Doctor entity. Adjust if it is getId()
                 Long doctorId = appointment.getDoctor().getDoctorId(); 
                 
+                // Get the deterministic lock from Guava Striped
                 Lock slotLock = lockService.getLockForSlot(
                         doctorId, 
                         appointment.getAppointmentDate(), 
@@ -411,35 +421,32 @@ public class UserController {
                 );
                 
                 try {
-                    // Try to acquire the lock. Wait max 3 seconds before giving up.
+                    // Try to acquire the lock for 3 seconds
                     if (slotLock.tryLock(3, TimeUnit.SECONDS)) {
                         try {
-                            // WE HAVE THE LOCK. Safely process the booking.
+                            // CRITICAL SECTION: Double-check DB and save
                             boolean booked = userService.bookAppointment(appointment);
                             
                             if (booked) {
                                 return ResponseEntity.ok("Our appointment is successfully booked");
                             } else {
-                                return ResponseEntity.badRequest().body("Failed to book appointment or slot is already taken");
+                                return ResponseEntity.badRequest().body("Slot is already taken by another user");
                             }
                         } finally {
+                            // IMPORTANT: Always unlock, but NEVER 'remove' from Guava Striped
                             slotLock.unlock(); 
-                            lockService.removeLock(
-                                    doctorId, 
-                                    appointment.getAppointmentDate(), 
-                                    appointment.getAppointmentTime()
-                            );
                         }
                     } else {
-                        // Lock could not be acquired because another thread is holding it for too long
+                        // Lock could not be acquired (someone else is holding it)
                         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                                .body("High traffic for this specific slot. Please try again.");
+                                .body("High traffic for this specific slot. Please try again in a moment.");
                     }
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     return ResponseEntity.internalServerError().body("Booking process was interrupted");
                 } catch (Exception e) {
-                    return ResponseEntity.internalServerError().body("An error occurred during booking");
+                    e.printStackTrace();
+                    return ResponseEntity.internalServerError().body("An error occurred during booking: " + e.getMessage());
                 }
                 
             }, bookingExecutor);

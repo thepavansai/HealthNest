@@ -1,25 +1,25 @@
 package com.healthnest.service;
 
+import com.google.common.util.concurrent.Striped;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 public class AppointmentLockService {
     
-    private final ConcurrentHashMap<String, Lock> locks = new ConcurrentHashMap<>();
+    // We pre-allocate exactly 10,000 locks in memory. 
+    // This array never grows, ensuring we never run out of memory.
+    private final Striped<Lock> stripedLocks = Striped.lock(10000);
 
     public Lock getLockForSlot(Long doctorId, LocalDate date, LocalTime time) {
-        // Creates a unique key: e.g., "5-2026-03-20-10:30"
+        // 1. Create the unique identifier for the slot
         String lockKey = doctorId + "-" + date.toString() + "-" + time.toString();
-        return locks.computeIfAbsent(lockKey, k -> new ReentrantLock());
-    }
-    
-    public void removeLock(Long doctorId, LocalDate date, LocalTime time) {
-        String lockKey = doctorId + "-" + date.toString() + "-" + time.toString();
-        locks.remove(lockKey); // Clean up to prevent memory leaks
+        
+        // 2. Guava deterministically hashes the string and returns the exact same 
+        // Lock object reference for any thread requesting this specific key.
+        return stripedLocks.get(lockKey);
     }
 }
