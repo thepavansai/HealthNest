@@ -1,5 +1,7 @@
 package com.healthnest.repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.healthnest.dto.AppointmentShowDTO;
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.model.Appointment;
+import com.healthnest.model.Doctor;
 
 @Repository
 public interface AppointmentRepository extends CrudRepository<Appointment, Long> {  // Changed from Integer to Long
@@ -33,5 +36,12 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
            "JOIN a.doctor d " +
            "WHERE a.user.userId = :userId")
     List<AppointmentSummaryDTO> findAppointmentSummariesByUserId(@Param("userId") Long userId);  // Changed from Integer to Long
+    
+    boolean existsByDoctorAndAppointmentDateAndAppointmentTimeAndAppointmentStatusNot(
+            Doctor doctor, 
+            LocalDate appointmentDate, 
+            LocalTime appointmentTime, 
+            String appointmentStatus
+    );
 
 }

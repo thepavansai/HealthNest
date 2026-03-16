@@ -160,10 +160,31 @@ public class UserService implements UserDetailsService {
 	    userRepository.deleteById(userId);
 	}
 
-	public boolean bookAppointment(Appointment appointment) {
+//	public boolean bookAppointment(Appointment appointment) {
+//        appointmentRepository.save(appointment);
+//        return true;
+//	}
+	@Transactional
+    public boolean bookAppointment(Appointment appointment) {
+        
+        // 1. The Double-Check: Ensure the slot hasn't been taken in the milliseconds
+        // between the user clicking "Book" and this thread acquiring the lock.
+        boolean isSlotTaken = appointmentRepository.existsByDoctorAndAppointmentDateAndAppointmentTimeAndAppointmentStatusNot(
+                appointment.getDoctor(),
+                appointment.getAppointmentDate(),
+                appointment.getAppointmentTime(),
+                "Cancelled" // We pass "Cancelled" so it ignores cancelled slots
+        );
+
+        if (isSlotTaken) {
+            // The slot was snatched by another thread holding the lock just before us.
+            return false; 
+        }
+
+        // 2. The coast is clear. Save the appointment.
         appointmentRepository.save(appointment);
         return true;
-	}
+    }
 
 
 	public Map<String, String> login(String email, String password) {

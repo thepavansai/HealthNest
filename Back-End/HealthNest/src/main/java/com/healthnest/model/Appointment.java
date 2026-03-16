@@ -11,13 +11,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Entity
-@Table(name = "\"appointments\"")  // Fixed table name with quotes and lowercase
+@Table(
+	    name = "\"appointments\"", 
+	    uniqueConstraints = {
+	        // This physically stops the database from ever storing two non-cancelled appointments 
+	        // for the same doctor at the same exact date and time.
+	        @UniqueConstraint(
+	            name = "uk_doctor_date_time", 
+	            columnNames = {"\"doctor_id\"", "appointment_date", "appointment_time"}
+	        )
+	    }
+	)
 @Data
 public class Appointment {
     @Id

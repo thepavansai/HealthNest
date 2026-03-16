@@ -4,8 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.healthnest.dto.AppointmentSummaryDTO;
 import com.healthnest.dto.UserDTO;
 import com.healthnest.exception.AuthenticationException;
@@ -26,6 +33,7 @@ import com.healthnest.exception.UserNotFoundException;
 import com.healthnest.model.Appointment;
 import com.healthnest.model.FeedBack;
 import com.healthnest.model.User;
+import com.healthnest.service.AppointmentLockService;
 import com.healthnest.service.AppointmentService;
 import com.healthnest.service.FeedBackService;
 import com.healthnest.service.JWTService;
@@ -50,6 +58,12 @@ public class UserController {
     @Autowired
     private JWTService jwtService;
 
+    @Autowired
+    private AppointmentLockService lockService;
+
+    @Autowired
+    @Qualifier("bookingThreadPool")
+    private Executor bookingExecutor;
     // These endpoints don't need authentication
     @PostMapping("/Signup")
     public ResponseEntity<String> createAccount(@RequestBody UserDTO userdto) {
@@ -313,40 +327,123 @@ public class UserController {
         }
     }
         
-    @PostMapping("/bookappointment")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<String> bookAppointment(
-            @RequestBody Appointment appointment,
-            @RequestHeader("Authorization") String authHeader) {
-        
-        System.out.println("Auth header in bookAppointment: " + authHeader);
-        
-        try {
-            // Extract token from Authorization header
-            String token = authHeader.substring(7);
-            String userEmail = jwtService.extractUserEmail(token);
-            
-            // Verify that the appointment is for the authenticated user
-            if (appointment.getUser() != null) {
-                Long tokenUserId = userService.getUserId(userEmail);
-                if (!tokenUserId.equals(appointment.getUser().getUserId())) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only book appointments for yourself");
+//    @PostMapping("/bookappointment")
+//    @PreAuthorize("hasRole('USER')")
+//    public ResponseEntity<String> bookAppointment(
+//            @RequestBody Appointment appointment,
+//            @RequestHeader("Authorization") String authHeader) {
+//        
+//        System.out.println("Auth header in bookAppointment: " + authHeader);
+//        
+//        try {
+//            // Extract token from Authorization header
+//            String token = authHeader.substring(7);
+//            String userEmail = jwtService.extractUserEmail(token);
+//            
+//            // Verify that the appointment is for the authenticated user
+//            if (appointment.getUser() != null) {
+//                Long tokenUserId = userService.getUserId(userEmail);
+//                if (!tokenUserId.equals(appointment.getUser().getUserId())) {
+//                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only book appointments for yourself");
+//                }
+//            }
+//            
+//            if (appointment == null) {
+//                return ResponseEntity.badRequest().body("Appointment cannot be null");
+//            }
+//            boolean booked = userService.bookAppointment(appointment);
+//            if (booked) {
+//                return ResponseEntity.ok("Your appointment is successfully booked");
+//            } else {
+//                return ResponseEntity.badRequest().body("Failed to book appointment");
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.internalServerError().body("Failed to book appointment");
+//        }
+//    }
+   
+
+        @PostMapping("/bookappointment")
+        @PreAuthorize("hasRole('USER')")
+        public CompletableFuture<ResponseEntity<String>> bookAppointment(
+                @RequestBody Appointment appointment,
+                @RequestHeader("Authorization") String authHeader) {
+
+            System.out.println("Auth header in bookAppointment: " + authHeader);
+
+            try {
+                // 1. Synchronous Validation (Executes immediately on Tomcat thread)
+                String token = authHeader.substring(7);
+                String userEmail = jwtService.extractUserEmail(token);
+                
+                if (appointment.getUser() != null) {
+                    Long tokenUserId = userService.getUserId(userEmail);
+                    if (!tokenUserId.equals(appointment.getUser().getUserId())) {
+                        return CompletableFuture.completedFuture(
+                            ResponseEntity.status(HttpStatus.FORBIDDEN)
+                                          .body("I can only book appointments for myself")
+                        );
+                    }
                 }
+
+                if (appointment.getDoctor() == null || appointment.getAppointmentDate() == null || appointment.getAppointmentTime() == null) {
+                    return CompletableFuture.completedFuture(
+                        ResponseEntity.badRequest().body("Doctor, date, and time must be provided")
+                    );
+                }
+
+            } catch (Exception e) {
+                return CompletableFuture.completedFuture(
+                    ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid authorization token")
+                );
             }
-            
-            if (appointment == null) {
-                return ResponseEntity.badRequest().body("Appointment cannot be null");
-            }
-            boolean booked = userService.bookAppointment(appointment);
-            if (booked) {
-                return ResponseEntity.ok("Your appointment is successfully booked");
-            } else {
-                return ResponseEntity.badRequest().body("Failed to book appointment");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Failed to book appointment");
+
+            // 2. Asynchronous Processing (Offloaded to our custom thread pool)
+            return CompletableFuture.supplyAsync(() -> {
+                
+                // Assuming getDoctorId() exists in our Doctor entity. Adjust if it is getId()
+                Long doctorId = appointment.getDoctor().getDoctorId(); 
+                
+                Lock slotLock = lockService.getLockForSlot(
+                        doctorId, 
+                        appointment.getAppointmentDate(), 
+                        appointment.getAppointmentTime()
+                );
+                
+                try {
+                    // Try to acquire the lock. Wait max 3 seconds before giving up.
+                    if (slotLock.tryLock(3, TimeUnit.SECONDS)) {
+                        try {
+                            // WE HAVE THE LOCK. Safely process the booking.
+                            boolean booked = userService.bookAppointment(appointment);
+                            
+                            if (booked) {
+                                return ResponseEntity.ok("Our appointment is successfully booked");
+                            } else {
+                                return ResponseEntity.badRequest().body("Failed to book appointment or slot is already taken");
+                            }
+                        } finally {
+                            slotLock.unlock(); 
+                            lockService.removeLock(
+                                    doctorId, 
+                                    appointment.getAppointmentDate(), 
+                                    appointment.getAppointmentTime()
+                            );
+                        }
+                    } else {
+                        // Lock could not be acquired because another thread is holding it for too long
+                        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                                .body("High traffic for this specific slot. Please try again.");
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return ResponseEntity.internalServerError().body("Booking process was interrupted");
+                } catch (Exception e) {
+                    return ResponseEntity.internalServerError().body("An error occurred during booking");
+                }
+                
+            }, bookingExecutor);
         }
-    }
         
     @GetMapping("/countallusers")
 

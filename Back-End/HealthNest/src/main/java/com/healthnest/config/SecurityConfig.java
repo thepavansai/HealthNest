@@ -1,11 +1,12 @@
 package com.healthnest.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,7 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import jakarta.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
@@ -41,7 +42,10 @@ public class SecurityConfig {
        return http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
+           
             .authorizeHttpRequests(auth -> auth
+            		
+            	.dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                 // Public endpoints
                 .requestMatchers("/v1/users/Signup", "/v1/users/login", "/v1/doctor-signup", "/v1/doctor-login", "/v1/admin-login","/v1/feedback/all","/v1/doctor/summary").permitAll()
                 .requestMatchers("/v1/users/check-email", "/v1/users/setnewpassword").permitAll()
