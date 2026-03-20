@@ -3,11 +3,14 @@ package com.healthnest.service;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.healthnest.dto.AppointmentShowDTO;
@@ -193,5 +196,40 @@ public class AppointmentService {
 		 public List<AppointmentShowDTO> getAppointmentsByDoctorId(Long doctorId) {
 		        return appointmentRepository.findByDoctorIdWithUserName(doctorId);
 		    }
+		 
+		 @Scheduled(fixedRate = 300000) // 5 minutes
+		 @Transactional
+		 public void cancelExpiredAppointments() {
+		     LocalDateTime now = LocalDateTime.now();
+		     log.info("Scheduler triggered at: {}", now);
+
+		     // Use Iterable or cast correctly to avoid the compilation error in your logs
+		     Iterable<Appointment> allAppointments = appointmentRepository.findAll();
+		     
+		     List<Appointment> toUpdate = new ArrayList<>();
+
+		     for (Appointment app : allAppointments) {
+		         // 1. Clean the status string
+		         String status = (app.getAppointmentStatus() != null) ? app.getAppointmentStatus().trim() : "";
+
+		         if (status.equalsIgnoreCase("Pending")) {
+		             // 2. Combine Date and Time for a proper comparison
+		             LocalDateTime appointmentDateTime = LocalDateTime.of(app.getAppointmentDate(), app.getAppointmentTime());
+
+		             if (appointmentDateTime.isBefore(now)) {
+		                 log.info("Cancelling expired appointment ID: {} (Date: {})", app.getAppointmentId(), appointmentDateTime);
+		                 app.setAppointmentStatus("Cancelled");
+		                 toUpdate.add(app);
+		             }
+		         }
+		     }
+
+		     if (!toUpdate.isEmpty()) {
+		         appointmentRepository.saveAll(toUpdate);
+		         log.info("Successfully cancelled {} appointments.", toUpdate.size());
+		     } else {
+		         log.info("No expired pending appointments found.");
+		     }
+		 }
 }
 
