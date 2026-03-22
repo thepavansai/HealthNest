@@ -1,20 +1,20 @@
-2026-03-20 19:35:45 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-03-20 19:35:45 [restartedMain] INFO  c.healthnest.HealthNestApplication - Starting HealthNestApplication using Java 17.0.17 with PID 31756 (C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest\target\classes started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
-2026-03-20 19:35:45 [restartedMain] DEBUG c.healthnest.HealthNestApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
-2026-03-20 19:35:45 [restartedMain] INFO  c.healthnest.HealthNestApplication - No active profile set, falling back to 1 default profile: "default"
-2026-03-20 19:35:49 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:35:49 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-03-20 19:35:49 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
-2026-03-20 19:35:49 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-03-20 19:35:49 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-03-20 19:35:49 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.13.Final
-2026-03-20 19:35:49 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-03-20 19:35:50 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2026-03-20 19:35:51 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@795fe22c
-2026-03-20 19:35:51 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2026-03-20 19:35:51 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-03-20 19:35:51 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-03-20 19:35:51 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+2026-03-22 23:09:45 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-03-22 23:09:45 [restartedMain] INFO  c.healthnest.HealthNestApplication - Starting HealthNestApplication using Java 17.0.17 with PID 7592 (C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest\target\classes started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
+2026-03-22 23:09:45 [restartedMain] DEBUG c.healthnest.HealthNestApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
+2026-03-22 23:09:45 [restartedMain] INFO  c.healthnest.HealthNestApplication - No active profile set, falling back to 1 default profile: "default"
+2026-03-22 23:09:50 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-03-22 23:09:50 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-22 23:09:50 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
+2026-03-22 23:09:50 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-03-22 23:09:50 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-22 23:09:51 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.13.Final
+2026-03-22 23:09:51 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-03-22 23:09:52 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-03-22 23:09:52 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@e8ec166
+2026-03-22 23:09:53 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-03-22 23:09:53 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-22 23:09:53 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2026-03-22 23:09:53 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 8.0
@@ -22,325 +22,30 @@
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-03-20 19:35:52 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-20 19:35:55 [restartedMain] DEBUG com.healthnest.config.JwtFilter - Filter 'jwtFilter' configured for use
-2026-03-20 19:35:56 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-03-20 19:35:56 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-2026-03-20 19:35:57 [restartedMain] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2026-03-20 19:35:58 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:35:58 [restartedMain] INFO  c.healthnest.HealthNestApplication - Started HealthNestApplication in 13.785 seconds (process running for 15.611)
-2026-03-20 19:38:11 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-03-20 19:38:14 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
-2026-03-20 19:38:14 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
-2026-03-20 19:38:14 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
-2026-03-20 19:38:14 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
-2026-03-20 19:38:14 [http-nio-8080-exec-8] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQwMTU2OTMsImV4cCI6MTc3NDAxNzQ5M30.s32Jvwm6_9tQRt67gu7_0bl_tM-VPLYvk9TwnhbVbSM
-2026-03-20 19:38:14 [http-nio-8080-exec-5] INFO  c.h.controller.UserController - Auth header in getUserDetails: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQwMTU2OTMsImV4cCI6MTc3NDAxNzQ5M30.s32Jvwm6_9tQRt67gu7_0bl_tM-VPLYvk9TwnhbVbSM
-2026-03-20 19:38:14 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
-2026-03-20 19:38:14 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
-2026-03-20 19:38:14 [http-nio-8080-exec-9] INFO  c.h.controller.UserController - Auth header in getUserDetails: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQwMTU2OTMsImV4cCI6MTc3NDAxNzQ5M30.s32Jvwm6_9tQRt67gu7_0bl_tM-VPLYvk9TwnhbVbSM
-2026-03-20 19:38:14 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
-2026-03-20 19:38:14 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
-2026-03-20 19:38:14 [http-nio-8080-exec-10] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQwMTU2OTMsImV4cCI6MTc3NDAxNzQ5M30.s32Jvwm6_9tQRt67gu7_0bl_tM-VPLYvk9TwnhbVbSM
-2026-03-20 19:38:24 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
-2026-03-20 19:38:24 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
-2026-03-20 19:38:24 [http-nio-8080-exec-1] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQwMTU2OTMsImV4cCI6MTc3NDAxNzQ5M30.s32Jvwm6_9tQRt67gu7_0bl_tM-VPLYvk9TwnhbVbSM
-2026-03-20 19:38:24 [http-nio-8080-exec-2] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
-2026-03-20 19:38:24 [http-nio-8080-exec-2] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
-2026-03-20 19:38:24 [http-nio-8080-exec-2] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQwMTU2OTMsImV4cCI6MTc3NDAxNzQ5M30.s32Jvwm6_9tQRt67gu7_0bl_tM-VPLYvk9TwnhbVbSM
-2026-03-20 19:41:42 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:41:42 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:41:42 [http-nio-8080-exec-3] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
-2026-03-20 19:41:43 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:41:43 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:41:43 [http-nio-8080-exec-1] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
-2026-03-20 19:41:43 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:41:43 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:41:43 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:41:43 [http-nio-8080-exec-8] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
-2026-03-20 19:41:43 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:41:43 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:41:43 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:41:52 [http-nio-8080-exec-2] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:41:52 [http-nio-8080-exec-2] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:41:52 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:41:52 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:41:54 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:41:54 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:42:02 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:42:02 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:42:09 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
-2026-03-20 19:42:09 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
-2026-03-20 19:46:45 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:46:47 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:46:49 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2026-03-20 19:46:49 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
-2026-03-20 19:46:51 [restartedMain] INFO  c.healthnest.HealthNestApplication - Starting HealthNestApplication using Java 17.0.17 with PID 31756 (C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest\target\classes started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
-2026-03-20 19:46:51 [restartedMain] DEBUG c.healthnest.HealthNestApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
-2026-03-20 19:46:51 [restartedMain] INFO  c.healthnest.HealthNestApplication - No active profile set, falling back to 1 default profile: "default"
-2026-03-20 19:46:55 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:46:55 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-03-20 19:46:55 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
-2026-03-20 19:46:55 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-03-20 19:46:55 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-03-20 19:46:55 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-03-20 19:46:55 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
-2026-03-20 19:46:57 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1ba2f4c5
-2026-03-20 19:46:57 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
-2026-03-20 19:46:57 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-03-20 19:46:57 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-03-20 19:46:57 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-03-20 19:46:57 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-20 19:46:58 [restartedMain] DEBUG com.healthnest.config.JwtFilter - Filter 'jwtFilter' configured for use
-2026-03-20 19:46:59 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-03-20 19:46:59 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-2026-03-20 19:46:59 [restartedMain] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2026-03-20 19:47:00 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:47:00 [restartedMain] INFO  c.healthnest.HealthNestApplication - Started HealthNestApplication in 9.269 seconds (process running for 677.201)
-2026-03-20 19:48:41 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:48:42 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:48:42 [Thread-7] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
-2026-03-20 19:48:42 [Thread-7] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
-2026-03-20 19:48:43 [restartedMain] INFO  c.healthnest.HealthNestApplication - Starting HealthNestApplication using Java 17.0.17 with PID 31756 (C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest\target\classes started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
-2026-03-20 19:48:43 [restartedMain] DEBUG c.healthnest.HealthNestApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
-2026-03-20 19:48:43 [restartedMain] INFO  c.healthnest.HealthNestApplication - No active profile set, falling back to 1 default profile: "default"
-2026-03-20 19:48:45 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:48:45 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-03-20 19:48:45 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
-2026-03-20 19:48:45 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-03-20 19:48:45 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-03-20 19:48:45 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-03-20 19:48:45 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
-2026-03-20 19:48:45 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7a177fd7
-2026-03-20 19:48:45 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
-2026-03-20 19:48:45 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-03-20 19:48:45 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-03-20 19:48:45 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-03-20 19:48:46 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-20 19:48:46 [restartedMain] DEBUG com.healthnest.config.JwtFilter - Filter 'jwtFilter' configured for use
-2026-03-20 19:48:46 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-03-20 19:48:46 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-2026-03-20 19:48:47 [restartedMain] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2026-03-20 19:48:47 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:48:47 [restartedMain] INFO  c.healthnest.HealthNestApplication - Started HealthNestApplication in 4.225 seconds (process running for 784.77)
-2026-03-20 19:48:47 [scheduling-1] ERROR o.s.s.s.TaskUtils$LoggingErrorHandler - Unexpected error occurred in scheduled task
-java.lang.Error: Unresolved compilation problem: 
-	Type mismatch: cannot convert from Iterable<Appointment> to List<Appointment>
-
-	at com.healthnest.service.AppointmentService.cancelExpiredAppointments(AppointmentService.java:209)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
-	at com.healthnest.service.AppointmentService$$SpringCGLIB$$0.cancelExpiredAppointments(<generated>)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at org.springframework.scheduling.support.ScheduledMethodRunnable.runInternal(ScheduledMethodRunnable.java:130)
-	at org.springframework.scheduling.support.ScheduledMethodRunnable.lambda$run$2(ScheduledMethodRunnable.java:124)
-	at io.micrometer.observation.Observation.observe(Observation.java:498)
-	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:124)
-	at org.springframework.scheduling.config.Task$OutcomeTrackingRunnable.run(Task.java:85)
-	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
-	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
-	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305)
-	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
-	at java.base/java.lang.Thread.run(Thread.java:840)
-2026-03-20 19:50:51 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:50:52 [Thread-11] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:50:52 [Thread-11] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
-2026-03-20 19:50:52 [Thread-11] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
-2026-03-20 19:50:53 [restartedMain] INFO  c.healthnest.HealthNestApplication - Starting HealthNestApplication using Java 17.0.17 with PID 31756 (C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest\target\classes started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
-2026-03-20 19:50:53 [restartedMain] DEBUG c.healthnest.HealthNestApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
-2026-03-20 19:50:53 [restartedMain] INFO  c.healthnest.HealthNestApplication - No active profile set, falling back to 1 default profile: "default"
-2026-03-20 19:50:54 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:50:54 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-03-20 19:50:54 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
-2026-03-20 19:50:54 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-03-20 19:50:54 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-03-20 19:50:54 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-03-20 19:50:54 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
-2026-03-20 19:50:55 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2bdfc8b0
-2026-03-20 19:50:55 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
-2026-03-20 19:50:55 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-03-20 19:50:55 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-03-20 19:50:55 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-4)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-03-20 19:50:55 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-20 19:50:55 [restartedMain] DEBUG com.healthnest.config.JwtFilter - Filter 'jwtFilter' configured for use
-2026-03-20 19:50:56 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-03-20 19:50:56 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-2026-03-20 19:50:56 [restartedMain] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2026-03-20 19:50:56 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:50:56 [restartedMain] INFO  c.healthnest.HealthNestApplication - Started HealthNestApplication in 3.737 seconds (process running for 913.918)
-2026-03-20 19:50:56 [scheduling-1] INFO  c.h.service.AppointmentService - Checking for expired appointments at 2026-03-20T19:50:56.853960100
-2026-03-20 19:55:59 [scheduling-1] INFO  c.h.service.AppointmentService - Checking for expired appointments at 2026-03-20T19:55:59.097594500
-2026-03-20 19:59:10 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:59:10 [Thread-15] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:59:10 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown initiated...
-2026-03-20 19:59:11 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown completed.
-2026-03-20 19:59:13 [restartedMain] INFO  c.healthnest.HealthNestApplication - Starting HealthNestApplication using Java 17.0.17 with PID 31756 (C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest\target\classes started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
-2026-03-20 19:59:13 [restartedMain] DEBUG c.healthnest.HealthNestApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
-2026-03-20 19:59:13 [restartedMain] INFO  c.healthnest.HealthNestApplication - No active profile set, falling back to 1 default profile: "default"
-2026-03-20 19:59:15 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:59:15 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-03-20 19:59:15 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
-2026-03-20 19:59:15 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-03-20 19:59:15 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-03-20 19:59:15 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-03-20 19:59:15 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Starting...
-2026-03-20 19:59:16 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-5 - Added connection com.mysql.cj.jdbc.ConnectionImpl@18a0f8b4
-2026-03-20 19:59:16 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Start completed.
-2026-03-20 19:59:16 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-03-20 19:59:16 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-03-20 19:59:16 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-5)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-03-20 19:59:16 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-20 19:59:16 [restartedMain] DEBUG com.healthnest.config.JwtFilter - Filter 'jwtFilter' configured for use
-2026-03-20 19:59:16 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-03-20 19:59:17 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-2026-03-20 19:59:17 [restartedMain] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2026-03-20 19:59:17 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-03-20 19:59:17 [restartedMain] INFO  c.healthnest.HealthNestApplication - Started HealthNestApplication in 4.38 seconds (process running for 1414.926)
-2026-03-20 19:59:17 [scheduling-1] ERROR o.s.s.s.TaskUtils$LoggingErrorHandler - Unexpected error occurred in scheduled task
-java.lang.Error: Unresolved compilation problem: 
-	ArrayList cannot be resolved to a type
-
-	at com.healthnest.service.AppointmentService.cancelExpiredAppointments(AppointmentService.java:209)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
-	at com.healthnest.service.AppointmentService$$SpringCGLIB$$0.cancelExpiredAppointments(<generated>)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at org.springframework.scheduling.support.ScheduledMethodRunnable.runInternal(ScheduledMethodRunnable.java:130)
-	at org.springframework.scheduling.support.ScheduledMethodRunnable.lambda$run$2(ScheduledMethodRunnable.java:124)
-	at io.micrometer.observation.Observation.observe(Observation.java:498)
-	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:124)
-	at org.springframework.scheduling.config.Task$OutcomeTrackingRunnable.run(Task.java:85)
-	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
-	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
-	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305)
-	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
-	at java.base/java.lang.Thread.run(Thread.java:840)
-2026-03-20 20:04:18 [scheduling-1] ERROR o.s.s.s.TaskUtils$LoggingErrorHandler - Unexpected error occurred in scheduled task
-java.lang.Error: Unresolved compilation problem: 
-	ArrayList cannot be resolved to a type
-
-	at com.healthnest.service.AppointmentService.cancelExpiredAppointments(AppointmentService.java:209)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
-	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
-	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
-	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728)
-	at com.healthnest.service.AppointmentService$$SpringCGLIB$$0.cancelExpiredAppointments(<generated>)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
-	at org.springframework.scheduling.support.ScheduledMethodRunnable.runInternal(ScheduledMethodRunnable.java:130)
-	at org.springframework.scheduling.support.ScheduledMethodRunnable.lambda$run$2(ScheduledMethodRunnable.java:124)
-	at io.micrometer.observation.Observation.observe(Observation.java:498)
-	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:124)
-	at org.springframework.scheduling.config.Task$OutcomeTrackingRunnable.run(Task.java:85)
-	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
-	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
-	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305)
-	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
-	at java.base/java.lang.Thread.run(Thread.java:840)
-2026-03-20 20:06:35 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
-2026-03-20 20:06:36 [Thread-19] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
-2026-03-20 20:06:36 [Thread-19] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Shutdown initiated...
-2026-03-20 20:06:36 [Thread-19] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Shutdown completed.
-2026-03-20 20:06:38 [restartedMain] INFO  c.healthnest.HealthNestApplication - Starting HealthNestApplication using Java 17.0.17 with PID 31756 (C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest\target\classes started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
-2026-03-20 20:06:38 [restartedMain] DEBUG c.healthnest.HealthNestApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
-2026-03-20 20:06:38 [restartedMain] INFO  c.healthnest.HealthNestApplication - No active profile set, falling back to 1 default profile: "default"
-2026-03-20 20:06:39 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-03-20 20:06:39 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-03-20 20:06:39 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
-2026-03-20 20:06:39 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-03-20 20:06:39 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-03-20 20:06:39 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-03-20 20:06:39 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Starting...
-2026-03-20 20:06:40 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-6 - Added connection com.mysql.cj.jdbc.ConnectionImpl@71538be2
-2026-03-20 20:06:40 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Start completed.
-2026-03-20 20:06:40 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-03-20 20:06:40 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-03-20 20:06:40 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-6)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-03-20 20:06:40 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-20 20:06:40 [restartedMain] DEBUG com.healthnest.config.JwtFilter - Filter 'jwtFilter' configured for use
-2026-03-20 20:06:41 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-03-20 20:06:41 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-2026-03-20 20:06:41 [restartedMain] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2026-03-20 20:06:41 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-03-20 20:06:41 [restartedMain] INFO  c.healthnest.HealthNestApplication - Started HealthNestApplication in 3.229 seconds (process running for 1858.66)
-2026-03-20 20:06:41 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-20T20:06:41.594928100
-2026-03-20 20:06:41 [scheduling-1] INFO  c.h.service.AppointmentService - Cancelling expired appointment ID: 5 (Date: 2026-03-14T11:00)
-2026-03-20 20:06:41 [scheduling-1] INFO  c.h.service.AppointmentService - Cancelling expired appointment ID: 6 (Date: 2026-03-18T09:00)
-2026-03-20 20:06:41 [scheduling-1] INFO  c.h.service.AppointmentService - Cancelling expired appointment ID: 7 (Date: 2026-03-18T14:00)
-2026-03-20 20:06:41 [scheduling-1] INFO  c.h.service.AppointmentService - Cancelling expired appointment ID: 9 (Date: 2026-03-18T11:00)
-2026-03-20 20:06:41 [scheduling-1] INFO  c.h.service.AppointmentService - Cancelling expired appointment ID: 10 (Date: 2026-03-20T14:00)
-2026-03-20 20:06:41 [scheduling-1] INFO  c.h.service.AppointmentService - Successfully cancelled 5 appointments.
+2026-03-22 23:09:56 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-22 23:10:07 [restartedMain] DEBUG com.healthnest.config.JwtFilter - Filter 'jwtFilter' configured for use
+2026-03-22 23:10:13 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-22 23:10:13 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-03-22 23:10:18 [restartedMain] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-03-22 23:10:20 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-03-22 23:10:20 [restartedMain] INFO  c.healthnest.HealthNestApplication - Started HealthNestApplication in 35.949 seconds (process running for 37.786)
+2026-03-22 23:10:20 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:10:20.882887100
+2026-03-22 23:10:21 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-22 23:12:29 [http-nio-8080-exec-3] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-22 23:12:31 [http-nio-8080-exec-7] ERROR com.healthnest.config.JwtFilter - JWT processing error: JWT expired 183649888 milliseconds ago at 2026-03-20T14:41:42.000Z. Current time: 2026-03-22T17:42:31.888Z. Allowed clock skew: 0 milliseconds.
+2026-03-22 23:12:32 [http-nio-8080-exec-5] ERROR com.healthnest.config.JwtFilter - JWT processing error: JWT expired 183650088 milliseconds ago at 2026-03-20T14:41:42.000Z. Current time: 2026-03-22T17:42:32.088Z. Allowed clock skew: 0 milliseconds.
+2026-03-22 23:15:20 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:15:20.743380
+2026-03-22 23:15:20 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-22 23:20:20 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:20:20.898515900
+2026-03-22 23:20:21 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-22 23:25:20 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:25:20.789877700
+2026-03-22 23:25:21 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-22 23:42:28 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m31s711ms887µs400ns).
+2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:45:22.396232300
+2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:45:22.776104500
+2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:45:22.822457700
+2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:45:22.852023300
+2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
