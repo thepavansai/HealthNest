@@ -33,7 +33,8 @@ const DoctorDashboard = () => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [doctorData, setDoctorData] = useState({ doctorName: '', emailId: '', consultationFee: 0 });
-  const [appointments, setAppointments] = useState([]);
+  const [appointments, setAppointments] = useState([]); // Remains unchanged for CSV/PDF
+  const [todaysAppointments, setTodaysAppointments] = useState([]); // NEW variable for the UI
   const [loading, setLoading] = useState(true);
   const [showIncome, setShowIncome] = useState(false);
   const [completedAppointments, setCompletedAppointments] = useState([]);
@@ -91,8 +92,16 @@ const fetchAppointments = async (consultationFee) => {
     const allAppointments = response.data;
    
     setTotalAppointments(allAppointments.length);
-    setAppointments(allAppointments);
+    setAppointments(allAppointments); // Keeps all data for your exports
     
+    // --- NEW LOGIC FOR TODAY'S APPOINTMENTS ---
+    const today = new Date().toISOString().split('T')[0];
+    const filteredForToday = allAppointments.filter(appointment => 
+      appointment.appointmentDate === today && appointment.appointmentStatus !== 'Cancelled'
+    );
+    setTodaysAppointments(filteredForToday);
+    // ------------------------------------------
+
     const completed = allAppointments.filter(appointment => 
       appointment.appointmentStatus === 'Completed' || 
       appointment.appointmentStatus === 'Reviewed'
@@ -140,6 +149,7 @@ const fetchAppointments = async (consultationFee) => {
     { label: 'Fee', key: 'fee' },
   ];
 
+  // Uses the full "appointments" array, meaning all data is exported
   const csvData = appointments.map(appointment => ({
     userName: appointment.userName,
     appointmentDate: appointment.appointmentDate,
@@ -173,6 +183,8 @@ const fetchAppointments = async (consultationFee) => {
     y += lineHeight;
 
     doc.setFont('times', 'normal');
+    
+    // Uses the full "appointments" array
     appointments.forEach((appointment, index) => {
       if (y > doc.internal.pageSize.getHeight() - margin) {
         doc.addPage();
@@ -231,14 +243,15 @@ const fetchAppointments = async (consultationFee) => {
         </div>
 
         <div className="dashboard-grid">
-          {}
+          
           <div className="dashboard-card patient-overview-card">
             <div className="card-header">
               <h3>Today's Appointments</h3>
             </div>
             <div className="card-content">
-              {appointments.length > 0 ? (
-                appointments.slice(0,2).map((appointment, index) => (
+              {/* Changed 'appointments' to 'todaysAppointments' here */}
+              {todaysAppointments.length > 0 ? (
+                todaysAppointments.slice(0,2).map((appointment, index) => (
                   <div key={index} className="appointment-item">
                     <FaCalendarAlt className="card-icon pulse" />
                     <h6>{appointment.appointmentTime}</h6>
@@ -251,7 +264,7 @@ const fetchAppointments = async (consultationFee) => {
             </div>
           </div>
 
-          {}
+          
           <div className="dashboard-card view-all-appointments-card">
             <div className="card-header">
               <h3>View All Appointments</h3>
@@ -267,13 +280,13 @@ const fetchAppointments = async (consultationFee) => {
             </div>
           </div>
 
-          {}
+          
           <div className="dashboard-card income-card">
             <div className="card-header">
               <h3>Total Earned Payments</h3>
-              <button className="toggle-income-button" onClick={handleToggleIncome}>
-                {showIncome ? <FaEyeSlash /> : <FaEye />}
-              </button>
+             <button className="toggle-income-button" onClick={handleToggleIncome}>
+  {showIncome ? <FaEye /> : <FaEyeSlash />}
+</button>
             </div>
             <div className="card-content">
               {showIncome ? (
@@ -293,7 +306,7 @@ const fetchAppointments = async (consultationFee) => {
             </div>
           </div>
 
-          {}
+          
           <div className="dashboard-card export-data-card">
             <div className="card-header">
               <h3>Export Data</h3>

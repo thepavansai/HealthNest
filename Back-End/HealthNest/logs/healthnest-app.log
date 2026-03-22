@@ -1,51 +1,363 @@
-2026-03-22 23:09:45 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-03-22 23:09:45 [restartedMain] INFO  c.healthnest.HealthNestApplication - Starting HealthNestApplication using Java 17.0.17 with PID 7592 (C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest\target\classes started by gowth in C:\Users\gowth\OneDrive\Desktop\healthnest\HealthNest\Back-End\HealthNest)
-2026-03-22 23:09:45 [restartedMain] DEBUG c.healthnest.HealthNestApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
-2026-03-22 23:09:45 [restartedMain] INFO  c.healthnest.HealthNestApplication - No active profile set, falling back to 1 default profile: "default"
-2026-03-22 23:09:50 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-2026-03-22 23:09:50 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-03-22 23:09:50 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
-2026-03-22 23:09:50 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-03-22 23:09:50 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-03-22 23:09:51 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.13.Final
-2026-03-22 23:09:51 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-03-22 23:09:52 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2026-03-22 23:09:52 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@e8ec166
-2026-03-22 23:09:53 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2026-03-22 23:09:53 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-03-22 23:09:53 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
-2026-03-22 23:09:53 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
-	Database driver: undefined/unknown
-	Database version: 8.0
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-2026-03-22 23:09:56 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-22 23:10:07 [restartedMain] DEBUG com.healthnest.config.JwtFilter - Filter 'jwtFilter' configured for use
-2026-03-22 23:10:13 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-03-22 23:10:13 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-2026-03-22 23:10:18 [restartedMain] WARN  o.s.b.a.t.ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
-2026-03-22 23:10:20 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-2026-03-22 23:10:20 [restartedMain] INFO  c.healthnest.HealthNestApplication - Started HealthNestApplication in 35.949 seconds (process running for 37.786)
-2026-03-22 23:10:20 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:10:20.882887100
-2026-03-22 23:10:21 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
-2026-03-22 23:12:29 [http-nio-8080-exec-3] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-03-22 23:12:31 [http-nio-8080-exec-7] ERROR com.healthnest.config.JwtFilter - JWT processing error: JWT expired 183649888 milliseconds ago at 2026-03-20T14:41:42.000Z. Current time: 2026-03-22T17:42:31.888Z. Allowed clock skew: 0 milliseconds.
-2026-03-22 23:12:32 [http-nio-8080-exec-5] ERROR com.healthnest.config.JwtFilter - JWT processing error: JWT expired 183650088 milliseconds ago at 2026-03-20T14:41:42.000Z. Current time: 2026-03-22T17:42:32.088Z. Allowed clock skew: 0 milliseconds.
-2026-03-22 23:15:20 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:15:20.743380
-2026-03-22 23:15:20 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
-2026-03-22 23:20:20 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:20:20.898515900
-2026-03-22 23:20:21 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
-2026-03-22 23:25:20 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:25:20.789877700
-2026-03-22 23:25:21 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
-2026-03-22 23:42:28 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m31s711ms887µs400ns).
-2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:45:22.396232300
-2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
-2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:45:22.776104500
-2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
-2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:45:22.822457700
-2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
-2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-22T23:45:22.852023300
-2026-03-22 23:45:22 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:03:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:03:18.285385900
+2026-03-23 00:03:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:06:28 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:06:29 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:06:30 [http-nio-8080-exec-10] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:06:30 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:06:30 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:06:56 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:06:56 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:06:56 [http-nio-8080-exec-7] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:06:56 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:06:56 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:06:56 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:06:56 [http-nio-8080-exec-7] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:06:56 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:06:57 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:06:57 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:07:33 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:33 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:33 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:33 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:33 [http-nio-8080-exec-3] INFO  c.h.controller.UserController - Auth header in getUserDetails: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:07:33 [http-nio-8080-exec-6] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:07:33 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:33 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:33 [http-nio-8080-exec-8] INFO  c.h.controller.UserController - Auth header in getUserDetails: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:07:33 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:33 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:33 [http-nio-8080-exec-7] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:07:42 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:42 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:42 [http-nio-8080-exec-5] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:07:42 [http-nio-8080-exec-2] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:42 [http-nio-8080-exec-2] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:42 [http-nio-8080-exec-2] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:07:57 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:57 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:57 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:57 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:57 [http-nio-8080-exec-10] INFO  c.h.controller.UserController - Auth header in getUserDetails: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:07:57 [http-nio-8080-exec-9] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:07:57 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:57 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:07:57 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:57 [http-nio-8080-exec-1] INFO  c.h.controller.UserController - Auth header in getUserDetails: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:07:57 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:07:57 [http-nio-8080-exec-4] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:08:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:08:18.087085900
+2026-03-23 00:08:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:08:26 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:08:27 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:08:27 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:08:27 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:08:36 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:08:36 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:08:36 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:08:36 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:08:38 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:08:38 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:08:48 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:08:48 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:08:48 [http-nio-8080-exec-8] INFO  c.h.controller.UserController - Auth header in bookAppointment: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:08:53 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:08:53 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:08:53 [http-nio-8080-exec-5] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:08:53 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: USER
+2026-03-23 00:08:53 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: gowthamthotakuri24@gmail.com with role: USER
+2026-03-23 00:08:53 [http-nio-8080-exec-10] INFO  c.h.controller.UserController - Received auth header in getUpcomingAppointments: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6Imdvd3RoYW10aG90YWt1cmkyNEBnbWFpbC5jb20iLCJpYXQiOjE3NzQyMDQ2NTIsImV4cCI6MTc3NDIwNjQ1Mn0.apk-UbhSZp-vA2w0kSUvJx7zHpuaRLFX5DpWpOP1-vU
+2026-03-23 00:09:27 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:27 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:27 [http-nio-8080-exec-1] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:09:28 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:28 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:28 [http-nio-8080-exec-6] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:09:28 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:28 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:28 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:28 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:28 [http-nio-8080-exec-9] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:09:28 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:28 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:31 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:31 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:31 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:31 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:33 [http-nio-8080-exec-2] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:33 [http-nio-8080-exec-2] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:41 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:41 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:41 [http-nio-8080-exec-4] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:09:41 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:41 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:41 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:41 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:09:41 [http-nio-8080-exec-1] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:09:41 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:09:41 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:11:42 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:11:43 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:11:43 [http-nio-8080-exec-4] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:11:43 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:11:43 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:11:50 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:11:50 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:11:50 [http-nio-8080-exec-1] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:11:50 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:11:50 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:11:50 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:11:50 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:11:50 [http-nio-8080-exec-3] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:11:51 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:11:51 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:12:13 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:12:13 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:12:13 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:12:13 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:12:24 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:12:24 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:12:24 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:12:24 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:12:34 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:12:34 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:12:34 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:12:34 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:13:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:13:18.275477
+2026-03-23 00:13:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:14:18 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-4] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:14:18 [http-nio-8080-exec-7] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:14:18 [http-nio-8080-exec-6] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:14:18 [http-nio-8080-exec-4] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:14:18 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-5] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:14:18 [http-nio-8080-exec-6] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:14:18 [http-nio-8080-exec-7] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:14:18 [http-nio-8080-exec-5] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:14:18 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-1] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:14:18 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:18 [http-nio-8080-exec-9] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:14:18 [http-nio-8080-exec-9] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:14:18 [http-nio-8080-exec-1] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:14:26 [http-nio-8080-exec-2] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-2] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-2] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:14:26 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-8] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:14:26 [http-nio-8080-exec-10] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:14:26 [http-nio-8080-exec-8] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:14:26 [http-nio-8080-exec-10] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:14:26 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-2] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:14:26 [http-nio-8080-exec-3] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:14:26 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-4] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:14:26 [http-nio-8080-exec-3] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:14:26 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:14:26 [http-nio-8080-exec-4] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:14:26 [http-nio-8080-exec-5] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:14:26 [http-nio-8080-exec-5] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:15:01 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-6] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:15:01 [http-nio-8080-exec-7] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:15:01 [http-nio-8080-exec-9] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:15:01 [http-nio-8080-exec-9] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:15:01 [http-nio-8080-exec-7] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:15:01 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-8] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:15:01 [http-nio-8080-exec-1] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:15:01 [http-nio-8080-exec-8] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:15:01 [http-nio-8080-exec-1] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:15:01 [http-nio-8080-exec-6] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:15:01 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:15:01 [http-nio-8080-exec-10] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:15:01 [http-nio-8080-exec-10] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:15:04 [http-nio-8080-exec-2] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:15:04 [http-nio-8080-exec-2] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:15:04 [http-nio-8080-exec-2] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:15:04 [http-nio-8080-exec-2] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:15:04 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:15:04 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:15:04 [http-nio-8080-exec-3] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:15:04 [http-nio-8080-exec-3] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:16:37 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-2] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-2] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-10] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:16:37 [http-nio-8080-exec-2] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:16:37 [http-nio-8080-exec-6] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:16:37 [http-nio-8080-exec-2] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:16:37 [http-nio-8080-exec-6] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:16:37 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-10] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:16:37 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:37 [http-nio-8080-exec-5] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:16:37 [http-nio-8080-exec-4] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:16:37 [http-nio-8080-exec-3] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:16:37 [http-nio-8080-exec-4] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:16:37 [http-nio-8080-exec-3] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:16:37 [http-nio-8080-exec-5] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:16:39 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:39 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:39 [http-nio-8080-exec-9] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:16:39 [http-nio-8080-exec-9] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:16:39 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:39 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:39 [http-nio-8080-exec-7] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:16:39 [http-nio-8080-exec-7] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:16:48 [http-nio-8080-exec-2] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-2] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-8] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:16:48 [http-nio-8080-exec-1] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:16:48 [http-nio-8080-exec-2] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:16:48 [http-nio-8080-exec-8] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:16:48 [http-nio-8080-exec-2] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:16:48 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-6] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:16:48 [http-nio-8080-exec-10] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:16:48 [http-nio-8080-exec-1] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:16:48 [http-nio-8080-exec-6] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:16:48 [http-nio-8080-exec-10] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:16:48 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:48 [http-nio-8080-exec-3] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:16:48 [http-nio-8080-exec-3] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:16:50 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:50 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:50 [http-nio-8080-exec-4] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:16:50 [http-nio-8080-exec-4] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:16:50 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:50 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:50 [http-nio-8080-exec-5] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:16:50 [http-nio-8080-exec-5] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:16:54 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-9] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:16:54 [http-nio-8080-exec-7] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:16:54 [http-nio-8080-exec-8] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:16:54 [http-nio-8080-exec-9] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:16:54 [http-nio-8080-exec-8] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:16:54 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-6] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:16:54 [http-nio-8080-exec-1] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:16:54 [http-nio-8080-exec-1] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:16:54 [http-nio-8080-exec-6] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:16:54 [http-nio-8080-exec-7] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:16:54 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:54 [http-nio-8080-exec-7] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:16:54 [http-nio-8080-exec-7] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:16:56 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:56 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:56 [http-nio-8080-exec-4] INFO  c.h.controller.AdminController - Admin fetching all feedback records
+2026-03-23 00:16:56 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:16:56 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:16:56 [http-nio-8080-exec-4] INFO  c.h.controller.AdminController - Admin fetching all feedback records
+2026-03-23 00:17:01 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-8] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-1] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-9] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:17:01 [http-nio-8080-exec-8] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-1] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-8] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:17:01 [http-nio-8080-exec-1] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:17:01 [http-nio-8080-exec-9] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:17:01 [http-nio-8080-exec-1] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:17:01 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-6] INFO  c.h.controller.AdminController - Admin fetching all system appointments
+2026-03-23 00:17:01 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-10] INFO  c.h.controller.AdminController - Admin fetching all registered users
+2026-03-23 00:17:01 [http-nio-8080-exec-6] DEBUG c.h.controller.AdminController - Retrieved 11 total appointments
+2026-03-23 00:17:01 [http-nio-8080-exec-8] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:17:01 [http-nio-8080-exec-7] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-7] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:17:01 [http-nio-8080-exec-7] INFO  c.h.controller.AdminController - Admin fetching all registered doctors
+2026-03-23 00:17:01 [http-nio-8080-exec-7] DEBUG c.h.controller.AdminController - Successfully retrieved 31 doctors
+2026-03-23 00:17:01 [http-nio-8080-exec-10] DEBUG c.h.controller.AdminController - Successfully retrieved 1 users
+2026-03-23 00:17:14 [http-nio-8080-exec-2] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:17:14 [http-nio-8080-exec-2] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:17:14 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:17:14 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:18:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:18:18.098937700
+2026-03-23 00:18:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:23:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:23:18.279008500
+2026-03-23 00:23:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:28:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:28:18.176123900
+2026-03-23 00:28:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:33:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:33:18.577625400
+2026-03-23 00:33:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:35:26 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:35:26 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:35:26 [http-nio-8080-exec-3] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: ADMIN
+2026-03-23 00:35:26 [http-nio-8080-exec-3] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: admin with role: ADMIN
+2026-03-23 00:36:26 [http-nio-8080-exec-6] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:36:26 [http-nio-8080-exec-6] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:36:26 [http-nio-8080-exec-6] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:36:26 [http-nio-8080-exec-9] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:36:26 [http-nio-8080-exec-9] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:36:26 [http-nio-8080-exec-9] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:36:26 [http-nio-8080-exec-10] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:36:26 [http-nio-8080-exec-4] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:36:26 [http-nio-8080-exec-10] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:36:26 [http-nio-8080-exec-4] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:36:26 [http-nio-8080-exec-10] INFO  c.h.controller.DoctorController - Accessing profile with role: DOCTOR for doctor ID: 27
+2026-03-23 00:36:27 [http-nio-8080-exec-5] DEBUG com.healthnest.config.JwtFilter - Extracted role from token: DOCTOR
+2026-03-23 00:36:27 [http-nio-8080-exec-5] INFO  com.healthnest.config.JwtFilter - Authentication successful for user: jiya.apollo@hospital.com with role: DOCTOR
+2026-03-23 00:38:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:38:18.391554300
+2026-03-23 00:38:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:43:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:43:18.232653400
+2026-03-23 00:43:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:48:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:48:18.081255
+2026-03-23 00:48:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:53:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:53:18.268346100
+2026-03-23 00:53:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.
+2026-03-23 00:58:18 [scheduling-1] INFO  c.h.service.AppointmentService - Scheduler triggered at: 2026-03-23T00:58:18.205161600
+2026-03-23 00:58:18 [scheduling-1] INFO  c.h.service.AppointmentService - No expired pending appointments found.

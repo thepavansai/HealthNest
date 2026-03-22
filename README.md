@@ -118,16 +118,6 @@ npm start
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## Contributors
-- [bhavyasri174](https://github.com/bhavyasri174)
-- [Farhat Tasnim](https://github.com/Farhattttt)
-- [gowthamthotakuri](https://github.com/gowthamthotakuri)
-- [Janaki-Ram729](https://github.com/Janaki-Ram729)
-
-## Contact & Support
-- **Website**: https://health-nest.netlify.app/
-- **Email**: contact@thepavansai.xyz
-- **Issues**: [GitHub Issues](https://github.com/yourusername/HealthNest/issues)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
