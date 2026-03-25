@@ -7,6 +7,8 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -19,7 +21,20 @@ public class JWTService {
     public static final String ROLE_DOCTOR = "DOCTOR";
     public static final String ROLE_ADMIN = "ADMIN";
     
-    private String secretKey="j95mk48zLDAwGIMGsuPwDq1U1gK7GSVYazR3a2r212Y=";
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @PostConstruct
+    public void validateSecret() {
+        if (secretKey == null || secretKey.isBlank()) {
+            throw new IllegalStateException("JWT secret is missing. Set security.jwt.secret or JWT_SECRET environment variable.");
+        }
+
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        if (keyBytes.length < 32) {
+            throw new IllegalStateException("JWT secret must be Base64-encoded and at least 32 bytes.");
+        }
+    }
     
     public String generateToken(String useremail, String role) {
         Map<String,Object> claims = new HashMap<>();
