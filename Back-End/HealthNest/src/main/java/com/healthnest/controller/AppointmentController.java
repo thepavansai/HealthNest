@@ -71,16 +71,21 @@ public class AppointmentController {
     }
 
     @GetMapping("/doctor/{doctorId}")
-    @PreAuthorize("hasAnyRole('DOCTOR','USER')")
+    @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity<List<AppointmentShowDTO>> getDoctorAppointments(
             @PathVariable Long doctorId,
             @RequestHeader("Authorization") String authHeader) {
         
         try {
-            // Extract token from Authorization header
             String token = authHeader.substring(7);
             String email = jwtService.extractUserEmail(token);
-            
+
+            // Verify that the doctor is accessing their own appointments
+            Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
+            if (!authenticatedDoctor.getDoctorId().equals(doctorId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+
             List<AppointmentShowDTO> appointments = appointmentService.getAppointmentsByDoctorId(doctorId);
             return ResponseEntity.ok(appointments);
         } catch (Exception e) {
@@ -133,10 +138,10 @@ public class AppointmentController {
             
             // Verify that the doctor is rejecting their own appointment
             Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
-            if (authenticatedDoctor.getDoctorId()!=doctorId){
+            if (!authenticatedDoctor.getDoctorId().equals(doctorId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
-            
+    
             Appointment updatedAppointment = appointmentService.rejectAppointment(appointmentId, doctorId);
             return ResponseEntity.ok(updatedAppointment);
         } catch (AppointmentNotFoundException e) {
@@ -149,7 +154,7 @@ public class AppointmentController {
     @GetMapping("/countall")
     public ResponseEntity<Integer> getAllAppointmentsCount() {
         try {
-            return ResponseEntity.ok(appointmentService.getAllAppointments().size());
+            return ResponseEntity.ok((int) appointmentService.getAppointmentsCount());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -196,9 +201,6 @@ public class AppointmentController {
             String role = jwtService.extractUserRole(token);
                     
             System.out.println("User email: " + email + ", role: " + role);
-                                
-            // Standardize status format for comparison (convert to uppercase)
-            String statusaUpperCase = setStatus.toUpperCase();
             
             // Verify permissions based on role
             if ("USER".equals(role)) {
@@ -248,11 +250,6 @@ public class AppointmentController {
                     .body("Error updating appointment status: " + e.getMessage());
         }
     }
-
-	public ResponseEntity<List<AppointmentShowDTO>> getAppointmentsByDoctor(Long doctorId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
 

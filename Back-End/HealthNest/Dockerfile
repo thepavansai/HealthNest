@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine
 
 # Add a non-root user to run the application
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup

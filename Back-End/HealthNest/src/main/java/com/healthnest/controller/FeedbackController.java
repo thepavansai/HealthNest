@@ -1,5 +1,6 @@
 package com.healthnest.controller;
 
+import com.healthnest.dto.PublicFeedBackDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,6 @@ import com.healthnest.model.FeedBack;
 import com.healthnest.service.FeedBackService;
 import com.healthnest.service.JWTService;
 import com.healthnest.service.UserService;
-import com.healthnest.dto.FeedBackDTO;
 import java.util.List;
 
 @RestController
@@ -39,7 +39,7 @@ public class FeedbackController {
             
             // Verify that the user is submitting feedback as themselves
             Long authenticatedUser = userService.getUserId(email);
-            if (feedback.getUser() != null && authenticatedUser != feedback.getUser().getUserId()) {
+            if (feedback.getUser() != null && !authenticatedUser.equals( feedback.getUser().getUserId())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only submit feedback as yourself");
             }
             
@@ -56,10 +56,10 @@ public class FeedbackController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<FeedBackDTO>> getAllFeedback() {
+    public ResponseEntity<List<PublicFeedBackDTO>> getPublicFeedBack(){
         try {
-            return ResponseEntity.ok(feedBackService.getAllFeedBack());
-        } catch (Exception e) {
+            return ResponseEntity.ok(feedBackService.getPublicFeedBack());
+        }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

@@ -150,7 +150,7 @@ public class UserController {
                 }
             }
             
-            if (feedBack == null || feedBack.getFeedback() == null || feedBack.getFeedback().isEmpty()) {
+            if (feedBack.getFeedback() == null || feedBack.getFeedback().isEmpty()) {
                 return ResponseEntity.badRequest().body("Feedback cannot be empty");
             }
             String result = feedBackService.addFeedBack(feedBack);
@@ -201,7 +201,7 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<AppointmentSummaryDTO>> getUpcomingAppointments(
         @PathVariable Long userId,
-        @RequestHeader("Authorization") String authHeader) throws Exception {
+        @RequestHeader("Authorization") String authHeader) {
                 
         System.out.println("Received auth header in getUpcomingAppointments: " + authHeader);
         
@@ -232,14 +232,6 @@ public class UserController {
         System.out.println("Auth header in cancelAppointment: " + authHeader);
         
         try {
-            // Extract token from Authorization header
-            String token = authHeader.substring(7);
-            String userEmail = jwtService.extractUserEmail(token);
-            
-            // Verify that the appointment belongs to the authenticated user
-            // This would require additional service method to check appointment ownership
-            // For now, we'll assume the service handles this validation
-            
             userService.cancelAppointment(appointmentId);
             return ResponseEntity.ok("successfully cancelled Appointment");
         } catch (NoSuchElementException e) {
@@ -326,6 +318,9 @@ public class UserController {
             String token = authHeader.substring(7);
             String userEmail = jwtService.extractUserEmail(token);
             
+            if (appointment == null) {
+                return ResponseEntity.badRequest().body("Appointment cannot be null");
+            }
             // Verify that the appointment is for the authenticated user
             if (appointment.getUser() != null) {
                 Long tokenUserId = userService.getUserId(userEmail);
@@ -334,9 +329,7 @@ public class UserController {
                 }
             }
             
-            if (appointment == null) {
-                return ResponseEntity.badRequest().body("Appointment cannot be null");
-            }
+           
             boolean booked = userService.bookAppointment(appointment);
             if (booked) {
                 return ResponseEntity.ok("Your appointment is successfully booked");
