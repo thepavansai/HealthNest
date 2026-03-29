@@ -319,7 +319,7 @@ class AdminControllerTest {
         when(feedBackService.getAllFeedBack()).thenReturn(List.of(dto));
         
         // Act
-        ResponseEntity<List<FeedBackDTO>> response = adminController.getAllFeedBacks();
+        ResponseEntity<List<FeedBackDTO>> response = adminController.getAllFeedBacks(VALID_AUTH_HEADER);
         
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());

@@ -3,7 +3,7 @@ package com.healthnest.config;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,14 +23,17 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-    @Autowired
-    private JWTService jwtService;
+    private final JWTService jwtService;
     
-    @Autowired
-    private UserDetailsService userDetailsService;
-    
+    private final UserDetailsService userDetailsService;
+
+    public JwtFilter(JWTService jwtService, UserDetailsService userDetailsService) {
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+    }
+
     @Override
-	public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+	public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         
         final String authHeader = request.getHeader("Authorization");
