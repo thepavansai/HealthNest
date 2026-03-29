@@ -25,6 +25,9 @@ public class AdminDetailsService implements UserDetailsService {
 
     @PostConstruct
     public void init() {
+        if (this.rawAdminPassword == null || this.rawAdminPassword.trim().isEmpty()) {
+            throw new IllegalStateException("Admin password property 'admin.password' must be configured and not blank");
+        }
         this.dynamicPasswordHash = passwordEncoder.encode(rawAdminPassword);
         this.rawAdminPassword = null;
     }

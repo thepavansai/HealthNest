@@ -27,12 +27,16 @@ public class JWTService {
     @PostConstruct
     public void validateSecret() {
         if (secretKey == null || secretKey.isBlank()) {
-            throw new IllegalStateException("JWT secret is missing. Set security.jwt.secret or JWT_SECRET environment variable.");
+            throw new IllegalStateException("JWT secret is missing. Set jwt.secret (for example via the JWT_SECRET environment variable).");
         }
 
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        if (keyBytes.length < 32) {
-            throw new IllegalStateException("JWT secret must be Base64-encoded and at least 32 bytes.");
+        try {
+            byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+            if (keyBytes.length < 32) {
+                throw new IllegalStateException("JWT secret must be Base64-encoded and at least 32 bytes.");
+            }
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("JWT secret must be valid Base64. Check security.jwt.secret or JWT_SECRET configuration.", e);
         }
     }
     

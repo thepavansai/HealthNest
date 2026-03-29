@@ -69,3 +69,5 @@ yarn-error.log*
 
 # Docker
 docker-compose.yml
+Back-End/HealthNest/pom.xml.versionsBackup
+Back-End/HealthNest/src/test/resources/application.properties
