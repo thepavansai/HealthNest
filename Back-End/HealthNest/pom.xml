@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.5</version>
+		<version>3.5.13</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.healthnest</groupId>
@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<sonar.projectKey>HealthNestTest1</sonar.projectKey>
 		<sonar.projectName>HealthNestTest1</sonar.projectName>
 		<sonar.sources>src/main/java</sonar.sources>
@@ -57,7 +57,7 @@
 		<dependency>
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
-			<version>3.2.2</version>
+			<version>3.2.6</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
 		<dependency>
@@ -66,11 +66,6 @@
 		</dependency>
 		
 		<!-- Add your dependencies here -->
-		<dependency>
-		    <groupId>javax.transaction</groupId>
-		    <artifactId>javax.transaction-api</artifactId>
-		    <version>1.3</version>
-		</dependency>
 		<!-- Remove MySQL Driver -->
 		<!-- 
 		<dependency>
@@ -106,10 +101,6 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
@@ -124,17 +115,11 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-		    <groupId>org.webjars</groupId>
-		    <artifactId>swagger-ui</artifactId>
-		    <version>5.20.0</version>
-		</dependency>
-				
+		</dependency>				
 		<dependency>
 		    <groupId>jakarta.platform</groupId>
 		    <artifactId>jakarta.jakartaee-api</artifactId>
-		    <version>10.0.0</version>
+		    <version>11.0.0</version>
 		    <scope>provided</scope>
     	</dependency>
     	<dependency>
@@ -142,13 +127,9 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
-		</dependency>
-		<dependency>
 		    <groupId>org.springdoc</groupId>
 		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-		    <version>2.8.5</version>
+		    <version>3.0.2</version>
 		</dependency>
 		<dependency>
     <groupId>org.springframework.boot</groupId>
@@ -157,21 +138,25 @@
 <dependency>
     <groupId>io.jsonwebtoken</groupId>
     <artifactId>jjwt-api</artifactId>
-    <version>0.12.6</version>
+    <version>0.13.0</version>
 </dependency>
 <dependency>
     <groupId>io.jsonwebtoken</groupId>
     <artifactId>jjwt-impl</artifactId>
-    <version>0.12.6</version>
+    <version>0.13.0</version>
     <scope>runtime</scope>
 </dependency>
 <dependency>
     <groupId>io.jsonwebtoken</groupId>
     <artifactId>jjwt-jackson</artifactId>
-    <version>0.12.6</version>
+    <version>0.13.0</version>
     <scope>runtime</scope>
 </dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
