@@ -1,5 +1,6 @@
 package com.healthnest.service;
 
+import com.healthnest.dto.PublicFeedBackDTO;
 import com.healthnest.repository.FeedBackRepository;
 import com.healthnest.dto.FeedBackDTO;
 import com.healthnest.model.FeedBack;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,5 +40,15 @@ public class FeedBackService {
 
     public List<FeedBackDTO> getAllFeedBack() {
         return feedBackRepository.findAllFeedBacksDTO();
+    }
+
+    public List<PublicFeedBackDTO> getPublicFeedBack() {
+        return feedBackRepository.findAllFeedBacksDTO().stream()
+                .map(f -> new PublicFeedBackDTO(
+                        f.getUserName(),
+                        f.getFeedback(),
+                        f.getRating()
+                ))
+                .collect(Collectors.toList());
     }
 }

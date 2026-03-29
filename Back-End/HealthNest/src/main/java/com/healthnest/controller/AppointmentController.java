@@ -79,7 +79,6 @@ public class AppointmentController {
         try {
             // Extract token from Authorization header
             String token = authHeader.substring(7);
-            String email = jwtService.extractUserEmail(token);
             
             List<AppointmentShowDTO> appointments = appointmentService.getAppointmentsByDoctorId(doctorId);
             return ResponseEntity.ok(appointments);
@@ -133,10 +132,10 @@ public class AppointmentController {
             
             // Verify that the doctor is rejecting their own appointment
             Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
-            if (authenticatedDoctor.getDoctorId()!=doctorId){
+            if (!authenticatedDoctor.getDoctorId().equals(doctorId)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
-            
+    
             Appointment updatedAppointment = appointmentService.rejectAppointment(appointmentId, doctorId);
             return ResponseEntity.ok(updatedAppointment);
         } catch (AppointmentNotFoundException e) {
@@ -196,9 +195,6 @@ public class AppointmentController {
             String role = jwtService.extractUserRole(token);
                     
             System.out.println("User email: " + email + ", role: " + role);
-                                
-            // Standardize status format for comparison (convert to uppercase)
-            String statusaUpperCase = setStatus.toUpperCase();
             
             // Verify permissions based on role
             if ("USER".equals(role)) {
@@ -248,11 +244,6 @@ public class AppointmentController {
                     .body("Error updating appointment status: " + e.getMessage());
         }
     }
-
-	public ResponseEntity<List<AppointmentShowDTO>> getAppointmentsByDoctor(Long doctorId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
 
