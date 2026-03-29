@@ -71,12 +71,21 @@ public class AppointmentController {
     }
 
     @GetMapping("/doctor/{doctorId}")
-    @PreAuthorize("hasAnyRole('DOCTOR','USER')")
+    @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity<List<AppointmentShowDTO>> getDoctorAppointments(
             @PathVariable Long doctorId,
             @RequestHeader("Authorization") String authHeader) {
         
         try {
+            String token = authHeader.substring(7);
+            String email = jwtService.extractUserEmail(token);
+
+            // Verify that the doctor is accessing their own appointments
+            Doctor authenticatedDoctor = doctorService.getDoctorIdByEmail(email);
+            if (!authenticatedDoctor.getDoctorId().equals(doctorId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+
             List<AppointmentShowDTO> appointments = appointmentService.getAppointmentsByDoctorId(doctorId);
             return ResponseEntity.ok(appointments);
         } catch (Exception e) {
