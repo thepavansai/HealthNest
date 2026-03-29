@@ -77,9 +77,6 @@ public class AppointmentController {
             @RequestHeader("Authorization") String authHeader) {
         
         try {
-            // Extract token from Authorization header
-            String token = authHeader.substring(7);
-            
             List<AppointmentShowDTO> appointments = appointmentService.getAppointmentsByDoctorId(doctorId);
             return ResponseEntity.ok(appointments);
         } catch (Exception e) {
@@ -148,7 +145,7 @@ public class AppointmentController {
     @GetMapping("/countall")
     public ResponseEntity<Integer> getAllAppointmentsCount() {
         try {
-            return ResponseEntity.ok(appointmentService.getAllAppointments().size());
+            return ResponseEntity.ok((int) appointmentService.getAppointmentsCount());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
