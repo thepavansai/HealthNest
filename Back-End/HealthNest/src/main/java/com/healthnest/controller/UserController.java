@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.healthnest.dto.AppointmentSummaryDTO;
+import com.healthnest.dto.ChangePasswordRequest;
 import com.healthnest.dto.UserDTO;
 import com.healthnest.exception.AuthenticationException;
 import com.healthnest.exception.UserNotFoundException;
@@ -241,15 +242,12 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/changepassword/{userid}/{beforepassword}/{changepassword}")
+    @PatchMapping("/changepassword/{userid}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> changePassword(
             @PathVariable Long userid,
-            @PathVariable String beforepassword,
-            @PathVariable String changepassword,
+            @RequestBody ChangePasswordRequest request,
             @RequestHeader("Authorization") String authHeader) {
-        
-        System.out.println("Auth header in changePassword: " + authHeader);
         
         try {
             // Extract token from Authorization header
@@ -257,12 +255,12 @@ public class UserController {
             String userEmail = jwtService.extractUserEmail(token);
             
             // Verify that the user is changing their own password
-           Long tokenUserId = userService.getUserId(userEmail);
+            Long tokenUserId = userService.getUserId(userEmail);
             if (!tokenUserId.equals(userid)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only change your own password");
             }
             
-            boolean changed = userService.changePassword(userid, beforepassword, changepassword);
+            boolean changed = userService.changePassword(userid, request.getOldPassword(), request.getNewPassword());
             if (changed) {
                 return ResponseEntity.ok("Password changed successfully");
             } else {
