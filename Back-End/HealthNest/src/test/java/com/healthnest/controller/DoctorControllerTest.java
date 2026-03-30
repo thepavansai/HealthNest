@@ -37,8 +37,10 @@ import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.DoctorSummaryDTO;
 import com.healthnest.model.Doctor;
 import com.healthnest.model.enums.Gender;
+import com.healthnest.service.AppointmentService;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.JWTService;
+import com.healthnest.service.UserService;
 
 // Use a simpler approach without @SpringBootTest
 public class DoctorControllerTest {
@@ -55,6 +57,12 @@ public class DoctorControllerTest {
     
     @Mock
     private JWTService jwtService;
+    
+    @Mock
+    private AppointmentService appointmentService;
+    
+    @Mock
+    private UserService userService;
     
     @InjectMocks
     private DoctorController doctorController;
@@ -245,7 +253,10 @@ public class DoctorControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void testUpdateDoctorRating() {
-        when(doctorService.updateDoctorRating(1L, 4.5f)).thenReturn("Rating updated successfully");
+        when(jwtService.extractUserEmail(anyString())).thenReturn("user@example.com");
+        when(userService.getUserId("user@example.com")).thenReturn(1L);
+        when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
+        when(doctorService.updateDoctorRating(1L, 4.5f, 1L, appointmentService)).thenReturn("Rating updated successfully");
         
         // Test the controller method directly
         ResponseEntity<String> response = doctorController.updateDoctorRating(1L, 4.5f, authHeader);

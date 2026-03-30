@@ -146,17 +146,22 @@ public class DoctorService {
     }
     
     public void updateDoctorStatus(Long doctorId, int status) {
-        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
-        if (optionalDoctor.isPresent()) {
-            Doctor doctor = optionalDoctor.get();
-            doctor.setStatus(status);
-            doctorRepository.save(doctor);
-        } else {
-            throw new DoctorNotFoundException("Doctor not found with id: " + doctorId);
-        }
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        doctor.setStatus(status);
+        doctorRepository.save(doctor);
     }
     
-    public String updateDoctorRating(Long id, Float rating) {
+    public String updateDoctorRating(Long id, Float rating, Long userId, AppointmentService appointmentService) {
+        if (rating != null && (rating < 0 || rating > 5)) {
+            throw new IllegalArgumentException("Rating must be between 0 and 5");
+        }
+        
+        // Verify user has had an appointment with this doctor
+        if (!appointmentService.hasUserHadAppointmentWithDoctor(userId, id)) {
+            throw new RuntimeException("You can only rate doctors you have had appointments with");
+        }
+        
         Doctor doctor = doctorRepository.findById(id)
             .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + id));
         

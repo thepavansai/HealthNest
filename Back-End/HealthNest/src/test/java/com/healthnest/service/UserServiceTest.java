@@ -436,9 +436,11 @@ public class UserServiceTest {
     void cancelAppointment_ExistingAppointment_CancelsAppointment() {
         // Arrange
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(testAppointment));
+        testAppointment.getUser().setEmail("user@example.com");
 
         // Act
-        userService.cancelAppointment(1L);
+        userService.cancelAppointment(1L, "user@example.com");
+        appointmentRepository.save(testAppointment);
 
         // Assert
         assertEquals("Cancelled", testAppointment.getAppointmentStatus());

@@ -25,8 +25,10 @@ import com.healthnest.dto.ChangePasswordRequest;
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.DoctorSummaryDTO;
 import com.healthnest.model.Doctor;
+import com.healthnest.service.AppointmentService;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.JWTService;
+import com.healthnest.service.UserService;
 
 @RestController
 @RequestMapping("/v1/doctor")
@@ -40,6 +42,12 @@ public class DoctorController {
     
     @Autowired
     private JWTService jwtService;
+    
+    @Autowired
+    private AppointmentService appointmentService;
+    
+    @Autowired
+    private UserService userService;
     
     @GetMapping("/profile/{id}")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
@@ -178,12 +186,18 @@ public ResponseEntity<List<DoctorDTO>> getAllDoctors()
                 throw new IllegalArgumentException("Rating must be between 0 and 5");
             }
             
-            // We don't need to verify user identity here since any authenticated user can rate a doctor
-            // The service layer should handle validation that the user has had an appointment with this doctor
+            // Extract user ID from token
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            Long userId = userService.getUserId(userEmail);
             
-            String result = doctorService.updateDoctorRating(id, rating);
+            // Service will verify user has had an appointment with this doctor
+            String result = doctorService.updateDoctorRating(id, rating, userId, appointmentService);
             return ResponseEntity.ok(result);
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("appointment")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+            }
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update rating");

@@ -230,13 +230,21 @@ public class UserController {
             @PathVariable Long appointmentId,
             @RequestHeader("Authorization") String authHeader) {
         
-        System.out.println("Auth header in cancelAppointment: " + authHeader);
-        
         try {
-            userService.cancelAppointment(appointmentId);
+            // Extract token from Authorization header
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            
+            // Pass user email to service for ownership verification
+            userService.cancelAppointment(appointmentId, userEmail);
             return ResponseEntity.ok("successfully cancelled Appointment");
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body("Appointment not found");
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("not found")) {
+                return ResponseEntity.badRequest().body("Appointment not found");
+            } else if (e.getMessage().contains("not authorized")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+            }
+            return ResponseEntity.internalServerError().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Failed to cancel appointment");
         }
