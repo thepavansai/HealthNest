@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +19,9 @@ public class DoctorService {
 
     @Autowired
     private DoctorRepository doctorRepository;
+    
+    @Autowired
+    private AppointmentService appointmentService;
     
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -60,6 +63,7 @@ public class DoctorService {
     public String updateDoctorProfile(Long doctorId, DoctorDTO doctorDTO) {
         Doctor doctor = doctorRepository.findById(doctorId)
             .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        
         doctor.setDoctorName(doctorDTO.getDoctorName());
         doctor.setHospitalName(doctorDTO.getHospitalName());
         doctor.setExperience(doctorDTO.getExperience());
@@ -68,6 +72,12 @@ public class DoctorService {
         doctor.setDocPhnNo(doctorDTO.getDocPhnNo());
         doctor.setAvailability(doctorDTO.getAvailability());
         doctor.setSpecializedrole(doctorDTO.getSpecializedrole());
+        
+        
+        doctor.setAddress(doctorDTO.getAddress());
+        doctor.setLatitude(doctorDTO.getLatitude());
+        doctor.setLongitude(doctorDTO.getLongitude());
+        
         doctorRepository.save(doctor);
         return "Updated Doctor Profile";
     }
@@ -139,17 +149,22 @@ public class DoctorService {
     }
     
     public void updateDoctorStatus(Long doctorId, int status) {
-        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
-        if (optionalDoctor.isPresent()) {
-            Doctor doctor = optionalDoctor.get();
-            doctor.setStatus(status);
-            doctorRepository.save(doctor);
-        } else {
-            throw new DoctorNotFoundException("Doctor not found with id: " + doctorId);
-        }
+        Doctor doctor = doctorRepository.findById(doctorId)
+            .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        doctor.setStatus(status);
+        doctorRepository.save(doctor);
     }
     
-    public String updateDoctorRating(Long id, Float rating) {
+    public String updateDoctorRating(Long id, Float rating, Long userId) {
+        if (rating != null && (rating < 0 || rating > 5)) {
+            throw new IllegalArgumentException("Rating must be between 0 and 5");
+        }
+        
+        // Verify user has had an appointment with this doctor
+        if (!appointmentService.hasUserHadAppointmentWithDoctor(userId, id)) {
+            throw new RuntimeException("You can only rate doctors you have had appointments with");
+        }
+        
         Doctor doctor = doctorRepository.findById(id)
             .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + id));
         
@@ -206,5 +221,9 @@ public class DoctorService {
         } catch (Exception e) {
             throw new RuntimeException("Error checking if doctor email exists", e);
         }
+    }
+    
+    public List<Doctor> getNearbyDoctors(double latitude, double longitude, double radius) {
+        return doctorRepository.findNearbyDoctors(latitude, longitude, radius);
     }
 }

@@ -18,15 +18,17 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
-@Table(name = "Doctor")
+@Table(name = "\"doctor\"")
 @Data
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer doctorId;
+    @Column(name="\"doctorId\"")
+    private Long doctorId;  // Changed from Integer to Long
 
     @NotBlank(message = "Doctor name cannot be blank")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+    @Column(name="\"doctorName\"")
     private String doctorName;
 
     @NotNull(message = "Gender cannot be null")
@@ -60,5 +62,12 @@ public class Doctor {
     private String availability;
     private String hospitalName;
     private Integer status;
+    private String role = "DOCTOR";
 
+    // New fields for location
+    @NotBlank(message = "Address cannot be blank")
+    private String address; // Full address of the doctor
+
+    private Double latitude; // Latitude of the doctor's location
+    private Double longitude; // Longitude of the doctor's location
 }

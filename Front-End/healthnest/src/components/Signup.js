@@ -10,13 +10,14 @@ import {
   FaUser
 } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config/apiConfig';
 import Footer from "./Footer";
 import Header from "./Header";
 import './SignUp.css';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     name: '',
     gender: '',
@@ -55,30 +56,38 @@ const SignUp = () => {
   };
 
   const validateStep2 = () => {
-    if (!formData.gender) {
+    if (!formData.dateOfBirth) {
       setIsError(true);
-      setMessage("Please select a gender");
-      return false;
-    }
-
-    if (!/^\d{10}$/.test(formData.phoneNo)) {
-      setIsError(true);
-      setMessage("Phone number should be 10 digits");
+      setMessage("Please select your date of birth");
       return false;
     }
 
     const today = new Date();
     const birthDate = new Date(formData.dateOfBirth);
+
+    // Check if the date is in the future
+    if (birthDate > today) {
+      setIsError(true);
+      setMessage("You are not allowed to choose a date beyond today's date.");
+      return false;
+    }
+
+    // Calculate age
     const age = today.getFullYear() - birthDate.getFullYear();
-    
-    
-    const hasBirthdayOccurred = 
-      today.getMonth() > birthDate.getMonth() || 
+    const hasBirthdayOccurred =
+      today.getMonth() > birthDate.getMonth() ||
       (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
-    
     const adjustedAge = hasBirthdayOccurred ? age : age - 1;
-    
-    if (adjustedAge < 18 || adjustedAge > 120) {
+
+    // Check if age is less than 18
+    if (adjustedAge < 18) {
+      setIsError(true);
+      setMessage("Your age must be at least 18 years");
+      return false;
+    }
+
+    // Check if age is greater than 120
+    if (adjustedAge > 120) {
       setIsError(true);
       setMessage("Age should be between 18 and 120 years");
       return false;
@@ -88,9 +97,9 @@ const SignUp = () => {
   };
 
   const validateStep3 = () => {
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.password)) {
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(formData.password)) {
       setIsError(true);
-      setMessage("Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number");
+      setMessage("Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)");
       return false;
     }
 
@@ -106,7 +115,7 @@ const SignUp = () => {
   const nextStep = () => {
     setIsError(false);
     setMessage('');
-    
+
     if (currentStep === 1 && validateStep1()) {
       setCurrentStep(2);
     } else if (currentStep === 2 && validateStep2()) {
@@ -122,7 +131,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateStep3()) {
       return;
     }
@@ -130,14 +139,15 @@ const SignUp = () => {
     try {
       setMessage("Creating your account...");
       setIsError(false);
-      
-      const response = await axios.post('http://localhost:8080/users/Signup', {
+
+      const response = await axios.post(`${BASE_URL}/users/Signup`, {
         name: formData.name,
         gender: formData.gender,
         password: formData.password,
         email: formData.email,
         dateOfBirth: formData.dateOfBirth,
-        phoneNo: formData.phoneNo
+        phoneNo: formData.phoneNo,
+        role: "USER"
       });
 
       setMessage(response.data || "Registration successful!");
@@ -152,29 +162,33 @@ const SignUp = () => {
     <>
       <h3 className="step-title">Personal Information</h3>
       <div className="form-group">
+        <label htmlFor="name" className="form-label">Full Name</label>
         <div className="input-icon-wrapper">
           <FaUser className="input-icon" />
-          <input 
-            type="text" 
-            name="name" 
-            placeholder="Full Name" 
-            value={formData.name} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="e.g., Aayesha Aggarwal"
+            value={formData.name}
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
 
       <div className="form-group">
+        <label htmlFor="email" className="form-label">Email Address</label>
         <div className="input-icon-wrapper">
           <FaEnvelope className="input-icon" />
-          <input 
-            type="email" 
-            name="email" 
-            placeholder="Email Address" 
-            value={formData.email} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="e.g., Ayesha@gmail.com"
+            value={formData.email}
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
@@ -211,27 +225,32 @@ const SignUp = () => {
       </div>
 
       <div className="form-group">
+        <label htmlFor="phoneNo" className="form-label">Phone Number (10 digits)</label>
         <div className="input-icon-wrapper">
           <FaPhone className="input-icon" />
-          <input 
-            type="tel" 
-            name="phoneNo" 
-            placeholder="Phone Number (10 digits)" 
-            value={formData.phoneNo} 
-            onChange={handleChange} 
-            required 
+          <input
+            type="tel"
+            id="phoneNo"
+            name="phoneNo"
+            placeholder="e.g., 9876543210"
+            value={formData.phoneNo}
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
 
       <div className="form-group">
+        <label htmlFor="dateOfBirth" className="form-label">Date of Birth</label>
         <div className="input-icon-wrapper">
           <FaCalendarAlt className="input-icon" />
           <input
             type="date"
+            id="dateOfBirth"
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={handleChange}
+            max={new Date().toISOString().split("T")[0]} // Restrict to today or earlier
             required
           />
         </div>
@@ -244,17 +263,19 @@ const SignUp = () => {
     <>
       <h3 className="step-title">Security</h3>
       <div className="form-group">
+        <label htmlFor="password" className="form-label">Password</label>
         <div className="input-icon-wrapper">
           <FaLock className="input-icon" />
-          <input 
-            type={showPassword ? "text" : "password"} 
-            name="password" 
-            placeholder="Password" 
-            value={formData.password} 
-            onChange={handleChange} 
-            required 
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            name="password"
+            placeholder="Enter password"
+            value={formData.password}
+            onChange={handleChange}
+            required
           />
-          <span 
+          <span
             className="password-toggle-icon"
             onClick={() => setShowPassword(!showPassword)}
           >
@@ -262,22 +283,24 @@ const SignUp = () => {
           </span>
         </div>
         <div className="password-requirements">
-          Must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number
+          Must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)
         </div>
       </div>
 
       <div className="form-group">
+        <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
         <div className="input-icon-wrapper">
           <FaLock className="input-icon" />
-          <input 
-            type={showConfirmPassword ? "text" : "password"} 
-            name="confirmPassword" 
-            placeholder="Confirm Password" 
-            value={formData.confirmPassword} 
-            onChange={handleChange} 
-            required 
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
           />
-          <span 
+          <span
             className="password-toggle-icon"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           >
@@ -291,16 +314,16 @@ const SignUp = () => {
   return (
     <>
       <Header/>
-      <div 
+      <div
         className="user-signup-bg"
-        style={{ 
-          backgroundImage: `url(${process.env.PUBLIC_URL + "/images/UserLogin.jpg"})` 
+        style={{
+          backgroundImage: `url(${process.env.PUBLIC_URL + "/images/UserLogin.jpg"})`
         }}
       >
         <div className="user-signup-container">
           <div className="signup-card">
             <h2 className="signup-title">Create Your Account</h2>
-            
+
             <div className="progress-steps">
               <div className={`step-item ${currentStep >= 1 ? 'active' : ''}`}>
                 <div className="step-circle">1</div>
@@ -317,7 +340,7 @@ const SignUp = () => {
                 <div className="step-text">Security</div>
               </div>
             </div>
-            
+
             {message && (
               <div className={`message-alert ${isError ? 'error' : 'success'}`}>
                 {message}
@@ -335,13 +358,13 @@ const SignUp = () => {
                     Previous
                   </button>
                 )}
-                
+
                 {currentStep < 3 && (
                   <button type="button" className="next-btn" onClick={nextStep}>
                     Next
                   </button>
                 )}
-                
+
                 {currentStep === 3 && (
                   <button type="submit" className="signup-btn">
                     Create Account

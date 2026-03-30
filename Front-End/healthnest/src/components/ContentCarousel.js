@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useState} from 'react';
+
+import { FaChevronRight } from 'react-icons/fa';
 
 const ContentCarousel = ({ items, type }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

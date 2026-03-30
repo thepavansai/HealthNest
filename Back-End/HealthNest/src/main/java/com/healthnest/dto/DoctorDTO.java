@@ -1,12 +1,12 @@
 package com.healthnest.dto;
 
-import com.healthnest.dto.enums.Gender;
+import com.healthnest.model.enums.Gender;
 
 import lombok.Data;
 
 @Data
 public class DoctorDTO {
-	private Integer doctorId;
+    private Long doctorId;  // Changed from Integer to Long
     private String doctorName;
     private Gender gender;
     private String emailId;
@@ -19,4 +19,7 @@ public class DoctorDTO {
     private String availability;
     private String HospitalName;
     private Integer status;
+    private String address; // Full address of the doctor
+    private Double latitude; // Latitude of the doctor's location
+    private Double longitude; // Longitude of the doctor's location
 }

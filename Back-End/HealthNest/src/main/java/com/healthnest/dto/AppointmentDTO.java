@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 public class AppointmentDTO {
-    private int appointmentId;
-    private Integer userId;
+    private Long appointmentId;  // Changed from int to Long
+    private Long userId;        // Changed from Integer to Long
     private Doctor doctor;
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;

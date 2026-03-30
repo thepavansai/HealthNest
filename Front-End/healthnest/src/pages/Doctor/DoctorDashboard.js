@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from '../../config/apiConfig';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -38,61 +39,90 @@ const DoctorDashboard = () => {
   const [completedAppointments, setCompletedAppointments] = useState([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [totalIncome, setTotalIncome] = useState(0);
+
   const [estimatedPayout, setEstimatedPayout] = useState(0);
   const [totalAppointments, setTotalAppointments] = useState(0);
-
-
 
   const doctorId = localStorage.getItem("doctorId");
 
   useEffect(() => {
     if (doctorId) {
+      const token = localStorage.getItem("token");
       
-      axios.get(`http://localhost:8080/doctor/profile/${doctorId}`)
-        .then(res => {
-          const doctorProfile = res.data || {};
-          setDoctorData(doctorProfile);
-
-          
-          fetchAppointments(doctorProfile.consultationFee);
-        })
-        .catch(err => {
-          console.error("Error fetching doctor profile:", err);
-        })
-        .finally(() => setLoading(false));
+      axios.get(`${BASE_URL}/doctor/profile/${doctorId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        const doctorProfile = res.data || {};
+        setDoctorData(doctorProfile);
+        fetchAppointments(doctorProfile.consultationFee);
+      })
+      .catch(err => {
+        console.error("Error fetching doctor profile:", err);
+        if (err.response && err.response.status === 401) {
+          // Redirect to login if unauthorized
+          navigate("/login");
+        }
+      })
+      .finally(() => setLoading(false));
     }
-  }, [doctorId]);
+  }, [doctorId, navigate]);
+  
 
-  const fetchAppointments = async (consultationFee) => {
-    try {
-      const response = await axios.get(`http://localhost:8080/appointments/doctor/${doctorId}`);
-      const allAppointments = response.data;
-      console.log("All Appointments:", allAppointments);
-      setTotalAppointments(allAppointments.length);
-      setAppointments(allAppointments);
-
-      
-      const completed = allAppointments.filter(appointment => appointment.appointmentStatus === 'Completed'
-          || appointment.appointmentStatus === 'Reviewed'
-        );
-      const upcoming = allAppointments.filter(appointment => appointment.appointmentStatus === 'Upcoming');
-      console.log("Completed Appointments:", completed);
-      console.log("Upcoming Appointments:", upcoming);
-
-      setCompletedAppointments(completed);
-      setUpcomingAppointments(upcoming);
-
-      
-      const income = completed.length  * consultationFee;
-      const payout = upcoming.length * consultationFee;
-
-      setTotalIncome(income);
-      setEstimatedPayout(payout);
-
-    } catch (err) {
-      console.error("Error fetching appointments:", err);
+const fetchAppointments = async (consultationFee) => {
+  try {
+    const token = localStorage.getItem("token");
+    
+    // Make sure token is available
+    if (!token) {
+      console.error("No authentication token found");
+      navigate("/login");
+      return;
     }
-  };
+    
+    const response = await axios.get(`${BASE_URL}/appointments/doctor/${doctorId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    const allAppointments = response.data;
+   
+    setTotalAppointments(allAppointments.length);
+    setAppointments(allAppointments);
+    
+    const completed = allAppointments.filter(appointment => 
+      appointment.appointmentStatus === 'Completed' || 
+      appointment.appointmentStatus === 'Reviewed'
+    );
+    const upcoming = allAppointments.filter(appointment => 
+      appointment.appointmentStatus === 'Upcoming'
+    );
+    
+    setCompletedAppointments(completed);
+    setUpcomingAppointments(upcoming);
+    
+    const income = completed.length * consultationFee;
+    const payout = upcoming.length * consultationFee;
+    setTotalIncome(income);
+    setEstimatedPayout(payout);
+  } catch (err) {
+    console.error("Error fetching appointments:", err);
+    
+    // Handle specific error cases
+    if (err.response) {
+      if (err.response.status === 403) {
+        console.error("Access forbidden. You may not have permission to view these appointments.");
+      } else if (err.response.status === 401) {
+        console.error("Authentication expired. Please login again.");
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
+    }
+  }
+};
 
   const toggleDropdown = () => {
     setShowDropdown(prev => !prev);
@@ -102,7 +132,6 @@ const DoctorDashboard = () => {
     setShowIncome(prev => !prev);
   };
 
-  
   const csvHeaders = [
     { label: 'Patient Name', key: 'userName' },
     { label: 'Date', key: 'appointmentDate' },
@@ -119,7 +148,6 @@ const DoctorDashboard = () => {
     fee: doctorData.consultationFee, 
   }));
 
-  
   const generatePDF = () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -127,16 +155,13 @@ const DoctorDashboard = () => {
     const lineHeight = 10;
     let y = 20;
 
-    
     doc.setFont('times', 'normal');
 
-    
     doc.setFontSize(14);
     doc.setFont('times', 'bold');
     doc.text('Appointments Report', pageWidth / 2, y, { align: 'center' });
     y += lineHeight * 2;
 
-    
     doc.setFontSize(12);
     doc.setFont('times', 'bold');
     doc.text('S.No', margin, y);
@@ -147,7 +172,6 @@ const DoctorDashboard = () => {
     doc.text('Fee', margin + 170, y);
     y += lineHeight;
 
-    
     doc.setFont('times', 'normal');
     appointments.forEach((appointment, index) => {
       if (y > doc.internal.pageSize.getHeight() - margin) {
@@ -164,7 +188,6 @@ const DoctorDashboard = () => {
       y += lineHeight;
     });
 
-    
     doc.save('appointments_report.pdf');
   };
 
@@ -184,7 +207,7 @@ const DoctorDashboard = () => {
       <main className="doctor-dashboard-container">
         <div className="welcome-section">
           <div className="welcome-content">
-            <h1>Welcome back, {doctorData.doctorName || 'Doctor'}</h1>
+            <h1>Welcome , {doctorData.doctorName || 'Doctor'}</h1>
             <p className="subtitle">Here’s what’s happening with your practice today.</p>
           </div>
 

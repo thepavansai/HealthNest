@@ -4,6 +4,10 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./UserEditProfile.css";
+import { BASE_URL } from '../../config/apiConfig';
+
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
 
 const UserEditProfile = () => {
   const navigate = useNavigate();
@@ -16,19 +20,32 @@ const UserEditProfile = () => {
   const [dateOfBirth, setDateOfBirth] = useState("");
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
+    const storedUserId = localStorage.getItem("userId"); // Already a string
+    const token = localStorage.getItem("token");
+
     if (!storedUserId) {
       toast.error("User ID not found. Please login again.");
       navigate("/login");
       return;
     }
 
+    if (!token) {
+      toast.error("Authentication token not found. Please login again.");
+      navigate("/login");
+      return;
+    }
+
     setUserId(storedUserId);
 
-    axios.get(`http://localhost:8080/users/userdetails/${storedUserId}`)
+    // Use string userId in API call
+    axios.get(`${BASE_URL}/users/userdetails/${storedUserId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then((response) => {
         if (response.data) {
-          console.log(response.data);
+        
           const userData = response.data;
           setName(userData.name);
           setEmail(userData.email);
@@ -40,9 +57,14 @@ const UserEditProfile = () => {
         }
       })
       .catch((error) => {
+        console.error("Error fetching user details:", error);
         const errorMessage = error.response?.data?.message || "Failed to fetch user details";
         toast.error(errorMessage);
-        if (error.response?.status === 401) {
+        
+        // If unauthorized or token expired, redirect to login
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          toast.error("Session expired. Please login again.");
+          localStorage.removeItem("token"); // Clear invalid token
           navigate("/login");
         }
       })
@@ -53,9 +75,16 @@ const UserEditProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      toast.error("Authentication token not found. Please login again.");
+      navigate("/login");
+      return;
+    }
 
     const updatedUser = {
-      userId,
+      userId: userId, // Send as string
       name,
       email,
       phoneNo,
@@ -64,7 +93,12 @@ const UserEditProfile = () => {
     };
 
     axios
-      .patch(`http://localhost:8080/users/editprofile/${userId}`, updatedUser)
+      // Use string userId in API call
+      .patch(`${BASE_URL}/users/editprofile/${userId}`, updatedUser, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       .then(() => {
         localStorage.setItem('userName', updatedUser.name);
         toast.success("Profile updated successfully!", {
@@ -72,12 +106,21 @@ const UserEditProfile = () => {
           autoClose: 1500,
         });
       })
-      .catch(() => {
-        toast.error("Failed to update profile.");
+      .catch((error) => {
+        console.error("Error updating profile:", error);
+        
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          toast.error("Session expired. Please login again.");
+          localStorage.removeItem("token"); // Clear invalid token
+          navigate("/login");
+        } else {
+          toast.error("Failed to update profile.");
+        }
       });
   };
 
   return (
+    <><Header/>
     <div className="edit-profile-container">
       <ToastContainer position="top-right" />
       <div className="edit-profile-card">
@@ -100,7 +143,6 @@ const UserEditProfile = () => {
                 required
               />
             </div>
-
             <div className="form-group mb-3">
               <label>Email</label>
               <input
@@ -111,7 +153,6 @@ const UserEditProfile = () => {
                 required
               />
             </div>
-
             <div className="form-group mb-3">
               <label>Phone Number</label>
               <input
@@ -122,7 +163,6 @@ const UserEditProfile = () => {
                 required
               />
             </div>
-
             <div className="form-group mb-3">
               <label>Gender</label>
               <select
@@ -137,7 +177,6 @@ const UserEditProfile = () => {
                 <option value="OTHER">Other</option>
               </select>
             </div>
-
             <div className="form-group mb-3">
               <label>Date of Birth</label>
               <input
@@ -149,16 +188,25 @@ const UserEditProfile = () => {
                 required
               />
             </div>
-
             <div className="d-grid gap-2">
               <button type="submit" className="btn btn-success">
                 Save Changes
+              </button>
+              <button 
+                type="button" 
+                className="btn btn-secondary"
+                onClick={() => navigate("/user")}
+              >
+                Cancel
               </button>
             </div>
           </form>
         )}
       </div>
     </div>
+    <Footer/>
+    </>
+    
   );
 };
 

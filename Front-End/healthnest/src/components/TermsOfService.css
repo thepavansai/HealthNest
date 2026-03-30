@@ -6,13 +6,25 @@
     font-family: 'Arial', sans-serif;
     color: #333;
     line-height: 1.6;
+    padding-top: 80px; /* Add padding-top to push content below the header */
+    padding-bottom: 40px; /* Add some bottom padding */
+    display: flex; /* Use flexbox to help center */
+    justify-content: center; /* Center the content horizontally */
+    --primary-color: #5956F4;
+    --secondary-color: #5956F4;
+    --accent-color: #61e786;
+    --light-color: #f1f9ff;
+    --dark-color: #2a4057;
   }
   
   .terms-content {
     background-color: #ffffff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: Add subtle shadow */
+    max-width: 900px; /* Set a max-width for readability */
+    width: 90%; /* Allow it to shrink on smaller screens */
+    text-align: left; /* Keep text left-aligned for readability */
   }
   
   .terms-title {
@@ -20,13 +32,17 @@
     font-weight: 700;
     margin-bottom: 10px;
     color: #000;
+    align-content: center;
+    padding: 30px 0; /* Add some padding for spacing */
+    text-align: center; /* Center the main title */
   }
   
   .terms-update {
-    color: #666;
+    color: #555;
     font-style: italic;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     font-size: 16px;
+    text-align: center; /* Center the 'last updated' text */
   }
   
   .terms-section {
@@ -37,7 +53,9 @@
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
-    color: #000;
+    color: var(--secondary-color);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
   }
   
   .subsection-title {
@@ -48,7 +66,7 @@
   }
   
   .terms-link {
-    color: #5956F4;
+    color: var(--secondary-color);
     text-decoration: none;
     font-weight: 500;
   }
@@ -92,25 +110,6 @@
     .subsection-title {
       font-size: 18px;
     }
-  }
-  
-  
-  .terms-container {
-    --primary-color: #5956F4;
-    --secondary-color: #5956F4;
-    --accent-color: #61e786;
-    --light-color: #f1f9ff;
-    --dark-color: #2a4057;
-  }
-  
-  .terms-link {
-    color: var(--secondary-color);
-  }
-  
-  .section-title {
-    color: var(--secondary-color);
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
   }
   
   @media print {

@@ -11,17 +11,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Table(name="FeedBack")
+@Table(name="\"feedback\"")  // Fixed table name with quotes and lowercase
 @Entity
 @Data
 public class FeedBack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Integer id;
+    private Long id;  // Changed from Integer to Long
     private String feedback;
     private String emailId;
     private Float rating;
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "\"user_id\"", nullable = false)  // Fixed column name with quotes
     private User user;
 }

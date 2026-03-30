@@ -6,7 +6,10 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-**/src/main/resources/application.properties
+/src/main/resources/application.properties
+**/application-local.properties
+**/.env
+**/.env.local
 ### STS ###
 .apt_generated
 .classpath
@@ -62,3 +65,12 @@ yarn-error.log*
  
 .qodo
 **/.env 
+
+# Local Netlify folder
+.netlify
+
+
+# Docker
+docker-compose.yml
+Back-End/HealthNest/pom.xml.versionsBackup
+Back-End/HealthNest/src/test/resources/application.properties

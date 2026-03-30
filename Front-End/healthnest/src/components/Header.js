@@ -11,26 +11,28 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  // Function to check authentication status
+  const checkAuthStatus = () => {
     const doctorId = localStorage.getItem('doctorId');
     const doctorName = localStorage.getItem('doctorName');
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName');
     const adminId = localStorage.getItem('adminId');
+    const adminName = localStorage.getItem('adminName');
 
     if (adminId) {
       setIsLoggedIn(true);
-      setUsername(userName);
+      setUsername(adminName || 'Admin');
       setIsDoctor(false);
       setIsAdmin(true);
-    } else if (doctorId && doctorName) {
+    } else if (doctorId) {
       setIsLoggedIn(true);
-      setUsername(doctorName);
+      setUsername(doctorName || 'Doctor');
       setIsDoctor(true);
       setIsAdmin(false);
-    } else if (userId && userName) {
+    } else if (userId) {
       setIsLoggedIn(true);
-      setUsername(userName);
+      setUsername(userName || 'User');
       setIsDoctor(false);
       setIsAdmin(false);
     } else {
@@ -39,6 +41,22 @@ const Header = () => {
       setIsDoctor(false);
       setIsAdmin(false);
     }
+  };
+
+  // Check auth status on mount
+  useEffect(() => {
+    checkAuthStatus();
+    
+    // Add event listener for storage changes
+    window.addEventListener('storage', checkAuthStatus);
+    
+    // Create a custom event listener for login/logout
+    window.addEventListener('authChange', checkAuthStatus);
+    
+    return () => {
+      window.removeEventListener('storage', checkAuthStatus);
+      window.removeEventListener('authChange', checkAuthStatus);
+    };
   }, []);
 
   useEffect(() => {
@@ -47,7 +65,6 @@ const Header = () => {
     } else {
       document.body.style.overflow = 'unset';
     }
-
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -59,13 +76,12 @@ const Header = () => {
         setIsMenuOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMenuOpen]);
 
   const handleLogout = () => {
-    const itemsToClear = ['userId', 'userName', 'doctorId', 'doctorName', 'adminId'];
+    const itemsToClear = ['userId', 'userName', 'doctorId', 'doctorName', 'adminId', 'adminName', 'token'];
     itemsToClear.forEach(item => localStorage.removeItem(item));
     
     setIsLoggedIn(false);
@@ -73,7 +89,10 @@ const Header = () => {
     setIsDoctor(false);
     setIsAdmin(false);
     setIsMenuOpen(false);
-
+    
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new Event('authChange'));
+    
     navigate('/');
   };
 
@@ -85,7 +104,6 @@ const Header = () => {
             <span className="brand-name">HealthNest</span>
           </Link>
         </div>
-
         <div className="mobile-nav">
           <button 
             className={`hamburger-menu ${isMenuOpen ? 'open' : ''}`}
@@ -97,7 +115,6 @@ const Header = () => {
             <span className="hamburger-line"></span>
           </button>
         </div>
-
         <div className={`header-right ${isMenuOpen ? 'open' : ''}`}>
           <nav className="nav-links">
             <Link to="/" className="nav-link" onClick={() => setIsMenuOpen(false)}>
@@ -107,14 +124,13 @@ const Header = () => {
               <FaInfoCircle /> About
             </Link>
           </nav>
-
           {isLoggedIn ? (
             <div className="user-controls">
               <div className="user-info">
                 <span className="user-greeting">Welcome,</span>
                 <Link 
-                  to={isAdmin ? "/admin" : isDoctor ? "/doctor/dashboard" : "/user"} 
-                  className="user-name" 
+                  to={isAdmin ? "/admin" : isDoctor ? "/doctor/dashboard" : "/user"}
+                  className="user-name"
                   title={username}
                   onClick={() => setIsMenuOpen(false)}
                 >

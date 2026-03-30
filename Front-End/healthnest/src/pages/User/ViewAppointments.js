@@ -4,6 +4,7 @@ import { FaCalendarAlt, FaCalendarCheck, FaCheckCircle, FaSearch, FaStar, FaRegS
 import './ViewAppointments.css';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { BASE_URL } from '../../config/apiConfig';
 
 const ViewAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -11,16 +12,39 @@ const ViewAppointments = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [currAppointments, setCurrAppointments] = useState('All Appointments');
-  const [ratings, setRatings] = useState({}); 
+  const [ratings, setRatings] = useState({});
   const [ratedAppointments, setRatedAppointments] = useState(new Set());
   const [reviewedAppointments, setReviewedAppointments] = useState([]);
+  
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8080/users/appointments/${localStorage.getItem('userId')}`);
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        
+        // Include the token in the Authorization header
+        const response = await axios.get(
+          `${BASE_URL}/users/appointments/${userId}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
+        );
+        
         setAppointments(response.data);
+        
+        // Initialize the ratedAppointments set with already reviewed appointments
+        const reviewedIds = new Set(
+          response.data
+            .filter(appt => appt.appointmentStatus.toLowerCase() === 'reviewed')
+            .map(appt => appt.appointmentId)
+        );
+        setRatedAppointments(reviewedIds);
+        
         setLoading(false);
       } catch (error) {
         console.error('Error fetching appointments:', error);
@@ -59,25 +83,33 @@ const ViewAppointments = () => {
 
 
   const cancelAppointment = async (appointmentId, appointmentDate, appointmentTime) => {
-
     const appointmentDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
     const currentTime = new Date();
-
     if (appointmentDateTime < currentTime) {
       alert('You cannot cancel an appointment that has already passed.');
       return;
     }
     const timeDifferenceInMilliseconds = appointmentDateTime - currentTime;
-
     const timeDifferenceInHours = timeDifferenceInMilliseconds / (1000 * 3600);
-
     if (timeDifferenceInHours < 3) {
       alert('You cannot cancel an appointment less than 3 hours before it starts.');
       return;
     }
     try {
-      const response = await axios.patch(`http://localhost:8080/users/cancelappointment/${appointmentId}`);
-      if (response.status === 200) { 
+      // Get the token from localStorage
+      const token = localStorage.getItem('token');
+      
+      const response = await axios.patch(
+        `${BASE_URL}/appointments/${appointmentId}/status/Cancelled`,
+        {},  // Empty body for PATCH request
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      
+      if (response.status === 200) {
         setAppointments(prevAppointments =>
           prevAppointments.map(appointment =>
             appointment.appointmentId === appointmentId
@@ -111,34 +143,61 @@ const ViewAppointments = () => {
       alert('Please select a rating first');
       return;
     }
-
     if (ratedAppointments.has(appointmentId)) {
       alert('You have already submitted a rating for this appointment');
       return;
     }
     
     try {
-      const ratingResponse = await axios.patch(`http://localhost:8080/doctor/${doctorId}/rating/${rating}`);
+      // Get the token from localStorage
+      const token = localStorage.getItem('token');
+      
+      // First update the doctor's rating
+      const ratingResponse = await axios.patch(
+        `${BASE_URL}/doctor/${doctorId}/rating/${rating}`,
+        {},  // Empty body for PATCH request
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      
       if (ratingResponse.status === 200) {
-        const reviewResponse = await axios.patch(`http://localhost:8080/appointments/${appointmentId}/status/Reviewed`);
-        if (reviewResponse.status === 200) {
-          alert('Rating submitted successfully!');
-         
-          setRatings(prev => ({
-            ...prev,
-            [appointmentId]: rating  
-          }));
-          setRatedAppointments(prev => new Set([...prev, appointmentId]));
-          setAppointments(prevAppointments =>
-            prevAppointments.map(appointment =>
-              appointment.appointmentId === appointmentId
-                ? { ...appointment, appointmentStatus: 'Reviewed' }
-                : appointment
-            )
+        // Then update the appointment status to reviewed
+        try {
+          const reviewResponse = await axios.patch(
+            `${BASE_URL}/appointments/${appointmentId}/status/Reviewed`,
+            {},  // Empty body for PATCH request
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            }
           );
-          setReviewedAppointments(prev => [...prev, appointmentId]);
-        } else {
-          alert('Failed to update appointment status. Please try again.');
+          
+          if (reviewResponse.status === 200) {
+            alert('Rating submitted successfully!');
+            
+            // Update state to reflect the changes
+            setRatings(prev => ({
+              ...prev,
+              [appointmentId]: rating
+            }));
+            setRatedAppointments(prev => new Set([...prev, appointmentId]));
+            setAppointments(prevAppointments =>
+              prevAppointments.map(appointment =>
+                appointment.appointmentId === appointmentId
+                  ? { ...appointment, appointmentStatus: 'Reviewed' }
+                  : appointment
+              )
+            );
+          } else {
+            alert('Failed to update appointment status. Please try again.');
+          }
+        } catch (reviewError) {
+          console.error('Error updating appointment status:', reviewError);
+          alert('Error updating appointment status. Please try again later.');
         }
       } else {
         alert('Failed to update rating. Please try again.');
@@ -160,7 +219,7 @@ const ViewAppointments = () => {
 
   return (<>
   <Header/>
-    <div className="view-appointments-container">
+    <div className="user-view-appointments-container">
       <div className="appointments-header">
         <h1>Appointments Dashboard</h1>
         <div className="appointments-summary">
@@ -189,8 +248,8 @@ const ViewAppointments = () => {
               <FaCalendarCheck />
             </div>
             <div className="summary-details">
-              <h3>{completedAppointments.length}</h3>
-              <p>Completed Appointments</p>
+              <h3>{completedAppointments.length + reviewedAppointmentsList.length}</h3>
+              <p>Completed & Reviewed Appointments</p>
             </div>
           </div>
           <div className="summary-card">
@@ -213,15 +272,15 @@ const ViewAppointments = () => {
             </div>
           </div>
           
-          <div className="summary-card">
+          {/* <div className="summary-card">
             <div className="summary-icon reviewed-icon">
               <FaStar />
             </div>
             <div className="summary-details">
               <h3>{reviewedAppointmentsList.length}</h3>
               <p>Reviewed Appointments</p>
-            </div>
-          </div>
+            </div> 
+          </div>*/}
         </div>
       </div>
 
@@ -311,22 +370,22 @@ const ViewAppointments = () => {
               <tbody>
                 {filteredAppointments.map(appointment => (
                   <tr key={appointment.appointmentId}>
-                    <td>{appointment.appointmentId}</td>
-                    <td>Dr. {appointment.doctorName}</td>
-                    <td>{appointment.hospitalName}</td>
-                    <td>
+                    <td data-label="ID">{appointment.appointmentId}</td>
+                    <td data-label="Doctor">Dr. {appointment.doctorName}</td>
+                    <td data-label="Hospital">{appointment.hospitalName}</td>
+                    <td data-label="Date & Time">
                       <div className="appointment-time">
                         <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
                         <span>{appointment.appointmentTime}</span>
                       </div>
                     </td>
-                    <td>₹{appointment.consultationFee}</td>
-                    <td>
+                    <td data-label="Fee">₹{appointment.consultationFee}</td>
+                    <td data-label="Status">
                       <span className={`status-badge ${getStatusClass(appointment.appointmentStatus)}`}>
                         {appointment.appointmentStatus}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Actions">
                       <div className="action-buttons">
                         {appointment.appointmentStatus.toLowerCase() === 'upcoming' && (
                           <button
@@ -401,7 +460,7 @@ const ViewAppointments = () => {
                   </div>
                 </div>
                 <div className="completed-details">
-                  <h4>#{appointment.appointmentId} - {appointment.doctorName}</h4>
+                  <h4>{appointment.doctorName}</h4>
                   <p>Hospital: {appointment.hospitalName}</p>
                   <p>Fee: ₹{appointment.consultationFee}</p>
                 </div>

@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
 import axios from 'axios';
-import './Remedies.css';
-import Header from './Header';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import Footer from './Footer';
+import Header from './Header';
+import './Remedies.css';
 
 const Remedies = ({ onSuggest }) => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState(() => {
+    // Get stored symptoms on component mount
+    const storedSymptoms = localStorage.getItem('userSymptoms');
+    // Clear stored symptoms after retrieving
+    localStorage.removeItem('userSymptoms');
+    return storedSymptoms || '';
+  });
   const [response, setResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async () => {
     if (!text.trim()) return;
@@ -16,15 +24,31 @@ const Remedies = ({ onSuggest }) => {
       const res = await axios.post(
         'https://api.groq.com/openai/v1/chat/completions',
         {
-          model: "llama3-8b-8192",
+          model: "llama-3.3-70b-versatile",
           messages: [
             {
               role: "system",
-              content: "The user will give his current health condition. Suggest a WHO recommended Suggestions and remedies for symptoms if symptoms are not clear ask user to clarify his symptoms. donot give without appropiate symptoms.",
+              content: `You are a helpful health assistant who provides evidence-based suggestions and remedies based on WHO guidelines. 
+              When a user describes their symptoms, provide clear recommendations following this exact format:
+
+              **Suggestions:**
+              1. **First suggestion title**: Brief explanation
+              2. **Second suggestion title**: Brief explanation
+              3. **Third suggestion title**: Brief explanation
+              4. **Fourth suggestion title**: Brief explanation
+
+              **Remedies:**
+              1. **First remedy title**: Brief explanation
+              2. **Second remedy title**: Brief explanation 
+              3. **Third remedy title**: Brief explanation
+
+              Always include a reminder to consult healthcare professionals for persistent symptoms.
+              Do not diagnose specific conditions or recommend medications.
+              If symptoms are unclear, politely ask for clarification.`
             },
             {
               role: "user",
-              content: `I am having ${text}. Donot show my disase name or speciliasit name. Just show the Suggestions and remedies for my symptoms`,
+              content: `I am having ${text}. Please provide suggestions and remedies for my symptoms without mentioning specific disease names or specialist types.`
             },
           ]
         },
@@ -49,9 +73,19 @@ const Remedies = ({ onSuggest }) => {
     }
   };
 
+  // Function to handle specialist consultation
+  const handleConsultSpecialist = () => {
+    // Store symptoms in localStorage for CheckHealth page to access
+    localStorage.setItem('userSymptoms', text);
+    // Navigate to CheckHealth page
+    navigate('/user/check-health');
+  };
+
   const formatResponse = (response) => {
+    // Improve bold text handling
     const formatBoldText = (text) => {
-      return text.split(/(\*\*.*?\*\*)/).map((part, index) => {
+      if (!text) return '';
+      return text.split(/(\*\*[^*]+?\*\*)/).map((part, index) => {
         if (part.startsWith('**') && part.endsWith('**')) {
           return <strong key={index}>{part.slice(2, -2)}</strong>;
         }
@@ -59,70 +93,85 @@ const Remedies = ({ onSuggest }) => {
       });
     };
 
-
-    const sections = response.split(/\n(?=[A-Z][a-z]* *:)|\n(?=\d+\.)/);
-
-    let currentList = [];
+    // Split text into sections by looking for headers
+    const sections = response.split(/\n\n(?=\*\*[A-Za-z]+:)|\n(?=\*\*[A-Za-z]+:)/g)
+      .filter(section => section.trim().length > 0);
+    
     let formattedSections = [];
 
-    sections.forEach((section, index) => {
+    sections.forEach((section, sectionIndex) => {
       if (section.trim().length === 0) return;
-
-
-      const isNumberedPoint = /^(\d+)\.(.*)/.test(section);
-
-      const hasTitle = /^[A-Z][a-z]* *:/.test(section);
-
-      if (isNumberedPoint) {
-
-        const content = section.replace(/^\d+\./, '').trim();
-        currentList.push(
-          <li key={`point-${index}`} className="remedy-point">
-            <span className="point-star">★</span>
-            <span className="point-content">{formatBoldText(content)}</span>
-          </li>
+      
+      // Check if this has a header (like "**Suggestions:**")
+      const headerMatch = section.match(/^\*\*([A-Za-z]+):\*\*/);
+      
+      if (headerMatch) {
+        const heading = headerMatch[1];
+        // Remove the header from content
+        const content = section.replace(/^\*\*[A-Za-z]+:\*\*/, '').trim();
+        
+        formattedSections.push(
+          <div key={`section-${sectionIndex}`} className="remedy-section">
+            <h4 className="remedy-section-title">{heading}</h4>
+            <div className="remedy-section-content">
+              {processListItems(content, heading)}
+            </div>
+          </div>
         );
       } else {
-
-        if (currentList.length > 0) {
-          formattedSections.push(
-            <ul key={`list-${index}`} className="remedy-list">
-              {currentList}
-            </ul>
-          );
-          currentList = [];
-        }
-
-        if (hasTitle) {
-          const [title, ...contentParts] = section.split(/:(.*)/s);
-          const content = contentParts.join('').trim();
-          formattedSections.push(
-            <div key={`section-${index}`} className="remedy-section">
-              <h4 className="remedy-section-title">{title.trim()}</h4>
-              <p className="remedy-section-content">{formatBoldText(content)}</p>
-            </div>
+        // Plain text section (like a reminder)
+        formattedSections.push(
+          <p key={`text-${sectionIndex}`} className="remedy-text">
+            {formatBoldText(section.trim())}
+          </p>
+        );
+      }
+    });
+    
+    // Process numbered items in a section with proper formatting
+    function processListItems(content, sectionType) {
+      if (!content) return null;
+      
+      // Split content into lines and filter out empty ones
+      const lines = content.split(/\n/).filter(line => line.trim().length > 0);
+      const items = [];
+      
+      lines.forEach((line, lineIndex) => {
+        // Match numbered items like "1. Content" or "1. **Title**: Content"
+        const numberedItem = line.match(/^\d+\.\s*(.*)/);
+        
+        if (numberedItem) {
+          const itemContent = numberedItem[1];
+          items.push(
+            <li key={`item-${lineIndex}`} className="remedy-point">
+              {/* Add star icons for both Suggestions and Remedies sections */}
+              <span className="point-star">★</span>
+              <span className="point-content">{formatBoldText(itemContent)}</span>
+            </li>
           );
         } else {
-          formattedSections.push(
-            <p key={`text-${index}`} className="remedy-text">
-              {formatBoldText(section.trim())}
+          // Handle non-numbered lines (like additional info)
+          items.push(
+            <p key={`text-${lineIndex}`} className="remedy-text">
+              {formatBoldText(line)}
             </p>
           );
         }
-      }
-    });
-
-
-    if (currentList.length > 0) {
-      formattedSections.push(
-        <ul key="final-list" className="remedy-list">
-          {currentList}
-        </ul>
-      );
+      });
+      
+      return items.length > 0 ? (
+        <ul className="remedy-list">{items}</ul>
+      ) : null;
     }
 
     return formattedSections;
   };
+
+  useEffect(() => {
+    if (text && !response) {
+      handleSubmit();
+    }
+  }, []);
 
   return (<>
     <Header />
@@ -131,50 +180,64 @@ const Remedies = ({ onSuggest }) => {
         <div className="feeling-card">
           <div className="header">
             <h2>How are you feeling today?</h2>
-            <p>Describe your symptoms we will give some of  Suggestions </p>
+            <p>Describe your symptoms and we'll provide evidence-based suggestions</p>
           </div>
 
           <div className="input-area">
             <textarea
               className="symptom-textarea"
-              placeholder="I've been experiencing..."
+              placeholder="Please describe your symptoms (e.g., headache, fever, sore throat)..."
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
           </div>
 
-          <button
-            className="submit-button"
-            onClick={handleSubmit}
-            disabled={isLoading || !text.trim()}
-          >
-            {isLoading ? (
-              <>
-                <svg className="loading-spinner" width="20" height="20" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                <span>Analyzing...</span>
-              </>
-            ) : (
-              <>
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-                <span>Suggest</span>
-              </>
-            )}
-          </button>
+          <div className="button-group">
+            <button
+              className="submit-button"
+              onClick={handleSubmit}
+              disabled={isLoading || !text.trim()}
+            >
+              {isLoading ? (
+                <>
+                  <svg className="loading-spinner" width="20" height="20" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  <span>Analyzing...</span>
+                </>
+              ) : (
+                <>
+                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                  <span>Suggest</span>
+                </>
+              )}
+            </button>
+
+          </div>
 
           {response && (
             <div className="result-card">
-              <h3 className="result-title">Recommended Suggestions</h3>
+              <h3 className="result-title">Health Recommendations</h3>
               <div className="remedies-content">
                 {formatResponse(response)}
               </div>
               <div className="who-footer">
                 <p>Data sourced from World Health Organization (WHO) guidelines</p>
                 <small>Note: These are general recommendations. Please consult a healthcare professional for specific medical advice.</small>
+                
+                {/* Add specialist consultation button at the bottom of results */}
+                <div className="specialist-cta">
+                  <p>Need further assistance?</p>
+                  <button 
+                    className="consult-specialist-button-secondary"
+                    onClick={handleConsultSpecialist}
+                  >
+                    Consult a Specialist
+                  </button>
+                </div>
               </div>
             </div>
           )}

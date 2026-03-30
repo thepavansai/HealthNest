@@ -2,6 +2,7 @@ import React from 'react';
 import Footer from './Footer';
 import Header from './Header';
 import './TermsOfService.css';
+import { BASE_URL } from '../config/apiConfig';
 
 const TermsOfService = () => {
   const currentDate = 'April 15, 2025';
@@ -19,13 +20,13 @@ const TermsOfService = () => {
             We are Health Nest, doing business as HN ("<strong>Company</strong>," "<strong>we</strong>," "<strong>us</strong>," "<strong>our</strong>"), a company registered in India at Madhapur, Hyderabad, Telangana 500089.
           </p>
           <p>
-            We operate the website <a href="http://localhost:3000" className="terms-link">HealthNest</a> (the "<strong>Site</strong>"), as well as any other related products and services that refer or link to these legal terms (the "<strong>Legal Terms</strong>") (collectively, the "<strong>Services</strong>").
+            We operate the website <a href={BASE_URL} className="terms-link">HealthNest</a> (the "<strong>Site</strong>"), as well as any other related products and services that refer or link to these legal terms (the "<strong>Legal Terms</strong>") (collectively, the "<strong>Services</strong>").
           </p>
           <p>
             A platform that is used to generate remedies and precautions based on the user symptoms and a platform to book an appointment for the doctor of your choice
           </p>
           <p>
-            You can contact us by phone at 9988667777, email at healthnest@gmail.com, or by mail to Madhapur, Hyderabad, Telangana 500089, India.
+            You can contact us by phone at 9988667777, email at healthnest.contact@gmail.com or by mail to Madhapur, Hyderabad, Telangana 500089, India.
           </p>
           <p>
             These Legal Terms constitute a legally binding agreement made between you, whether personally or on behalf of an entity ("<strong>you</strong>"), and Health Nest, concerning your access to and use of the Services. You agree that by accessing the Services, you have read, understood, and agreed to be bound by all of these Legal Terms. IF YOU DO NOT AGREE WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.
@@ -127,7 +128,7 @@ const TermsOfService = () => {
             Telangana 500089<br />
             India<br />
             Phone: 9988667777<br />
-            Email: healthnest@gmail.com
+            Email: healthnest.contact@gmail.com
           </address>
         </section>
       </div>

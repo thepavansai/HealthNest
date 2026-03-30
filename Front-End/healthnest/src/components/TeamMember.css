@@ -1,0 +1,186 @@
+/* .team-member {
+    perspective: 1000px;
+    width: 220px;
+    height: 280px;
+    margin: 15px;
+    cursor: pointer;
+  }
+  
+  .team-member-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+  }
+  
+  .team-member.flipped .team-member-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .team-member-front, .team-member-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 12px;
+  }
+  
+  .team-member-front {
+    background-color: white;
+  }
+  
+  .team-member-back {
+    background: linear-gradient(135deg, #6a64e2, #4f46e5);
+    color: white;
+    transform: rotateY(180deg);
+  }
+  
+  .avatar-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6a64e2, #4f46e5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .team-member h3 {
+    font-size: 1.2rem;
+    margin: 10px 0 5px;
+    color: #333;
+  }
+  
+  .team-member p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+  }
+  
+  .member-bio {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+  
+  .team-member:hover .team-member-inner {
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+  } */
+  .team-member-circle {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 15px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .team-member-circle:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+  }
+  
+  .team-member-circle.active {
+    background: linear-gradient(135deg, #6a64e2, #4f46e5);
+    align-self: center;
+  }
+  
+  .team-member-circle.active .avatar-circle {
+    transform: scale(1.1);
+    border: 3px solid white;
+  }
+  
+  .team-member-circle.active h3,
+  .team-member-circle.active .member-role {
+    color: white;
+  }
+  
+  .member-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+  }
+  
+  .avatar-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6a64e2, #4f46e5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    left: 100px
+  }
+  
+  .team-member-circle h3 {
+    font-size: 1.1rem;
+    margin: 5px 0;
+    color: #333;
+    transition: color 0.3s ease;
+    text-align: center;
+  }
+  
+  .member-role {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+    transition: color 0.3s ease;
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    .team-member-circle {
+      width: 180px;
+      height: 180px;
+    }
+    
+    .avatar-circle {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      
+    }
+    
+    .team-member-circle h3 {
+      font-size: 0.9rem;
+      align-content: center;
+    }
+    
+    .member-role {
+      font-size: 0.8rem;
+    }
+  }
+  

@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './ChangePassword.css';
 import axios from 'axios';
+import { BASE_URL } from '../../config/apiConfig';
 
 const ChangePassword = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ const ChangePassword = () => {
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const doctorId = localStorage.getItem('doctorId');
+  const doctorId = localStorage.getItem('doctorId'); // Already a string
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,8 +41,8 @@ const ChangePassword = () => {
     
     if (!formData.newPassword) {
       newErrors.newPassword = 'New password is required';
-    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(formData.newPassword)) {
-      newErrors.newPassword = 'Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number';
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(formData.newPassword)) {
+      newErrors.newPassword = 'Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)';
     }
     
     if (!formData.confirmPassword) {
@@ -56,13 +57,29 @@ const ChangePassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
+    if (!doctorId) {
+      setErrors({ currentPassword: 'Doctor ID not found. Please login again.' });
+      return;
+    }
+
     if (validateForm()) {
       setIsSubmitting(true);
       
       try {
-        const response = await axios.put(
-          `http://localhost:8080/doctor/changepassword/${doctorId}/${formData.currentPassword}/${formData.newPassword}`
+        const token = localStorage.getItem('token');
+        // Use string doctorId in API call
+        const response = await axios.patch(
+          `${BASE_URL}/doctor/changepassword/${doctorId}`,
+          {
+            oldPassword: formData.currentPassword,
+            newPassword: formData.newPassword
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
         );
 
         if (response.status === 200) {
@@ -79,9 +96,15 @@ const ChangePassword = () => {
           }, 5000);
         }
       } catch (error) {
-        setErrors({
-          currentPassword: error.response?.data || 'Failed to update password. Please try again.'
-        });
+        if (error.response?.status === 401) {
+          setErrors({
+            currentPassword: 'Session expired. Please login again.'
+          });
+        } else {
+          setErrors({
+            currentPassword: error.response?.data || 'Failed to update password. Please try again.'
+          });
+        }
       } finally {
         setIsSubmitting(false);
       }
@@ -130,6 +153,9 @@ const ChangePassword = () => {
                       value={formData.newPassword}
                       onChange={handleChange}
                     />
+                    <small className="form-text text-muted">
+                      Password must contain at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)
+                    </small>
                     {errors.newPassword && (
                       <div className="invalid-feedback">{errors.newPassword}</div>
                     )}
@@ -169,7 +195,7 @@ const ChangePassword = () => {
                 </form>
                 
                 <div className="text-center mt-4">
-                  <a href="/profile" className="text-decoration-none">Back to Profile</a>
+                  <a href="/doctor/dashboard" className="text-decoration-none">Back to Profile</a>
                 </div>
               </div>
             </div>

@@ -40,9 +40,10 @@ const ContactUs = () => {
         <div className="contact-card">
           <Mail className="icon" />
           <h3>Email Us</h3>
-          <p>support@healthnest.in</p>
-          <p> media@healthnest.in</p>
-          <p> feedback@healthnest.in</p>
+          <p>For queries, feedback, or suggestions, reach out to us.</p>
+          <p>healthnest.contact@gmail.com</p>
+          
+          
         </div>
 
         <div className="contact-card">

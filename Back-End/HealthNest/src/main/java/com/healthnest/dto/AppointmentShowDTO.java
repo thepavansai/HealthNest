@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppointmentShowDTO {
-    private Integer appointmentId;
+    private Long appointmentId;  // Changed from Integer to Long
     private String doctorName;
     private String doctorSpecialization;
     private String userName;

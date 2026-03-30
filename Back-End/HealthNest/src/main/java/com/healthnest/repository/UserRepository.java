@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface UserRepository extends CrudRepository<User,Integer> {
-	Optional<User> findByEmail(String email);
-
+public interface UserRepository extends CrudRepository<User, Long> {  // Changed from Integer to Long
+    // Use the actual property name from the entity class, not the DB column name
+    Optional<User> findByEmail(String email);
 }
 

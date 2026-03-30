@@ -35,9 +35,26 @@
   color: #333;
 }
 
-
 .gold-star {
   color: #f4b400; 
   font-size: 1.2rem;
   margin-right: 2px;
+}
+
+.no-feedback-message {
+    color: #666;
+    font-size: 1.1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 1.1rem;
+    background-color: #f8d7da;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 600px;
 }

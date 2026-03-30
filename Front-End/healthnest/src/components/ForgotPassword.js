@@ -8,6 +8,7 @@ import Header from './Header';
 import Footer from './Footer';
 import './ForgotPassword.css';
 import axios from 'axios';
+import { BASE_URL } from '../config/apiConfig';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -22,11 +23,14 @@ const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
   const [timer, setTimer] = useState(0);
   const [userType, setUserType] = useState('patient'); 
-  const emailForm = useRef();
+
 
   
   const generateOTP = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    const array = new Uint32Array(1);
+    window.crypto.getRandomValues(array);
+    const randomNumber = array[0] % 900000 + 100000; // Ensures a 6-digit number
+    return randomNumber.toString();
   };
 
   
@@ -61,8 +65,8 @@ const ForgotPassword = () => {
       
       
       const checkEndpoint = userType === 'doctor' 
-        ? 'http://localhost:8080/doctor/check-email'
-        : 'http://localhost:8080/users/check-email';
+        ? `${BASE_URL}/doctor/check-email`
+        : `${BASE_URL}/users/check-email`;
       
       const response = await axios.post(checkEndpoint, { 
         email,
@@ -141,9 +145,9 @@ const ForgotPassword = () => {
     }
 
     
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-      toast.error('Password must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number');
+      toast.error('Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)');
       return;
     }
 
@@ -152,8 +156,8 @@ const ForgotPassword = () => {
       
       
       const resetEndpoint = userType === 'doctor' 
-        ? 'http://localhost:8080/doctor/setnewpassword'
-        : 'http://localhost:8080/users/setnewpassword';
+        ? `${BASE_URL}/doctor/setnewpassword`
+        : `${BASE_URL}/users/setnewpassword`;
       
       
       const response = await axios.post(resetEndpoint, {
@@ -390,7 +394,7 @@ const ForgotPassword = () => {
                   </span>
                 </div>
                 <div className="password-requirements">
-                  Must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number
+                  Must be at least 8 characters with 1 uppercase, 1 lowercase, 1 number and 1 special character (@$!%*?&)
                 </div>
               </div>
               

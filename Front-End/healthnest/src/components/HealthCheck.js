@@ -33,11 +33,11 @@ const HealthCheck = ({ name, description }) => {
   const renderIcon = () => {
     switch (name) {
       case "Health Checkup":
-        return <FaHeartbeat size={30} className="mb-3 text-danger" />;
+        return <><center><FaHeartbeat size={30} className="mb-3 text-danger" /></center></>;
       case "View Appointments":
-        return <FaCalendarAlt size={30} className="mb-3 text-primary" />;
+        return <><center><FaCalendarAlt size={30} className="mb-3 text-primary" /></center></>;
       case "Join Our Team":
-        return <FaUserMd size={30} className="mb-3 text-success" />;
+        return <><center><FaUserMd size={30} className="mb-3 text-success" /></center></>;
       default:
         return null;
     }
@@ -50,7 +50,10 @@ const HealthCheck = ({ name, description }) => {
         <h5 className="card-title">{name}</h5>
         <p className="card-text">{description}</p>
         <button onClick={handleClick} className="btn btn-primary">
-          Learn more
+          {name === "Health Checkup" ? "Check Health Now" : 
+           name === "View Appointments" ? "View Schedule" : 
+           name === "Join Our Team" ? "Apply Today" : 
+           "Learn More"}
         </button>
       </div>
     </div>
