@@ -239,12 +239,13 @@ public class UserController {
             userService.cancelAppointment(appointmentId, userEmail);
             return ResponseEntity.ok("successfully cancelled Appointment");
         } catch (RuntimeException e) {
-            if (e.getMessage().contains("not found")) {
+            if (e.getMessage() != null && e.getMessage().contains("not found")) {
                 return ResponseEntity.badRequest().body("Appointment not found");
-            } else if (e.getMessage().contains("not authorized")) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+            } else if (e.getMessage() != null && e.getMessage().contains("not authorized")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("You are not authorized to cancel this appointment");
             }
-            return ResponseEntity.internalServerError().body(e.getMessage());
+            return ResponseEntity.internalServerError().body("Failed to cancel appointment");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Failed to cancel appointment");
         }

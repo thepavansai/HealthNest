@@ -447,7 +447,7 @@ class DoctorServiceTest {
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
         when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
         
-        String result = doctorService.updateDoctorRating(1L, 4.0F, 1L, appointmentService);
+        String result = doctorService.updateDoctorRating(1L, 4.0F, 1L);
         
         assertEquals("Rating updated successfully", result);
         assertEquals(4.0F, testDoctor.getRating());
@@ -461,7 +461,7 @@ class DoctorServiceTest {
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
         when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
         
-        String result = doctorService.updateDoctorRating(1L, 4.0F, 1L, appointmentService);
+        String result = doctorService.updateDoctorRating(1L, 4.0F, 1L);
         
         assertEquals("Rating updated successfully", result);
         assertEquals(4.0F, testDoctor.getRating());
@@ -475,7 +475,7 @@ class DoctorServiceTest {
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
         when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
         
-        String result = doctorService.updateDoctorRating(1L, 5.0F, 1L, appointmentService);
+        String result = doctorService.updateDoctorRating(1L, 5.0F, 1L);
         
         assertEquals("Rating updated successfully", result);
         assertEquals(4.0F, testDoctor.getRating()); 
@@ -489,11 +489,24 @@ class DoctorServiceTest {
         when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
         
         Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
-            doctorService.updateDoctorRating(1L, 4.0F, 1L, appointmentService);
+            doctorService.updateDoctorRating(1L, 4.0F, 1L);
         });
         
         assertEquals("Doctor not found with id: 1", exception.getMessage());
         verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
+    }
+    
+    @Test
+    void testUpdateDoctorRating_NoAppointmentWithDoctor() {
+        when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(false);
+        
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            doctorService.updateDoctorRating(1L, 4.0F, 1L);
+        });
+        
+        assertEquals("You can only rate doctors you have had appointments with", exception.getMessage());
+        verify(doctorRepository, never()).findById(1L);
         verify(doctorRepository, never()).save(any(Doctor.class));
     }
     

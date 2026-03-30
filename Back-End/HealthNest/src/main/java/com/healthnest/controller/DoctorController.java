@@ -30,10 +30,15 @@ import com.healthnest.service.DoctorService;
 import com.healthnest.service.JWTService;
 import com.healthnest.service.UserService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/v1/doctor")
 @CrossOrigin(origins = "https://health-nest.netlify.app") 
 public class DoctorController {
+    private static final Logger logger = LoggerFactory.getLogger(DoctorController.class);
+    
     @Autowired
     private DoctorService doctorService;
     
@@ -192,14 +197,17 @@ public ResponseEntity<List<DoctorDTO>> getAllDoctors()
             Long userId = userService.getUserId(userEmail);
             
             // Service will verify user has had an appointment with this doctor
-            String result = doctorService.updateDoctorRating(id, rating, userId, appointmentService);
+            String result = doctorService.updateDoctorRating(id, rating, userId);
             return ResponseEntity.ok(result);
         } catch (RuntimeException e) {
-            if (e.getMessage().contains("appointment")) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+            logger.warn("Failed to update doctor rating due to business rule violation: {}", e.getMessage(), e);
+            if (e.getMessage() != null && e.getMessage().contains("appointment")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("You are not authorized to rate this doctor");
             }
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Invalid rating update request");
         } catch (Exception e) {
+            logger.error("Unexpected error while updating doctor rating", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update rating");
         }
     }

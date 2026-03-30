@@ -256,7 +256,7 @@ public class DoctorControllerTest {
         when(jwtService.extractUserEmail(anyString())).thenReturn("user@example.com");
         when(userService.getUserId("user@example.com")).thenReturn(1L);
         when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
-        when(doctorService.updateDoctorRating(1L, 4.5f, 1L, appointmentService)).thenReturn("Rating updated successfully");
+        when(doctorService.updateDoctorRating(1L, 4.5f, 1L)).thenReturn("Rating updated successfully");
         
         // Test the controller method directly
         ResponseEntity<String> response = doctorController.updateDoctorRating(1L, 4.5f, authHeader);
@@ -275,6 +275,21 @@ public class DoctorControllerTest {
         // Verify the response
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Rating must be between 0 and 5", response.getBody());
+    }
+    
+    @Test
+    @WithMockUser(roles = "USER")
+    void testUpdateDoctorRating_NoAppointmentWithDoctor() {
+        when(jwtService.extractUserEmail(anyString())).thenReturn("user@example.com");
+        when(userService.getUserId("user@example.com")).thenReturn(1L);
+        when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(false);
+        
+        // Test the controller method directly
+        ResponseEntity<String> response = doctorController.updateDoctorRating(1L, 4.5f, authHeader);
+        
+        // Verify the response returns 403 Forbidden
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("You are not authorized to rate this doctor", response.getBody());
     }
     @Test
     @WithMockUser(roles = {"USER", "DOCTOR", "ADMIN"})

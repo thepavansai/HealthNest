@@ -3,6 +3,7 @@ package com.healthnest.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,7 +134,7 @@ public class UserService implements UserDetailsService {
 		
 		// Verify ownership: appointment must belong to the user making the request
 		User appointmentUser = appointment.getUser();
-		if (appointmentUser == null || !appointmentUser.getEmail().equals(userEmail)) {
+		if (appointmentUser == null || !Objects.equals(appointmentUser.getEmail(), userEmail)) {
 			throw new RuntimeException("You are not authorized to cancel this appointment");
 		}
 		

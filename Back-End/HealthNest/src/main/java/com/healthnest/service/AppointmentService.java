@@ -199,13 +199,8 @@ public class AppointmentService {
 	}
 
 	public boolean hasUserHadAppointmentWithDoctor(Long userId, Long doctorId) {
-		// Check if user has any completed or upcoming appointments with this doctor
-		List<Appointment> appointments = (List<Appointment>) appointmentRepository.findAll();
-		return appointments.stream()
-			.anyMatch(apt -> apt.getUser().getUserId().equals(userId) && 
-					apt.getDoctor().getDoctorId().equals(doctorId) &&
-					(apt.getAppointmentStatus().equals("Completed") || 
-					 apt.getAppointmentStatus().equals("Upcoming")));
+		// Check if user has any completed or upcoming appointments with this doctor using database query
+		return appointmentRepository.existsUserAppointmentWithDoctor(userId, doctorId);
 	}
 
 }

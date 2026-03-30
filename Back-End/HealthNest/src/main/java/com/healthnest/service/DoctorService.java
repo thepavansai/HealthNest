@@ -20,6 +20,9 @@ public class DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
     
+    @Autowired
+    private AppointmentService appointmentService;
+    
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String addDoctor(Doctor doctor) {
@@ -152,7 +155,7 @@ public class DoctorService {
         doctorRepository.save(doctor);
     }
     
-    public String updateDoctorRating(Long id, Float rating, Long userId, AppointmentService appointmentService) {
+    public String updateDoctorRating(Long id, Float rating, Long userId) {
         if (rating != null && (rating < 0 || rating > 5)) {
             throw new IllegalArgumentException("Rating must be between 0 and 5");
         }
