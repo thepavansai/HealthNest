@@ -289,8 +289,14 @@ void tearDown() {
     void testChangePassword_Success() throws Exception {
         when(userService.changePassword(eq(1L), eq("oldPass"), eq("newPass"))).thenReturn(true);
         
-        mockMvc.perform(patch("/v1/users/changepassword/1/oldPass/newPass")
-                .header("Authorization", authHeader))
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("oldPassword", "oldPass");
+        requestBody.put("newPassword", "newPass");
+        
+        mockMvc.perform(patch("/v1/users/changepassword/1")
+                .header("Authorization", authHeader)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestBody)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("Password changed successfully"));

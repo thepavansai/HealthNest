@@ -70,8 +70,11 @@ const ChangePassword = () => {
         const token = localStorage.getItem('token');
         // Use string doctorId in API call
         const response = await axios.patch(
-          `${BASE_URL}/doctor/changepassword/${doctorId}/${formData.currentPassword}/${formData.newPassword}`,
-          {}, // empty body
+          `${BASE_URL}/doctor/changepassword/${doctorId}`,
+          {
+            oldPassword: formData.currentPassword,
+            newPassword: formData.newPassword
+          },
           {
             headers: {
               'Authorization': `Bearer ${token}`

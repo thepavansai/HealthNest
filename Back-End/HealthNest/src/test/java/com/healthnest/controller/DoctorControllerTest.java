@@ -32,6 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.healthnest.dto.ChangePasswordRequest;
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.DoctorSummaryDTO;
 import com.healthnest.model.Doctor;
@@ -320,7 +321,8 @@ public class DoctorControllerTest {
             .thenReturn("Password changed successfully");
         
         // Test the controller method directly
-        ResponseEntity<String> response = doctorController.changePassword(1L, "oldPass", "newPass123", authHeader);
+        ChangePasswordRequest request = new ChangePasswordRequest("oldPass", "newPass123");
+        ResponseEntity<String> response = doctorController.changePassword(1L, request, authHeader);
         
         // Verify the response
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -335,7 +337,8 @@ public class DoctorControllerTest {
         when(doctorService.getDoctorIdByEmail("doctor@example.com")).thenReturn(testDoctor);
         
         // Test the controller method directly with short password
-        ResponseEntity<String> response = doctorController.changePassword(1L, "oldPass", "short", authHeader);
+        ChangePasswordRequest request = new ChangePasswordRequest("oldPass", "short");
+        ResponseEntity<String> response = doctorController.changePassword(1L, request, authHeader);
         
         // Verify the response
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -356,7 +359,8 @@ public class DoctorControllerTest {
         when(doctorService.getDoctorIdByEmail("other.doctor@example.com")).thenReturn(otherDoctor);
         
         // Test the controller method directly
-        ResponseEntity<String> response = doctorController.changePassword(1L, "oldPass", "newPass123", authHeader);
+        ChangePasswordRequest request = new ChangePasswordRequest("oldPass", "newPass123");
+        ResponseEntity<String> response = doctorController.changePassword(1L, request, authHeader);
         
         // Verify the response is forbidden
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
