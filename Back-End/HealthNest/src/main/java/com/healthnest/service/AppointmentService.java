@@ -119,7 +119,9 @@ public class AppointmentService {
 	}
 
 	public String changeStatus(Long appointmentId, String setStatus) { // Changed from Integer to Long
-		appointmentRepository.findById(appointmentId).get().setAppointmentStatus(setStatus);
+		Appointment appointment = appointmentRepository.findById(appointmentId)
+			.orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
+		appointment.setAppointmentStatus(setStatus);
 		return "Sucessfully Completed";
 	}
 
@@ -184,7 +186,9 @@ public class AppointmentService {
 	}
 
 	public boolean isUserEmailMatching(Long userId, String email) {
-		return userRepository.findById(userId).get().getEmail().equals(email);
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+		return user.getEmail().equals(email);
 	}
 
 	public List<AppointmentShowDTO> getAppointmentsByDoctorId(Long doctorId) {
@@ -192,6 +196,11 @@ public class AppointmentService {
 	}
 	public long getAppointmentsCount() {
 		return appointmentRepository.count();
+	}
+
+	public boolean hasUserHadAppointmentWithDoctor(Long userId, Long doctorId) {
+		// Check if user has any completed or upcoming appointments with this doctor using database query
+		return appointmentRepository.existsUserAppointmentWithDoctor(userId, doctorId);
 	}
 
 }

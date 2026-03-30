@@ -34,4 +34,9 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Long>
            "WHERE a.user.userId = :userId")
     List<AppointmentSummaryDTO> findAppointmentSummariesByUserId(@Param("userId") Long userId);  // Changed from Integer to Long
 
+    @Query("SELECT COUNT(a) > 0 FROM Appointment a " +
+           "WHERE a.user.userId = :userId AND a.doctor.doctorId = :doctorId " +
+           "AND (a.appointmentStatus = 'Completed' OR a.appointmentStatus = 'Upcoming')")
+    boolean existsUserAppointmentWithDoctor(@Param("userId") Long userId, @Param("doctorId") Long doctorId);
+
 }

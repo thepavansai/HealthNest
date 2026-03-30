@@ -3,6 +3,7 @@ package com.healthnest.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,9 +128,18 @@ public class UserService implements UserDetailsService {
 		return (List<User>) userRepository.findAll();
 	}
 
-	public void cancelAppointment(Long appointmentId) {
-		Appointment appointment = appointmentRepository.findById(appointmentId).get();
+	public void cancelAppointment(Long appointmentId, String userEmail) {
+		Appointment appointment = appointmentRepository.findById(appointmentId)
+			.orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
+		
+		// Verify ownership: appointment must belong to the user making the request
+		User appointmentUser = appointment.getUser();
+		if (appointmentUser == null || !Objects.equals(appointmentUser.getEmail(), userEmail)) {
+			throw new RuntimeException("You are not authorized to cancel this appointment");
+		}
+		
 		appointment.setAppointmentStatus("Cancelled");
+		appointmentRepository.save(appointment);
 	}
 
 	public boolean changePassword(Long userId, String oldPassword, String newPassword) {
@@ -207,7 +217,9 @@ public class UserService implements UserDetailsService {
 	}
 
 	public String getUserName(String email) {
-		return userRepository.findByEmail(email).get().getName();
+		return userRepository.findByEmail(email)
+			.orElseThrow(() -> new UserNotFoundException("User not found with email: " + email))
+			.getName();
 	}
 	
 	public String deleteAllUsers() {

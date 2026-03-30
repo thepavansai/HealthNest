@@ -276,7 +276,7 @@ void tearDown() {
 
     @Test
     void testCancelAppointment_Success() throws Exception {
-        doNothing().when(userService).cancelAppointment(1L);
+        doNothing().when(userService).cancelAppointment(1L, "user@example.com");
         
         mockMvc.perform(patch("/v1/users/cancelappointment/1")
                 .header("Authorization", authHeader))

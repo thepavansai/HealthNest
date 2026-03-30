@@ -24,6 +24,9 @@ class DoctorServiceTest {
 
     @Mock
     private DoctorRepository doctorRepository;
+    
+    @Mock
+    private AppointmentService appointmentService;
 
     @Spy
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -442,8 +445,9 @@ class DoctorServiceTest {
     void testUpdateDoctorRating_NewRating() {
         testDoctor.setRating(null);
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
         
-        String result = doctorService.updateDoctorRating(1L, 4.0F);
+        String result = doctorService.updateDoctorRating(1L, 4.0F, 1L);
         
         assertEquals("Rating updated successfully", result);
         assertEquals(4.0F, testDoctor.getRating());
@@ -455,8 +459,9 @@ class DoctorServiceTest {
     void testUpdateDoctorRating_ZeroRating() {
         testDoctor.setRating(0F);
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
         
-        String result = doctorService.updateDoctorRating(1L, 4.0F);
+        String result = doctorService.updateDoctorRating(1L, 4.0F, 1L);
         
         assertEquals("Rating updated successfully", result);
         assertEquals(4.0F, testDoctor.getRating());
@@ -468,8 +473,9 @@ class DoctorServiceTest {
     void testUpdateDoctorRating_ExistingRating() {
         testDoctor.setRating(3.0F);
         when(doctorRepository.findById(1L)).thenReturn(Optional.of(testDoctor));
+        when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
         
-        String result = doctorService.updateDoctorRating(1L, 5.0F);
+        String result = doctorService.updateDoctorRating(1L, 5.0F, 1L);
         
         assertEquals("Rating updated successfully", result);
         assertEquals(4.0F, testDoctor.getRating()); 
@@ -480,13 +486,27 @@ class DoctorServiceTest {
     @Test
     void testUpdateDoctorRating_NotFound() {
         when(doctorRepository.findById(1L)).thenReturn(Optional.empty());
+        when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(true);
         
         Exception exception = assertThrows(DoctorNotFoundException.class, () -> {
-            doctorService.updateDoctorRating(1L, 4.0F);
+            doctorService.updateDoctorRating(1L, 4.0F, 1L);
         });
         
         assertEquals("Doctor not found with id: 1", exception.getMessage());
         verify(doctorRepository).findById(1L);
+        verify(doctorRepository, never()).save(any(Doctor.class));
+    }
+    
+    @Test
+    void testUpdateDoctorRating_NoAppointmentWithDoctor() {
+        when(appointmentService.hasUserHadAppointmentWithDoctor(1L, 1L)).thenReturn(false);
+        
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            doctorService.updateDoctorRating(1L, 4.0F, 1L);
+        });
+        
+        assertEquals("You can only rate doctors you have had appointments with", exception.getMessage());
+        verify(doctorRepository, never()).findById(1L);
         verify(doctorRepository, never()).save(any(Doctor.class));
     }
     

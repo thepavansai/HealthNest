@@ -25,13 +25,20 @@ import com.healthnest.dto.ChangePasswordRequest;
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.DoctorSummaryDTO;
 import com.healthnest.model.Doctor;
+import com.healthnest.service.AppointmentService;
 import com.healthnest.service.DoctorService;
 import com.healthnest.service.JWTService;
+import com.healthnest.service.UserService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/v1/doctor")
 @CrossOrigin(origins = "https://health-nest.netlify.app") 
 public class DoctorController {
+    private static final Logger logger = LoggerFactory.getLogger(DoctorController.class);
+    
     @Autowired
     private DoctorService doctorService;
     
@@ -40,6 +47,12 @@ public class DoctorController {
     
     @Autowired
     private JWTService jwtService;
+    
+    @Autowired
+    private AppointmentService appointmentService;
+    
+    @Autowired
+    private UserService userService;
     
     @GetMapping("/profile/{id}")
     @PreAuthorize("hasAnyRole('DOCTOR', 'ADMIN')")
@@ -178,14 +191,23 @@ public ResponseEntity<List<DoctorDTO>> getAllDoctors()
                 throw new IllegalArgumentException("Rating must be between 0 and 5");
             }
             
-            // We don't need to verify user identity here since any authenticated user can rate a doctor
-            // The service layer should handle validation that the user has had an appointment with this doctor
+            // Extract user ID from token
+            String token = authHeader.substring(7);
+            String userEmail = jwtService.extractUserEmail(token);
+            Long userId = userService.getUserId(userEmail);
             
-            String result = doctorService.updateDoctorRating(id, rating);
+            // Service will verify user has had an appointment with this doctor
+            String result = doctorService.updateDoctorRating(id, rating, userId);
             return ResponseEntity.ok(result);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (RuntimeException e) {
+            logger.warn("Failed to update doctor rating due to business rule violation: {}", e.getMessage(), e);
+            if (e.getMessage() != null && e.getMessage().contains("appointment")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("You are not authorized to rate this doctor");
+            }
+            return ResponseEntity.badRequest().body("Invalid rating update request");
         } catch (Exception e) {
+            logger.error("Unexpected error while updating doctor rating", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update rating");
         }
     }
