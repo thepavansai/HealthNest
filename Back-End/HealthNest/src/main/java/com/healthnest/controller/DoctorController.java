@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.healthnest.dto.ChangePasswordRequest;
 import com.healthnest.dto.DoctorDTO;
 import com.healthnest.dto.DoctorSummaryDTO;
 import com.healthnest.model.Doctor;
@@ -257,12 +258,11 @@ public ResponseEntity<List<DoctorDTO>> getAllDoctors()
         }
     }
 
-    @PatchMapping("/changepassword/{doctorId}/{oldPassword}/{newPassword}")
+    @PatchMapping("/changepassword/{doctorId}")
     @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity<String> changePassword(
             @PathVariable Long doctorId,
-            @PathVariable String oldPassword,
-            @PathVariable String newPassword,
+            @RequestBody ChangePasswordRequest request,
             @RequestHeader("Authorization") String authHeader) {
         
         try {
@@ -276,11 +276,12 @@ public ResponseEntity<List<DoctorDTO>> getAllDoctors()
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only change your own password");
             }
             
+            String newPassword = request.getNewPassword();
             if (newPassword == null || newPassword.length() < 6) {
                 throw new IllegalArgumentException("New password must be at least 6 characters long");
             }
             
-            String result = doctorService.changePassword(doctorId, oldPassword, newPassword);
+            String result = doctorService.changePassword(doctorId, request.getOldPassword(), newPassword);
             return ResponseEntity.ok(result);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

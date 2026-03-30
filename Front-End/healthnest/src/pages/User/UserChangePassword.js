@@ -80,8 +80,11 @@ const UserChangePassword = () => {
       try {
         // Use string userId in API call
         const response = await axios.patch(
-          `${BASE_URL}/users/changepassword/${userId}/${formData.currentPassword}/${formData.newPassword}`,
-          {}, // Empty body as data is in URL
+          `${BASE_URL}/v1/users/changepassword/${userId}`,
+          {
+            oldPassword: formData.currentPassword,
+            newPassword: formData.newPassword
+          },
           {
             headers: {
               'Authorization': `Bearer ${token}`
